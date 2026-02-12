@@ -1,0 +1,127 @@
+<div class="row mt-2">
+    <!-- <div class="col-lg-6 col-md-12 col-sm-12 col-12 mb-2">
+        <button class="btn coinButton" (click)="openContactUsModal(0)">
+            Add New contactUs
+            &#43; </button>
+    </div> -->
+    <div class="col-lg-12">
+        <table class="table mb-0">
+            <thead>
+                <tr>
+                    <th class="firstTableHead"> Name </th>
+                    <th>Subject</th>
+                    <th> Email </th>
+                    <th> Message</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let data of viewModel.contactUsDataList">
+                    <td>{{data.name}}</td>
+                    <td>{{data.subject}} </td>
+                    <td>{{data.emailId}} </td>
+                    <td>{{data.message}} </td>
+                     <td>
+                        <div>
+                            <i class="bi bi-trash smallIcon ms-0" (click)="deleteContactUsDetails(data.id)"
+                                (mouseenter)="viewModel.showTooltip = true"
+                                (mouseleave)="viewModel.showTooltip = false" [attr.title]="'Delete'"
+                                [attr.data-placement]="'left'"
+                                [ngClass]="{ 'tooltip-show': viewModel.showTooltip }"></i>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="modal expandIn" tabindex="-1" role="dialog" [ngStyle]="{'display':viewModel.displayStyle}">
+    <div class="modal-dialog modal-dialog-centered" role="contact">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4>contactUs</h4>
+                <button type="button" class="btn-close" (click)="closePopup(contactUsForm)"></button>
+            </div>
+            <form #contactUsForm="ngForm">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
+                            <label> Name <span class="text-danger fs-5">*</span> </label>
+                        </div>
+                        <div class="col-lg-8 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
+                            <input type="text" class="form-control" required name="name"
+                                #name="ngModel" [(ngModel)]="viewModel.contactUsObj.name"
+                                minlength="3" maxlength="50" placeholder="Enter Your Name">
+
+                            <div *ngFor="let validation of viewModel.validations.name">
+                                <div *ngIf="(name.touched || viewModel.formSubmitted ) && name.hasError(validation.type)"
+                                    class="text-danger validationMsg">
+                                    {{validation.message}}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
+                            <label> Email <span class="text-danger fs-5">*</span></label>
+                        </div>
+
+                        <div class="col-lg-8 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
+                            <input type="text" class="form-control" required
+                                [(ngModel)]="viewModel.contactUsObj.emailId" pattern="^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$"
+                                name="email" minlength="6" maxlength="50" placeholder="Enter Email Id"
+                                #email="ngModel">
+
+                            <div *ngFor="let validation of viewModel.validations.email">
+                                <div *ngIf="(email.touched || viewModel.formSubmitted) && email.hasError(validation.type)"
+                                    class="text-danger  validationMsg">
+                                    {{validation.message}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
+                            <label> Subject <span class="text-danger fs-5">*</span> </label>
+                        </div>
+                        <div class="col-lg-8 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
+                            <input type="text" class="form-control" required name="subject"
+                                [(ngModel)]="viewModel.contactUsObj.subject" minlength="3" maxlength="50"
+                                placeholder="Enter Subject" #subject="ngModel"
+                                pattern="^[A-Za-z][A-Za-z0-9]*$">
+
+                            <div *ngFor="let validation of viewModel.validations.subject">
+                                <div *ngIf="(subject.touched || viewModel.formSubmitted) && subject.hasError(validation.type)"
+                                    class="text-danger  validationMsg">
+                                    {{validation.message}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
+                            <label> Message <span class="text-danger fs-5">*</span> </label>
+                        </div>
+                        <div class="col-lg-8 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
+                            <textarea class="form-control" rows="10" required name="message"
+                            pattern="^[A-Za-z][A-Za-z0-9\s]*$"
+                            [(ngModel)]="viewModel.contactUsObj.message" minlength="5" maxlength="200"
+                            placeholder="Enter Message" #message="ngModel"></textarea>
+        
+                        <div *ngFor="let validation of viewModel.validations.message">
+                            <div *ngIf="(message.touched || viewModel.formSubmitted) && message.hasError(validation.type)"
+                                class="text-danger  validationMsg">
+                                {{validation.message}}
+                            </div>
+                        </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end" *ngIf=" !viewModel.editMode">
+                        <!-- <button class="btn coinButton" (click)="addCompanycontactUs(contactUsForm)"
+                           >Save </button> -->
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

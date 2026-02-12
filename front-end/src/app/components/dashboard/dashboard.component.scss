@@ -1,0 +1,75 @@
+
+.card {
+  border-radius: 5px;
+  -webkit-box-shadow: 0 1px 2.94px 0.06px rgba(4,26,55,0.16);
+  box-shadow: 0 1px 2.94px 0.06px rgba(4,26,55,0.16);
+  border: none;
+  margin-bottom: 30px;
+  -webkit-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+}
+.card-title{
+  color: #ffff !important;
+  font-size: 25px;
+}
+.card .card-title p{
+  color: #ffff !important;
+}
+.bg-c-blue {
+  background: var(--active-link-background) !important;;
+  height: 100px;
+  border-radius: 6px;
+}
+
+.bg-c-green {
+  background: linear-gradient(45deg,#2ed8b6,#59e0c5);
+  height: 100px;
+  border-radius: 6px;
+}
+.bg-c-yellow {
+  background: linear-gradient(45deg,#FFB64D,#ffcb80);
+  height: 100px;
+  border-radius: 6px;
+}
+.bg-c-pink {
+  background: linear-gradient(45deg,#FF5370,#ff869a);
+  height: 100px;
+  border-radius: 6px;
+}
+p{
+font-weight: 600 ;
+color: white !important;
+}
+.barChart{
+  height:340px !important;
+  background-color: white;
+}
+.pieChart{
+  height:340px !important;
+  background-color: white;
+}
+
+.fixed-row {
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  background-color: var(--body-background-color)
+}
+@media (max-width :780px) {
+  .fixed-row {
+    overflow-y: auto;
+    top: 0;
+    z-index: 999;
+    background-color: var(--body-background-color)
+  }
+}
+// .scrollable-row {
+//   overflow-y: auto;
+//   max-height: 400px; /* Set the maximum height for scrollable area as needed */
+// }
+.input-group{
+  width: 20%;
+}
+.input-group-append{
+  border-radius: 0%;
+}

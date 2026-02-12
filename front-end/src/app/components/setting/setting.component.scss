@@ -1,0 +1,109 @@
+.main-body {
+    padding: 15px;
+}
+
+.nav-link {
+    color: var(--text-color);
+}
+
+
+.nav-item {
+    margin-left: 5x;
+    cursor: pointer;
+}
+
+.card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: var(--table-card-body-background-color);
+    background-clip: border-box;
+    border: 0 solid var(--border-color);
+    border-radius: .25rem;
+    box-shadow: var(--box-shadow);
+}
+
+.card-body {
+    flex: 1 1 auto;
+    min-height: 1px;
+    padding: 1rem;
+}
+
+.gutters-sm {
+    margin-right: -8px;
+    margin-left: -8px;
+}
+
+.gutters-sm>.col,
+.gutters-sm>[class*=col-] {
+    padding-right: 8px;
+    padding-left: 8px;
+}
+
+.mb-3,
+.my-3 {
+    margin-bottom: 1rem !important;
+}
+
+.h-100 {
+    height: 100% !important;
+}
+
+.shadow-none {
+    box-shadow: none !important;
+}
+
+.nav-item {
+    margin-left: 20px;
+    padding: 5px;
+}
+
+.nav-item :hover {
+    text-decoration: underline;
+    color: var(--breadcrmb-activeLnk-background);
+    transition: width 0.3s ease-in-out;
+    font-weight: var(--nav-label-font-weight);
+
+}
+
+i {
+    margin-left: 10x;
+    padding: 2px;
+    font-size: 15px;
+}
+
+@media (max-width :780px) {
+    small {
+        display: none;
+    }
+
+    i {
+        margin-left: -1pxx;
+        padding: 2px;
+        font-size: 20px;
+    }
+}
+
+.nav-tabs .nav-item.active-tab {
+    text-decoration: underline;
+    color: var(--text-color);
+    transition: color 0.1s ease-in-out;
+    position: relative;
+    font-weight: 600;
+    // bottom: 5px;
+}
+
+.nav-tabs .nav-item.active-tab {
+    text-decoration: underline;
+    color: var(--breadcrmb-activeLnk-background);
+    transition: color 0.3s ease-in-out;
+    position: relative;
+    // bottom: 5px;
+}
+
+.nav-tabs .nav-item.active-tab::after {
+    // position: absolute;
+    bottom: 5px;
+}

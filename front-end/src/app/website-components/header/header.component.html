@@ -1,0 +1,24 @@
+  <!-- ======= Header ======= -->
+
+  <header id="header" class="fixed-top ">
+    <div class="container d-flex align-items-center">
+
+      <h1 class="logo me-auto"><a (click)="navigateToSection('#home')">Coin Management</a></h1>
+      <!-- Uncomment below if you prefer to use an image logo -->
+      <!-- <a href="index.html" class="logo me-auto"><img src="assets/img/logo.png" alit="Image Not Found" class="img-fluid"></a>-->
+
+      <nav id="navbar" class="navbar">
+        <ul>
+          <li><a class="nav-link scrollto " href="">Home</a></li>
+          <li><a class="nav-link scrollto" (click)="navigateToSection('#about')">About</a></li>
+          <li><a class="nav-link scrollto" (click)="navigateToSection('#pricing')">Pricing</a></li>
+          <li><a class="nav-link scrollto"  (click)="navigateToSection('#contact')">Contact</a></li>
+          <li><a class="getstarted scrollto"  (click)="checkToken()">Get Started</a></li>
+        </ul>
+        <i class="bi bi-list mobile-nav-toggle" (click)="toggleMobileNav()"></i>
+      </nav><!-- .navbar -->
+
+    </div>
+  </header><!-- End Header -->
+
+

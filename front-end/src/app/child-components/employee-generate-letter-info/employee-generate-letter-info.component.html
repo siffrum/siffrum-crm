@@ -1,0 +1,22 @@
+<div class="row " *ngIf="viewModel.Permission?.view">
+    <div class="col-lg-4 col-md-4 col-sm-4 generateLetter">
+        <div class="card text-center mb-3">
+            <div class="card-body">
+                <img src="assets/images/reimbersement.webp" class="img-fluid">
+                <h2> Generate PaySlip </h2>
+                <select class="form-select" [(ngModel)]="viewModel.selectedMonth" (change)="onMonthChange()" aria-label="Default select example">
+                    <option value="" disabled>SELECT MONTH</option>
+                       <option *ngFor="let item of viewModel.months" [value]="item"> {{item}} </option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4 col-md-4 col-sm-4 generateLetter" *ngFor="let item of viewModel.letterList">
+        <div class="card text-center mb-3">
+            <div class="card-body">
+                <img src="assets/images/experienceLetter.webp" class="img-fluid mb-lg-4" (click)="downloadEmployeeLetter(item.id)">
+                <h2> Generate {{item.name}} </h2>
+            </div>
+        </div>
+    </div>
+</div>

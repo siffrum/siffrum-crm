@@ -1,0 +1,81 @@
+
+.logOutLink {
+    color: var( --text-color);
+    cursor: default;
+    padding: 6px;
+}
+.logOutLink:hover {
+    font-size: var(--top-nav-font-size);
+    cursor: pointer;
+}
+
+.dropdown-menu{
+    background: var(--top-side-nav-background-color);
+    color: var(--text-color);
+    font-weight: 600;
+    font-size:var(--top-nav-font-size)
+}
+.dropdown-item {
+    color: var( --text-color);
+    font-weight: var(--top-nav-font-weight);
+    font-size: var(--top-nav-font-size);
+    display: flex;
+}
+.dropdown-item:hover {
+    background: var(--active-link-background);
+    cursor: pointer;
+}
+.toggleBtn{
+    background: var(--toggle-button-background-color);
+    height: 45px;
+    margin: 4%;
+
+}
+.toggleBtn:hover{
+    background-color: var(--hover-background-color);
+}
+
+.dropdown-toggle label{
+    cursor: pointer;
+}
+.dropdown-toggle::after {
+    font-size: var(--top-nav-font-size);
+    display: inline-block;
+    margin-top: 4px;
+    margin-left: 5px; /* Add some spacing between the text and the arrow */
+    cursor: pointer;
+    display: none;
+}
+
+.topNavIcons{
+    float: right;
+    margin-right: 10%;
+    color: var( --text-color);
+    font-size: medium;
+}
+
+.top-toggle-icon{
+
+color:var(--toggle-button-color);
+font-size: var(--toggle-font-size);
+}
+.nav-label{
+    font-weight: var(--nav-label-font-weight);
+    font-size: var(--nav-label-font-size)
+}
+.badge {
+    font-size: 9px;
+}
+.bi-bell{
+    font-size: large;
+
+}
+.bi-caret-down{
+    font-size: large;
+    margin-left: 20%;
+}
+
+
+
+
+

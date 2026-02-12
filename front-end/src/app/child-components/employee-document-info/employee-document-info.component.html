@@ -1,0 +1,188 @@
+<div class="container-fluid">
+    <div class="row py-lg-2">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+            <button class="btn coinButton" (click)="openEmployeeDocumentInfoModal(0)" *ngIf="viewModel.Permission?.add">
+                Add Document &#43;
+            </button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-12  text-end"><label>Total Count:
+                <span>{{viewModel.pagination.totalCount}}</span></label> </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-12 tableFixHead ">
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th> Employee Name </th>
+                        <th> Document Name </th>
+                        <th> Document Type </th>
+                        <th>Document Description</th>
+                        <th *ngIf="viewModel.Permission?.edit || viewModel.Permission?.delete">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of viewModel.employeeDocumentsList ">
+                        <td> {{employee.loginId}} </td>
+                        <td> {{item.name}} </td>
+                        <td> {{item.employeeDocumentType}} </td>
+                        <td> {{item.documentDescription}} </td>
+                        <td
+                            *ngIf="viewModel.Permission?.add ||viewModel.Permission?.edit ||viewModel.Permission?.delete">
+                            <i class="bi bi-cloud-download smallIcon ms-0"
+                                (click)="downloadEmployeeDocument(item.id,item.employeeDocumentPath, item.name, employee.loginId, item.extension)"
+                                (mouseenter)="viewModel.showTooltip = true" (mouseleave)="viewModel.showTooltip = false"
+                                [attr.title]="'Download'" [attr.data-placement]="'left'"
+                                [ngClass]="{ 'tooltip-show': viewModel.showTooltip }" *ngIf="viewModel.Permission?.add">
+                            </i>
+                            <i class="bi bi-pencil-square smallIcon" (click)="openEmployeeDocumentInfoModal( item.id)"
+                                (mouseenter)="viewModel.showTooltip = true" (mouseleave)="viewModel.showTooltip = false"
+                                [attr.title]="'Edit'" [attr.data-placement]="'left'"
+                                [ngClass]="{ 'tooltip-show': viewModel.showTooltip }"
+                                *ngIf="viewModel.Permission?.edit">
+                            </i>
+                            <i class="bi bi-trash smallIcon" (click)="deleteEmployeeDocumentByDocumentId(item.id)"
+                                (mouseenter)="viewModel.showTooltip = true" (mouseleave)="viewModel.showTooltip = false"
+                                [attr.title]="'Delete'" [attr.data-placement]="'left'"
+                                [ngClass]="{ 'tooltip-show': viewModel.showTooltip }"
+                                *ngIf="viewModel.Permission?.delete">
+                            </i>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-12 d-flex justify-content-center pt-1"
+            *ngIf="viewModel.pagination && viewModel.pagination.totalCount>0">
+            <pagination (selectedPageNum)="loadPagedataWithPagination($event)" [viewModel]="viewModel.pagination">
+            </pagination>
+        </div>
+    </div>
+    <!--Open Add New Employee Document Modal  -->
+    <div class="modal expandIn " tabindex="-1" role="dialog" [ngStyle]="{'display':viewModel.displayStyle}">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="col-lg-11 col-md-11 col-sm-11 col-11" *ngIf="isaddmode">
+                        <h5> Add Employee Documents </h5>
+                    </div>
+                    <div class="col-lg-11 col-md-11 col-sm-11 col-11" *ngIf="isEditMode && !viewModel.editMode">
+                        <h5> Add Employee Documents </h5>
+                    </div>
+                    <div class="col-lg-11 col-md-11 col-sm-11 col-11" *ngIf="isEditMode && viewModel.editMode">
+                        <h5> Edit Employee Documents </h5>
+                    </div>
+                    <button type="button" class="btn-close" (click)="closePopup(documentInfoForm)"></button>
+                </div>
+                <form #documentInfoForm="ngForm">
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-lg-5 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
+                                <label> Document Name <span class="text-danger fs-5">*</span> </label>
+                            </div>
+                            <div class="col-lg-7 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
+                                <input type="text" class="form-control" [(ngModel)]="viewModel.employeeDocument.name"
+                                    placeholder="Document Name" required #name="ngModel" name="name" minlength="2"
+                                    maxlength="15" pattern="^[A-Za-z][A-Za-z0-9\s]*$">
+                                <div *ngFor="let validation of viewModel.validations.name">
+                                    <div *ngIf="(name.touched || viewModel.formSubmitted) && name.hasError(validation.type)"
+                                        class="text-danger validationMsg">
+                                        {{validation.message}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-5 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
+                                <label> Document Type <span class="text-danger fs-5">*</span> </label>
+                            </div>
+                            <div class="col-lg-7 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
+                                <select class="form-select"
+                                    [(ngModel)]="viewModel.employeeDocument.employeeDocumentType" required
+                                    name="employeeDocumentType" #employeeDocumentType="ngModel"
+                                    aria-label="Default select example">
+                                    <option value="undefined" disabled selected>Select Document Type</option>
+                                    <option selected *ngFor="let item of viewModel.documentType" value="{{item}}">
+                                        {{item}} </option>
+                                </select>
+                                <div *ngFor="let validation of viewModel.validations.employeeDocumentType">
+                                    <div *ngIf="(employeeDocumentType.touched || viewModel.formSubmitted) && employeeDocumentType.hasError(validation.type)"
+                                        class="text-danger validationMsg">
+                                        {{validation.message}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-5 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
+                                <label> Document Description </label>
+                            </div>
+                            <div class="col-lg-7 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
+                                <textarea class="form-control"
+                                    [(ngModel)]="viewModel.employeeDocument.documentDescription"
+                                    placeholder="Description" #documentDescription="ngModel" name="documentDescription"
+                                    minlength="5" maxlength="60" pattern="^[A-Za-z][A-Za-z0-9\s]*$"></textarea>
+                                <div *ngFor="let validation of viewModel.validations.documentDescription">
+                                    <div *ngIf="(documentDescription.touched || viewModel.formSubmitted) && documentDescription.hasError(validation.type)"
+                                        class="text-danger validationMsg">
+                                        {{validation.message}}
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Add Mode -->
+                            <div class="col-lg-5 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2"
+                                *ngIf="isaddmode &&viewModel.Permission?.add">
+                                <label> Upload Document <span class="text-danger fs-5">*</span> </label>
+                            </div>
+                            <div class="col-lg-7 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2"
+                                *ngIf="isaddmode &&viewModel.Permission?.add">
+                                <input type="file" class="form-control"
+                                    [(ngModel)]="viewModel.employeeDocument.employeeDocumentPath"
+                                    (change)="uploadDocument($event)" accept=".doc,.pdf" #documentPath="ngModel"
+                                    name="employeeDocumentPath">
+                                <div *ngFor="let validation of viewModel.validations.employeeDocumentPath">
+                                    <div *ngIf="(documentPath.touched || viewModel.formSubmitted) && documentPath.hasError(validation.type)"
+                                        class="text-danger validationMsg">
+                                        {{validation.message}}
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Edit Mode -->
+                            <div class="col-lg-5 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2"
+                                *ngIf="isEditMode && !viewModel.editMode &&viewModel.Permission?.edit">
+                                <label> Upload Document <span class="text-danger fs-5">*</span> </label>
+                            </div>
+                            <div class="col-lg-7 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2"
+                                *ngIf="isEditMode && !viewModel.editMode &&viewModel.Permission?.add">
+                                <input type="file" class="form-control"
+                                    [(ngModel)]="viewModel.employeeDocument.employeeDocumentPath" accept=".doc,.pdf"
+                                    (change)="uploadDocument($event)" required name="employeeDocumentPath"
+                                    #documentPath="ngModel">
+                                <!-- Add a custom button to open the file upload dialog -->
+                                <div *ngFor="let validation of viewModel.validations.employeeDocumentPath">
+                                    <div *ngIf="(documentPath.touched || viewModel.formSubmitted) && documentPath.hasError(validation.type)"
+                                        class="text-danger validationMsg">
+                                        {{validation.message}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end"
+                            *ngIf="isaddmode &&viewModel.Permission?.add">
+                            <button class="btn coinButton" (click)="addEmployeeDocumentInfo(documentInfoForm)"> Save &
+                                Next </button>
+                            <a class="skipLink d-block" (click)="skipEmployeeFurther()"> Skip for Now </a>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end"
+                            *ngIf="isEditMode && !viewModel.editMode &&viewModel.Permission?.add">
+                            <button class="btn coinButton" (click)="addEmployeeDocumentInfo(documentInfoForm)"> Save
+                                Document </button>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end"
+                            *ngIf="isEditMode && viewModel.editMode &&viewModel.Permission?.edit">
+                            <button class="btn coinButton" (click)="updateEmployeeDocumentInfo(documentInfoForm)">
+                                Update Details </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>

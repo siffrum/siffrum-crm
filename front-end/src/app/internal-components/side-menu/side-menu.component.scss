@@ -1,0 +1,159 @@
+.mainContainer {
+  display: grid;
+  grid-auto-flow: column;
+  overflow-x: scroll;
+  padding: 8px;
+  overflow-y: scroll;
+  background-color: var(--top-side-nav-background-color);
+  margin-bottom: 10px;
+  scrollbar-width: none;
+}
+.mainContainer label {
+  font-size: 14px;
+  margin-top: 18px;
+}
+.mainContainer::-webkit-scrollbar {
+  display: none;
+}
+.profile_wrapper {
+  margin: auto;
+}
+.profile_img_wrapper {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  // border: 4px solid var(--border-color);
+  border-radius: 50%;
+  // margin-bottom: 2px;
+  margin-top: 3px;
+  display: inline-block;
+  cursor:pointer;
+}
+
+.profile_img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+.profile_img_wrapper::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  // background: ;
+  z-index: -1;
+  width: calc(100% + 13px);
+  height: calc(100% + 13px);
+  border-radius: 50%;
+}
+.addProfileIcon {
+  position: absolute;
+  top: 90%;
+  left: 90%;
+  transform: translate(-50%, -50%);
+  color: var(--text-color);
+  background-color: var(--top-side-nav-background-color);
+  font-size: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  // margin: 5px;
+  z-index: 2;
+}
+
+// for profile picture
+
+.scrollable {
+  max-height: 200px;
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.scrollable::-webkit-scrollbar {
+  display: none;
+}
+
+.list-unstyled {
+  padding-left: 0;
+  list-style: none;
+}
+
+.list-unstyled li {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  cursor: pointer;
+  border-bottom: 1px solid var(--border-color);
+  transition: all .25s linear;
+  margin-left: -13%;
+}
+
+.list-unstyled li:hover {
+  background: var(--hover-background-color);
+  color: var(--active-Link-color);
+  transform: translate(.6em, -.6em);
+  transition: all .25s linear;
+  font-weight: 600;
+
+}
+
+.list-unstyled li span.icon-wrapper {
+  display: inline-block;
+  margin-left: 20px;
+  text-align: center;
+}
+
+
+
+.list-unstyled li:hover:before,
+.list-unstyled li:hover:after {
+  transition: all .25s linear;
+}
+
+.list-unstyled li:before {
+  content: '';
+  position: absolute;
+  transition: all .25s linear;
+  width: .5em;
+  height: 2.5em;
+  top: .25em;
+  left: -.5em;
+  transform: skewY(-45deg);
+}
+
+.list-unstyled li:after {
+  content: '';
+  position: absolute;
+  transition: all .25s linear;
+  width: .5em;
+  height: 4em;
+  bottom: -2.25em;
+  left: 1.5em;
+  transform: rotate(90deg) skew(0, 45deg);
+}
+
+.list-unstyled.sub-menu {
+  padding-left: 35px;
+  color:var(--common-icon-color) /* You can adjust the indentation level by changing this value */
+}
+.list-unstyled.components .separation-line {
+  border-bottom: 1px solid var(--line-of-separation); /* Customize the line color and style */
+  margin-bottom: 10px; /* Adjust the margin as needed */
+  padding-bottom: 10px; /* Adjust the padding as needed */
+}
+.sub-Items{
+  font-size: var(--side-nav-subItems-font-size);
+  font-weight: var(--side-nav-subItems-font-weight);
+   color:var(--common-icon-color)
+}
+
+

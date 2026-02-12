@@ -1,0 +1,528 @@
+<div class="card" *ngIf="viewModel.addAdminForm">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-lg-1 col-md-1 col-sm-1 col-1 ">
+                <i class="bi bi-arrow-left-circle smallIcon" (click)="back()"></i>
+            </div>
+            <div class="col-lg-11 col-md-11 col-sm-11 col-11 text-center">
+                <span> Add Company Admin </span>
+            </div>
+        </div>
+    </div>
+    <form #createEmployeeForm="ngForm">
+        <div class="card-body">
+
+            <div class="row">
+
+                <div class="col-lg-6">
+
+                    <div class="row">
+
+                        <div class="col-lg-5 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
+                            <label> First Name <span class="text-danger fs-5">*</span> </label>
+                        </div>
+
+                        <div class="col-lg-7 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
+                            <input type="text" class="form-control" [(ngModel)]="viewModel.addAdmin.firstName"
+                                [readonly]="isReadOnly" placeholder="Enter First Name" required name="firstName"
+                                #firstName="ngModel" minlength="3" maxlength="15" pattern="^[A-Za-z][A-Za-z0-9]*$">
+
+                            <div *ngFor="let validation of viewModel.validations.firstName">
+                                <div *ngIf="(firstName.touched || viewModel.formSubmitted) && firstName.hasError(validation.type)"
+                                    class="text-danger validationMsg">
+                                    {{validation.message}}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-5 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
+                            <label> Middle Name </label>
+                        </div>
+
+                        <div class="col-lg-7 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
+                            <input type="text" class="form-control" [(ngModel)]="viewModel.addAdmin.middleName"
+                                value="{{viewModel.addAdmin.middleName}}" [readonly]="isReadOnly"
+                                placeholder="Enter Middle Name" name="middleName" #middleName="ngModel"
+                                pattern="^[A-Za-z][A-Za-z0-9]*$" minlength="3" maxlength="15">
+                            <div *ngFor="let validation of viewModel.validations.middleName">
+                                <div *ngIf="(middleName.touched || viewModel.formSubmitted) && middleName.hasError(validation.type)"
+                                    class=" text-danger validationMsg">
+                                    {{validation.message}}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-5 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
+                            <label> Last Name <span class="text-danger fs-5">*</span> </label>
+                        </div>
+
+                        <div class="col-lg-7 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
+                            <input type="text" class="form-control" required [(ngModel)]="viewModel.addAdmin.lastName"
+                                [readonly]="isReadOnly" placeholder="Enter Last Name" required name="lasttName"
+                                #lasttName="ngModel" pattern="^[A-Za-z][A-Za-z0-9]*$" minlength="3" maxlength="15">
+                            <div *ngFor="let validation of viewModel.validations.lastName">
+                                <div *ngIf="(lasttName.touched || viewModel.formSubmitted) && lasttName.hasError(validation.type)"
+                                    class=" text-danger validationMsg">
+                                    {{validation.message}}
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-lg-5 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
+                            <label> Personal Email Id <span class="text-danger fs-5">*</span> </label>
+                        </div>
+
+                        <div class="col-lg-7 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
+                            <input type="text" class="form-control" [(ngModel)]="viewModel.addAdmin.personalEmailId"
+                                value="{{viewModel.addAdmin.personalEmailId}}" [readonly]="isReadOnly"
+                                placeholder="Enter Personal Email" required name="personalEmail" minlength="6"
+                                maxlength="50" #personalEmail="ngModel"
+                                pattern="^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$">
+
+                            <div *ngFor="let validation of viewModel.validations.personalEmail">
+                                <div *ngIf="(personalEmail.touched || viewModel.formSubmitted) && personalEmail.hasError(validation.type)"
+                                    class="text-danger validationMsg">
+                                    {{validation.message}}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-5 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
+                            <label> Mobile Number <span class="text-danger fs-5">*</span> </label>
+                        </div>
+
+                        <div class="col-lg-7 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
+                            <input type="text" class="form-control" [(ngModel)]="viewModel.addAdmin.phoneNumber"
+                                [readonly]="isReadOnly" placeholder="Enter Phone Number" name="MobileNumber"
+                                #phoneNumber="ngModel" required minlength="3" maxlength="15" pattern="^[0-9]{10}$">
+                            <div *ngFor="let validation of viewModel.validations.phoneNumber">
+                                <div *ngIf="(phoneNumber.touched || viewModel.formSubmitted) && phoneNumber.hasError(validation.type)"
+                                    class=" text-danger validationMsg">
+                                    {{validation.message}}
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-lg-6">
+
+                    <div class="row">
+
+                        <div class="col-lg-5 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
+                            <label> Work Email Id <span class="text-danger fs-5">*</span> </label>
+                        </div>
+
+                        <div class="col-lg-7 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
+                            <input type="text" class="form-control" [(ngModel)]="viewModel.addAdmin.emailId"
+                                [readonly]="isReadOnly" placeholder="Enter Work Email" #email="ngModel" name="email"
+                                minlength="6" maxlength="50"
+                                pattern="^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$">
+                            <div *ngFor="let validation of viewModel.validations.email">
+                                <div *ngIf="(email.touched || viewModel.formSubmitted) && email.hasError(validation.type)"
+                                    class=" text-danger validationMsg">
+                                    {{validation.message}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-5 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
+                            <label> Date Of Birth <span class="text-danger fs-5">*</span> </label>
+                        </div>
+                        <div class="col-lg-7 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
+
+                            <div class="input-group">
+                                <input type="date" class="form-control" [(ngModel)]="viewModel.addAdmin.dateOfBirth"
+                                [max]="disableDates()" [min]="disableToMinDates()"  required name="dateOfBirth"
+                                    #dateOfBirth="ngModel">
+                                <div *ngFor="let validation of viewModel.validations.dateOfBirth">
+                                    <div *ngIf="(dateOfBirth.touched || viewModel.formSubmitted) && dateOfBirth.hasError(validation.type)"
+                                        class=" text-danger validationMsg">
+                                        {{validation.message}}
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <div class="col-lg-5 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
+                            <label> Date Of Joining <span class="text-danger fs-5">*</span> </label>
+                        </div>
+
+                        <div class="col-lg-7 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
+
+                            <div class="input-group">
+
+                                <input type="date" class="form-control" [(ngModel)]="viewModel.addAdmin.dateOfJoining"
+                                    [max]="viewModel.disabledDate" [readonly]="isReadOnly" required name="dateOfJoining"
+                                    #dateOfJoining="ngModel">
+                                <div *ngFor="let validation of viewModel.validations.dateOfJoining">
+                                    <div *ngIf="(dateOfJoining.touched || viewModel.formSubmitted) && dateOfJoining.hasError(validation.type)"
+                                        class=" text-danger validationMsg">
+                                        {{validation.message}}
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-lg-5 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
+                            <label> Designation <span class="text-danger fs-5">*</span> </label>
+                        </div>
+
+                        <div class="col-lg-7 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
+                            <input type="text" class="form-control" [(ngModel)]="viewModel.addAdmin.designation"
+                                [readonly]="isReadOnly" placeholder="Enter Designation" required #designation="ngModel"
+                                name="designation" minlength="3" maxlength="20" pattern="^[A-Za-z][A-Za-z0-9]*$">
+                            <div *ngFor="let validation of viewModel.validations.designation">
+                                <div *ngIf="(designation.touched || viewModel.formSubmitted) && designation.hasError(validation.type)"
+                                    class=" text-danger validationMsg">
+                                    {{validation.message}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end  p-2">
+                    <button class="btn coinButton ms-1"
+                        (click)="createNewCompanyAdmin(createEmployeeForm)">Save</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="row" *ngIf="viewModel.permissionTableModal">
+    <div class="col-lg-6 col-md-12 col-sm-12 col-12 mb-2">
+        <button class="btn coinButton" (click)="switchToForm()">
+            Add New User
+            &#43; </button>
+    </div>
+    <div class="col-lg-6 col-md-12 col-sm-12 col-12 text-lg-end ">
+        <label> Total Number of Company Admins: </label> <span> {{viewModel.pagination.totalCount}}</span>
+    </div>
+    <div class="col-lg-12">
+        <table class="table mb-0">
+            <thead>
+                <tr>
+                    <th> First Name </th>
+                    <th> last Name</th>
+                    <th> Role type</th>
+                    <th>email</th>
+                    <th>login Enabled</th>
+                    <th>Set Permissions</th>
+                    <th> Action </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let data of viewModel.companyUserList">
+                    <td>{{data.firstName}} </td>
+                    <td>{{data.lastName}} </td>
+                    <td> {{data.roleType}}</td>
+                    <td>{{data.emailId}}</td>
+                    <td class="align-middle">
+                        <div class="tw-toggle" [ngSwitch]="data.loginStatus">
+                            <input checked="true" type="radio" value="true" *ngSwitchCase="'Enabled'">
+                            <button class="rounded-pill m-1 border border-white"
+                                (click)="updateLoginStatus('Enabled', data)">active</button>
+                            <input checked="false" type="radio" value="false" *ngSwitchCase="'Disabled'">
+                            <button class="rounded-pill m-1 border border-white "
+                                (click)="updateLoginStatus('Disabled', data)">disable</button>
+                            <input checked="reset" type="radio" value="reset" *ngSwitchCase="'PasswordResetRequired'">
+                            <button class="rounded-pill my-1 border border-white"
+                                (click)="updateLoginStatus('PasswordResetRequired', data)"> reset </button>
+                        </div>
+                    </td>
+                    <td>
+                        <button class="rounded-pill my-1 btn coinButton border border-white"
+                            (click)="openPermissionsModalForAdmin( data.id)" (mouseenter)="viewModel.showTooltip = true"
+                            (mouseleave)="viewModel.showTooltip = false" [attr.title]="'Add Permissions'"
+                            [attr.data-placement]="'left'" [ngClass]="{ 'tooltip-show': viewModel.showTooltip }"> Set
+                            Permissions </button>
+                    </td>
+                    <td>
+                        <i class="bi bi-pencil-square smallIcon ms-0" (click)="openEditAdminModal(data.id)"
+                            (mouseenter)="viewModel.showTooltip = true" (mouseleave)="viewModel.showTooltip = false"
+                            [attr.title]="'Edit'" [attr.data-placement]="'left'"
+                            [ngClass]="{ 'tooltip-show': viewModel.showTooltip }">
+                        </i>
+                        <i class="bi bi-trash smallIcon ms-0" (mouseenter)="viewModel.showTooltip = true"
+                            (mouseleave)="viewModel.showTooltip = false" [attr.title]="'Delete'"
+                            [attr.data-placement]="'left'" [ngClass]="{ 'tooltip-show': viewModel.showTooltip }"
+                            (click)="deleteCompanyAdminByAdminId(data.id)"></i>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-12 d-flex justify-content-center pt-1"
+        *ngIf="viewModel.pagination && viewModel.pagination.totalCount">
+        <pagination (selectedPageNum)="loadPagedataWithPagination($event)" [viewModel]="viewModel.pagination">
+        </pagination>
+    </div>
+</div>
+
+<!-- Modal for permissions and edit admin -->
+<div class="modal expandIn" tabindex="-1" role="dialog" [ngStyle]="{'display':viewModel.displayStyle}">
+    <!-- Permissions Modal  -->
+    <div class="modal-dialog" role="document" *ngIf="viewModel.permissionsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="col-lg-11 col-md-11 col-sm-11 col-11" *ngIf="viewModel.editMode">
+                    <h5> Add Admin Permissions </h5>
+                </div>
+                <button type="button" class="btn-close" (click)="closePopup()"></button>
+            </div>
+            <div class="modal-body ">
+                <div class="row ">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-end">
+                        <input class="form-check-input" type="checkbox" [(ngModel)]="viewModel.selectAll"
+                            (change)="selectAllClicked()">&nbsp;
+                        <label class="form-check-label">Select All</label>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt-0  tableFixHead">
+                        <!-- Admin Permission Table -->
+                        <table class="table mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Module</th>
+                                    <th>Enable</th>
+                                    <th>View</th>
+                                    <th>ADD</th>
+                                    <th>EDIT</th>
+                                    <th>Delete</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="align-middle" *ngFor="let item of viewModel.modulePermissionList">
+                                    <td>{{ item.moduleName }}</td>
+                                    <td>
+                                        <div class="form-check">
+                                            <input class="form-check-input" [checked]=""
+                                                [(ngModel)]="item.isEnabledForClient" (change)="checkboxClicked()"
+                                                type="checkbox">
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-check">
+                                            <input class="form-check-input" [disabled]="!item.isEnabledForClient"
+                                                [(ngModel)]="item.view" (change)="checkboxClicked()" type="checkbox">
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-check">
+                                            <input class="form-check-input" [disabled]="!item.isEnabledForClient"
+                                                [(ngModel)]="item.add" (change)="checkboxClicked()" type="checkbox">
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-check">
+                                            <input class="form-check-input" [disabled]="!item.isEnabledForClient"
+                                                [(ngModel)]="item.edit" (change)="checkboxClicked()" type="checkbox">
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-check">
+                                            <input class="form-check-input" [disabled]="!item.isEnabledForClient"
+                                                [(ngModel)]="item.delete" (change)="checkboxClicked()" type="checkbox">
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <!-- Employee Permission table -->
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="row py-lg-2 py-md-2 py-sm-2">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-6 text-start ">
+                        <button class="btn coinButton me-1" (click)="AddOrUpdateModulePermissionsForUser()"> update
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End of Permissions Modal -->
+
+    <!-- ADD /Update company Admin Modal-->
+    <div class="modal-dialog" role="document" *ngIf="viewModel.adminDetailsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="col-lg-11 col-md-11 col-sm-11 col-11" *ngIf="viewModel.editMode">
+                    <h5> Edit Admin Details </h5>
+                </div>
+
+                <button type="button" class="btn-close" (click)="closePopup()"></button>
+            </div>
+            <form #editAdminForm="ngForm">
+                <div class="modal-body tableFixHead">
+                    <div class="row">
+
+                        <div class="col-lg-5 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
+                            <label> First Name <span class="text-danger fs-5">*</span> </label>
+                        </div>
+
+                        <div class="col-lg-7 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
+                            <input type="text" class="form-control" [(ngModel)]="viewModel.addAdmin.firstName"
+                                [readonly]="isReadOnly" placeholder="Enter First Name" required name="firstName"
+                                #firstName="ngModel" minlength="3" maxlength="15" pattern="^[A-Za-z][A-Za-z0-9]*$">
+
+                            <div *ngFor="let validation of viewModel.validations.firstName">
+                                <div *ngIf="(firstName.touched || viewModel.formSubmitted) && firstName.hasError(validation.type)"
+                                    class="text-danger validationMsg">
+                                    {{validation.message}}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-5 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
+                            <label> Middle Name <span class="text-danger fs-5">*</span> </label>
+                        </div>
+
+                        <div class="col-lg-7 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
+                            <input type="text" class="form-control" [(ngModel)]="viewModel.addAdmin.middleName"
+                                value="{{viewModel.addAdmin.middleName}}" [readonly]="isReadOnly"
+                                placeholder="Enter Middle Name" name="middleName" #middleName="ngModel"
+                                pattern="^[A-Za-z][A-Za-z0-9]*$" minlength="3" maxlength="15">
+                            <div *ngFor="let validation of viewModel.validations.middleName">
+                                <div *ngIf="(middleName.touched || viewModel.formSubmitted) && middleName.hasError(validation.type)"
+                                    class=" text-danger validationMsg">
+                                    {{validation.message}}
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="col-lg-5 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
+                            <label> Last Name <span class="text-danger fs-5">*</span> </label>
+                        </div>
+
+                        <div class="col-lg-7 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
+                            <input type="text" class="form-control" required [(ngModel)]="viewModel.addAdmin.lastName"
+                                [readonly]="isReadOnly" placeholder="Enter Last Name" required name="lasttName"
+                                #lasttName="ngModel" pattern="^[A-Za-z][A-Za-z0-9]*$" minlength="3" maxlength="15">
+                            <div *ngFor="let validation of viewModel.validations.lastName">
+                                <div *ngIf="(lasttName.touched || viewModel.formSubmitted) && lasttName.hasError(validation.type)"
+                                    class=" text-danger validationMsg">
+                                    {{validation.message}}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-5 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
+                            <label> Personal Email <span class="text-danger fs-5">*</span> </label>
+                        </div>
+
+                        <div class="col-lg-7 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
+                            <input type="text" class="form-control" [(ngModel)]="viewModel.addAdmin.personalEmailId"
+                                value="{{viewModel.addAdmin.personalEmailId}}" [readonly]="isReadOnly"
+                                placeholder="Enter Personal Email" required name="personalEmail" minlength="6"
+                                maxlength="50" #personalEmail="ngModel"
+                                pattern="^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$">
+
+                            <div *ngFor="let validation of viewModel.validations.personalEmail">
+                                <div *ngIf="(personalEmail.touched || viewModel.formSubmitted) && personalEmail.hasError(validation.type)"
+                                    class="text-danger validationMsg">
+                                    {{validation.message}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-5 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
+                            <label> Mobile Number <span class="text-danger fs-5">*</span> </label>
+                        </div>
+
+                        <div class="col-lg-7 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
+                            <input type="text" class="form-control" [(ngModel)]="viewModel.addAdmin.phoneNumber"
+                                [readonly]="isReadOnly" placeholder="Enter Phone Number" name="MobileNumber"
+                                #phoneNumber="ngModel" required minlength="3" maxlength="15" pattern="^[0-9]{10}$">
+                            <div *ngFor="let validation of viewModel.validations.phoneNumber">
+                                <div *ngIf="(phoneNumber.touched || viewModel.formSubmitted) && phoneNumber.hasError(validation.type)"
+                                    class=" text-danger validationMsg">
+                                    {{validation.message}}
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-lg-5 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
+                            <label> Work Email <span class="text-danger fs-5">*</span> </label>
+                        </div>
+
+                        <div class="col-lg-7 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
+                            <input type="text" class="form-control" [(ngModel)]="viewModel.addAdmin.emailId"
+                                [readonly]="isReadOnly" placeholder="Enter Work Email" #email="ngModel" name="email"
+                                minlength="6" maxlength="50"
+                                pattern="^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$">
+                            <div *ngFor="let validation of viewModel.validations.email">
+                                <div *ngIf="(email.touched || viewModel.formSubmitted) && email.hasError(validation.type)"
+                                    class=" text-danger validationMsg">
+                                    {{validation.message}}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-5 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
+                            <label> D-O-B <span class="text-danger fs-5">*</span> </label>
+                        </div>
+
+                        <div class="col-lg-7 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
+                            <input type="date" class="form-control" [(ngModel)]="viewModel.addAdmin.dateOfBirth"
+                            [max]="disableDates()" [min]="disableToMinDates()" required name="dateOfBirth" #dateOfBirth="ngModel">
+                            <div *ngFor="let validation of viewModel.validations.dateOfBirth">
+                                <div *ngIf="(dateOfBirth.touched || viewModel.formSubmitted) && dateOfBirth.hasError(validation.type)"
+                                    class=" text-danger validationMsg">
+                                    {{validation.message}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-5 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
+                            <label> Date Of Joining <span class="text-danger fs-5">*</span> </label>
+                        </div>
+
+                        <div class="col-lg-7 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
+                            <input type="date" class="form-control" [(ngModel)]="viewModel.addAdmin.dateOfJoining"
+                                [max]="viewModel.disabledDate" [readonly]="isReadOnly" required name="dateOfJoining"
+                                #dateOfJoining="ngModel">
+                            <div *ngFor="let validation of viewModel.validations.dateOfJoining">
+                                <div *ngIf="(dateOfJoining.touched || viewModel.formSubmitted) && dateOfJoining.hasError(validation.type)"
+                                    class=" text-danger validationMsg">
+                                    {{validation.message}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-5 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
+                            <label> Designation <span class="text-danger fs-5">*</span> </label>
+                        </div>
+
+                        <div class="col-lg-7 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
+                            <input type="text" class="form-control" [(ngModel)]="viewModel.addAdmin.designation"
+                                [readonly]="isReadOnly" placeholder="Enter Designation" required #designation="ngModel"
+                                name="designation" minlength="3" maxlength="20" pattern="^[A-Za-z][A-Za-z0-9]*$">
+                            <div *ngFor="let validation of viewModel.validations.designation">
+                                <div *ngIf="(designation.touched || viewModel.formSubmitted) && designation.hasError(validation.type)"
+                                    class=" text-danger validationMsg">
+                                    {{validation.message}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end">
+                        <button class="btn coinButton" (click)="updateCompanyAdminDetails(editAdminForm)">
+                            Update</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- End Of ADD /Update company Admin Modal -->
+</div>

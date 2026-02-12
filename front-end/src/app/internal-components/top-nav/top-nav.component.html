@@ -1,0 +1,60 @@
+<div class="container-fluid">
+    <div class="row">
+        <nav class="navbar navbar-expand-lg" *ngIf="_commonService.layoutVM.showLeftSideMenu">
+            <div class="col-lg-1 col-md-2 col-sm-2">
+                <button id="sidebarCollapse" class="btn toggleBtn" (click)="toggleMenu()">
+                    <i class="bi bi-list top-toggle-icon"(mouseenter)="viewModel.showTooltip = true"
+                    (mouseleave)="viewModel.showTooltip = false" [attr.title]="'Toggle'"
+                    [attr.data-placement]="'left'"
+                    [ngClass]="{ 'tooltip-show': viewModel.showTooltip }"></i>
+                </button>
+            </div>
+            <div class="col-lg-8 col-md-7 col-sm-4 text-start">
+                <!-- <span> {{_commonService.layoutVM.loggedUserName}} </span>
+                <i class="bi bi-arrow-right-short smallIcon d-inline-block"></i> -->
+                <label class="nav-label"> {{_commonService.layoutVM.PageTitle}} </label>
+
+            </div>
+
+            <div class="col-lg-3 col-md-3 col-sm-5 text-end">
+                <div class="d-flex align-items-end topNavIcons">
+                    <a  class="text-dark me-2" id="liveToastBtn" *ngIf="_commonService.layoutVM.tokenRole==3 || _commonService.layoutVM.tokenRole==4">
+                        <i class="bi bi-bell topNavIcons" (mouseenter)="viewModel.showTooltip = true"
+                        (mouseleave)="viewModel.showTooltip = false" [attr.title]="'Notifications'"
+                        [attr.data-placement]="'right'"
+                        [ngClass]="{ 'tooltip-show': viewModel.showTooltip }" ></i>
+                        <span class="badge rounded-pill badge-notification bg-danger position-absolute ">9</span>
+                    </a>
+
+                    &nbsp;&nbsp;&nbsp;
+                        <i (click)="logOutUser()" class="bi bi-box-arrow-left topNavIcons"(mouseenter)="viewModel.showTooltip = true"
+                        (mouseleave)="viewModel.showTooltip = false" [attr.title]="'Log Out'"
+                        [attr.data-placement]="'right'"
+                        [ngClass]="{ 'tooltip-show': viewModel.showTooltip }"></i>
+                        <!-- Log Out -->
+                    <!-- <div class="dropdown">
+                        <a class="dropdown-toggle text-dark"  href="#" role="button" id="userDropdown"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-caret-down topNavIcons"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-lg-end" aria-labelledby="userDropdown">
+                            <li>
+                                <a class="dropdown-item" routerLink="/changePassword">
+                                    <i class="bi bi-lock topNavIcons"></i>
+                             Change Password?
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" (click)="logOutUser()">
+                                    <i class="bi bi-box-arrow-left topNavIcons"></i>
+                                    Log Out
+                                </a>
+                            </li>
+                        </ul>
+                    </div> -->
+                </div>
+            </div>
+
+        </nav>
+    </div>
+</div>

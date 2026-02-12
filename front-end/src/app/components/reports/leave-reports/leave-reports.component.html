@@ -1,0 +1,87 @@
+<div class="container-fluid">
+    <div class="row mt-3">
+        <div class="col-lg-3 col-md-2 col-sm-2 col-12">
+            <label class="preferenceLabel align-items-center"> Select Your Preference: </label>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-3 col-12">
+            <select class="form-select" (change)="selectRequest()"
+                [(ngModel)]="viewModel.leaveReportRequest.dateFilterType" aria-label="Default select example">
+                <option value=undefined disabled>SELECT</option>
+                <option *ngFor="let item of viewModel.dateFilterTypeList" [value]="item">{{item}}</option>
+            </select>
+        </div>
+        <div class="col-lg-6 col-md-7 col-sm-7 col-12 pt-lg-0 pt-md-0 pt-sm-0 pt-3 dropdown"
+            *ngIf="viewModel.showMonthlyDropdown">
+            <select class="form-select" [(ngModel)]="viewModel.selectedMonth" aria-label="Default select example">
+                <option value="" disabled>SELECT MONTH</option>
+                <option *ngFor="let item of viewModel.months" [value]="item"> {{item}} </option>
+            </select>
+        </div>
+        <div class="col-lg-6 col-md-7 col-sm-7 col-12 pt-lg-0 pt-md-0 pt-sm-0 pt-3"
+            *ngIf="viewModel.showYearlyDropdown">
+            <select class="form-control" [(ngModel)]="viewModel.selectedYear">
+                <option *ngFor="let item of viewModel.years" [value]="item"> {{item}} </option>
+            </select>
+        </div>
+        <div class="col-lg-6" *ngIf="viewModel.showCustomCalendar">
+            <div class="row align-items-center">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+                    <div class="input-group mb-3">
+                        <button class="btn"> From </button>
+                        <input type="date" class="form-control"
+                            [(ngModel)]="viewModel.leaveReportRequest.dateFrom">
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+                    <div class="input-group mb-3">
+                        <button class="btn"> To </button>
+                        <input type="date" class="form-control"
+                            [(ngModel)]="viewModel.leaveReportRequest.dateTo">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row pt-lg-3 pt-md-3 pt-sm-3 pt-3">
+        <div class="col-lg-3 col-md-2 col-sm-2 col-12">
+            <label class="searchLabel align-items-center"> Search </label>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-3 col-12 ">
+            <input type="text" class="form-control" [(ngModel)]="viewModel.leaveReportRequest.searchString"
+                placeholder="Search By First / Last Name">
+        </div>
+        <div class="col-lg-6 col-md-7 col-sm-7 col-12 pt-lg-0 pt-md-2 pt-sm-2 pt-2 text-end">
+            <button class="btn coinButton" (click)="getLeavesReport()"> Get Report </button>
+        </div>
+    </div>
+    <div class="row pt-lg-3" *ngIf="viewModel.showTable">
+        <div class="col-lg-12 text-end"><label>Total Count: <span> {{viewModel.pagination.totalCount}}</span></label> </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-12 tableFixHead">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th > Employee Name </th>
+                        <th> Leave Type </th>
+                        <th> Start Date </th>
+                        <th> End Date </th>
+                        <th > Employee Comment </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of viewModel.leavesReportList">
+                        <td> {{item.userName}} </td>
+                        <td> {{item.leaveType}} </td>
+                        <td> {{item.leaveDateFromUTC | date: 'longDate'}} </td>
+                        <td> {{item.leaveDateToUTC | date: 'longDate'}} </td>
+                        <td> {{item.employeeComment}} </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-12 d-flex justify-content-center pt-1"
+            *ngIf="viewModel.pagination && viewModel.pagination.totalCount">
+            <pagination (selectedPageNum)="loadPagedataWithPagination($event)" [viewModel]="viewModel.pagination">
+            </pagination>
+        </div>
+    </div>
+</div>

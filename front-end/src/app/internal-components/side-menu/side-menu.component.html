@@ -1,0 +1,112 @@
+<!--
+    tokenRole and their corresponding enum values;
+    1=Unknown;
+    2=SuperAdmin;
+    3=ClientAdmin;
+    4=Employee;
+ -->
+<div id="sidebar" tabindex="0" class="scrollable" [ngClass]="[_commonService.layoutVM.toggleSideMenu]"
+    *ngIf="_commonService.layoutVM.showLeftSideMenu">
+    <div class="mainContainer" tabindex="0">
+        <div class="profile_wrapper"
+            *ngIf="_commonService.layoutVM.tokenRole == 3 ||_commonService.layoutVM.tokenRole == 4">
+            <div class="profile_img_wrapper" *ngIf="this.viewModel.userProfilePic != null">
+                <img src="{{'data:image/jpg;base64,' + viewModel.userProfilePic  }}" alt="Image Not Found"
+                    loading="lazy" class="profile_img">
+                <i class="bi bi-camera-fill addProfileIcon" (click)="fileInput.click()"
+                    (mouseenter)="viewModel.showTooltip = true" (mouseleave)="viewModel.showTooltip = false"
+                    [attr.title]="'Upload'" [attr.data-placement]="'left'"
+                    [ngClass]="{ 'tooltip-show': viewModel.showTooltip }"></i>
+                <input #fileInput type="file" accept=".png,.jpg,.jpeg,.jpe,.jfif,.JPG,.PNG,.JPEG,.JPE,.JFIF,.BMP,.bmp"
+                    style="display: none;" (change)="uploadUserProfilePicture($event)">
+            </div>
+            <div class="profile_img_wrapper" *ngIf="this.viewModel.userProfilePic == null">
+                <img src="assets/images/blank-profile-picture.webp" alt="Image Not Found" loading="lazy"
+                    class="profile_img">
+                <i class="bi bi-camera-fill addProfileIcon" (click)="fileInput.click()"
+                    (mouseenter)="viewModel.showTooltip = true" (mouseleave)="viewModel.showTooltip = false"
+                    [attr.title]="'Upload'" [attr.data-placement]="'left'"
+                    [ngClass]="{ 'tooltip-show': viewModel.showTooltip }"></i>
+                <input #fileInput type="file" accept=".png,.jpg,.jpeg,.jpe,.jfif,.JPG,.PNG,.JPEG,.JPE,.JFIF,.BMP,.bmp"
+                    style="display: none;" (change)="uploadUserProfilePicture($event)">
+            </div>
+        </div>
+        <label class="text-center nav-label">{{_commonService.layoutVM.loggedUserName}}</label>
+    </div>
+    <!-- End -->
+    <!-- <ul class="list-unstyled components">
+        <li routerLink="/license" routerLinkActive="active">
+            <span class="icon-wrapper">
+                <i class="bi bi-people sideNavIcon d-inline-block"  class="ms-3 fs-5"></i>
+            </span>
+            <span class="item-name"> Pricing </span>
+        </li>
+    </ul> -->
+    <ul class="list-unstyled components">
+        <!-- Loop through the sideMenuItems -->
+        <ng-container *ngFor="let menuItem of _commonService.layoutVM.sideMenuItems;let i = index;">
+            <ng-container *ngIf="menuItem.permission">
+                <li *ngIf="menuItem.itemRoute.length>0" [routerLink]="menuItem.itemRoute" routerLinkActive="active"
+                    [ngClass]="{ 'separation-line':  menuItem.itemName === 'Pricing'}">
+                    <span class="icon-wrapper">
+                        <i [class]="menuItem.iconName" [title]="menuItem.itemName" class="ms-3 fs-5"></i>
+                    </span>
+                    <span class="item-name"> {{menuItem.itemName}} </span>
+                    <!-- Add arrow icons for sub-items -->
+                    <i *ngIf="menuItem.subItems && menuItem.subItems.length > 0"
+                        [class]="menuItem.showSubItems ? 'bi bi-caret-up' : 'bi bi-caret-down'"></i>
+                </li>
+
+                <li *ngIf="menuItem.itemRoute.length<=0" routerLinkActive="active" (click)="toggleSubItems(menuItem)"
+                    class="dropdown-btn">
+                    <span class="icon-wrapper">
+                        <i [class]="menuItem.iconName" [title]="menuItem.itemName" class="ms-3 fs-5"></i>
+                    </span>
+                    <span class="item-name"> {{menuItem.itemName}} </span>
+                    <!-- Add arrow icons for sub-items -->
+                    <i *ngIf="menuItem.subItems && menuItem.subItems.length > 0"
+                        [class]="menuItem.showSubItems ? 'bi bi-caret-up' : 'bi bi-caret-down'"></i>
+                </li>
+                <!-- Show sub-items if they exist and menuItem.showSubItems is true -->
+                <ul *ngIf="menuItem.subItems && menuItem.showSubItems" class="list-unstyled sub-menu">
+
+                    <ng-container *ngFor="let item of viewModel.sqlReportList">
+                        <li routerLinkActive="active">
+                            <span class="icon-wrapper ">
+                                <i [class]="'bi bi-graph-up sub-Items' " [title]="item.reportName"
+                                    class="ms-3 fs-6"></i>
+                            </span>
+                            <span class="sub-Items"
+                                (click)="selectedReportName(item.reportName)">{{item.reportName}}</span>
+                        </li>
+                    </ng-container>
+                    <ng-container *ngFor="let subItem of menuItem.subItems">
+                        <li *ngIf="subItem.itemRoute.length>0" [routerLink]="subItem.itemRoute"
+                            routerLinkActive="active">
+                            <span class="icon-wrapper ">
+                                <i [class]="'bi bi-graph-up sub-Items' " [title]="subItem.itemName"
+                                    class="ms-3 fs-6"></i>
+                            </span>
+                            <span class="sub-Items"> {{subItem.itemName}} </span>
+
+                        </li>
+
+                    </ng-container>
+
+                </ul>
+            </ng-container>
+        </ng-container>
+    </ul>
+
+    <ul class="list-unstyled components "
+        *ngIf=" _commonService.layoutVM.tokenRole == 1 || _commonService.layoutVM.tokenRole == 2">
+        <ng-container *ngFor="let menuItem of _commonService.layoutVM.superAdminSideMenuItems">
+            <li routerLinkActive="active" [routerLink]="menuItem.itemRoute">
+                <i [class]="menuItem.iconName" class="ms-3 fs-5 "></i>
+                <span class="item-name ms-2 "> {{menuItem.itemName}} </span>
+            </li>
+        </ng-container>
+
+
+    </ul>
+</div>

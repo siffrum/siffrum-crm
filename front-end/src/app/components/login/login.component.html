@@ -1,0 +1,116 @@
+<div class="container-fluid">
+    <div class="row logIn m-lg-5 m-md-5 m-0 ">
+        <div class="col-lg-6 col-md-12 col-sm-12  px-0 mx-0 col1">
+            <div class="card cardFirst">
+                <div class="h2 mt-3 text-center">Coin Management</div>
+                <div class="card-body  cardBody">
+                    I am convinced that nothing we do is more important than hiring and developing people. At the end of the
+                    day, you bet on people, not on strategies
+                </div>
+                <div class="card-footer">
+                        "Train people well enough so they can leave. Treat them well enough so they don't want to".
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-12 col-sm-12 px-0 mx-0 ">
+            <div class="card cardSecond" >
+                <div class="row">
+                    <div class="col-12 text-center mb-5">
+                        <div class="profile_img_wrapper">
+                            <img src="/assets/logo/l2.webp" alt="profile" loading="lazy"
+                            class="profile_img">
+                        </div>
+                        <!-- <p class=" h3  ">Sign In</p> -->
+                    </div>
+                </div>
+                <div>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="login__field">
+                            <i class="login__icon  bi bi-shield-lock-fill" (mouseenter)="viewModel.showTooltip = true"
+                                (mouseleave)="viewModel.showTooltip = false" [attr.title]="'Company Code'"
+                                [attr.data-placement]="'left'" [ngClass]="{ 'tooltip-show': viewModel.showTooltip }"></i>
+
+                            <input type="text" autocomplete="off" placeholder="Company Code" required="required"
+                            [(ngModel)]="viewModel.tokenRequest.companyCode" class="login__input" name="Companycode" #Companycode="ngModel">
+                            <div *ngFor="let validation of viewModel.validations.Companycode">
+                                <div *ngIf="(Companycode.touched) && Companycode.hasError(validation.type)"
+                                    class="text-danger">
+                                    {{validation.message}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="login__field ">
+                            <select class="form-select " autocomplete="off" [(ngModel)]="viewModel.tokenRequest.roleType"
+                                aria-label="Default select example" name="SelectRole" #SelectRole="ngModel">
+                                <option value="undefined" disabled selected>Select Role</option>
+                                <option *ngFor="let item of viewModel.listRoles" [value]="item">{{ item }}</option>
+                            </select>
+                            <div *ngFor="let validation of viewModel.validations.SelectRole">
+                                <div *ngIf="(SelectRole.touched) && SelectRole.hasError(validation.type)"
+                                    class="text-danger">
+                                    {{validation.message}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="login__field">
+                    <i class="login__icon bi bi-person-fill" (mouseenter)="viewModel.showTooltip = true"
+                        (mouseleave)="viewModel.showTooltip = false"  [attr.title]="'UserName'"
+                        [attr.data-placement]="'left'" [ngClass]="{ 'tooltip-show': viewModel.showTooltip }"></i>
+
+                    <input type="text" autocomplete="off" placeholder="Enter your username" name="username" required="required"
+                        [(ngModel)]="viewModel.tokenRequest.loginId" class="login__input" #username="ngModel">
+                        <div *ngFor="let validation of viewModel.validations.username">
+                            <div *ngIf="(username.touched) && username.hasError(validation.type)"
+                                class="text-danger">
+                                {{validation.message}}
+                            </div>
+                        </div>
+
+                </div>
+                <div class="login__field">
+                    <div>
+                        <i class="login__icon bi bi-lock-fill"(mouseenter)="viewModel.showTooltip = true"
+                        (mouseleave)="viewModel.showTooltip = false" [attr.title]="'password'"
+                        [attr.data-placement]="'left'" [ngClass]="{ 'tooltip-show': viewModel.showTooltip }"></i>
+
+                        <input type="password" autocomplete="off" class="login__input" name="password" placeholder="Enter your Password" required="required"
+                            [(ngModel)]="viewModel.tokenRequest.password" [type]="viewModel.hide ? 'password' : 'text'" #password="ngModel">
+
+                        <i (click)="togglePassword()" class="bi bi-eye-fill eye" size="small"
+                            [ngClass]="[viewModel.eyeDefault]" (mouseenter)="viewModel.showTooltip = true"
+                            (mouseleave)="viewModel.showTooltip = false" [attr.title]="'View'"
+                            [attr.data-placement]="'left'" [ngClass]="{ 'tooltip-show': viewModel.showTooltip}">
+                        </i>
+                        <div *ngFor="let validation of viewModel.validations.password">
+                            <div *ngIf="(password.touched) && password.hasError(validation.type)"
+                                class="text-danger">
+                                {{validation.message}}
+                            </div>
+                        </div>
+                    </div>
+    
+                </div>
+                <div class="my-2">
+                    <input type="checkbox" autocomplete="off" name="rememberMe" [(ngModel)]="viewModel.rememberMe">
+                   <span class="login_text"> <small> Remember Me </small> </span>
+                </div>
+                <button type="submit" class="btn coinLoginButton" (click)='login()'>
+                    Log In
+                </button>
+                <span class="login_text mt-2">
+                    <u><a routerLink="/forgotPassword">Forgot Password</a></u><span class="registerLink">Don't have an account? &nbsp;<a class="text-success font-weight-normal" routerLink="/register">SignUp</a> </span>
+                </span>
+
+            </div>
+        </div>
+    </div>
+    <!-- <div id="preloader"></div> -->
+</div>

@@ -1,0 +1,55 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-10 col-md-10 col-sm-10 col-10">
+            <nav aria-label="breadcrumb">
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item" [ngClass]="viewModel.wizardLocation == 0 ? 'active-tab' : ''">
+                        <a>
+                            <span> Employee Info </span>
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item" [ngClass]="viewModel.wizardLocation == 1 ? 'active-tab' : ''">
+                        <a>
+                            <span> Address </span>
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item" [ngClass]="viewModel.wizardLocation == 2 ? 'active-tab' : ''">
+                        <a>
+                            <span> Bank Details </span>
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item" [ngClass]="viewModel.wizardLocation == 3 ? 'active-tab' : ''">
+                        <a>
+                            <span> Documents </span>
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item" [ngClass]="viewModel.wizardLocation == 4 ? 'active-tab' : ''">
+                        <a>
+                            <span> Salary </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+    <!-- Employee Personal Info Tab -->
+    <div class="row" *ngIf="viewModel.wizardLocation == 0">
+        <app-employee-info [employee]="employeeInfo" [isReadOnly]="viewModel.isReadonly" [isaddmode]="viewModel.isAddMode" (newItemEvent)="recieveEmployeeFromChild($event)"></app-employee-info>
+    </div>
+    <!-- Employee Address Tab -->
+    <div class="row" *ngIf="viewModel.wizardLocation == 1">
+        <app-employee-address-info [employee]="employeeInfo" [isReadonly]="viewModel.isReadonly" [isaddmode]="viewModel.isAddMode" (newItemEvent)="recieveAddressFromChild($event)"></app-employee-address-info>
+    </div>
+    <!-- Employee Bank Details Tab -->
+    <div class="row" *ngIf="viewModel.wizardLocation == 2">
+        <app-employee-bank-info [employee]="employeeInfo" [isReadonly]="viewModel.isReadonly" [isaddmode]="viewModel.isAddMode" (newItemEvent)="recieveBankFromChild($event)"></app-employee-bank-info>
+    </div>
+    <!-- Employee Salary Details Tab -->
+    <div class="row" *ngIf="viewModel.wizardLocation == 3">
+        <app-employee-document-info [employee]="employeeInfo" [isReadonly]="viewModel.isReadonly" [isaddmode]="viewModel.isAddMode"></app-employee-document-info>
+    </div>
+    <!-- Employee Documents Tab -->
+    <div class="row" *ngIf="viewModel.wizardLocation == 4">
+        <app-employee-salary-info  [isaddmode]="viewModel.isAddMode"></app-employee-salary-info>
+    </div>
+</div>

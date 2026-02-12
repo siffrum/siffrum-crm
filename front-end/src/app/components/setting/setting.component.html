@@ -1,0 +1,146 @@
+<div class="container">
+<div class="row">
+  <div class="col-md-2"></div>
+    <div class="col-md-8 my-5">
+      <div class="card">
+        <div class="card-header border-bottom mb-3 d-flex">
+          <ul class="nav nav-tabs card-header-tabs nav-gap-x-1 " role="tablist">
+            <ul>
+
+            </ul>
+            <li class="nav-item" (click)="updateTabLocation(0)" [ngClass]="viewModel.tablocation == 0 ? 'active-tab' : ''">
+              <i class="bi bi-gear smallIcon ms-0"
+               (mouseenter)="viewModel.showTooltip = true"
+              (mouseleave)="viewModel.showTooltip = false" [attr.title]="'Account Setting'" [attr.data-placement]="'left'"
+              [ngClass]="{ 'tooltip-show': viewModel.showTooltip }"></i>
+              <small class="item-name"> Account Setting </small>
+            </li>
+            <li class="nav-item" (click)="updateTabLocation(1)" [ngClass]="viewModel.tablocation == 1 ? 'active-tab' : ''">
+              <i class="bi bi-shield-check smallIcon ms-0"
+              (mouseenter)="viewModel.showTooltip = true"
+             (mouseleave)="viewModel.showTooltip = false" [attr.title]="'Security'" [attr.data-placement]="'left'"
+             [ngClass]="{ 'tooltip-show': viewModel.showTooltip }"></i>
+             <small class="item-name"> Security</small>
+
+            </li>
+            <li class="nav-item" (click)="updateTabLocation(2)" [ngClass]="viewModel.tablocation == 2 ? 'active-tab' : ''">
+              <i class="bi bi-bell smallIcon ms-0"
+               (mouseenter)="viewModel.showTooltip = true"
+              (mouseleave)="viewModel.showTooltip = false" [attr.title]="'Notification Setting'" [attr.data-placement]="'left'"
+              [ngClass]="{ 'tooltip-show': viewModel.showTooltip }"></i>
+              <small class="item-name"> Notification Setting </small>
+
+            </li>
+            <li class="nav-item">
+              <a class="dropdown-toggle " (click)="loadPageData()" role="button"
+              data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="bi bi-brightness-high smallIcon"   (mouseenter)="viewModel.showTooltip = true"
+              (mouseleave)="viewModel.showTooltip = false" [attr.title]="'Change Theme '" [attr.data-placement]="'left'"
+              [ngClass]="{ 'tooltip-show': viewModel.showTooltip }"></i>
+              <small class="item-name"> Change Theme </small>
+
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="themeDropdown">
+                <li *ngFor="let theme of viewModel.clientTheme" (click)="updateTheme(theme)">
+                  <a class="dropdown-item">
+                    {{ theme.name }}
+                  </a>
+                </li>
+              </ul>
+            </li>
+
+          </ul>
+        </div>
+        <div class="card-body tab-content">
+
+          <!-- Account Settings -->
+          <div class="row" *ngIf="viewModel.tablocation == 0 ">
+            <h6>ACCOUNT SETTINGS</h6>
+            <hr>
+            <form>
+              <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" class="form-control" id="username" aria-describedby="usernameHelp"
+                  placeholder="Enter your username" value="kennethvaldez">
+                <small  class="form-text "><p> After changing your username, your old username
+                  becomes available for anyone else to claim.</p></small>
+              </div>
+              <hr>
+              <div class="form-group">
+                <label class="d-block text-danger">Delete Account</label>
+                <p class=" font-size-sm">Once you delete your account, there is no going back. Please be
+                  certain.</p>
+              </div>
+              <button class="btn btn-danger" type="button">Delete Account</button>
+            </form>
+          </div>
+          <!-- Change Password -->
+          <div class="row" *ngIf="viewModel.tablocation == 1 ">
+            <app-change-password></app-change-password>
+          </div>
+          <!-- Notification Setting -->
+          <div class="row" *ngIf="viewModel.tablocation == 2 ">
+            <h6>NOTIFICATION SETTINGS</h6>
+            <hr>
+            <form>
+              <div class="form-group">
+                <label for="SecurityAlerts"class="d-block mb-0">Security Alerts</label>
+                <div class="small  mb-3"><p> Receive security alert notifications via email</p></div>
+                <div class="custom-control custom-checkbox">
+                  <input type="checkbox" class="custom-control-input me-2" id="customCheck1" checked="">
+                  <label class="custom-control-label" for="customCheck1">Email each time a vulnerability is
+                    found</label>
+                </div>
+                <div class="custom-control custom-checkbox">
+                  <input type="checkbox" class="custom-control-input me-2" id="customCheck2" checked="">
+                  <label class="custom-control-label" for="customCheck2">Email a digest summary of vulnerability</label>
+                </div>
+              </div>
+              <div class="form-group mb-0">
+                <label class="d-block">SMS Notifications</label>
+                <ul class="list-group list-group-sm">
+                  <li class="list-group-item has-icon">
+                    Comments
+                    <div class="form-check form-switch">
+                      <input type="checkbox" class="form-check-input"  id="customSwitch1" checked="">
+                      <label class="custom-control-label" for="customSwitch1"></label>
+                    </div>
+                  </li>
+                  <li class="list-group-item has-icon">
+                    Updates From People
+                    <div class="form-check form-switch">
+                      <input type="checkbox" class="form-check-input"  id="customSwitch2">
+                      <label class="custom-control-label" for="customSwitch2"></label>
+                    </div>
+                  </li>
+                  <li class="list-group-item has-icon">
+                    Reminders
+                    <div class="form-check form-switch">
+                      <input type="checkbox" class="form-check-input"  id="customSwitch3" checked="">
+                      <label class="custom-control-label" for="customSwitch3"></label>
+                    </div>
+                  </li>
+                  <li class="list-group-item has-icon">
+                    Events
+                    <div class="form-check form-switch">
+                      <input type="checkbox" class="form-check-input"  id="customSwitch4" checked="">
+                      <label class="custom-control-label" for="customSwitch4"></label>
+                    </div>
+                  </li>
+                  <li class="list-group-item has-icon">
+                    Pages You Follow
+                    <div class="form-check form-switch">
+                      <input type="checkbox" class="form-check-input"  id="customSwitch5">
+                      <label class="custom-control-label" for="customSwitch5"></label>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>

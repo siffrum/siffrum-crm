@@ -1,0 +1,86 @@
+<div class="row "  >
+            <div class="col-lg-4 col-md-3 col-sm-2   mt-1 text-start">
+                <select class="form-select" [(ngModel)]="viewModel.selectedRole" aria-label="Default select example"
+                    (change)="getRole()">
+                    <option value=undefined disabled selected> Select Role</option>
+                    <option *ngFor="let item of viewModel.listRoles" [ngValue]="item"> {{item}} </option>
+                </select>
+            </div>
+            <div class="col-lg-8 col-md-6 col-sm-12  text-end" *ngIf="viewModel.tableContent">
+                    <input class="form-check-input" type="checkbox" [(ngModel)]="viewModel.adminCheckboxChecked">
+                    <label class="form-check-label">&nbsp;Admin</label>&nbsp;
+                        <input class="form-check-input" type="checkbox" [(ngModel)]="viewModel.employeeCheckboxChecked">
+                        <label class="form-check-label">&nbsp;Employee</label>&nbsp;
+                    <button class="btn coinButton" (click)="savePermissionsForSelectedUsers()" > Save
+                        Selected
+                    </button>
+            </div>
+</div>
+<div class="row mb-0" *ngIf="viewModel.tableContent">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-end">
+        <input class="form-check-input" type="checkbox" [(ngModel)]="viewModel.selectAll"
+       (change)="selectAllClicked()">&nbsp;
+      <label class="form-check-label">Select All</label>
+    </div>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 mt-0 tableFixHead">
+        <!-- Admin Permission Table -->
+        <table class="table mb-0" *ngIf="viewModel.tableContent">
+            <thead>
+                <tr>
+                    <th>Module</th>
+                    <th>Enable</th>
+                    <th>View</th>
+                    <th>ADD</th>
+                    <th>EDIT</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="align-middle" *ngFor="let item of viewModel.modulePermissionList">
+                    <td>{{ item.moduleName }}</td>
+                    <td>
+                        <div class="form-check text-center">
+                            <input class="form-check-input" [checked]="" [(ngModel)]="item.isEnabledForClient"
+                                (change)="checkboxClicked()" type="checkbox">
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-check">
+                            <input class="form-check-input" [disabled]="!item.isEnabledForClient"
+                                [(ngModel)]="item.view" (change)="checkboxClicked()" type="checkbox">
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-check">
+                            <input class="form-check-input" [disabled]="!item.isEnabledForClient" [(ngModel)]="item.add"
+                                (change)="checkboxClicked()" type="checkbox">
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-check">
+                            <input class="form-check-input" [disabled]="!item.isEnabledForClient"
+                                [(ngModel)]="item.edit" (change)="checkboxClicked()" type="checkbox">
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-check">
+                            <input class="form-check-input" [disabled]="!item.isEnabledForClient"
+                                [(ngModel)]="item.delete" (change)="checkboxClicked()" type="checkbox">
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <!-- Employee Permission table -->
+    </div>
+    <div class="row py-lg-2 py-md-2 py-sm-2">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-6 text-start ">
+            <button class="btn coinButton me-1" (click)="updateModulePermissions()"> update
+            </button>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-6 text-end">
+            <button class="btn coinButton me-1" (click)="nextWizardLocation(3)" > Next
+            </button>
+        </div>
+    </div>
+</div>

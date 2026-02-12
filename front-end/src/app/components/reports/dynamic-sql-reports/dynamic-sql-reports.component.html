@@ -1,0 +1,35 @@
+
+
+<div class="row pt-lg-3" >
+        <div class="col-lg-6 col-md-6 col-sm-6 mb-1 ">
+            <button class="btn coinButton" *ngIf="viewModel.showPreviuosBtn" (click)="previousPage()">Previous  </button>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 mb-1 text-end">
+            <button class="btn coinButton" (click)="nextPage()">Next</button>
+        </div>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-12 table-container ">
+        <table class="table scrollable-table">
+            <thead>
+                <tr>
+                    <th *ngFor="let column of viewModel.sqlReportDataModelObj.reportDataColumns">
+                        {{ column.cellColumnName }}
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let row of viewModel.sqlReportDataModelObj.reportDataRows">
+                    <td *ngFor="let cell of row.reportDataCells">
+                        <!-- {{ cell.cellValue }} -->
+                        {{ formatCellValue(cell) }}
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+
+    </div>
+
+    <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end">
+        <button class="btn coinButton mb-2"(click)="exportToExcel()">Download Excel</button>
+    </div>
+</div>

@@ -1,0 +1,154 @@
+
+.container-fluid {
+  position: relative; /* Ensure the container is positioned */
+  z-index: 1; /* Set a z-index value lower than the SweetAlert container */
+}
+.swal2-container {
+  z-index: 9999; /* Set a high z-index to ensure it's displayed on top */
+}
+.logIn{
+  box-shadow: 0 0 10px 0 !important;
+}
+.cardSecond {
+  background: var(--login--card-background--color);
+}
+.form-select{
+      background: var(--login--select-background);
+      appearance: auto;
+}
+.cardFirst {
+  height: 100%;
+  padding-right: 60px;
+  padding-left: 60px;
+  padding-bottom: 60px;
+  box-shadow: none;
+  border: none;
+  border-radius: 0;
+  position: relative; /* Add position relative for the container */
+  z-index: 9999;
+}
+.cardBody {
+  background: none !important;
+  color: #ffffff !important;
+}
+
+.card-footer{
+  color: #ffffff !important;
+}
+.h2{
+  color: #ffffff !important;
+}
+.cardFirst::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("/assets/images/bgimg.webp");
+  background-size: cover;
+  background-position: center;
+  z-index: -1;
+}
+.col1{
+  display: block;
+
+}
+
+/* Increase the height of the second column on small screens */
+@media (max-width: 767px) {
+  .row .col-lg-6:first-child {
+    display: none;
+  }
+  .row .col-lg-6:last-child {
+    height: 360px; /* Adjust the height value as per your requirement */
+    width: 500px;
+  }
+  .logIn{
+    margin-top:25%;
+    box-shadow: 0 0 0 0 !important;
+  }
+  .row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .row .col-lg-6:last-child {
+    margin-top:25%;
+
+  }
+  .cardSecond {
+    height: 115% !important;
+    margin-left: 0%;
+    margin-right: 0%;
+    padding-left: 14px !important;
+    margin-top: -5%;
+  }
+  select {
+    width:120%;
+    // margin-top: 11%!important;
+  }
+  .login_text {
+    font-weight:500;
+    font-size: 20px;
+  }
+}
+/* Center the second column vertically and horizontally on small screens */
+.cardSecond{
+  height: 100%;
+  padding-right: 60px;
+  padding-left: 60px;
+  padding-bottom: 60px;
+  box-shadow: none;
+  border: none;
+  border-radius: 0;
+}
+
+a:hover{
+color: var(--hover-background-color);
+}
+ select {
+  height: 38px;
+  border: 0;
+  border-radius: 0%;
+  border-bottom: 2px solid var(--login-border-bottom);
+  outline: none;
+  outline-offset: -1px;
+  margin-top: -2%;
+  font-weight: var(--login--input--font--weightt);
+  color:var(--text-color);
+}
+
+
+
+.profile_img_wrapper {
+  position: relative;
+  height: 60px;
+  border-radius: 50%;
+  margin-bottom: 2px;
+  margin-top: 3px;
+  display: inline-block;
+}
+
+.profile_img {
+  height: 120%;
+  object-fit: cover;
+  border-radius: 10%;
+}
+.profile_img_wrapper::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: -1;
+  width: calc(100% + 13px);
+  height: calc(100% + 13px);
+  border-radius: 50%;
+}
+
+.registerLink{
+float:right;
+
+}

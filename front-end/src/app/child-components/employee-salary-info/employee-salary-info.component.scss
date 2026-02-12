@@ -1,0 +1,153 @@
+
+.card-header .row h5 {
+    display: inline-block;
+    padding: 4px;
+    margin: 4px 0 0 8px;
+}
+
+.modal-content{
+    width: 800px;
+    margin-top: 12%;
+    margin-left:-10%
+}
+.tableFixHead {
+    overflow-y: auto; /* make the table scrollable if height is more than 200 px  */
+    height: 347px; /* gives an initial height of 200px to the table */
+  }
+  //Table
+  .salaryTableFixHead{
+    overflow-y: auto; /* make the table scrollable if height is more than 200 px  */
+    height: 270px;
+  }
+  .BOTTOM{
+    position: sticky;
+    top: 0px;
+  }
+
+.salaryTableFixHead thead th {
+    position: sticky; /* make the table heads sticky */
+    top: 0px; /* table head will be placed from the top of the table and sticks to it */
+    // z-index: ;
+  }
+  .salaryTableFixHead{
+  scrollbar-width: none;
+  }
+  .salaryTableFixHead::-webkit-scrollbar {
+    display: none;
+}
+
+.salaryTableFixHead::-webkit-scrollbar-thumb {
+    display: none;
+}
+
+.salaryTableFixHead::-webkit-scrollbar-thumb:hover {
+    display: none;
+}
+@media only screen and (max-width: 760px),
+(min-device-width: 768px) and (max-device-width: 1024px) {
+    .modal-content{
+        width: fit-content;
+        margin-left: 0%;
+    }
+    .form-check-input{
+        margin-left: 30%;
+    }
+    table,
+    thead,
+    tbody,
+    th,
+    td,
+    tr {
+        display: block;
+        width: 100%;
+    }
+    thead tr {
+        position: relative;
+        display: none;
+    }
+    tr {
+        margin-top: 1rem;
+    }
+    td {
+        // border: 1px solid rgb(151, 143, 143);
+        position: relative;
+        padding-left: 50%;
+    }
+    td:before {
+        position: absolute;
+        left: 5px;
+        font-size: var(--table-header-font-size);
+        font-weight: var(--table-header-font-weight)
+    }
+    .td1:nth-of-type(1):before {
+        content: "CTC Amount";
+    }
+    .td2:nth-of-type(2):before {
+        content: "Start Date";
+    }
+    .td3:nth-of-type(3):before {
+        content: "End Date";
+    }
+    .td4:nth-of-type(4):before {
+        content: "Currently active";
+    }
+    .td5:nth-of-type(5):before {
+        content: "Show";
+    }
+// --------- //
+    .s1:nth-of-type(1):before {
+        content: "Name";
+    }
+    .s2:nth-of-type(2):before {
+        content: "Yearly";
+    }
+    .s3:nth-of-type(3):before {
+        content: "Monthly";
+    }
+    .s4:nth-of-type(4):before {
+        content: "Period";
+    }
+    .s5:nth-of-type(5):before {
+        content: "Percentage";
+    }
+    //--------------//
+    .sb1:nth-of-type(1):before {
+        content: " ";
+    }
+    .sb2:nth-of-type(2):before {
+        content: "CTC";
+    }
+    .sb3:nth-of-type(3):before {
+        content: "Amount Monthly";
+    }
+    .sb4:nth-of-type(4):before {
+        content: "Others";
+    }
+    .sb5:nth-of-type(5):before {
+        content: "Total %age";
+    }
+
+    .footer {
+        position: absolute;
+        top: 410px;
+        left: 173px;
+    }
+}
+// ngb-pagination ::ng-deep a {
+//     color: #000000;
+// }
+// ngb-pagination ::ng-deep .page-item.active .page-link {
+//     border-color: var(--border-color);
+//     background-color: var(--content-heading);
+//     color: var(--text-color)
+// }
+
+.form-check-input{
+    cursor: pointer !important;
+    height: 16px !important;
+    width: 40px !important;
+}
+// .form-check-input:checked {
+//     background-color: var(--content-heading);
+//     border-color: var(--bordercolor);
+// }

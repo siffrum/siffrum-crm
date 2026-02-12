@@ -1,0 +1,71 @@
+
+.card-header span {
+    margin: 15px;
+}
+.card .card-body {
+    height: 46vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    color: var(--text-color) !important;
+}
+.card-body .row span {
+    font-size: var(--card-body-font-size) !important;
+    font-weight: var(--card-body-font-weight) !important;
+
+}
+.card-footer {
+    padding: 15px;
+}
+.card-footer small {
+    font-size: 10px;
+    font-weight: 700;
+}
+.card-body{
+    scrollbar-width: none;
+}
+.card-body::-webkit-scrollbar {
+    display: none;
+}
+@media only screen and (max-width: 760px),
+(min-device-width: 768px) and (max-device-width: 1024px) {
+    table,
+    thead,
+    tbody,
+    th,
+    td,
+    tr {
+        display: block;
+        width: 100%;
+    }
+    thead tr {
+        position: relative;
+        display: none;
+    }
+    tr {
+        margin-top: 1rem;
+    }
+    td {
+        // border: 1px solid rgb(151, 143, 143);
+        position: relative;
+        padding-left: 50%;
+    }
+    td:before {
+        position: absolute;
+        left: 5px;
+        font-size: var(--table-header-font-size);
+        font-weight: var(--table-header-font-weight)
+    }
+    td:nth-of-type(1):before {
+        content: "Document Name";
+    }
+    td:nth-of-type(2):before {
+        content: "Description";
+    }
+    td:nth-of-type(3):before {
+        content: "Extension";
+    }
+    td:nth-of-type(4):before {
+        content: "Actions";
+    }
+}
+

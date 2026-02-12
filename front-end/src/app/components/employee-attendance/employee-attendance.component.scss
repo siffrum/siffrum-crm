@@ -1,0 +1,97 @@
+
+//------Calendar CSS-----//
+ .cal-month-view{
+      color: black;
+ }
+ .cal-day-number{
+  color: black !important;
+ }
+ .cal-month-view .cal-day-badge {
+display:none;
+}
+/* For small screens */
+@media only screen and (max-width: 600px) {
+  .cal-month-view .cal-days .cal-cell-row {
+    height: auto !important;
+  }
+
+  .cal-month-view .cal-day-number {
+    margin-top: 2.2rem;
+    margin-right: 1.2rem;
+    font-size: medium;
+  }
+}
+
+.btn-default{
+  color: var(--button-text-color);
+  background: var(--button-background-color);
+}
+.btn-default :hover{
+  background: var(--hover-background-color)!important;
+}
+/* For medium screens */
+@media only screen and (min-width: 600px) and (max-width: 992px) {
+  .cal-month-view .cal-days .cal-cell-row {
+    height: 5rem !important;
+  }
+
+  .cal-month-view .cal-day-number {
+    margin-top: 2rem;
+    margin-right: 2rem;
+    font-size: large;
+  }
+}
+
+/* For large screens */
+@media only screen and (min-width: 992px) {
+  .cal-month-view .cal-days .cal-cell-row {
+    height: 7rem !important;
+  }
+
+
+  .cal-month-view .cal-day-number {
+    margin-top: 2.8rem;
+    margin-right: 4rem;
+    font-size: x-large;
+  }
+}
+
+.cal-month-view .cal-day.cal-day-highlight::after {
+  opacity: 0.6;
+}
+.cal-month-view .cal-day-cell {
+  min-height: 80px;
+}
+
+.cal-month-view .cal-cell-top {
+  min-height: 66px;
+  flex: 1;
+}
+
+
+.tableFixHead {
+  overflow-y: auto; /* make the table scrollable if height is more than 200 px  */
+  height: 400px; /* gives an initial height of 200px to the table */
+  scrollbar-width: none;
+
+}
+.tableFixHead thead th {
+  position: sticky; /* make the table heads sticky */
+  top: 0px; /* table head will be placed from the top of the table and sticks to it */
+  // z-index: 9999;
+}
+.tableFixHead::-webkit-scrollbar {
+  display: none;
+}
+
+.tableFixHead::-webkit-scrollbar-thumb {
+  display: none;
+}
+
+.tableFixHead::-webkit-scrollbar-thumb:hover {
+  display: none;
+}
+
+.no-bullets {
+  list-style-type: none;
+}

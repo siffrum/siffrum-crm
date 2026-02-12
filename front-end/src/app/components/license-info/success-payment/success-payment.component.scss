@@ -1,0 +1,159 @@
+.container-fluid{
+    text-align: center;
+    padding: 30px 0;
+    background: var(--section-bg-color);
+    // background: #EBF0F5;
+}
+h3 {
+    color:green;
+    font-family: "Nunito Sans", "Helvetica Neue", sans-serif;
+    font-weight: 900;
+    font-size: 30px;
+    margin-bottom: 5px;
+  }
+  h4{
+    color: green;
+    font-family: "Nunito Sans", "Helvetica Neue", sans-serif;
+    font-weight: 900;
+    font-size: 20px;
+    margin-bottom: px;
+  }
+
+i {
+  color: green;
+  font-size: 60px;
+// line-height: 50px;
+  // margin-left:-15px;
+  // margin-top: -50px;
+}
+.card {
+  background: white;
+  padding: 30px;
+  padding-top: 15px;
+  border-radius: 4px;
+  box-shadow: 0 2px 3px #C8D0D8;
+  display: inline-block;
+  margin: 0 auto;
+  
+  
+
+}
+.form-label{
+    font-size:15px;
+    }
+  
+
+.container-two{
+  
+    text-align: center;
+    height: 150px;
+    
+}
+// button{
+//   background: -webkit-linear-gradient(left, #839098, #2c3e50);
+//   font-family: "Kanit", serif;
+//   color: #ffffff;
+//   padding: 7px 35px 7px 35px;
+//   border: 2px solid #ffffff;
+//   border-radius: 24px;
+//   font-size: 16px;
+//   font-weight: 700;
+//   letter-spacing: 1px;
+// }
+
+$gray: #9F9FA3;
+$blue: #00637C;
+$white: #DBF1FF;
+.ProgressBar {
+    margin-top: 10px;
+    font-weight: 100px;
+    margin: 0 auto;
+    padding: 1em 0 1em;
+    list-style: none;
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .ProgressBar-step {
+    text-align: center;
+    position: relative;
+    width: 100%;
+  
+    &:before,
+    &:after {
+      content: "";
+      height: 0.5em;
+      background-color: $gray;
+      position: absolute;
+      z-index: 1;
+      width: 100%;
+      left: -50%;
+      top: 50%;
+      transform: translateY(-50%);
+      transition: all .25s ease-out;
+    }
+    
+    &:first-child:before,
+    &:first-child:after { 
+      display: none; 
+    }
+  
+    &:after {
+      background-color: $blue;
+      width: 0%;
+    }
+  
+    &.is-complete + &.is-current:after,
+    &.is-complete + &.is-complete:after {
+      width: 100%;
+    }
+  }
+  
+  .ProgressBar-icon {
+    width: 1.2em;
+    height: 1.2em;
+    background-color: $gray;
+    fill: $gray;
+    border-radius: 50%;
+    // padding: 0.5em;
+    max-width: 100%;
+    z-index: 10;
+    position: relative;
+    transition: all .25s ease-out;
+    
+    .is-current & {
+      fill: $blue;
+      background-color: $blue;
+    }
+    
+    .is-complete & {
+      fill: $white;
+      background-color: $blue;
+    }
+  }
+  
+  .ProgressBar-stepLabel {
+    display: block;
+    text-transform: uppercase;
+    color: $gray;
+    position: absolute;
+    padding-top: 1em;
+    width: 100%;
+    transition: all .25s ease-out;
+    
+
+
+    .is-current > &,
+    .is-complete > & {
+      color: $blue;
+    }
+    .CheckMark{
+      border-radius:200px;
+       height:80px;
+        width:80px;
+         background: #F8FAF5;
+         margin:0 auto;
+    }
+
+  }

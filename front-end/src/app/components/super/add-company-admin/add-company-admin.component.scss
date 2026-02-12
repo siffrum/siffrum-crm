@@ -1,0 +1,120 @@
+//-------------------------Three state toggle ------------------------//
+.tw-toggle {
+    display: inline-block;
+    border-radius: 20px;
+    position: relative;
+    margin-top: -10%;
+     border: 1px solid var(--border-color);
+    width: 100% ;
+}
+.tw-toggle input{
+    position: absolute;
+    width: 110%;
+    z-index: 3;
+    opacity: 0;
+}
+.tw-toggle input:hover{
+    cursor: pointer;
+}
+.tw-toggle input[value="true"]:checked+.rounded-pill {
+    background-color: #1aff00 !important;
+    color: #ffffff ;
+    border-radius: 25px;
+}
+.tw-toggle input[value="false"]:checked+.rounded-pill {
+    background-color: #ff0000 !important;
+    color: #ffffff ;
+    border-radius: 25px;
+}
+.tw-toggle input[value="reset"]:checked+.rounded-pill {
+    background-color: #0015ff !important;
+    color: #ffffff ;
+    border-radius: 25px;
+
+}
+.tableFixHead {
+    overflow-y: auto; /* make the table scrollable if height is more than 200 px  */
+    height: 292px; /* gives an initial height of 200px to the table */
+    scrollbar-width: none;
+  }
+  .tableFixHead thead th {
+    position: sticky; /* make the table heads sticky */
+    top: 0px; /* table head will be placed from the top of the table and sticks to it */
+    z-index: 9999;
+  }
+  .tableFixHead::-webkit-scrollbar {
+    display: none;
+}
+
+.tableFixHead::-webkit-scrollbar-thumb {
+    display: none;
+}
+
+.tableFixHead::-webkit-scrollbar-thumb:hover {
+    display: none;
+}
+.table{
+    // box-shadow:  3px 3px 0px 3px #282F51;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+    margin-top: 2%;
+}
+
+@media only screen and (max-width: 760px),
+(min-device-width: 768px) and (max-device-width: 1024px) {
+    table,
+    thead,
+    tbody,
+    th,
+    td,
+    tr {
+        display: block;
+        width: 100%;
+    }
+    thead tr {
+        position: relative;
+        display: none;
+    }
+    tr {
+        margin-top: 1rem;
+    }
+    td {
+        // border: 1px solid rgb(151, 143, 143);
+        position: relative;
+        padding-left: 50%;
+        font-size: 10px;
+    }
+    td:before {
+        position: absolute;
+        left: 5px;
+        font-size: 16px;
+        font-weight: 900;
+    }
+    td:nth-of-type(1):before {
+        content: "First Name";
+
+    }
+    td:nth-of-type(2):before {
+        content: "Last Name";
+    }
+    td:nth-of-type(3):before {
+        content: "Role Type";
+    }
+    td:nth-of-type(4):before {
+        content: "Email";
+    }
+    td:nth-of-type(5):before {
+        content: "Login Enabled";
+    }
+    td:nth-of-type(6):before {
+        content: "Set Permissions";
+    }
+    td:nth-of-type(7):before {
+        content: "Actions";
+    }
+    .tw-toggle {
+        width: 107%;
+    }
+
+}
+
+

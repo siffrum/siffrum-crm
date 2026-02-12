@@ -1,0 +1,109 @@
+           <!-- ======= Pricing Section ======= -->
+           <!-- <section  class="pricing">
+            <div class="container" data-aos="fade-up">
+
+            <div class="section-title">
+              <h2 class="text-center">Pricing</h2>
+            </div>
+
+            <div class="row">
+
+              <div class="col-lg-4 mb-4" data-aos="fade-up" data-aos-delay="100" *ngFor="let item of viewModel.LicenseTypeList">
+                <div class="box">
+                  <h3>{{item.title}}</h3>
+                  <h4><sup>$</sup>{{item.amount}}<span>per month</span></h4>
+                  <a  class="buy-btn" (click)="payNow(item.stripePriceId,item.id)">Buy Now</a>
+                <div class="features">
+                  <ul class="list-unstyled">
+                    <li *ngFor="let features of item.permissions"><i class="bi bi-check"></i>{{features.moduleName}}</li>
+                  </ul>
+                </div>
+                </div>
+
+              </div>
+
+            </div>
+    
+          </div>
+        </section>End Pricing Section -->
+
+        <div class="container-fluid">
+
+          <div class="row">
+        
+            <div class="col-lg-12 text-center " data-aos="zoom-out" data-aos-duration="3000">
+              <h1> Checkout our Pricing Plans </h1>
+            </div>
+        
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12 p-5 " >
+
+              <div class="row  cardsRow" #pricingCards >
+        
+                <div class="col-lg-4 col-md-6 col-sm-12 col-12 p-lg-3 p-md-3 p-sm-3 p-3 cardColumn"data-aos="fade-up" data-aos-duration="1500"
+                  *ngFor="let item of viewModel.LicenseTypeList">
+        
+                  <div class="card m-lg-2 m-md-2 m-sm-2 m-2">
+        
+                    <div class="card-body text-center py-0 px-1">
+        
+                      <div class="cardHeading mb-lg-2 mb-md-2 mb-sm-2 mb-2">
+        
+                        <span class="icon">
+                          <i class="bi bi-send"> </i>
+                        </span>
+        
+                        <h5>
+                          {{item.title}}
+                        </h5>
+        
+                        <label>
+                          <b> ${{item.amount}} </b> /{{item.validityInDays}} Days
+                        </label>
+
+                        <button type="button " (click)="payNow(item.stripePriceId,item.id)"
+                          [ngClass]="!IsValidForRole(item.validFor)? 'coinManagement' : 'btn coinButton'"
+                        [disabled]="!IsValidForRole(item.validFor)">
+                          {{viewModel.buyBtn}}
+                        </button>
+
+
+                        <button type="button" (click)="click_Renew()"
+                          [ngClass]="viewModel.purchasedBtn === 'Purchased' ? 'coinManagementPurchsedbtn' : 'coinManagementBtn'"
+                          *ngIf="viewModel.checkValidUser && viewModel.checkActiveLicense">
+                          {{ viewModel.purchasedBtn }}
+                        </button>
+                      </div>
+        
+                      <div class="features">
+        
+                        <ul class="list-unstyled">
+        
+                          <li *ngFor="let features of item.permissions">
+                            <i class="bi bi-check2-circle"> </i>
+                            <span> {{features.moduleName}} </span>
+                          </li>
+        
+                        </ul>
+        
+                      </div>
+        
+                    </div>
+        
+                  </div>
+        
+                </div>
+        
+              </div>
+        
+            </div>
+        
+          </div>
+        
+          <button class="btn scrollLeftBtn d-lg-inline-block d-none" (click)="scrollLeft()">
+            <i class="bi bi-chevron-left"></i>
+          </button>
+        
+          <button class="btn scrollRightBtn d-lg-inline-block d-none" (click)="scrollRight()">
+            <i class="bi bi-chevron-right"></i>
+          </button>
+        </div>

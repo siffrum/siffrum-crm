@@ -1,0 +1,65 @@
+.companyLogo{
+width: 50px;
+height: 50px;
+}
+@media only screen and (max-width: 760px),
+(min-device-width: 768px) and (max-device-width: 1024px) {
+    table,
+    thead,
+    tbody,
+    th,
+    td,
+    tr {
+        display: block;
+        width: 100%;
+    }
+    thead tr {
+        position: relative;
+        display: none;
+    }
+    tr {
+        margin-top: 1rem;
+    }
+    td {
+        // border: 1px solid rgb(151, 143, 143);
+        position: relative;
+        padding-left: 50%;
+        font-size: 10px;
+    }
+    td:before {
+        position: absolute;
+        left: 5px;
+        font-size: var(--table-header-font-size);
+        font-weight: var(--table-header-font-weight)
+    }
+    td:nth-of-type(1):before {
+        content: "Company Code ";
+    }
+    td:nth-of-type(2):before {
+        content: "Name ";
+    }
+    td:nth-of-type(3):before {
+        content: "Description";
+    }
+    td:nth-of-type(4):before {
+        content: "Status";
+    }
+    td:nth-of-type(5):before {
+        content: "Action";
+    }
+}
+// .toggleSwitch{
+//     height: 18px;
+//     width: 40px;
+//     cursor: pointer;
+// }
+// .toggleSwitch:checked{
+//     background-color:#5C5696;
+//     border-color: #282F51;
+// }
+
+.form-check-input{
+    cursor: pointer !important;
+    height: 16px !important;
+    width: 40px !important;
+}

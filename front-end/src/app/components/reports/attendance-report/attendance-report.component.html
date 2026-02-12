@@ -1,0 +1,291 @@
+<div class="row mx-3" *ngIf="viewModel.headRow">
+    <div class="col-lg-2 col-md-6 col-sm-6 col-6 p-lg-2 p-md-2 p-sm-2 p-2">
+        <label> Upload Excel <span class="text-danger fs-5">*</span> </label>
+    </div>
+    <div class="col-lg-4 col-md-6 col-sm-6 col-6 p-lg-2 p-md-2 p-sm-2 p-2">
+        <input type="file" class="form-control" [(ngModel)]="viewModel.excelUploadFileRequest.uploadFile"
+            (change)="uploadDocument($event)"
+            accept=".xlsx,.xls" #attendanceFilePath="ngModel" required>
+    </div>
+    <div class="col-lg-3 col-md-6 col-sm-6 col-6 p-lg-2 p-md-2 p-sm-2 p-2 text-lg-end">
+        <label>Header Row No. <span class="text-danger fs-5">*</span> </label>
+
+    </div>
+    <div class="col-lg-3 col-md-6 col-sm-6 col-6 p-lg-2 p-md-2 p-sm-2 p-2">
+        <input type="number" class="form-control " required="required"
+            [(ngModel)]="viewModel.excelUploadFileRequest.headerRow" placeholder="Enter File Header Row Number "
+            #headerRowNumber="ngModel">
+        <div *ngFor="let validation of viewModel.validations.headerRowNumber">
+            <div *ngIf="(headerRowNumber.touched) && headerRowNumber.hasError(validation.type)"
+                class="alert alert-danger text-danger validationMsg">
+                {{validation.message}}
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-12  text-end">
+        <button class="btn coinButton  mt-2" (click)="uploadAttendanceExcelFile()"> Upload Document
+        </button>
+    </div>
+</div>
+<!-- open Modal  -->
+<div class="modal expandIn" tabindex="-1" role="dialog" [ngStyle]="{'display':viewModel.displayStyle}">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <small class="text-danger"><b>Note:</b>&nbsp;<u> Map Same Excel Header Fields With Required
+                        Labels</u></small>
+                <button type="button" class="btn-close" (click)="closePopup()"></button>
+            </div>
+            <div class="modal-body">
+
+                <div class="row mb-1">
+                    <div class="singleRow">
+                        <div class="col-lg-4 col-md-6 col-sm-6 col-6">
+                            <span class="h6"> Label </span>
+                        </div>
+
+                        <div class="col-lg-8 col-md-6 col-sm-6 col-6">
+                            <span class="h6 ms-3">Excel Mapping Fields</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+
+                    <div class="singleRow">
+                        <div class="col-lg-4 col-md-6 col-sm-6 col-6 p-lg-2 p-md-2 p-sm-2 p-2">
+                            <label> {{viewModel.StaticlabelRequiredFields.EmployeeCode}}<span
+                                    class="text-danger fs-5">*</span>
+                            </label>
+                        </div>
+
+                        <div class="col-lg-8 col-md-6 col-sm-6 col-6 p-lg-2 p-md-2 p-sm-2 p-2">
+                            <select class="form-select" aria-label="Default select example"
+                                [(ngModel)]="viewModel.selectedEmployeeCode" #selectedEmployeeCode="ngModel">
+                                <option value="undefined" disabled selected> SELECT FIELD</option>
+                                <option
+                                    *ngFor="let field of this.viewModel.excelFileResponse.excelFieldMapping | keyvalue"
+                                    [value]="field.value">{{ field.key }}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="singleRow">
+                        <div class="col-lg-4 col-md-6 col-sm-6 col-6 p-1">
+                            <label>{{viewModel.StaticlabelRequiredFields.EmployeeName}}<span
+                                    class="text-danger fs-5">*</span> </label>
+                        </div>
+                        <div class="col-lg-8 col-md-6 col-sm-6 col-6 p-lg-2 p-md-2 p-sm-2 p-2">
+                            <select class="form-select" aria-label="Default select example"
+                                [(ngModel)]="viewModel.selectedEmployeeName">
+                                <option value="undefined" disabled selected> SELECT FIELD</option>
+                                <option
+                                    *ngFor="let field of this.viewModel.excelFileResponse.excelFieldMapping | keyvalue"
+                                    [value]="field.value">{{ field.key }}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="singleRow">
+                        <div class="col-lg-4 col-md-6 col-sm-6 col-6 p-lg-2 p-md-2 p-sm-2 p-2">
+                            <label> {{viewModel.StaticlabelRequiredFields.AttendanceDate}} <span
+                                    class="text-danger fs-5">*</span> </label>
+                        </div>
+
+                        <div class="col-lg-8 col-md-6 col-sm-6 col-6 p-lg-2 p-md-2 p-sm-2 p-2">
+                            <select class="form-select" aria-label="Default select example"
+                                [(ngModel)]="viewModel.selectedAttendanceDate">
+                                <option value="undefined" disabled selected> SELECT FIELD</option>
+                                <option
+                                    *ngFor="let field of this.viewModel.excelFileResponse.excelFieldMapping | keyvalue"
+                                    [value]="field.value">{{ field.key }}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="singleRow">
+                        <div class="col-lg-4 col-md-6 col-sm-6 col-6 p-lg-2 p-md-2 p-sm-2 p-2">
+                            <label>{{viewModel.StaticlabelRequiredFields.CheckIn}} <span
+                                    class="text-danger fs-5">*</span> </label>
+                        </div>
+
+                        <div class="col-lg-8 col-md-6 col-sm-6 col-6 p-lg-2 p-md-2 p-sm-2 p-2">
+                            <select class="form-select" aria-label="Default select example"
+                                [(ngModel)]="viewModel.selectedCheckIn">
+                                <option value="undefined" disabled selected> SELECT FIELD</option>
+                                <option
+                                    *ngFor="let field of this.viewModel.excelFileResponse.excelFieldMapping | keyvalue"
+                                    [value]="field.value">{{ field.key }}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="singleRow">
+                        <div class="col-lg-4 col-md-6 col-sm-6 col-6 p-lg-2 p-md-2 p-sm-2 p-2">
+                            <label> {{viewModel.StaticlabelRequiredFields.CheckOut}} <span
+                                    class="text-danger fs-5">*</span> </label>
+                        </div>
+                        <div class="col-lg-8 col-md-6 col-sm-6 col-6 p-lg-2 p-md-2 p-sm-2 p-2">
+                            <select class="form-select" aria-label="Default select example"
+                                [(ngModel)]="viewModel.selectedCheckOut">
+                                <option value="undefined" disabled selected> SELECT FIELD</option>
+                                <option
+                                    *ngFor="let field of this.viewModel.excelFileResponse.excelFieldMapping | keyvalue"
+                                    [value]="field.value">{{ field.key }}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="singleRow">
+                        <div class="col-lg-4 col-md-6 col-sm-6 col-6 p-1">
+                            <label>{{viewModel.StaticlabelRequiredFields.AttendanceStatus}}<span
+                                    class="text-danger fs-5">*</span> </label>
+                        </div>
+                        <div class="col-lg-8 col-md-6 col-sm-6 col-6 p-lg-2 p-md-2 p-sm-2 p-2">
+                            <select class="form-select" aria-label="Default select example"
+                                [(ngModel)]="viewModel.selectedAttendanceStatus">
+                                <option value="undefined" disabled selected> SELECT FIELD</option>
+                                <option
+                                    *ngFor="let field of this.viewModel.excelFileResponse.excelFieldMapping | keyvalue"
+                                    [value]="field.value">{{ field.key }}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-12 mt-1 text-end">
+                            <button (click)="saveAttendanceData()" class="btn coinButton">Save </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- Summary Table -->
+<div class="container" *ngIf="viewModel.showSummaryTable">
+    <div class="row">
+        <div class="col-lg-9 col-md-9 col-sm-12 ">
+            <label class="nav-label" *ngIf="viewModel.summaryTableTitle">Attendance Summary Table </label>
+        </div>
+        <div class="col-lg-9 col-md-9 col-sm-12 " *ngIf="viewModel.updatedSummaryTableTitle">
+            <label class="nav-label">Updated Attendance Summary Table </label>
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div [ngClass]="viewModel.tableClass">
+            <table class="table mb-0">
+                <thead>
+                    <tr>
+                        <th>Code</th>
+                        <th>Name</th>
+                        <th>Date </th>
+                        <th class="alignContent">Check In </th>
+                        <th class="alignContent">Check Out</th>
+                        <th>Status </th>
+                        <th>Summary </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of viewModel.attendanceReportSummary.attendanceSummary">
+                        <td>{{item.employeeCode}}</td>
+                        <td>{{item.userName}}</td>
+                        <td>{{item.attendanceDate |date:'dd/mm/yyyy'}}</td>
+                        <td>{{item.checkIn}}</td>
+                        <td>{{item.checkOut}}</td>
+                        <td>{{item.attendanceStatus}}</td>
+                        <td>{{item.errorMessageInUpload}}</td>
+                    </tr>
+
+                </tbody>
+            </table>
+
+        </div>
+
+        <!-- Show  statistics -->
+        <div class="col-lg-3 col-md-4 col-sm-12" *ngIf="viewModel.showCard">
+            <div class="card">
+                <div class="card-body pt-0">
+
+                    <div class="row">
+
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-6 ">
+                            <span>
+                                From Date
+                            </span>
+                        </div>
+
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-6  text-end ">
+                            <span>
+                                {{viewModel.attendanceReportSummary.fromDate}}
+                            </span>
+                            <span *ngIf="viewModel.attendanceReportSummary.fromDate===null">
+                                DD/MM/YY
+                            </span>
+
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-6 ">
+                            <span>
+                                To Date
+                            </span>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-6  text-end ">
+                            <span>
+                                {{viewModel.attendanceReportSummary.toDate}}
+                            </span>
+                            <span *ngIf="viewModel.attendanceReportSummary.fromDate===null">
+                                DD/MM/YY
+                            </span>
+                        </div>
+                        <div class="col-lg-8 col-md-8 col-sm-6 col-6 ">
+                            <span>
+                                Total Records
+                            </span>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-6 col-6  text-end ">
+                            <span>
+                                {{viewModel.attendanceReportSummary.totalRecordsCount}}
+                            </span>
+                            <span *ngIf="viewModel.attendanceReportSummary.totalRecordsCount===0">
+                                00
+                            </span>
+                        </div>
+                        <div class="col-lg-8 col-md-8 col-sm-6 col-6 ">
+                            <span>
+                                Records Added
+                            </span>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-6 col-6  text-end ">
+                            <span>
+                                {{viewModel.attendanceReportSummary.employeeRecordsAddedCount}}
+                            </span>
+                            <span *ngIf="viewModel.attendanceReportSummary.employeeRecordsAddedCount===0">
+                                00
+                            </span>
+                        </div>
+                        <div class="col-lg-9 col-md-9 col-sm-6 col-6 ">
+                            <span>
+                                Records Not Added
+                            </span>
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-6 col-6  text-end  ">
+                            <span>
+                                {{viewModel.attendanceReportSummary.numberOfRecordsNotAdded}}
+                            </span>
+                            <span *ngIf="viewModel.attendanceReportSummary.numberOfRecordsNotAdded===0">
+                                00
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <b> Note: </b>
+                    <small>
+                        1: Match the "Header Row Number" with your Excel file's column headers.<br>
+                        2: Check if your Excel file has all the required fields for accurate mapping.<br>
+                        3: The total count includes both successful and error records. Review error records carefully.
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-9 col-md-9 col-sm-12 text-end mt-1" *ngIf="viewModel.saveButton">
+            <button type="button" class="btn btn-success  coinButton"  (click)="saveAttendanceSummaryDataToReCheckErrors()">Save</button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,20 @@
+<div class="container-fluid mt-5 pt-5">
+    <div class="card one mt-4">
+           <div class="card">
+               <div style="border-radius:200px; height:80px; width:80px; background: #F8FAF5; margin:0 auto;">
+                   <i class="checkmark">!</i>
+               </div>
+               <h1>Sorry</h1>
+               <h2>Payment Failed</h2>
+           </div><br><br>
+   
+           <div class="container-two mt-4">
+             <p>Please try again using another payment method ,
+               <br>if you are facing issues please write us at <br>
+              <a href="{{'mailto:'+viewModel.emailId}}"> {{viewModel.emailId}}</a></p> 
+    
+             <button class="mt-2 spyGlassBtn" (click)="tryAgain()"routerLink="/pricing-info/{{this.viewModel.LicenseTypeObj.id}}" >Try Again</button>
+           </div><br>
+       </div>
+   
+   </div>

@@ -1,0 +1,84 @@
+.table{
+    // box-shadow:  3px 3px 0px 3px #282F51;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+    margin-top: 2%;
+}
+
+@media only screen and (max-width: 760px),
+(min-device-width: 768px) and (max-device-width: 1024px) {
+    table,
+    thead,
+    tbody,
+    th,
+    td,
+    tr {
+        display: block;
+        width: 100%;
+    }
+    thead tr {
+        position: relative;
+        display: none;
+    }
+    tr {
+        margin-top: 1rem;
+    }
+    td {
+        // border: 1px solid rgb(151, 143, 143);
+        position: relative;
+        padding-left: 50%;
+        font-size: 10px;
+    }
+    td:before {
+        position: absolute;
+        left: 5px;
+        font-size: var(--table-header-font-size);
+        font-weight: var(--table-header-font-weight)
+    }
+    td:nth-of-type(1):before {
+        content: "Label";
+
+    }
+    td:nth-of-type(2):before {
+        content: "Enaled";
+    }
+    td:nth-of-type(3):before {
+        content: "View";
+    }
+    td:nth-of-type(4):before {
+        content: "ADD";
+    }
+    td:nth-of-type(5):before {
+        content: "Edit";
+    }
+    td:nth-of-type(6):before {
+        content: "Delete";
+    }
+}
+
+
+
+  select{
+    width: 200px;
+  }
+
+  .tableFixHead {
+    overflow-y: auto; /* make the table scrollable if height is more than 200 px  */
+    height: 310px; /* gives an initial height of 200px to the table */
+
+  }
+  .tableFixHead thead th {
+    position: sticky; /* make the table heads sticky */
+    top: 0px; /* table head will be placed from the top of the table and sticks to it */
+    z-index: 9999;
+  }
+  .tableFixHead::-webkit-scrollbar {
+    display: none;
+}
+
+.tableFixHead::-webkit-scrollbar-thumb {
+    display: none;
+}
+
+.tableFixHead::-webkit-scrollbar-thumb:hover {
+    display: none;
+}

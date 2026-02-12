@@ -1,0 +1,275 @@
+
+
+.pricingTopSection {
+  position: relative;
+  z-index: 4;
+  top: 160px;
+
+}
+
+.pricingTopSection h1 {
+  color: var(--text-color);
+  font-family: var(--text-family);
+  font-size: 40px !important;
+}
+
+.card {
+  border: none;
+  height: 450px;
+  margin: auto !important;
+  box-shadow: 0px 15px 10px -15px #111;
+}
+
+.cardsRow {
+  flex-wrap: nowrap !important;
+  overflow-x: scroll !important;
+  overflow-y: hidden;
+  // margin-top: -50px;
+
+}
+
+
+
+.cardsRow::-webkit-scrollbar {
+  display: none;
+}
+
+.cardsRow::-webkit-scrollbar-thumb {
+  display: none;
+}
+
+.cardsRow::-webkit-scrollbar-thumb:hover {
+  display: none;
+}
+
+.cardColumn {
+  position: relative;
+  // margin-top: 250px !important;
+}
+
+.card .card-body .cardHeading label {
+  font-size: 12px;
+  color: var(--text-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card .card-body .cardHeading b {
+  font-size: 18px;
+  color: #2A3C44;
+}
+
+.card .card-body .cardHeading .coinManagementBtn {
+  padding: 5px 25px 5px 25px !important;
+  font-size: 14px !important;
+}
+
+.card .card-body .cardHeading .coinManagement {
+  background-color: #ccc;
+  color: black;
+  cursor: not-allowed;
+  box-shadow: none;
+  border: 1px solid #aaa;
+  opacity: 0.6;
+}
+
+.card .card-body .cardHeading .coinManagement:hover::after {
+  content: "Sorry,Invalid license.Please choose another one";
+  position: absolute;
+  color: #FF0000;
+  font-weight: bold;
+  font-size: 11px;
+  right: 10px;
+  top: 42%;
+}
+
+.card .card-body .cardHeading .coinManagementPurchsedbtn {
+  background-color: #ccc;
+  color: black;
+  cursor: not-allowed;
+  box-shadow: none;
+  border: 1px solid #aaa;
+  opacity: 0.6;
+}
+
+
+.card .card-body .features {
+  overflow-y: scroll !important;
+  height: 250px;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.card .card-body .features::-webkit-scrollbar {
+  background: transparent;
+  width: 5px;
+}
+
+.card .card-body .features::-webkit-scrollbar-thumb {
+  background: red;
+  border-radius: 10px;
+}
+
+.card .card-body .features::-webkit-scrollbar-thumb:hover {
+  background: black;
+}
+
+.card .card-body .icon i {
+  color: #fff;
+  font-size: 24px;
+  transition: ease-in-out 0.3s;
+  line-height: 0;
+}
+
+.card .card-body .icon {
+  margin: 30px auto 15px auto;
+  width: 50px;
+  height: 50px;
+  background: rgb(121, 227, 112);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.3s;
+  transform-style: preserve-3d;
+}
+
+.card .card-body .icon::before {
+  position: absolute;
+  content: "";
+  height: 60px;
+  width: 60px;
+  border-radius: 50%;
+  background:  rgb(121, 227, 112);
+  transition: all 0.3s ease-out 0s;
+  transform: translateZ(-1px);
+}
+
+.card .card-body .icon::after {
+  position: absolute;
+  content: "";
+  height: 70px;
+  width: 70px;
+  border-radius: 50%;
+  background:  rgb(121, 227, 112);
+  transition: all 0.3s ease-out 0s;
+  transform: translateZ(-2px);
+}
+
+.card-body ul li {
+  padding: 2px 10px;
+  display: flex;
+  align-items: center;
+}
+
+.card-body ul.list-unstyled li i {
+  font-size: 25px !important;
+  color: #24c031;
+}
+
+.card-body ul.list-unstyled li span {
+  font-size: 12px !important;
+  font-weight: 600;
+  padding: 0 20px;
+}
+
+.tableRow {
+  position: relative;
+  background: pink;
+}
+
+.tableRow span {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.count {
+  font-size: 14px !important;
+  margin: 5px 0 0 10px;
+}
+
+.cardsRow .rightBtn {
+  position: absolute;
+  right: 0;
+  z-index: 1;
+  top: 50%;
+}
+
+.cardsRow .leftBtn {
+  position: absolute;
+  left: 0;
+  z-index: 1;
+  top: 50%;
+}
+
+.cardsRow .rightBtn i {
+  font-size: 22px;
+}
+
+.cardsRow .leftBtn i {
+  font-size: 22px;
+}
+
+.coinManagement {
+  background: red;
+  font-family: 'Kanit', serif;
+  color: #ffffff;
+  padding: 5px 25px 5px 25px !important;
+  font-size: 14px !important;
+  border: 2px solid#ffffff;
+  border-radius: 24px;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.coinManagementPurchsedbtn {
+  background: red;
+  font-family: 'Kanit', serif;
+  color: #ffffff;
+  padding: 5px 25px 5px 25px !important;
+  font-size: 14px !important;
+  border: 2px solid#ffffff;
+  border-radius: 24px;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.scrollLeftBtn {
+  position: absolute;
+  // left: 10px;
+  top: 400px;
+  color: var(--text-color);
+  border-radius: 50%;
+  text-decoration: none;
+  display: inline-block;
+  padding: 4px 8px 4px 8px;
+  font-size: 30px;
+  cursor: pointer;
+  border: none;
+}
+
+.scrollRightBtn {
+  position: absolute;
+  right: 20px;
+  top: 400px;
+  color: var(--text-color);
+  border-radius: 50%;
+  text-decoration: none;
+  display: inline-block;
+  padding: 4px 8px 4px 8px;
+  font-size: 30px;
+  cursor: pointer;
+  border: none;
+}
+
+.cardsRow .cardColumn:hover .card {
+  transform: scale(1.1);
+  transition: all 0.7s;
+}
+
+
+

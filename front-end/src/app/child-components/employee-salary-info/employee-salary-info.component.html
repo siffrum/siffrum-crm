@@ -1,0 +1,227 @@
+<div class="container-fluid">
+    <div class="row py-lg-2">
+        <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+            <span *ngIf="viewModel.hideAddButton">
+                <button class="btn coinButton" (click)="openSalaryInfoModal(0)" *ngIf="viewModel.Permission?.add    ">
+                    Add new Salary Info &#43;
+                </button>
+            </span>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-lg-end">
+            <label> Total Salary Count: <span>{{viewModel.pagination.totalCount}}</span> </label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-12 tableFixHead">
+            <table class="table mb-0">
+                <thead>
+                    <tr>
+                        <th class="firstTableHead"> CTC Amount </th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Status</th>
+                        <th *ngIf="viewModel.Permission?.view">View</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of viewModel.employeeSalaryList ">
+                        <td class="td1">{{item.ctcAmount}} {{item.currencyCode}}</td>
+                        <td class="td2">{{item.startDateUTC | date:'fullDate'}}</td>
+                        <td class="td3">{{item.endDateUTC | date:'fullDate'}}</td>
+                        <td>
+                            {{item.currentlyActive ? 'Active' : 'Not Active'}}
+                        </td>
+                        <td class="td5 text-center" *ngIf="viewModel.Permission?.view">
+                            <i class="bi bi-eye-fill smallIcon" size="small" (click)="openSalaryInfoModal(item.id)"
+                                (mouseenter)="viewModel.showTooltip = true" (mouseleave)="viewModel.showTooltip = false"
+                                [attr.title]="'View'" [attr.data-placement]="'left'"
+                                [ngClass]="{ 'tooltip-show': viewModel.showTooltip }"
+                                *ngIf="viewModel.Permission?.view"></i>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-12 d-flex justify-content-center pt-1"
+            *ngIf="viewModel.pagination && viewModel.pagination.totalCount>0">
+            <pagination (selectedPageNum)="loadPagedataWithPagination($event)" [viewModel]="viewModel.pagination">
+            </pagination>
+        </div>
+        <div class="row py-lg-2 py-md-2 py-sm-2">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end"
+                *ngIf="!viewModel.showButton &&viewModel.Permission?.edit">
+                <button class="btn coinButton"> Update Details </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- CTC Modal start -->
+<div class="modal expandIn " tabindex="-1" role="dialog" [ngStyle]="{'display':viewModel.displayStyle}">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-9 col-md-9 col-sm-9 col-9   text-start">
+                        <h4 class="fw-bold ">
+                            <p>Add CTC Details</p>
+                        </h4>
+                        <h6 *ngIf="viewModel.ctcViewMode">
+                            <p>Currently <span *ngIf="!viewModel.selectedEmployeeSalary.currentlyActive">Not
+                                </span> Active </p>
+                        </h6>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-3 text-end">
+                        <button type="button" class="btn-close m-1" (click)="closePopup(salaryInputForm)"></button>
+                    </div>
+                </div>
+                <div class="row ">
+                    <!-- labels start -->
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-4 ">
+                        <label> CTC Amount (yearly) <span class="text-danger fs-5">*</span> </label>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-4 ">
+                        <label> Currency <span class="text-danger fs-5">*</span> </label>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-4 ">
+                        <label>Start Date<span class="text-danger fs-5">*</span> </label>
+                    </div>
+                </div>
+                <form #salaryInputForm="ngForm">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-4 ">
+                            <input type="text" [disabled]="viewModel.ctcViewMode" class="form-control"
+                                [(ngModel)]="viewModel.selectedEmployeeSalary.ctcAmount"
+                                (ngModelChange)="UpdateComponents(0,0)" placeholder="Enter CTC Amount" required
+                                name="ctcAmount" #ctcAmount="ngModel" pattern="^[0-9]+$">
+                            <div *ngFor="let validation of viewModel.validations.ctcAmount">
+                                <div *ngIf="(ctcAmount.touched || viewModel.formSubmitted) && ctcAmount.hasError(validation.type)"
+                                    class="text-danger validationMsg">
+                                    {{validation.message}}
+                                </div>
+                            </div>
+                        </div>
+                        <!-- input for Currency -->
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-4 ">
+                            <select class="form-select" [disabled]="viewModel.ctcViewMode"
+                                [(ngModel)]="viewModel.selectedEmployeeSalary.currencyCode" interface="popover" required
+                                name="currencyCode" #currencyCode="ngModel">
+                                <option value="undefined" disabled selected>Currency</option>
+                                <option *ngFor="let item of viewModel.listCurrencyCodes| keyvalue" value="{{item.key}}">
+                                    {{item.value}}
+                                </option>
+                            </select>
+                            <div *ngFor="let validation of viewModel.validations.currencyCode">
+                                <div *ngIf="(currencyCode.touched || viewModel.formSubmitted) && currencyCode.hasError(validation.type)"
+                                    class="text-danger validationMsg">
+                                    {{validation.message}}
+                                </div>
+                            </div>
+                        </div>
+                        <!-- input for start date -->
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-4 ">
+                            <!-- Set [min] to the first 16 characters of startDateUTC -->
+                            <input type="date" [disabled]="viewModel.ctcViewMode && viewModel.startDateUTC"
+                                class="form-control" [min]="viewModel.startDateUTC.slice(0, 10)"
+                                [(ngModel)]="viewModel.selectedEmployeeSalary.startDateUTC"
+                                placeholder="Enter Start Date" required name="startDateUTC" #startDateUTC="ngModel">
+                            <div *ngFor="let validation of viewModel.validations.startDateUTC">
+                                <div *ngIf="(startDateUTC.touched || viewModel.formSubmitted) && startDateUTC.hasError(validation.type)"
+                                    class="text-danger validationMsg">
+                                    {{validation.message}}
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </form>
+                <!-- labels end -->
+                <!-- input for CTC Amount -->
+                <div class="row salaryTableFixHead">
+                    <table class="table m-1 tableComponents">
+                        <thead class=" fw-bold">
+                            <tr>
+                                <th> Name </th>
+                                <th> Amount Yearly </th>
+                                <th> Amount Monthly </th>
+                                <th> Period </th>
+                                <th> Percentage </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of viewModel.selectedEmployeeSalary.clientEmployeePayrollComponents">
+                                <td class="s1"> {{item.name}} </td>
+                                <td class="s2">
+                                    <input [disabled]="!viewModel.enableComponentsEdit || viewModel.ctcViewMode"
+                                        class="form-control" type="number"
+                                        max={{viewModel.selectedEmployeeSalary.ctcAmount}} min="0" step="1"
+                                        [(ngModel)]="item.amountYearlyUI" (ngModelChange)="UpdateComponents(2,item.id)">
+                                </td>
+                                <td class="s3">
+                                    <label class="form-control"
+                                        *ngIf="item.componentPeriodType.toString()!='Monthly'">--
+                                    </label>
+                                    <input *ngIf="item.componentPeriodType.toString()=='Monthly'"
+                                        [disabled]="!viewModel.enableComponentsEdit || viewModel.ctcViewMode"
+                                        class="form-control" type="number"
+                                        max={{viewModel.selectedEmployeeSalary.ctcAmount}} min="0" step="1"
+                                        [(ngModel)]="item.amountMonthlyUI"
+                                        (ngModelChange)="UpdateComponents(1,item.id)">
+                                </td>
+                                <td class="s4">
+                                    <select class="form-control"
+                                        [disabled]="!viewModel.enableComponentsEdit || viewModel.ctcViewMode"
+                                        [(ngModel)]="item.componentPeriodType" interface="popover"
+                                        (ngModelChange)="UpdateComponents(5,0)">
+                                        <option *ngFor="let item of viewModel.listCompomentPeriodType" value="{{item}}">
+                                            {{item}}
+                                        </option>
+                                    </select>
+                                </td>
+                                <td class="s5">
+                                    <input [disabled]="!viewModel.enableComponentsEdit || viewModel.ctcViewMode"
+                                        class="form-control" type="number" max="100" min="0"
+                                        [ngStyle]="{'color':item.componentCalculationType==1 ?'red':'black' }"
+                                        [(ngModel)]="item.percentageUI" (ngModelChange)="UpdateComponents(3,item.id)"
+                                        step=".1">
+                                </td>
+                            </tr>
+                            <tr class="form-group" style="font-weight: bolder;" [ngStyle]="{'color':viewModel.selectedEmployeeSalary.percentageUI>0
+                                && viewModel.selectedEmployeeSalary.percentageUI!=100 ?'green':'black' }">
+                                <td class="sb1">CTC <small>(monthly)</small></td>
+                                <td class="sb2 ">
+                                    {{viewModel.selectedEmployeeSalary.ctcMonthly |number: '2.2-2'}}
+                                    {{viewModel.selectedEmployeeSalary.currencyCode}}
+                                </td>
+                                <td class="sb3">Amount <small>(monthly)</small>
+                                    {{viewModel.selectedEmployeeSalary.amountMonthly|number: '2.2-2'}}
+                                    {{viewModel.selectedEmployeeSalary.currencyCode}}
+                                </td>
+                                <td class="sb4">
+                                    Others
+                                    {{viewModel.selectedEmployeeSalary.otherComponents |number: '2.2-2'}}
+                                    {{viewModel.selectedEmployeeSalary.currencyCode}}
+                                </td>
+                                <td class="sb5">
+                                    %age
+                                    {{viewModel.selectedEmployeeSalary.percentageUI }}
+                                </td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer footer" *ngIf="!viewModel.ctcViewMode &&viewModel.Permission?.add">
+                <button *ngIf="!viewModel.showPercentagValidationMessage" class="btn coinButton"
+                    (click)="addEmployeeSalary(salaryInputForm)">
+                    Add Salary
+                </button>
+
+                <span class="text-danger"
+                    *ngIf="viewModel.showPercentagValidationMessage">{{viewModel.percentagValidationMessage}}</span>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- CTC Modal Ends -->

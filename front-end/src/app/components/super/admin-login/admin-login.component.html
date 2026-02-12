@@ -1,0 +1,47 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class=" col-lg-5 col-md-12 col-sm-12 m-auto">
+            <div class="card mt-5">
+                <div class="col-12 text-center">
+                    <div class="profile_img_wrapper">
+                        <img src="/assets/logo/l2.webp" alt="profile" loading="lazy"
+                        class="profile_img">
+                    </div>
+                    <!-- <p class=" h3  ">Sign In</p> -->
+                </div>
+                <div class="login__field">
+                    <i class="login__icon bi bi-person-fill" (mouseenter)="viewModel.showTooltip = true"
+                        (mouseleave)="viewModel.showTooltip = false" [attr.title]="'User Name'"
+                        [attr.data-placement]="'left'" [ngClass]="{ 'tooltip-show': viewModel.showTooltip }"></i>
+                    <input type="text" placeholder="Enter your username" required="required"
+                        [(ngModel)]="viewModel.tokenRequest.loginId" class="login__input">
+                </div>
+                <div class="login__field">
+                    <div>
+                        <i class="login__icon bi bi-lock-fill" (mouseenter)="viewModel.showTooltip = true"
+                            (mouseleave)="viewModel.showTooltip = false" [attr.title]="'Password'"
+                            [attr.data-placement]="'left'" [ngClass]="{ 'tooltip-show': viewModel.showTooltip }"></i>
+                        <input type="password" class="login__input" placeholder="Enter your Password"
+                            required="required" [(ngModel)]="viewModel.tokenRequest.password"
+                            [type]="viewModel.hide ? 'password' : 'text'">
+                        <i (click)="togglePassword()" class="bi bi-eye-fill eye" size="small"
+                            [ngClass]="[viewModel.eyeDefault]" (mouseenter)="viewModel.showTooltip = true"
+                            (mouseleave)="viewModel.showTooltip = false" [attr.title]="'Show'"
+                            [attr.data-placement]="'left'" [ngClass]="{ 'tooltip-show': viewModel.showTooltip }">
+                        </i>
+                    </div>
+                </div>
+                <div class="my-2">
+                    <input type="checkbox" [(ngModel)]="viewModel.rememberMe">
+                    <small> Remember Me </small>
+                </div>
+                <button type="submit" class="btn coinLoginButton" (click)='login()'>
+                    Log In
+                </button>
+                <span class="login_text mt-2">
+                    <a href="./forgot-password"><u>Forgot Password?</u></a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>

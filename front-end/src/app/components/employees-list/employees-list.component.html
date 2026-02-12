@@ -1,0 +1,57 @@
+<div class="container-fluid">
+    <div class="row py-lg-2">
+        <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+            <button class="btn coinButton" routerLink="/add-employee/0" *ngIf="viewModel.Permission?.add"> Add Employee
+                &#43; </button>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-lg-end">
+            <label> Total Number of employees: <span>{{viewModel.pagination.totalCount}}</span></label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 tableFixHead">
+            <table class="table mb-0 ">
+                <thead>
+                    <tr>
+                        <th>Code</th>
+                        <th>Role</th>
+                        <th>Name </th>
+                        <th> Email ID </th>
+                        <th> Mobile </th>
+                        <th> Designation </th>
+                        <th>Date Of Joining </th>
+                        <th *ngIf="viewModel.Permission?.delete || viewModel.Permission?.edit">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of viewModel.employeesList">
+                        <td>{{item.employeeCode}}</td>
+                        <td>{{item.roleType}}</td>
+                        <td> {{item.loginId}} </td>
+                        <td> {{item.emailId}} </td>
+                        <td> {{item.phoneNumber}} </td>
+                        <td> {{item.designation}} </td>
+                        <td> {{item.dateOfJoining | date:'dd/MM/YYYY'}} </td>
+                        <td *ngIf="viewModel.Permission?.edit || viewModel.Permission?.delete">
+                            <i name="" class="bi bi-person-lines-fill smallIcon ms-0" *ngIf="viewModel.Permission?.edit"
+                                routerLink="/employee-profile/{{item.id}}" (mouseenter)="viewModel.showTooltip = true"
+                                (mouseleave)="viewModel.showTooltip = false" [attr.title]="'View'"
+                                [attr.data-placement]="'left'" [ngClass]="{ 'tooltip-show': viewModel.showTooltip }">
+                            </i>
+                            <i class="bi bi-trash smallIcon" (click)="deleteEmployee(item.id)"
+                                (mouseenter)="viewModel.showTooltip = true" *ngIf="viewModel.Permission?.delete"
+                                (mouseleave)="viewModel.showTooltip = false" [attr.title]="'Delete'"
+                                [attr.data-placement]="'left'"
+                                [ngClass]="{ 'tooltip-show': viewModel.showTooltip }"></i>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-12 d-flex justify-content-center pt-1"
+            *ngIf="viewModel.pagination && viewModel.pagination.totalCount>0">
+            <pagination (selectedPageNum)="loadPagedataWithPagination($event)" [viewModel]="viewModel.pagination">
+            </pagination>
+        </div>
+    </div>
+</div>

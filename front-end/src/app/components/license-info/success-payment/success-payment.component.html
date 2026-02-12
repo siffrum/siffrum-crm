@@ -1,0 +1,43 @@
+<div class="container-fluid">
+    <div class="card one ">
+        <div class="card second">
+            <div class="CheckMark">
+                <i class="checkmark">✓</i>
+            </div>
+            <h3>Thankyou!</h3>
+            <h4>Payment Successful</h4>
+        </div><br><br><br>
+
+        <div class="container-two">
+            <div class="row mt-2">
+                <div class="col-5">
+                    <label for="amountPaid" class="form-label"> Amout paid:</label>
+                </div>
+                <div class="col-7 data">{{viewModel.LicenseTypeObj.amount}}</div>
+            </div>
+
+            <div class="row">
+                <div class="col-5">
+                    <label for="TransactionId" class="form-label"> License Type:</label>
+                </div>
+                <div class="col-7"  >{{viewModel.LicenseTypeObj.title}}</div>
+            </div>
+
+            <div class="row">
+                <div class="col-5">
+                    <label for="Date" class="form-label">Payment Date:</label>
+                </div>
+                <div class="col-7">{{viewModel.paymentInfo.paymentDate | date :'short':'locale'}}</div>
+            </div>
+        </div>
+        <div class="row">
+
+            <div class="col-12">
+                <button routerLink="/login" class="btn coinButton">HOME</button>
+            </div>
+        </div>
+
+
+    </div>
+
+</div>

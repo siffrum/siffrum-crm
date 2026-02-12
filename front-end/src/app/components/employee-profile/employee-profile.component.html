@@ -1,0 +1,77 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+        <div class="breadcrumb-container">
+            <nav aria-label="breadcrumb">
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item" [ngClass]="viewModel.tabLocation == 0 ? 'active-tab' : ''" *ngIf="viewModel.showEmployeeInfoTab">
+                        <a (click)="updateTabLocation(0)">
+                            <span> Overview </span>
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item" [ngClass]="viewModel.tabLocation == 1 ? 'active-tab' : ''"*ngIf="viewModel.showEmployeeAddressTab" >
+                        <a (click)="updateTabLocation(1)">
+                            <span> Address </span>
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item" [ngClass]="viewModel.tabLocation == 2 ? 'active-tab' : ''" *ngIf="viewModel.showEmployeeBankDetailsTab">
+                        <a (click)="updateTabLocation(2)">
+                            <span> Bank Details </span>
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item" [ngClass]="viewModel.tabLocation == 3 ? 'active-tab' : ''" *ngIf="viewModel.showEmployeeDocumentsTab">
+                        <a (click)="updateTabLocation(3)">
+                            <span> Documents </span>
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item" [ngClass]="viewModel.tabLocation == 4 ? 'active-tab' : ''" *ngIf="viewModel.showEmployeeSalaryTab">
+                        <a (click)="updateTabLocation(4)">
+                            <span> Salary </span>
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item" [ngClass]="viewModel.tabLocation == 5 ? 'active-tab' : ''" *ngIf="viewModel.showEmployeeLeavesTab">
+                        <a (click)="updateTabLocation(5)">
+                            <span> Leaves </span>
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item" [ngClass]="viewModel.tabLocation == 6 ? 'active-tab' : ''" *ngIf="viewModel.showEmployeeLettersTab">
+                        <a (click)="updateTabLocation(6)">
+                            <span> Generate Letter </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+               <!-- Employee Personal Info Tab -->
+    <div class="row" *ngIf="viewModel.tabLocation == 0 ">
+        <app-employee-info [employee]="viewModel.employee" [isReadOnly]="viewModel.isReadonly" [isaddmode]="false"></app-employee-info>
+    </div>
+    <!-- Employee Address Tab -->
+    <div class="row" *ngIf="viewModel.tabLocation == 1">
+        <app-employee-address-info [employee]="viewModel.employee" [isReadonly]="viewModel.isReadonly" [isaddmode]="false" [isEditMode]="true"></app-employee-address-info>
+    </div>
+    <!-- Employee Bank Details Tab -->
+    <div class="row" *ngIf="viewModel.tabLocation == 2">
+        <app-employee-bank-info [employee]="viewModel.employee" [isReadonly]="viewModel.isReadonly" [isaddmode]="false" [isEditMode]="true"></app-employee-bank-info>
+    </div>
+    <!-- Employee Documents Tab -->
+    <div class="row" *ngIf="viewModel.tabLocation == 3">
+        <app-employee-document-info [employee]="viewModel.employee" [isReadonly]="viewModel.isReadonly" [isaddmode]="false" [isEditMode]="true"></app-employee-document-info>
+    </div>
+    <!-- Employee Salary Details Tab -->
+    <div class="row" *ngIf="viewModel.tabLocation == 4">
+        <app-employee-salary-info [empid]="viewModel.employee.id" [readonly]="viewModel.isReadonly" [isaddmode]="false"></app-employee-salary-info>
+    </div>
+    <!-- Employee Leaves Tab -->
+    <div class="row" *ngIf="viewModel.tabLocation == 5">
+        <app-employee-leaves-info [employee]="viewModel.employee" [isReadOnly]="viewModel.isReadonly" [isAdminMode]="false"></app-employee-leaves-info>
+    </div>
+    <!-- Employee Generate Letter Tab -->
+    <div *ngIf="viewModel.tabLocation == 6">
+        <app-employee-generate-letter-info [employee]="viewModel.employee" [isaddmode]="false"></app-employee-generate-letter-info>
+    </div>
+        </div>
+    </div>
+</div>

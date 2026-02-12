@@ -1,0 +1,31 @@
+// Generate Letter tab
+.generateLetter img {
+    width: 5rem;
+    margin-top: 8px;
+    border-radius: 20px;
+}
+.generateLetter .card .card-body img:hover {
+    width: 6rem;
+    cursor: pointer;
+    transition: width 0.1s;
+    -webkit-transition: width 0.4s;
+}
+.generateLetter .card {
+    background-color: var(--card-heading-background-color);
+    border-radius: 20px;
+    box-shadow: 0 3px 10px var(--box-shadow);;
+    min-height: 150px;
+
+}
+.generateLetter .card h2 {
+    letter-spacing: 1px;
+    color: var(--text-color);
+    font-size: 12px;
+}
+.card{
+    box-shadow: 0 3px 10px 0 var(--box-shadow) !important;
+    height: 180px;
+}
+.card-body{
+    border-radius: 20px;
+}

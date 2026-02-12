@@ -1,0 +1,16 @@
+version: '3.8'
+
+# This file is kept for backward compatibility
+# For development: use docker-compose.dev.yml
+# For production: use docker-compose.prod.yml
+
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: payroll-frontend
+    restart: unless-stopped
+    ports:
+      - "${PORT:-4000}:4000"
+

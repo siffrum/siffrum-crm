@@ -1,0 +1,58 @@
+.modal-content {
+    max-width: 510px; /* Adjust the value to your desired width */
+    margin: auto;
+  }
+
+
+
+@media only screen and (max-width: 760px),
+(min-device-width: 768px) and (max-device-width: 1024px) {
+    table,
+    thead,
+    tbody,
+    th,
+    td,
+    tr {
+        display: block;
+        width: 100%;
+    }
+    thead tr {
+        position: relative;
+        display: none;
+    }
+    tr {
+        margin-top: 1rem;
+    }
+    td {
+        // border: 1px solid rgb(151, 143, 143);
+        position: relative;
+        padding-left: 50%;
+        font-size: 10px;
+    }
+    td:before {
+        position: absolute;
+        left: 5px;
+        font-size: var(--table-header-font-size);
+        font-weight: var(--table-header-font-weight)
+    }
+    td:nth-of-type(1):before {
+        content: "Shift Name";
+    }
+    td:nth-of-type(2):before {
+        content: "Shift Description";
+    }
+    td:nth-of-type(3):before {
+        content: "Shift From";
+    }
+    td:nth-of-type(4):before {
+        content: "Shift To";
+    }
+    td:nth-of-type(5):before {
+        content: "Action";
+    }
+}
+
+.validationMsg{
+    font-size: 11px;
+    padding: 6px;
+}

@@ -1,0 +1,369 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-11 col-md-10 col-sm-10 col-10">
+            <nav aria-label="breadcrumb">
+                <ul class="breadcrumb" tabindex="0">
+                    <li class="breadcrumb-item" [ngClass]="viewModel.tabLocation == 0 ? 'active-tab' : ''"
+                        *ngIf="viewModel.showOverviewTab">
+                        <a (click)="updateTabLocation(0)">
+                            <span> Overview </span>
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item" [ngClass]="viewModel.tabLocation == 1 ? 'active-tab' : ''"
+                        *ngIf="viewModel.showAddressTab">
+                        <a (click)="updateTabLocation(1)">
+                            <span> Address </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+    <!-- Company Overview start -->
+    <div class="row mt-2" *ngIf="viewModel.tabLocation == 0 && viewModel.Permission?.view">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+            <div class="card slide-up-animation">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-lg-10 col-md-10 col-sm-10 col-10">
+                            <span> Basic Info </span>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-2 col-2 text-end">
+                            <i class="bi bi-pencil-square smallIcon" (click)="editCompanyDetails()"
+                                (mouseenter)="viewModel.showTooltip = true" (mouseleave)="viewModel.showTooltip = false"
+                                [attr.title]="'Edit'" [attr.data-placement]="'left'"
+                                [ngClass]="{ 'tooltip-show': viewModel.showTooltip }"
+                                *ngIf="viewModel.Permission?.edit"></i>
+                        </div>
+                    </div>
+                </div>
+                <form #companyOverviewForm="ngForm">
+                    <div class="card-body p-0 px-2">
+                        <div class="row">
+                            <div class="col-lg-9 col-md-7 col-sm-12 col-12 firstDiv ">
+                                <div class="row align-items-center my-1">
+                                    <div class="col-lg-6 col-md-6 col-sm-10 col-10">
+                                        <label for="CompanyCode">Company Code <span
+                                                class="text-danger fs-5">*</span></label>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-10 col-10">
+                                        <input type="text" class="form-control"
+                                            [(ngModel)]="viewModel.company.companyCode"
+                                            [disabled]="viewModel.isCompanyDetailsDisabled" #companyCode="ngModel"
+                                            name="companyCode" required minlength="3" maxlength="10" pattern="^[0-9]{3,10}$" >
+                                        <div *ngFor="let validation of viewModel.companyDetailsValidations.companyCode">
+                                            <div class="text-danger validationMsg"
+                                                *ngIf="(companyCode.touched || viewModel.formSubmitted) && companyCode.hasError(validation.type)">
+                                                {{ validation.message }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row align-items-center mb-1">
+                                    <div class="col-lg-6 col-md-6 col-sm-10 col-10">
+                                        <label for="RegisteredCompanyName"> Registered Company Name <span
+                                                class="text-danger fs-5">*</span></label>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-10 col-10">
+                                        <input type="text" class="form-control" [(ngModel)]="viewModel.company.name"
+                                            [disabled]="true" required #name="ngModel" name="name"
+                                            pattern="^[a-zA-Z0-9\s.,#-]+$" minlength="3" maxlength="20">
+                                        <div *ngFor="let validation of viewModel.companyDetailsValidations.name">
+                                            <div class="text-danger validationMsg"
+                                                *ngIf="(name.touched || viewModel.formSubmitted) && name.hasError(validation.type)">
+                                                {{ validation.message }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row align-items-center mb-1">
+                                    <div class="col-lg-6 col-md-6 col-sm-10 col-10">
+                                        <label for="DescriptionofCompany"> Description of Company </label>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-10 col-10">
+                                        <input type="text" class="form-control" name="description"
+                                            [(ngModel)]="viewModel.company.description"
+                                            [disabled]="viewModel.isCompanyDetailsDisabled" required
+                                            #description="ngModel" minlength="5" maxlength="50"
+                                            pattern="^[A-Za-z][A-Za-z0-9\s]*$">
+                                        <div *ngFor="let validation of viewModel.companyDetailsValidations.description">
+                                            <div class="text-danger validationMsg"
+                                                *ngIf="(description.touched || viewModel.formSubmitted) && description.hasError(validation.type)">
+                                                {{ validation.message }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row align-items-center mb-1">
+                                    <div class="col-lg-6 col-md-6 col-sm-10 col-10">
+                                        <label for="DateOfEstablishment"> Date Of Establishment <span
+                                                class="text-danger fs-5">*</span></label>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-10 col-10">
+                                        <input type="datetime-local" class="form-control"
+                                            [(ngModel)]="viewModel.company.companyDateOfEstablishment" [disabled]="true"
+                                            required #companyDateOfEstablishment="ngModel"
+                                            name="companyDateOfEstablishment">
+                                        <div
+                                            *ngFor="let validation of viewModel.companyDetailsValidations.companyDateOfEstablishment">
+                                            <div class="text-danger validationMsg"
+                                                *ngIf="(companyDateOfEstablishment.touched || viewModel.formSubmitted) && companyDateOfEstablishment.hasError(validation.type)">
+                                                {{ validation.message }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row align-items-center mb-1">
+                                    <div class="col-lg-6 col-md-6 col-sm-10 col-10">
+                                        <label for="OfficialWebsite"> Official Website <span
+                                                class="text-danger fs-5">*</span></label>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-10 col-10">
+                                        <input type="text" class="form-control"
+                                            [(ngModel)]="viewModel.company.companyWebsite"
+                                            [disabled]="viewModel.isCompanyDetailsDisabled" required
+                                            #companyWebsite="ngModel" name="companyWebsite" minlength="3" maxlength="20"
+                                            pattern="^[a-zA-Z0-9.,#-]+(?:\.[a-zA-Z]{2,})+$">
+                                        <div
+                                            *ngFor="let validation of viewModel.companyDetailsValidations.companyWebsite">
+                                            <div class="text-danger validationMsg"
+                                                *ngIf="(companyWebsite.touched || viewModel.formSubmitted) && companyWebsite.hasError(validation.type)">
+                                                {{ validation.message }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row align-items-center mb-1">
+                                    <div class="col-lg-6 col-md-6 col-sm-10 col-10">
+                                        <label for="ContactEmail"> Contact Email <span
+                                                class="text-danger fs-5">*</span></label>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-10 col-10">
+                                        <input type="email" class="form-control"
+                                            [(ngModel)]="viewModel.company.companyContactEmail"
+                                            [disabled]="viewModel.isCompanyDetailsDisabled" required
+                                            #contactEmail="ngModel" name="contactEmail" minlength="10" maxlength="30"
+                                            pattern="^[a-zA-Z][a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]*@[a-zA-Z0-9.-]+[a-zA-Z0-9]$">
+                                        <div
+                                            *ngFor="let validation of viewModel.companyDetailsValidations.contactEmail">
+                                            <div class="text-danger validationMsg"
+                                                *ngIf="(contactEmail.touched || viewModel.formSubmitted) && contactEmail.hasError(validation.type)">
+                                                {{ validation.message }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row align-items-center mb-1">
+                                    <div class="col-lg-6 col-md-6 col-sm-10 col-10">
+                                        <label for="ContactNumber"> Contact Number <span
+                                                class="text-danger fs-5">*</span></label>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-10 col-10">
+                                        <input type="text" class="form-control"
+                                            [(ngModel)]="viewModel.company.companyMobileNumber"
+                                            [disabled]="viewModel.isCompanyDetailsDisabled" required
+                                            #companyMobileNumber="ngModel" name="companyMobileNumber" minlength="10"
+                                            maxlength="10" pattern="^[0-9]{1,10}$">
+                                        <div
+                                            *ngFor="let validation of viewModel.companyDetailsValidations.companyMobileNumber">
+                                            <div class="text-danger validationMsg"
+                                                *ngIf="(companyMobileNumber.touched || viewModel.formSubmitted) && companyMobileNumber.hasError(validation.type)">
+                                                {{ validation.message }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-lg-3 col-md-5 col-sm-12 col-12 secondDiv ">
+                                <div class="mainContainer">
+                                    <div class="logo_wrapper">
+                                        <div class="company-logo_img_wrapper">
+                                            <div class="row">
+                                                <div class="col-lg-12 col-md-12 col-sm-12 col-12 "
+                                                    *ngIf="this.viewModel.companyLogo !=null">
+                                                    <img src="{{'data:image/jpg;base64,' + viewModel.companyLogo }}"
+                                                        alt="Image Not Found" loading="lazy" height="400"
+                                                        class="logo_img">
+                                                </div>
+                                                <div class="col-lg-12 col-md-12 col-sm-12 col-12 "
+                                                    *ngIf="this.viewModel.companyLogo ==null">
+                                                    <img src="assets/images/blank-profile-picture.webp"
+                                                        alt="Image Not Found" loading="lazy" class="logo_img">
+                                                </div>
+                                                <div class="col-lg-12 col-md-12 col-sm-12 col-12 ">
+                                                    <!-- upload and delete company logo -->
+                                                    <i class="bi bi-camera-fill addLogoIcon" (click)="fileInput.click()"
+                                                        (mouseenter)="viewModel.showTooltip = true"
+                                                        (mouseleave)="viewModel.showTooltip = false"
+                                                        [attr.title]="'Upload'" [attr.data-placement]="'left'"
+                                                        [ngClass]="{ 'tooltip-show': viewModel.showTooltip }"
+                                                        *ngIf="viewModel.Permission?.edit"></i> &nbsp;
+                                                    <i *ngIf="this.viewModel.companyLogo !=null && viewModel.Permission?.delete"
+                                                        class="bi bi-trash deleteLogoIcon" (click)="deleteCompanyLogo()"
+                                                        (mouseenter)="viewModel.showTooltip = true"
+                                                        (mouseleave)="viewModel.showTooltip = false"
+                                                        [attr.title]="'Delete'" [attr.data-placement]="'left'"
+                                                        [ngClass]="{ 'tooltip-show': viewModel.showTooltip }"></i>
+                                                    <input #fileInput type="file" id="fileInput"
+                                                        accept=".png,.jpg,.jpeg,.jpe,.jfif,.JPG,.PNG,.JPEG,.JPE,.JFIF,.BMP,.bmp"
+                                                        class="fileInput" (change)="uploadCompanyLogo($event)">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="row py-lg-2 py-md-2 py-sm-2" *ngIf="viewModel.Permission?.edit">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end"
+                                *ngIf="viewModel.showCompanyDetailsUpdateButton && viewModel.tabLocation== 0">
+                                <button class="btn coinButton" (click)="updateCompanyDetails(companyOverviewForm)">
+                                    Update Details </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Company Overview end -->
+    <!--  Company Address Card start -->
+    <div class="row" *ngIf="viewModel.tabLocation == 1">
+        <div class="col-lg-12 col-sm-12 col-xs-12 ">
+            <div class="card slide-up-animation">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-lg-10 col-md-10 col-sm-10 col-10">
+                            <span> Address Details </span>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-2 col-2 text-end">
+                            <i class="bi bi-pencil-square smallIcon" (click)="editCompanyAddress()"
+                                (mouseenter)="viewModel.showTooltip = true" (mouseleave)="viewModel.showTooltip = false"
+                                [attr.title]="'Edit'" [attr.data-placement]="'left'"
+                                [ngClass]="{ 'tooltip-show': viewModel.showTooltip }"
+                                *ngIf="viewModel.Permission?.edit"></i>
+                        </div>
+                    </div>
+                </div>
+                <form #companyAddressForm="ngForm">
+                    <div class="card-body">
+                        <div class="row align-items-center mb-1">
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                <label for="RegisteredOfficeAddress"> Registered Office Address <span
+                                        class="text-danger fs-5">*</span></label>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                <input type="text" class="form-control" [(ngModel)]="viewModel.companyAddress.address1"
+                                    [disabled]="viewModel.isCompanyAddressDisabled" placeholder="Permenant Address"
+                                    required #address1="ngModel" name="address1" minlength="5" maxlength="20"
+                                    pattern="^[A-Za-z][A-Za-z0-9\s]*$">
+                                <div *ngFor="let validation of viewModel.companyAddressValidations.address1">
+                                    <div class="text-danger validationMsg"
+                                        *ngIf="(address1.touched || viewModel.formSubmitted) && address1.hasError(validation.type)">
+                                        {{ validation.message }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row align-items-center mb-1">
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                <label for="CorporateAddress"> Corporate Office Address <span
+                                        class="text-danger fs-5">*</span></label>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                <input type="text" class="form-control" [(ngModel)]="viewModel.companyAddress.address2"
+                                    [disabled]="viewModel.isCompanyAddressDisabled" placeholder="Office Address"
+                                    required #address2="ngModel" name="address2" minlength="5" maxlength="20"
+                                    pattern="^[A-Za-z][A-Za-z0-9\s]*$">
+                                <div *ngFor="let validation of viewModel.companyAddressValidations.address2">
+                                    <div class="text-danger validationMsg"
+                                        *ngIf="(address2.touched || viewModel.formSubmitted) && address2.hasError(validation.type)">
+                                        {{ validation.message }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row align-items-center mb-1">
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                <label for="Country"> Country <span class="text-danger fs-5">*</span> </label>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                <input type="text" class="form-control" [(ngModel)]="viewModel.companyAddress.country"
+                                    [disabled]="viewModel.isCompanyAddressDisabled" placeholder="Country" required
+                                    #country="ngModel" name="country" minlength="3" maxlength="20"
+                                    pattern="^[A-Za-z][A-Za-z0-9\s]*$">
+                                <div *ngFor="let validation of viewModel.companyAddressValidations.country">
+                                    <div class="text-danger validationMsg"
+                                        *ngIf="(country.touched || viewModel.formSubmitted) && country.hasError(validation.type)">
+                                        {{ validation.message }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row align-items-center mb-1">
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                <label for="State"> State <span class="text-danger fs-5">*</span></label>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                <input type="text" class="form-control" [(ngModel)]="viewModel.companyAddress.state"
+                                    [disabled]="viewModel.isCompanyAddressDisabled" placeholder="State" required
+                                    #state="ngModel" name="state" minlength="3" maxlength="20"
+                                    pattern="^[A-Za-z][A-Za-z0-9\s]*$">
+                                <div *ngFor="let validation of viewModel.companyAddressValidations.state">
+                                    <div class="text-danger validationMsg"
+                                        *ngIf="(state.touched || viewModel.formSubmitted) && state.hasError(validation.type)">
+                                        {{ validation.message }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row align-items-center mb-1">
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                <label for="City"> City <span class="text-danger fs-5">*</span></label>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                <input type="text" class="form-control" [(ngModel)]="viewModel.companyAddress.city"
+                                    [disabled]="viewModel.isCompanyAddressDisabled" placeholder="City" required
+                                    #city="ngModel" name="city" minlength="5" maxlength="20"
+                                    pattern="^[A-Za-z][A-Za-z0-9\s]*$">
+                                <div *ngFor="let validation of viewModel.companyAddressValidations.city">
+                                    <div class="text-danger validationMsg"
+                                        *ngIf="(city.touched || viewModel.formSubmitted) && city.hasError(validation.type)">
+                                        {{ validation.message }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row align-items-center mb-1">
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                <label for="Pincode"> Pincode <span class="text-danger fs-5">*</span></label>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                <input type="text" class="form-control" [(ngModel)]="viewModel.companyAddress.pinCode"
+                                    [disabled]="viewModel.isCompanyAddressDisabled" placeholder="PIN CODE" required
+                                    #pinCode="ngModel" name="pinCode" minlength="4" maxlength="8" pattern="^[0-9]*$">
+                                <div *ngFor="let validation of viewModel.companyAddressValidations.pinCode">
+                                    <div class="text-danger validationMsg"
+                                        *ngIf="(pinCode.touched || viewModel.formSubmitted) && pinCode.hasError(validation.type)">
+                                        {{ validation.message }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row py-lg-2 py-md-2 py-sm-2" *ngIf="viewModel.Permission?.edit">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end"
+                                *ngIf="viewModel.showCompanyAddressUpdateButton && viewModel.tabLocation== 1">
+                                <button class="btn coinButton" (click)="updateCompanyAddress(companyAddressForm)">
+                                    Update Address </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!--  Company Address Card end -->
+</div>

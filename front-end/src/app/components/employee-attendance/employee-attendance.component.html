@@ -1,0 +1,58 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-6 col-md-6 col-sm-6 text-start">
+      <div *ngIf="viewModel.currentShift">
+        <ul class="no-bullets">
+          <li>
+            <span><p> {{ viewModel.currentShift.shiftName }} - {{ viewModel.currentShift.shiftFrom | date: 'hh:mm a' }} to {{ viewModel.currentShift.shiftTo | date: 'hh:mm a' }}</p></span>
+          </li>
+        </ul>
+      </div>
+        <div *ngIf="!viewModel.currentShift">
+          <span><b>No office hours available at the moment.</b></span>
+        </div>
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-6 col-6 text-end" *ngIf="viewModel.currentShift">
+      <button class="btn coinButton me-2" *ngIf="viewModel.isCheckInButton &&viewModel.companyAttendanceShiftDetailsList && viewModel.companyAttendanceShiftDetailsList.length > 0 &&viewModel.Permission?.add"
+        (click)="checkIn(viewModel.currentDate)">
+        Check In
+      </button>
+      <button class="btn coinButton"
+      *ngIf="viewModel.isCheckOutButton &&viewModel.companyAttendanceShiftDetailsList && viewModel.companyAttendanceShiftDetailsList.length > 0 &&viewModel.Permission?.edit"
+        (click)="checkOut(viewModel.currentDate)">
+        Check Out
+      </button>
+    </div>
+  </div>
+</div>
+<div class="row mt-2">
+  <div class="col-lg-12 col-md-12 col-sm-12 col-12 ">
+    <div class="card">
+      <div class="card-header">
+        <div class="row">
+          <div class="col-lg-4 col-md-4 col-sm-4 col-4">
+            <button class="btn btn-default" (click)="prevMonth()">
+              Prev
+            </button>
+          </div>
+          <div class="col-lg-4 col-md-4 col-sm-4 col-4 text-center">
+            <span> {{ viewModel.viewDate | date: "MMMM y" }}</span>
+          </div>
+          <div class="col-lg-4 col-md-4 col-sm-4 col-4 text-end">
+            <button class="btn btn-default" (click)="nextMonth()">
+              Next
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="card-body p-0 px-2 " *ngIf="viewModel.Permission?.view">
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-12 tableFixHead" [ngSwitch]="viewModel.view" >
+            <mwl-calendar-month-view *ngSwitchCase="viewModel.CalendarView.Month"[viewDate]="viewModel.viewDate" [events]="viewModel.events" >
+          </mwl-calendar-month-view>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,75 @@
+<div class="container-fluid">
+    <div class="row ">
+        <div class="col-lg-3 col-md-3 col-sm-6 p-1">
+            <div class="card">
+                <div class="card-body text-center bg-c-blue">
+                    <div class="card-title mb-0 mt-0 d-block">
+                        <i class="bi bi-people d-inline"></i>&nbsp;
+                        <h5 class="d-inline">Admins</h5>&nbsp;&nbsp;<h5 class=" d-inline">
+                            {{viewModel.adminDashboardVM.numberOfAdmins}}</h5>
+                    </div>
+                    <div class="card-title mb-0 mt-0 d-block">
+                        <i class="bi bi-people d-inline"></i>&nbsp;
+                        <h6 class="d-inline">Employees</h6>&nbsp;<h5 class=" d-inline">
+                            {{viewModel.adminDashboardVM.numberOfEmployees}}</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-6 p-1">
+            <div class="card">
+                <div class="card-body bg-c-green">
+                    <div class="card-title mb-0 mt-0 text-center d-block">
+                        <i class="bi bi-card-list d-inline"></i>&nbsp;
+                        <h5 class="d-inline">Leaves</h5>
+                    </div>
+                    <p class=" d-inline">Approved:&nbsp;{{viewModel.adminDashboardVM.numberOfLeavesApproved}}</p>&nbsp;&nbsp;
+                    <p class=" d-inline">Rejected:&nbsp;{{viewModel.adminDashboardVM.numberOfLeavesRejected}}</p>
+                    <p class="d-inline"> Pending:&nbsp;{{viewModel.adminDashboardVM.numberOfLeavesPending}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-6 p-1">
+            <div class="card">
+                <div class="card-body text-center bg-c-yellow">
+                    <div class="card-title mb-0 mt-0 d-block">
+                        <i class="bi bi-bell d-inline"></i>
+                        <h5 class="d-inline">Notifications</h5>&nbsp;
+                        <p class=" d-inline">23</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-6 p-1">
+            <div class="card">
+                <div class="card-body bg-c-pink">
+                    <div class="card-title mb-0 mt-0 text-center d-block">
+                        <i class="bi bi-currency-dollar d-inline"></i>
+                        <h5 class="d-inline">Expenses</h5>
+                    </div>
+                        <p class=" d-inline">Monthly:&nbsp;$100</p> &nbsp;&nbsp;
+                        <p class=" d-inline">Yearly:&nbsp;$1000</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row scrollable-row">
+        <div class="col-lg-8 col-md-12 col-sm-12 mt-3">
+            <div class="card">
+
+                <div class="card-body barChart">
+                    <canvas id="barChart">{{barChart}}</canvas>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-lg-4 col-md-12 col-sm-12 p-3">
+            <div class="card">
+                <div class="card-body pieChart">
+                    <canvas id="pieChart">{{pieChart}}</canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

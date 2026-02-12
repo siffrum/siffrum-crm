@@ -1,0 +1,127 @@
+.headingInput{
+    margin-right:30%
+}
+
+.singleRow {
+    border: 1px solid var(--border-color);
+    margin-bottom: 3px;
+}
+
+.singleRow div {
+    display: inline-block;
+}
+
+.modal-content {
+    max-width: 710px; /* Adjust the value to your desired width */
+    margin: auto;
+  }
+.card{
+    height: 380px !important;
+}
+.card-body{
+    scrollbar-width: none;
+}
+  .card-header span {
+    margin: 15px;
+}
+.card .card-body {
+    font-size: var(--card-body-font-size) !important;
+    font-weight: var(--card-body-font-weight) !important;
+    height: 150px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+.card-footer{
+    height: 230px;
+}
+.alignContent{
+    width: fit-content;
+     white-space: nowrap;
+}
+.nav-label{
+    font-weight: var(--nav-label-font-weight);
+    font-size: var(--nav-label-font-size)
+}
+.card-footer small {
+    font-size: 12px;
+    font-weight: var(--nav-label-font-weight);
+}
+.card-body::-webkit-scrollbar {
+    display: none;
+
+}
+
+@media only screen and (max-width: 760px),
+(min-device-width: 768px) and (max-device-width: 1024px) {
+    table,
+    thead,
+    tbody,
+    th,
+    td,
+    tr {
+        display: block;
+        width: 100%;
+    }
+    thead tr {
+        position: relative;
+        display: none;
+    }
+    tr {
+        margin-top: 1rem;
+    }
+    td {
+        // border: 1px solid rgb(151, 143, 143);
+        position: relative;
+        padding-left: 50%;
+    }
+    td:before {
+        position: absolute;
+        left: 5px;
+        font-size: var(--table-header-font-size);
+        font-weight: var(--table-header-font-weight)
+    }
+    td:nth-of-type(1):before {
+        content: "Epmloyee Code";
+    }
+    td:nth-of-type(2):before {
+        content: "Name";
+    }
+    td:nth-of-type(3):before {
+        content: "Date";
+    }
+    td:nth-of-type(4):before {
+        content: "Check In";
+    }
+    td:nth-of-type(5):before {
+        content: "Check Out";
+    }
+    td:nth-of-type(6):before {
+        content: "Status";
+    }
+    td:nth-of-type(7):before {
+        content: "Summary";
+    }
+}
+
+.tableFixHead {
+    overflow-y: auto; /* make the table scrollable if height is more than 200 px  */
+    height: 380px; /* gives an initial height of 380px to the table */
+    border-bottom: solid 1px;
+    border-color: var(--border-color);
+  }
+  .tableFixHead thead th {
+    position: sticky; /* make the table heads sticky */
+    top: 0px; /* table head will be placed from the top of the table and sticks to it */
+    z-index: 9999;
+  }
+  .tableFixHead::-webkit-scrollbar {
+    display: none;
+}
+
+.tableFixHead::-webkit-scrollbar-thumb {
+    display: none;
+}
+
+.tableFixHead::-webkit-scrollbar-thumb:hover {
+    display: none;
+}

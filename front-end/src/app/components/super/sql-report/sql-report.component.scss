@@ -1,0 +1,30 @@
+.query{
+    color: red !important;
+}
+.modal-content{
+  width: 800px;
+  margin-left:-10%
+}
+.table-container {
+    width: 100%;
+    overflow-x: auto; /* Enable horizontal scrolling */
+  }
+
+  .scrollable-table {
+    width: 100%; /* Set the table width to 100% to make it responsive */
+    white-space: nowrap; /* Prevent line breaks within table cells */
+    border-collapse: collapse; /* Optional for styling */
+  }
+
+  .scrollable-table th, .scrollable-table td {
+    padding: 8px; /* Adjust the padding as needed */
+    border: 1px solid #ddd; /* Optional border styling */
+  }
+  .scrollable-table thead th{
+    position: sticky; /* make the table heads sticky */
+    top: 0px;
+  }
+
+  .scrollable-table thead {
+    background-color: #f2f2f2; /* Optional header background color */
+  }

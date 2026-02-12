@@ -1,0 +1,95 @@
+<div class="container-fluid">
+    <div class="row p-2">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+            <label class="label"> Select Payroll Month: </label>
+        </div>
+    </div>
+    <div class="row p-2">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+            <select class="form-select" [(ngModel)]="viewModel.selectedMonth" aria-label="Default select example">
+                <option value="" disabled>SELECT MONTH</option>
+                <option *ngFor="let item of viewModel.months" [value]="item"> {{item}} </option>
+            </select>
+            <!-- <select class="form-control" [(ngModel)]="viewModel.selectedMonth">
+                <option *ngFor="let item of viewModel.months"> {{item}} </option>
+            </select> -->
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-12 mt-2 text-end">
+            <button class="btn coinButton" (click)="getTransactionMonthlyBased()"> View Payroll </button>
+        </div>
+    </div>
+    <div class="row mt-2" *ngIf="viewModel.showTable">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-12  text-end"><label>Total Count:
+                <span>{{viewModel.pagination.totalCount}}</span></label> </div>
+        <div class="col-lg-12col-md-12 col-sm-12 col-12 tableFixHead">
+            <table class="table  table-striped">
+                <thead>
+                    <tr>
+                        <th> Employee Name </th>
+                        <th> Designation </th>
+                        <th> Employee Status </th>
+                        <th> Payment For </th>
+                        <th> Payment Type </th>
+                        <th> Payment Amount </th>
+                        <th></th>
+                        <th> </th>
+
+                    </tr>
+                </thead>
+                <tbody *ngFor="let item of viewModel.payrollTransactionList">
+                    <tr>
+                        <td> {{item.employeeName}} </td>
+                        <td> {{item.designation}} </td>
+                        <td> {{item.employeeStatus}} </td>
+                        <td> {{item.paymentFor}} </td>
+                        <td> {{item.paymentType}} </td>
+                        <td> {{item.paymentAmount}} </td>
+                        <td>
+                            <div class="row">
+                                <div class="col-lg-12"
+                                    *ngIf="item.employeeStatus.toString() == 'Active' && item.paymentPaid == false">
+                                    <button class="btn notPaidBtn"> Not Paid </button>
+                                </div>
+                                <div class="col-lg-12" *ngIf="item.paymentPaid == true">
+                                    <button class="btn paidBtn"> Paid </button>
+                                </div>
+                                <div class="col-lg-12" *ngIf="item.employeeStatus.toString() == 'Resigned'">
+                                    <button class=" resignedBtn"> Resigned </button>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="row">
+                                <div class="col-lg-12"
+                                    *ngIf="item.employeeStatus.toString() == 'Active' && !item.paymentPaid && item.paymentAmount == 0 &&viewModel.Permission?.add">
+                                    <button class="btn coinButton"
+                                        (click)="generateEmployeePayrollByClientUserId(item)"> Generate </button>
+                                </div>
+                                <div class="col-lg-12"
+                                    *ngIf="item.employeeStatus.toString() == 'Active' && !item.paymentPaid && item.paymentAmount > 0">
+                                    <button class="btn payNowBtn"> Pay Now </button>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="showErrorMsg">
+                        <td colspan="8" width="100"
+                            *ngIf="item.employeeStatus.toString() == 'Active' && item.errorInGeneration == true">
+                            <small class="errorMessage"> {{item.errorMessage}} Above </small>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-12 d-flex justify-content-center pt-1"
+            *ngIf="viewModel.pagination && viewModel.pagination.totalCount>0">
+            <pagination (selectedPageNum)="loadPagedataWithPagination($event)" [viewModel]="viewModel.pagination">
+            </pagination>
+        </div>
+        <div class="col-lg-12 text-end">
+            <button class="btn coinButton me-3" (click)="generateAllEmployeePayroll()"
+                *ngIf="viewModel.showGenerateAllBtn"> Generate All </button>
+            <button class="btn payNowBtn" *ngIf="viewModel.showPayAllBtn"> Pay All </button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,148 @@
+<!--Company Attendance Shift List  Tab--satrt -->
+<div class="row mt-2">
+    <div class="col-lg-6 col-md-12 col-sm-12 col-12 mb-2">
+        <button class="btn coinButton" (click)="openCompanyAttendanceShiftModal(0)">
+            Add New Shift
+            &#43; </button>
+    </div>
+    <!-- <div class="col-lg-6 col-md-12 col-sm-12 col-12 text-lg-end ">
+        <label> Total Number of Company Admins: </label> <B> {{viewModel.totalCount}}</B>
+    </div> -->
+    <div class="col-lg-12">
+        <table class="table mb-0">
+            <thead>
+                <tr>
+                    <th class="firstTableHead"> Shift Name </th>
+                    <th> Shift Description</th>
+                    <th> Shift From</th>
+                    <th>Shift To </th>
+                    <th *ngIf="viewModel.Permission?.delete || viewModel.Permission?.edit">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let data of viewModel.companyAttendanceShiftDetailsList">
+                    <td>{{data.shiftName}} </td>
+                    <td>{{data.shiftDescription}} </td>
+                    <td> {{data.shiftFrom | date:'h:mm a'}}</td>
+                    <td>{{data.shiftTo | date: 'h:mm a'}}</td>
+                    <td *ngIf="viewModel.Permission?.edit ||viewModel.Permission?.delete">
+                        <div>
+                            <i class="bi bi-pencil-square smallIcon ms-0"
+                                (click)="openCompanyAttendanceShiftModal( data.id)" *ngIf="viewModel.Permission?.edit"
+                                (mouseenter)="viewModel.showTooltip = true" (mouseleave)="viewModel.showTooltip = false"
+                                [attr.title]="'Edit'" [attr.data-placement]="'left'"
+                                [ngClass]="{ 'tooltip-show': viewModel.showTooltip }">
+                            </i>
+                            &nbsp;
+                            <i class="bi bi-trash smallIcon ms-0" (click)="deleteCompanyShift(data.id)"
+                                *ngIf="viewModel.Permission?.delete" (mouseenter)="viewModel.showTooltip = true"
+                                (mouseleave)="viewModel.showTooltip = false" [attr.title]="'Delete'"
+                                [attr.data-placement]="'left'"
+                                [ngClass]="{ 'tooltip-show': viewModel.showTooltip }"></i>
+                        </div>
+
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="modal expandIn" tabindex="-1" role="dialog" [ngStyle]="{'display':viewModel.displayStyle}">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4>Attendance Shift</h4>
+                <button type="button" class="btn-close" (click)="closePopup(shiftForm)"></button>
+            </div>
+            <form #shiftForm="ngForm">
+                <div class="modal-body">
+
+                    <div class="row">
+
+                        <div class="col-lg-4 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
+                            <label> Shift Name <span class="text-danger fs-5">*</span> </label>
+                        </div>
+
+                        <div class="col-lg-8 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
+                            <input type="text" class="form-control" required
+                                [(ngModel)]="viewModel.companyAttendanceShiftDetails.shiftName" placeholder="Shift Name"
+                                #shiftName="ngModel" name="shiftName" minlength="3" maxlength="20"
+                                pattern="^[A-Za-z][A-Za-z0-9\s]*$">
+
+                            <div *ngFor="let validation of viewModel.validations.shiftName">
+                                <div *ngIf="(shiftName.touched || viewModel.formSubmitted) && shiftName.hasError(validation.type)"
+                                    class="text-danger validationMsg">
+                                    {{validation.message}}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
+                            <label> Shift Description </label>
+                        </div>
+
+                        <div class="col-lg-8 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
+                            <input type="text" class="form-control"
+                                [(ngModel)]="viewModel.companyAttendanceShiftDetails.shiftDescription"
+                                placeholder="Shift Description" required #shiftDescription="ngModel"
+                                name="shiftDescription" minlength="3" maxlength="50" pattern="^[A-Za-z][A-Za-z0-9\s]*$">
+                            <div *ngFor="let validation of viewModel.validations.shiftDescription">
+                                <div *ngIf="(shiftDescription.touched || viewModel.formSubmitted) && shiftDescription.hasError(validation.type)"
+                                    class="text-danger validationMsg">
+                                    {{validation.message}}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
+                            <label> Shift From <span class="text-danger fs-5">*</span> </label>
+                        </div>
+
+                        <div class="col-lg-8 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
+                            <input type="time" name="appt-time" required class="form-control"
+                                [(ngModel)]="viewModel.companyAttendanceShiftDetails.shiftFrom" placeholder="Shift From"
+                                #shiftFrom="ngModel" required>
+
+                            <div *ngFor="let validation of viewModel.validations.shiftFrom">
+                                <div *ngIf="(shiftFrom.touched || viewModel.formSubmitted) && shiftFrom.hasError(validation.type)"
+                                    class=" text-danger validationMsg">
+                                    {{validation.message}}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
+                            <label> Shift To <span class="text-danger fs-5">*</span> </label>
+                        </div>
+                        <div class="col-lg-8 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
+                            <input type="time" class="form-control" required
+                                [(ngModel)]="viewModel.companyAttendanceShiftDetails.shiftTo" placeholder="Shift To"
+                                name="shiftTo" #shiftTo="ngModel">
+
+                            <div *ngFor="let validation of viewModel.validations.shiftTo">
+                                <div *ngIf="(shiftTo.touched || viewModel.formSubmitted) && shiftTo.hasError(validation.type)"
+                                    class=" text-danger validationMsg">
+                                    {{validation.message}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end" *ngIf=" !viewModel.editMode">
+                        <button class="btn coinButton" (click)="addCompanyAddtendanceShift(shiftForm)"
+                            *ngIf="viewModel.Permission?.add">Save </button>
+                    </div>
+
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end"
+                        *ngIf="viewModel.editMode &&viewModel.Permission?.edit">
+                        <button class="btn coinButton" (click)="updateCompanyAttendanceShiftDetails(shiftForm)"> Update
+                            Details
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

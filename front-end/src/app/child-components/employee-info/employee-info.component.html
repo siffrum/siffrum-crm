@@ -1,0 +1,324 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+            <div class="card slide-up-animation">
+                <div class="card-header" *ngIf="isaddmode">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+                            <span> Add Employee </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-header" *ngIf="!isaddmode">
+                    <div class="row">
+                        <div class="col-lg-10 col-md-10 col-sm-10 col-10">
+                            <span> {{viewModel.employee.loginId}} </span>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-2 col-2 text-end">
+                            <i class="bi bi-pencil-square smallIcon" (click)="editDetails()"
+                                *ngIf="viewModel.Permission?.edit" (mouseenter)="viewModel.showTooltip = true"
+                                (mouseleave)="viewModel.showTooltip = false" [attr.title]="'Edit'"
+                                [attr.data-placement]="'left'"
+                                [ngClass]="{ 'tooltip-show': viewModel.showTooltip }"></i>
+                        </div>
+                    </div>
+                </div>
+                <form #employeeInfoForm="ngForm">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                                <div class="row">
+                                    <div class="col-lg-5 col-md-6 col-sm-12 col-12 p-lg-2 p-md-1 ">
+                                        <label> Employee Code <span class="text-danger fs-5">*</span> </label>
+                                    </div>
+                                    <div class="col-lg-7 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-1">
+                                        <input type="text" class="form-control" required
+                                            [(ngModel)]="viewModel.employee.employeeCode" minlength="3" maxlength="8"
+                                            required [readonly]="isReadOnly" name="employeeCode"
+                                            [disabled]="roleType === 'ClientEmployee' || viewModel.isDisabled"
+                                            (focus)="validateEmployeeCode($event)" placeholder="Enter Employee Code"
+                                            #employeeCode="ngModel" pattern="^[0-9]{3,10}$">
+
+                                        <div *ngFor="let validation of viewModel.validations.employeeCode">
+                                            <div *ngIf="(employeeCode.touched || viewModel.formSubmitted) && employeeCode.hasError(validation.type)"
+                                                class="text-danger validationMsg">
+                                                {{validation.message}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-5 col-md-6 col-sm-12 col-12 p-lg-2 p-md-1 ">
+                                        <label> First Name <span class="text-danger fs-5">*</span> </label>
+                                    </div>
+                                    <div class="col-lg-7 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-1">
+                                        <input type="text" class="form-control"
+                                            [(ngModel)]="viewModel.employee.firstName" [readonly]="isReadOnly"
+                                            [disabled]="viewModel.isDisabled" placeholder="Enter First Name" required
+                                            name="firstName" #firstName="ngModel" minlength="3" maxlength="15"
+                                            pattern="^[A-Za-z][A-Za-z0-9]*$">
+
+                                        <div *ngFor="let validation of viewModel.validations.firstName">
+                                            <div *ngIf="(firstName.touched || viewModel.formSubmitted) && firstName.hasError(validation.type)"
+                                                class="text-danger validationMsg">
+                                                {{validation.message}}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-5 col-md-6 col-sm-12 col-12 p-lg-2 p-md-1 ">
+                                        <label> Middle Name </label>
+                                    </div>
+                                    <div class="col-lg-7 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-1">
+                                        <input type="text" class="form-control"
+                                            [(ngModel)]="viewModel.employee.middleName"
+                                            value="{{viewModel.employee.middleName}}" [readonly]="isReadOnly"
+                                            [disabled]="viewModel.isDisabled" placeholder="Enter Middle Name"
+                                            name="middleName" #middleName="ngModel" pattern="^[A-Za-z][A-Za-z0-9]*$"
+                                            minlength="3" maxlength="15">
+                                        <div *ngFor="let validation of viewModel.validations.middleName">
+                                            <div *ngIf="(middleName.touched || viewModel.formSubmitted) && middleName.hasError(validation.type)"
+                                                class=" text-danger validationMsg">
+                                                {{validation.message}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-5 col-md-6 col-sm-12 col-12 p-lg-2 p-md-1 ">
+                                        <label> Last Name <span class="text-danger fs-5">*</span> </label>
+                                    </div>
+                                    <div class="col-lg-7 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-1 ">
+                                        <input type="text" class="form-control"
+                                            [(ngModel)]="viewModel.employee.lastName" [readonly]="isReadOnly"
+                                            [disabled]="viewModel.isDisabled" placeholder="Enter Last Name" required
+                                            name="lasttName" #lasttName="ngModel" pattern="^[A-Za-z][A-Za-z0-9]*$"
+                                            minlength="3" maxlength="15">
+                                        <div *ngFor="let validation of viewModel.validations.lastName">
+                                            <div *ngIf="(lasttName.touched || viewModel.formSubmitted) && lasttName.hasError(validation.type)"
+                                                class=" text-danger validationMsg">
+                                                {{validation.message}}
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-lg-5 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 ">
+                                        <label> Personal Email Id <span class="text-danger fs-5">*</span> </label>
+                                    </div>
+                                    <div class="col-lg-7 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-1">
+                                        <input type="text" class="form-control"
+                                            [(ngModel)]="viewModel.employee.personalEmailId" [readonly]="isReadOnly"
+                                            [disabled]="viewModel.isDisabled" placeholder="Personal Email" required
+                                            name="personalEmail" minlength="6" maxlength="50" #personalEmail="ngModel"
+                                            pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$">
+
+                                        <div *ngFor="let validation of viewModel.validations.personalEmail">
+                                            <div *ngIf="(personalEmail.touched || viewModel.formSubmitted) && personalEmail.hasError(validation.type)"
+                                                class="text-danger validationMsg">
+                                                {{validation.message}}
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-lg-5 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 ">
+                                        <label> Attendance Shift </label>
+                                    </div>
+                                    <div class="col-lg-7 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-1">
+                                        <div class="input-group" *ngIf="isaddmode">
+                                            <select [disabled]="roleType ==='ClientEmployee' || viewModel.isDisabled"
+                                                class="form-select" [(ngModel)]="viewModel.selectedShift"
+                                                (ngModelChange)="selectedshift()" aria-label="Default select example"
+                                                name="selectedShift">
+                                                <option value="undefined" disabled>SELECT Shift</option>
+                                                <option *ngFor="let item of viewModel.attendanceShiftList"
+                                                    [value]="item.shiftName"> {{item.shiftName}}</option>
+                                            </select>
+
+                                        </div>
+                                        <div class="input-group" *ngIf="!isaddmode">
+                                            <select class="form-select" [(ngModel)]="viewModel.selectedShift"
+                                                (ngModelChange)="selectedshift()" aria-label="Default select example"
+                                                [disabled]="roleType === 'ClientEmployee' || viewModel.isDisabled"
+                                                [disabled]="viewModel.isDisabled" name="selectedShift">
+                                                <option value="" disabled>{{viewModel.employee.attendanceShift}}
+                                                </option>
+                                                <option *ngFor="let item of viewModel.attendanceShiftList"
+                                                    [value]="item.shiftName">{{item.shiftName}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="row">
+                                    <div class="col-lg-5 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2">
+                                        <label> Mobile Number <span class="text-danger fs-5">*</span> </label>
+                                    </div>
+                                    <div class="col-lg-7 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-1">
+                                        <input type="text" class="form-control"
+                                            [(ngModel)]="viewModel.employee.phoneNumber" [readonly]="isReadOnly"
+                                            [disabled]="viewModel.isDisabled" placeholder="Mobile Number"
+                                            name="MobileNumber" #phoneNumber="ngModel" required minlength="3"
+                                            maxlength="15" pattern="^[0-9]{10}$">
+                                        <div *ngFor="let validation of viewModel.validations.phoneNumber">
+                                            <div *ngIf="(phoneNumber.touched || viewModel.formSubmitted) && phoneNumber.hasError(validation.type)"
+                                                class=" text-danger validationMsg">
+                                                {{validation.message}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-5 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 ">
+                                        <label> Work Email Id <span class="text-danger fs-5">*</span> </label>
+                                    </div>
+                                    <div class="col-lg-7 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-1">
+                                        <input type="text" class="form-control" required
+                                            [(ngModel)]="viewModel.employee.emailId" [readonly]="isReadOnly"
+                                            [disabled]="roleType ==='ClientEmployee' || viewModel.isDisabled"
+                                            placeholder="Work Email " #email="ngModel" name="email" minlength="6"
+                                            maxlength="50"
+                                            pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$">
+                                        <div *ngFor="let validation of viewModel.validations.email">
+                                            <div *ngIf="(email.touched || viewModel.formSubmitted) && email.hasError(validation.type)"
+                                                class=" text-danger validationMsg">
+                                                {{validation.message}}
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-lg-5 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 ">
+                                        <label> Date Of Birth <span class="text-danger fs-5">*</span> </label>
+                                    </div>
+                                    <div class="col-lg-7 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-1">
+                                        <div class="input-group" *ngIf="isaddmode">
+                                            <input type="date" class="form-control"
+                                            [(ngModel)]="viewModel.employee.dateOfBirth" [readonly]="isReadOnly"
+                                            [disabled]="viewModel.isDisabled" placeholder="Enter D-O-B" required
+                                            name="dateOfBirth" #dateOfBirth="ngModel" [max]="disableDates()" [min]="disableToMinDates()">
+
+                                            <div *ngFor="let validation of viewModel.validations.dateOfBirth">
+                                                <div *ngIf="(dateOfBirth.touched || viewModel.formSubmitted) && dateOfBirth.hasError(validation.type)"
+                                                    class=" text-danger validationMsg">
+                                                    {{validation.message}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="input-group" *ngIf="!isaddmode">
+                                            <input type="date" class="form-control"
+                                            [(ngModel)]="viewModel.employee.dateOfBirth" [readonly]="isReadOnly"
+                                            [disabled]="viewModel.isDisabled" placeholder="Enter D-O-B" required
+                                            name="dateOfBirth" #dateOfBirth="ngModel" [max]="disableDates()" [min]="disableToMinDates()">
+                                            <div *ngFor="let validation of viewModel.validations.dateOfBirth">
+                                                <div *ngIf="(dateOfBirth.touched || viewModel.formSubmitted) && dateOfBirth.hasError(validation.type)"
+                                                    class=" text-danger validationMsg">
+                                                    {{validation.message}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-5 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 ">
+                                        <label> Date Of Joining <span class="text-danger fs-5">*</span> </label>
+                                    </div>
+                                    <div class="col-lg-7 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-1">
+                                        <div class="input-group" *ngIf="isaddmode">
+                                            <input type="date" class="form-control"
+                                                [(ngModel)]="viewModel.employee.dateOfJoining" [readonly]="isReadOnly"
+                                                [disabled]="viewModel.isDisabled" placeholder="Date Of Joining" required
+                                                name="dateOfJoining" #dateOfJoining="ngModel">
+                                            <div *ngFor="let validation of viewModel.validations.dateOfJoining">
+                                                <div *ngIf="(dateOfJoining.touched || viewModel.formSubmitted) && dateOfJoining.hasError(validation.type)"
+                                                    class="text-danger validationMsg">
+                                                    {{validation.message}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="input-group" *ngIf="!isaddmode">
+                                            <input type="date" class="form-control"
+                                                [(ngModel)]="viewModel.employee.dateOfJoining" [readonly]="isReadOnly"
+                                                [disabled]="roleType ==='ClientEmployee' || viewModel.isDisabled"
+                                                placeholder="Date Of Joining" required name="dateOfJoining"
+                                                #dateOfJoining="ngModel">
+                                            <div *ngFor="let validation of viewModel.validations.dateOfJoining">
+                                                <div *ngIf="(dateOfJoining.touched || viewModel.formSubmitted) && dateOfJoining.hasError(validation.type)"
+                                                    class=" text-danger validationMsg">
+                                                    {{validation.message}}
+                                                </div>
+                                            </div>
+                                            <!-- <span class="input-group-text" (click)="doj.toggle()" *ngIf="!viewModel.showButton">
+                                            <bi name="calendar3" class="smallIcon"></bi>
+                                        </span> -->
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-5 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2">
+                                        <label> Designation <span class="text-danger fs-5">*</span> </label>
+                                    </div>
+
+                                    <div class="col-lg-7 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-1">
+                                        <input type="text" class="form-control" required
+                                            [(ngModel)]="viewModel.employee.designation" [readonly]="isReadOnly"
+                                            [disabled]="roleType ==='ClientEmployee' || viewModel.isDisabled"
+                                            placeholder="Designation" #designation="ngModel" name="designation"
+                                            minlength="2" maxlength="20" pattern="^[A-Za-z][A-Za-z0-9]*$">
+                                        <div *ngFor="let validation of viewModel.validations.designation">
+                                            <div *ngIf="(designation.touched || viewModel.formSubmitted) && designation.hasError(validation.type)"
+                                                class=" text-danger validationMsg">
+                                                {{validation.message}}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-5 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2">
+                                        <label> Department</label>
+                                    </div>
+
+                                    <div class="col-lg-7 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-1">
+                                        <div class="input-group" *ngIf="isaddmode">
+                                            <select [disabled]="roleType ==='ClientEmployee' || viewModel.isDisabled"
+                                                class="form-select" [(ngModel)]="viewModel.selectedDepartment"
+                                                [disabled]="viewModel.isDisabled"
+                                                (ngModelChange)="selectedCompanyDepartment()"
+                                                aria-label="Default select example" name="selectedDepartment">
+                                                <option value="undefined" disabled>SELECT DEPARTMENT</option>
+                                                <option *ngFor="let item of viewModel.departmentList"
+                                                    [value]="item.departmentName"> {{item.departmentName}}</option>
+                                            </select>
+
+                                        </div>
+                                        <div class="input-group" *ngIf="!isaddmode">
+                                            <select class="form-select" [(ngModel)]="viewModel.selectedDepartment"
+                                                (ngModelChange)="selectedCompanyDepartment()"
+                                                aria-label="Default select example"
+                                                [disabled]="roleType === 'ClientEmployee' || viewModel.isDisabled"
+                                                name="selectedDepartment">
+                                                <option value="" disabled>{{viewModel.employee.department}}</option>
+                                                <option *ngFor="let item of viewModel.departmentList"
+                                                    [value]="item.departmentName">{{item.departmentName}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end my-2"
+                                        *ngIf="!viewModel.showButton &&viewModel.Permission?.edit">
+                                        <button class="btn coinButton" (click)="updateEmployeeInfo(employeeInfoForm)">
+                                            Update Details
+                                        </button>
+                                    </div>
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end"
+                                        *ngIf="viewModel.showButton">
+
+                                        <button class="btn coinButton m-2" *ngIf="isaddmode &&viewModel.Permission?.add"
+                                            (click)="createEmployeeAndClose(employeeInfoForm)"> Save & Close
+                                        </button>
+
+                                        <button class="btn coinButton" *ngIf="isaddmode &&viewModel.Permission?.add"
+                                            (click)="createEmployee(employeeInfoForm)"> Save & Next </button>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

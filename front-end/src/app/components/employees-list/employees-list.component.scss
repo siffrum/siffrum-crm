@@ -1,0 +1,74 @@
+.tableFixHead {
+    overflow-y: auto; /* make the table scrollable if height is more than 200 px  */
+    height: 400px; /* gives an initial height of 200px to the table */
+  }
+
+@media only screen and (max-width: 760px),
+(min-device-width: 768px) and (max-device-width: 1024px) {
+    table,
+    thead,
+    tbody,
+    th,
+    td,
+    tr {
+        display: block;
+        width: 100%;
+    }
+    thead tr {
+        position: relative;
+        display: none;
+    }
+    tr {
+        margin-top: 1rem;
+    }
+    td {
+        // border: 1px solid rgb(151, 143, 143);
+        position: relative;
+        padding-left: 50%;
+    }
+    td:before {
+        position: absolute;
+        left: 5px;
+        font-size: var(--table-header-font-size);
+        font-weight: var(--table-header-font-weight)
+    }
+    td:nth-of-type(1):before {
+        content: "Code";
+    }
+    td:nth-of-type(2):before {
+        content: "Role";
+    }
+    td:nth-of-type(3):before {
+        content: "Name";
+    }
+    td:nth-of-type(4):before {
+        content: "Email ID";
+    }
+    td:nth-of-type(5):before {
+        content: "Mobile";
+    }
+    td:nth-of-type(6):before {
+        content: "Designation";
+    }
+    td:nth-of-type(7):before {
+        content: "Date Of Joining";
+    }
+    td:nth-of-type(8):before {
+        content: "Actions";
+    }
+}
+.smallIcon {
+    display: inline-block;
+    margin-left: 12px;
+    padding: 3px;
+}
+
+
+// .customPagination a {
+//     color: #000000;
+// }
+// .customPagination .page-item.active .page-link {
+//     border-color: var(--border-color);
+//     background-color: var(--pagging-background-color);
+//     color: var(--text-color);
+// }

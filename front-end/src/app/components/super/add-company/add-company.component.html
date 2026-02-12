@@ -1,0 +1,326 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-10 col-md-10 col-sm-10 col-10">
+            <nav aria-label="breadcrumb">
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"
+                        [ngClass]="_commonService.layoutVM.wizardLocation == 0 ? 'active-tab' : ''">
+                        <a>
+                            <span> Company Info </span>
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item"
+                        [ngClass]="_commonService.layoutVM.wizardLocation == 1 ? 'active-tab' : ''">
+                        <a>
+                            <span> Address </span>
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item"
+                        [ngClass]="_commonService.layoutVM.wizardLocation == 2 ? 'active-tab' : ''">
+                        <a>
+                            <span> Add Modules </span>
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item"
+                        [ngClass]="_commonService.layoutVM.wizardLocation == 3 ? 'active-tab' : ''">
+                        <a>
+                            <span> Add Admin </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+    </div>
+    <!-- Add Company basic Info (start) -->
+    <div class="row" *ngIf="_commonService.layoutVM.wizardLocation == 0">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+                            Add Company Info
+                        </div>
+                    </div>
+
+                </div>
+                <form #companyOverviewForm="ngForm">
+                    <div class="card-body p-0 px-2">
+                        <div class="row align-items-center p-lg-2 p-md-2 p-sm-2 p-2">
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                <label>Company Code <span class="text-danger fs-5">*</span></label>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                <input type="text" class="form-control" value=""
+                                    [(ngModel)]="viewModel.AddCompanyDetail.companyCode" placeholder="Set Company Code"
+                                    required #companyCode="ngModel" name="companyCode" minlength="3" maxlength="10">
+                                <div *ngFor="let validation of viewModel.companyDetailsValidations.companyCode">
+                                    <div class="text-danger validationMsg"
+                                        *ngIf="(companyCode.touched || viewModel.formSubmitted) && companyCode.hasError(validation.type)">
+                                        {{ validation.message }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row align-items-center p-lg-2 p-md-2 p-sm-2 p-2">
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                <label> Registered Company Name <span class="text-danger fs-5">*</span> </label>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                <input type="text" class="form-control" [(ngModel)]="viewModel.AddCompanyDetail.name"
+                                    placeholder="Enter Company Name" required #name="ngModel" name="name"
+                                    pattern="^[A-Za-z][A-Za-z0-9\s]*$" minlength="3" maxlength="20">
+                                <div *ngFor="let validation of viewModel.companyDetailsValidations.name">
+                                    <div class="text-danger validationMsg"
+                                        *ngIf="(name.touched || viewModel.formSubmitted) && name.hasError(validation.type)">
+                                        {{ validation.message }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row align-items-center p-lg-2 p-md-2 p-sm-2 p-2">
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                <label> Description of Company<span class="text-danger fs-5">*</span> </label>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                <textarea type="text" class="form-control"
+                                    [(ngModel)]="viewModel.AddCompanyDetail.description"
+                                    placeholder="Enter Company Description" required name="description"
+                                    #description="ngModel" minlength="5" maxlength="50"
+                                    pattern="^[A-Za-z][A-Za-z0-9\s]*$"></textarea>
+                                <div *ngFor="let validation of viewModel.companyDetailsValidations.description">
+                                    <div class="text-danger validationMsg"
+                                        *ngIf="(description.touched || viewModel.formSubmitted) && description.hasError(validation.type)">
+                                        {{ validation.message }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row align-items-center p-lg-2 p-md-2 p-sm-2 p-2">
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                <label> Date Of Establishment <span class="text-danger fs-5">*</span></label>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                <input type="date" class="form-control"
+                                    [(ngModel)]="viewModel.AddCompanyDetail.companyDateOfEstablishment" required
+                                    #companyDateOfEstablishment="ngModel" name="companyDateOfEstablishment">
+                                <div
+                                    *ngFor="let validation of viewModel.companyDetailsValidations.companyDateOfEstablishment">
+                                    <div class="text-danger validationMsg"
+                                        *ngIf="(companyDateOfEstablishment.touched || viewModel.formSubmitted) && companyDateOfEstablishment.hasError(validation.type)">
+                                        {{ validation.message }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row align-items-center p-lg-2 p-md-2 p-sm-2 p-2">
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                <label> Official Website <span class="text-danger fs-5">*</span> </label>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                <input type="text" class="form-control"
+                                    [(ngModel)]="viewModel.AddCompanyDetail.companyWebsite"
+                                    placeholder="Enter Company Website" required #companyWebsite="ngModel"
+                                    name="companyWebsite" minlength="3" maxlength="20" pattern="^[a-zA-Z0-9\s.,#-]+$">
+                                <div *ngFor="let validation of viewModel.companyDetailsValidations.companyWebsite">
+                                    <div class="text-danger validationMsg"
+                                        *ngIf="(companyWebsite.touched || viewModel.formSubmitted) && companyWebsite.hasError(validation.type)">
+                                        {{ validation.message }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row align-items-center p-lg-2 p-md-2 p-sm-2 p-2">
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                <label> Contact Email <span class="text-danger fs-5">*</span></label>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                <input type="email" class="form-control"
+                                    [(ngModel)]="viewModel.AddCompanyDetail.companyContactEmail"
+                                    placeholder="Enter Comoany Email ID" required #contactEmail="ngModel"
+                                    name="contactEmail" minlength="10" maxlength="20"
+                                    pattern="^[a-zA-Z][a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]*@[a-zA-Z0-9.-]+[a-zA-Z0-9]$">
+                                <div *ngFor="let validation of viewModel.companyDetailsValidations.contactEmail">
+                                    <div class="text-danger validationMsg"
+                                        *ngIf="(contactEmail.touched || viewModel.formSubmitted) && contactEmail.hasError(validation.type)">
+                                        {{ validation.message }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row align-items-center p-lg-2 p-md-2 p-sm-2 p-2">
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                <label> Contact Number <span class="text-danger fs-5">*</span></label>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                <input type="text" class="form-control"
+                                    [(ngModel)]="viewModel.AddCompanyDetail.companyMobileNumber"
+                                    placeholder="Enter Phone Number" required #companyMobileNumber="ngModel"
+                                    name="companyMobileNumber" minlength="10" maxlength="10" pattern="^[0-9]{1,10}$">
+                                <div *ngFor="let validation of viewModel.companyDetailsValidations.companyMobileNumber">
+                                    <div class="text-danger validationMsg"
+                                        *ngIf="(companyMobileNumber.touched || viewModel.formSubmitted) && companyMobileNumber.hasError(validation.type)">
+                                        {{ validation.message }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end  p-2">
+
+                                <button class="btn coinButton" (click)="addNewCompanyDetails(companyOverviewForm)">Save
+                                    &
+                                    next</button>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+
+
+        </div>
+    </div>
+
+    <div class="row" *ngIf="_commonService.layoutVM.wizardLocation == 1">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+                            Add Company Address Details
+                        </div>
+                    </div>
+                </div>
+                <form #companyAddressForm="ngForm">
+                    <div class="card-body p-0 px-2">
+                        <div class="row align-items-center p-lg-2 p-md-2 p-sm-2 p-2">
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                <label>Registered Office Address <span class="text-danger fs-5">*</span></label>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                <input type="text" class="form-control" value=""
+                                    [(ngModel)]="viewModel.AddCompanyAddress.address1"
+                                    placeholder="Permenant Office Address" required #address1="ngModel" name="address1"
+                                    minlength="5" maxlength="20" pattern="^[A-Za-z][A-Za-z0-9\s]*$">
+                                <div *ngFor="let validation of viewModel.companyAddressValidations.address1">
+                                    <div class="text-danger validationMsg"
+                                        *ngIf="(address1.touched || viewModel.formSubmitted) && address1.hasError(validation.type)">
+                                        {{ validation.message }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row align-items-center p-lg-2 p-md-2 p-sm-2 p-2">
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                <label> Corporate Office Address <span class="text-danger fs-5">*</span></label>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                <input type="text" class="form-control" value=""
+                                    [(ngModel)]="viewModel.AddCompanyAddress.address2" placeholder="Corporate Address"
+                                    required #address2="ngModel" name="address2" minlength="5" maxlength="20"
+                                    pattern="^[A-Za-z][A-Za-z0-9\s]*$">
+                                <div *ngFor="let validation of viewModel.companyAddressValidations.address2">
+                                    <div class="text-danger validationMsg"
+                                        *ngIf="(address2.touched || viewModel.formSubmitted) && address2.hasError(validation.type)">
+                                        {{ validation.message }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row align-items-center p-lg-2 p-md-2 p-sm-2 p-2">
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                <label> Country <span class="text-danger fs-5">*</span></label>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                <input type="text" class="form-control"
+                                    [(ngModel)]="viewModel.AddCompanyAddress.country" placeholder="Country Name"
+                                    required #country="ngModel" name="country" minlength="3" maxlength="20"
+                                    pattern="^[A-Za-z][A-Za-z0-9\s]*$">
+                                <div *ngFor="let validation of viewModel.companyAddressValidations.country">
+                                    <div class="text-danger validationMsg"
+                                        *ngIf="(country.touched || viewModel.formSubmitted) && country.hasError(validation.type)">
+                                        {{ validation.message }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row align-items-center p-lg-2 p-md-2 p-sm-2 p-2">
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                <label> State <span class="text-danger fs-5">*</span></label>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                <input type="text" class="form-control" [(ngModel)]="viewModel.AddCompanyAddress.state"
+                                    placeholder="State Name" required #state="ngModel" name="state" minlength="3"
+                                    maxlength="20" pattern="^[A-Za-z][A-Za-z0-9\s]*$">
+                                <div *ngFor="let validation of viewModel.companyAddressValidations.state">
+                                    <div class="text-danger validationMsg"
+                                        *ngIf="(state.touched || viewModel.formSubmitted) && state.hasError(validation.type)">
+                                        {{ validation.message }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row align-items-center p-lg-2 p-md-2 p-sm-2 p-2">
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                <label> City <span class="text-danger fs-5">*</span></label>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                <input type="text" class="form-control" [(ngModel)]="viewModel.AddCompanyAddress.city"
+                                    placeholder="City Name" required #city="ngModel" name="city" minlength="5"
+                                    maxlength="20" pattern="^[A-Za-z][A-Za-z0-9\s]*$">
+                                <div *ngFor="let validation of viewModel.companyAddressValidations.city">
+                                    <div class="text-danger validationMsg"
+                                        *ngIf="(city.touched || viewModel.formSubmitted) && city.hasError(validation.type)">
+                                        {{ validation.message }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row align-items-center p-lg-2 p-md-2 p-sm-2 p-2">
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                <label> Pincode <span class="text-danger fs-5">*</span></label>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                <input type="number" class="form-control"
+                                    [(ngModel)]="viewModel.AddCompanyAddress.pinCode" placeholder="PIN CODE" required
+                                    #pinCode="ngModel" name="pinCode" minlength="4" maxlength="8" pattern="^[0-9]*$">
+                                <div *ngFor="let validation of viewModel.companyAddressValidations.pinCode">
+                                    <div class="text-danger validationMsg"
+                                        *ngIf="(pinCode.touched || viewModel.formSubmitted) && pinCode.hasError(validation.type)">
+                                        {{ validation.message }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end p-2">
+                                <button class="btn coinButton ms-1"
+                                    (click)="addNewCompanyAddress(companyAddressForm)">Save & next</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Add Company Address (End) -->
+
+    <!-- Add Company Modules and Features (start) -->
+    <div class="row" *ngIf="_commonService.layoutVM.wizardLocation == 2">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+            <app-module-permissions [company]="viewModel.AddCompanyDetail"></app-module-permissions>
+        </div>
+    </div>
+    <!-- Add Company  Modules and features (End) -->
+    <!-- Add Company Admin (start) -->
+    <div class="row" *ngIf="_commonService.layoutVM.wizardLocation == 3">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+            <app-add-admin [company]="viewModel.AddCompanyDetail"></app-add-admin>
+        </div>
+    </div>
+    <!-- Add Company  Admin (End) -->
+</div>

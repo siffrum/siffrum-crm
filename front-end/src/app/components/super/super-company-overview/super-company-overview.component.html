@@ -1,0 +1,210 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-11 col-md-10 col-sm-10 col-10">
+            <!--  select Tabs  start -->
+            <nav aria-label="breadcrumb">
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"
+                        [ngClass]="_commonService.layoutVM.wizardLocation == 0 ? 'active-tab' : ''">
+                        <a (click)="nextWizardLocation(0)">
+                            <span> Overview </span>
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item"
+                        [ngClass]="_commonService.layoutVM.wizardLocation == 1 ? 'active-tab' : ''">
+                        <a (click)="nextWizardLocation(1)">
+                            <span> Address </span>
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item"
+                        [ngClass]="_commonService.layoutVM.wizardLocation == 2 ? 'active-tab' : ''">
+                        <a (click)="nextWizardLocation(2)">
+                            <span>Modules/Features</span>
+                        </a>
+                    </li>
+                    <!-- *ngIf="_commonService.layoutVM.wizardLocation == 3" -->
+                    <li class="breadcrumb-item"
+                        [ngClass]="_commonService.layoutVM.wizardLocation == 3 ? 'active-tab' : ''">
+                        <a (click)="nextWizardLocation(3)">
+                            <span>User Info</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <!-- select tabs end -->
+        </div>
+    </div>
+    <!-- Company Overview start (Tab) -->
+    <div class="row mt-2" *ngIf="_commonService.layoutVM.wizardLocation == 0">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+            <div class="card slide-up-animation">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+                            <span> Company Basic Info </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body p-0 px-2">
+                    <div class="row align-items-center p-lg-2 p-md-2 p-sm-2 p-2">
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-12 ">
+                            <label>Company Code</label>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                            <input type="text" class="form-control" value="{{viewModel.company.companyCode}}"
+                                [(ngModel)]="viewModel.company.companyCode" required="required"
+                                [disabled]="viewModel.isDisabled" pattern="^[0-9]{3,10}$">
+                        </div>
+                    </div>
+                    <div class="row align-items-center p-lg-2 p-md-2 p-sm-2 p-2">
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                            <label> Description of Company </label>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                            <input type="text" class="form-control" [(ngModel)]="viewModel.company.description"
+                                required="required" [disabled]="viewModel.isDisabled">
+                        </div>
+                    </div>
+                    <div class="row align-items-center p-lg-2 p-md-2 p-sm-2 p-2">
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                            <label> Registered Company Name </label>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                            <input type="text" class="form-control" required="required"
+                                [(ngModel)]="viewModel.company.name" [disabled]="true">
+                        </div>
+                    </div>
+                    <div class="row align-items-center p-lg-2 p-md-2 p-sm-2 p-2">
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                            <label> Date Of Establishment </label>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                            <input type="date" class="form-control" required="required"
+                                [(ngModel)]="viewModel.company.companyDateOfEstablishment" [disabled]="true">
+                        </div>
+                    </div>
+                    <div class="row align-items-center p-lg-2 p-md-2 p-sm-2 p-2">
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                            <label> Official Website </label>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                            <input type="text" class="form-control" required
+                                [(ngModel)]="viewModel.company.companyWebsite" [disabled]="viewModel.isDisabled"
+                                pattern="^[a-zA-Z0-9.,#-]+$">
+                        </div>
+                    </div>
+                    <div class="row align-items-center p-lg-2 p-md-2 p-sm-2 p-2">
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                            <label> Contact Email </label>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                            <input type="email" class="form-control" required="required"
+                                [(ngModel)]="viewModel.company.companyContactEmail" [disabled]="viewModel.isDisabled"
+                                pattern="^[a-zA-Z][a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]*@[a-zA-Z0-9.-]+[a-zA-Z0-9]$">
+                        </div>
+                    </div>
+                    <div class="row align-items-center p-lg-2 p-md-2 p-sm-2 p-2">
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                            <label> Contact Number </label>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                            <input type="number" class="form-control" required="required"
+                                value="{{viewModel.company.companyMobileNumber}}"
+                                [(ngModel)]="viewModel.company.companyMobileNumber" [disabled]="viewModel.isDisabled">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Company Overview end (Tab)-->
+    <!--  Company Address Card start (Tab) -->
+    <div class="row" *ngIf="_commonService.layoutVM.wizardLocation == 1">
+        <div class="col-lg-12 col-sm-12 col-xs-12">
+            <div class="card slide-up-animation">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+                            <span>Company Address Details </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row align-items-center p-lg-2 p-md-2 p-sm-2 p-2">
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                            <label> Registered Office Address </label>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                            <input type="text" class="form-control" required="required"
+                                value="{{viewModel.companyAddress.address1}}"
+                                [(ngModel)]="viewModel.companyAddress.address1" [disabled]="viewModel.isDisabled">
+                        </div>
+                    </div>
+                    <div class="row align-items-center p-lg-2 p-md-2 p-sm-2 p-2">
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                            <label> Corporate Office Address </label>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                            <input type="text" class="form-control" required="required"
+                                value="{{viewModel.companyAddress.address2}}"
+                                [(ngModel)]="viewModel.companyAddress.address2" [disabled]="viewModel.isDisabled">
+                        </div>
+                    </div>
+                    <div class="row align-items-center p-lg-2 p-md-2 p-sm-2 p-2">
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                            <label> Country </label>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                            <input type="text" class="form-control" required="required"
+                                value="{{viewModel.companyAddress.country}}"
+                                [(ngModel)]="viewModel.companyAddress.country" [disabled]="viewModel.isDisabled">
+                        </div>
+                    </div>
+                    <div class="row align-items-center p-lg-2 p-md-2 p-sm-2 p-2">
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                            <label> State </label>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                            <input type="text" class="form-control" required="required"
+                                value="{{viewModel.companyAddress.state}}" [(ngModel)]="viewModel.companyAddress.state"
+                                [disabled]="viewModel.isDisabled">
+                        </div>
+                    </div>
+                    <div class="row align-items-center p-lg-2 p-md-2 p-sm-2 p-2">
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                            <label> City </label>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                            <input type="text" class="form-control" required="required"
+                                value="{{viewModel.companyAddress.city}}" [(ngModel)]="viewModel.companyAddress.city"
+                                [disabled]="viewModel.isDisabled">
+                        </div>
+                    </div>
+                    <div class="row align-items-center p-lg-2 p-md-2 p-sm-2 p-2">
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                            <label> Pincode </label>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-12 ">
+                            <input type="number" class="form-control" required="required"
+                                value="{{viewModel.companyAddress.pinCode}}"
+                                [(ngModel)]="viewModel.companyAddress.pinCode" [disabled]="viewModel.isDisabled">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--  Company Address Card (Tab) end -->
+    <!-- Add Modules and Features to Company (Tab) ---start -->
+    <div class="row mt-2" *ngIf="_commonService.layoutVM.wizardLocation == 2">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+            <app-module-permissions></app-module-permissions>
+        </div>
+    </div>
+</div>
+<!--Company Admin table List  Tab--satrt -->
+<div class="row mt-2" *ngIf="_commonService.layoutVM.wizardLocation == 3">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+        <app-add-admin></app-add-admin>
+    </div>
+</div>

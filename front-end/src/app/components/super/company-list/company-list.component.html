@@ -1,0 +1,55 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-6 mb-2">
+            <button class="btn coinButton" (click)="_commonService.layoutVM.isAddMode==true"
+                routerLink="../add-company"> Add New Company &#43; </button>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-6 text-lg-end ">
+            <label> Total Number of Companies: </label> <span> {{viewModel.pagination.totalCount}}</span>
+        </div>
+        <div class="col-lg-12">
+            <table class="table mb-0">
+                <thead>
+                    <tr>
+                        <th> Company Code </th>
+                        <th> Name </th>
+                        <th> Description</th>
+                        <th>Status</th>
+                        <th> Action </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of viewModel.clientCompanyDetaillist">
+                        <td>{{item.companyCode}} </td>
+                        <td> {{item.name}}</td>
+                        <td> {{item.description}}</td>
+                        <td class="align-middle ">
+                            <div class="form-check form-switch">
+                                <input mdbCheckbox class="form-check-input" [checked]="item.isEnabled" type="checkbox"
+                                    (change)="updateCompanyStatus($event, item.id)"
+                                    (mouseenter)="viewModel.showTooltip = true"
+                                    (mouseleave)="viewModel.showTooltip = false" [attr.title]="'Toggle'"
+                                    [attr.data-placement]="'left'"
+                                    [ngClass]="{ 'tooltip-show': viewModel.showTooltip }" />
+                            </div>
+                        </td>
+                        <td>
+                            <i class="bi bi-person-lines-fill smallIcon"
+                                (click)="_commonService.layoutVM.isAddMode==false" routerLink="../overview/{{item.id}}"
+                                (mouseenter)="viewModel.showTooltip = true" (mouseleave)="viewModel.showTooltip = false"
+                                [attr.title]="'View'" [attr.data-placement]="'left'"
+                                [ngClass]="{ 'tooltip-show': viewModel.showTooltip }">
+                            </i>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12 d-flex justify-content-center pt-1"
+                *ngIf="viewModel.pagination && viewModel.pagination.totalCount">
+                <pagination (selectedPageNum)="loadPagedataWithPagination($event)" [viewModel]="viewModel.pagination">
+                </pagination>
+            </div>
+        </div>
+    </div>
+
+</div>
