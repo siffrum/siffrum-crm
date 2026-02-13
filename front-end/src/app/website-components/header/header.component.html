@@ -1,24 +1,62 @@
-  <!-- ======= Header ======= -->
+<header class="site-header" [class.scrolled]="scrolled">
+  <div class="nav-wrap">
+    <!-- Brand -->
+    <a class="brand" routerLink="/website" aria-label="Home">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span class="brand-title">Payroll Management</span>
+    </a>
 
-  <header id="header" class="fixed-top ">
-    <div class="container d-flex align-items-center">
+    <!-- Desktop Nav -->
+    <nav class="nav-links" aria-label="Primary">
+      <a (click)="scrollToSection('product')">Product</a>
+      <a (click)="scrollToSection('usecases')">Use Cases</a>
+      <a (click)="scrollToSection('security')">Security</a>
+      <a (click)="scrollToSection('faq')">Queries</a>
+      <a (click)="scrollToSection('pricing')">Pricing</a>
+    </nav>
 
-      <h1 class="logo me-auto"><a (click)="navigateToSection('#home')">Coin Management</a></h1>
-      <!-- Uncomment below if you prefer to use an image logo -->
-      <!-- <a href="index.html" class="logo me-auto"><img src="assets/img/logo.png" alit="Image Not Found" class="img-fluid"></a>-->
+    <!-- Right side -->
+    <div class="nav-actions">
+      <!-- Desktop Login only -->
+      <button class="btn btn-primary desktop-only" type="button" (click)="checkToken()">
+        Login
+      </button>
 
-      <nav id="navbar" class="navbar">
-        <ul>
-          <li><a class="nav-link scrollto " href="">Home</a></li>
-          <li><a class="nav-link scrollto" (click)="navigateToSection('#about')">About</a></li>
-          <li><a class="nav-link scrollto" (click)="navigateToSection('#pricing')">Pricing</a></li>
-          <li><a class="nav-link scrollto"  (click)="navigateToSection('#contact')">Contact</a></li>
-          <li><a class="getstarted scrollto"  (click)="checkToken()">Get Started</a></li>
-        </ul>
-        <i class="bi bi-list mobile-nav-toggle" (click)="toggleMobileNav()"></i>
-      </nav><!-- .navbar -->
-
+      <!-- Mobile Toggle -->
+      <button
+        id="mobile-menu-btn"
+        type="button"
+        class="burger mobile-only"
+        (click)="toggleMobileNav()"
+        [class.open]="menuOpen"
+        [attr.aria-expanded]="menuOpen"
+        aria-controls="mobile-menu"
+        aria-label="Toggle menu"
+      >
+        <span></span><span></span><span></span>
+      </button>
     </div>
-  </header><!-- End Header -->
+  </div>
 
+  <!-- Mobile Menu -->
+  <div
+    id="mobile-menu"
+    class="mobile-menu"
+    [class.open]="menuOpen"
+    role="dialog"
+    aria-label="Mobile navigation"
+  >
+    <div class="mobile-card">
+      <a (click)="scrollToSection('product')">Product</a>
+      <a (click)="scrollToSection('usecases')">Use Cases</a>
+      <a (click)="scrollToSection('security')">Security</a>
+      <a (click)="scrollToSection('faq')">Queries</a>
+      <a (click)="scrollToSection('pricing')">Pricing</a>
 
+      <!-- Mobile Login (ONLY here for mobile) -->
+      <button class="btn btn-primary mobile-login" type="button" (click)="checkToken()">
+        Login
+      </button>
+    </div>
+  </div>
+</header>
