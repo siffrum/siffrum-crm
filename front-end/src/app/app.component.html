@@ -1,9 +1,10 @@
 <div [ngClass]="[_commonService.layoutVM.toogleWrapper]">
-    <!-- <app-toast-container aria-live="polite" aria-atomic="true"></app-toast-container> -->
-    <app-spinner></app-spinner>
-    <app-side-menu *ngIf="_commonService.layoutVM.showLeftSideMenu"></app-side-menu>
-    <div  [id]="_commonService.layoutVM.showLeftSideMenu ? 'content' : ''">
-        <app-top-nav class="topBar"> </app-top-nav>
-        <router-outlet></router-outlet>
-    </div>
+  <app-spinner></app-spinner>
+
+  <app-side-menu *ngIf="_commonService.layoutVM.showLeftSideMenu"></app-side-menu>
+
+  <div [id]="_commonService.layoutVM.showLeftSideMenu ? 'content' : ''">
+    <app-top-nav class="topBar"></app-top-nav>
+    <router-outlet></router-outlet>
+  </div>
 </div>

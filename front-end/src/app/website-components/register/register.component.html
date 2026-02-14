@@ -1,247 +1,351 @@
+<div class="wiz-page grain bg-grid">
+  <div class="blob blob-a" aria-hidden="true"></div>
+  <div class="blob blob-b" aria-hidden="true"></div>
+  <div class="blob blob-c" aria-hidden="true"></div>
 
+  <div class="wiz-shell">
 
-<div class="card slide-up-animation m-5">
-    <div class="card-header">
-        <div class="row">
-            <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-center ">
-               <b>Add Company Info</b>
-            </div>
+    <!-- Left info -->
+    <section class="wiz-hero hide-on-short">
+      <div class="pill">
+        <span class="pill-dot"></span>
+        Workspace Setup <span class="pill-sep">•</span> Company + Admin
+      </div>
+
+      <h1 class="hero-title">
+        Create your workspace.<br />
+        <span class="hero-gradient">No scrolling required.</span>
+      </h1>
+
+      <p class="hero-sub">
+        Quick setup in steps. We validate only what you can see.
+      </p>
+
+      <div class="mini">
+        <div class="mini-card"><div class="mini-k">Step 1</div><div class="mini-v">Company</div></div>
+        <div class="mini-card"><div class="mini-k">Step 2</div><div class="mini-v">Admin</div></div>
+        <div class="mini-card"><div class="mini-k">Finish</div><div class="mini-v">Review</div></div>
+      </div>
+    </section>
+
+    <!-- Right -->
+    <section class="wiz-cardWrap">
+      <div class="wiz-card">
+        <div class="top-hairline"></div>
+
+        <!-- top actions -->
+        <div class="top-actions">
+          <button type="button" class="iconBtn" (click)="theme.toggle()" aria-label="Toggle theme">
+            <span class="emoji" *ngIf="theme.isDark()">🌙</span>
+            <span class="emoji" *ngIf="!theme.isDark()">☀️</span>
+          </button>
+
+          <a routerLink="/login" class="iconBtn" aria-label="Back to login">✕</a>
         </div>
-    </div>
-    <div class="card-body p-0 px-2">
-        <form #companyOverviewForm="ngForm">
-            <div class="row">
-                <div class="col-lg-6 col-md-6 col-sm-6 col-6">
-                    <div class="row align-items-center p-lg-2 p-md-2 p-sm-2 p-2">
-                        <div class="col-lg-5 col-md-5 col-sm-12 col-12">
-                            <label>Company Code <span class="text-danger fs-5">*</span></label>
-                        </div>
-                        <div class="col-lg-7 col-md-7 col-sm-12 col-12">
-                            <input type="text" class="form-control" value=""
-                                [(ngModel)]="viewModel.AddCompanyDetail.companyCode" placeholder="Set Company Code"
-                                required #companyCode="ngModel" name="companyCode" minlength="3" maxlength="10">
-                            <div *ngFor="let validation of viewModel.companyDetailsValidations.companyCode">
-                                <div class="text-danger validationMsg"
-                                    *ngIf="(companyCode.touched || viewModel.formSubmitted) && companyCode.hasError(validation.type)">
-                                    {{ validation.message }}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row align-items-center p-lg-2 p-md-2 p-sm-2 p-2">
-                        <div class="col-lg-5 col-md-5 col-sm-12 col-12">
-                            <label>Company Name <span class="text-danger fs-5">*</span> </label>
 
-                        </div>
-                        <div class="col-lg-7 col-md-7 col-sm-12 col-12">
-                            <input type="text" class="form-control" [(ngModel)]="viewModel.AddCompanyDetail.name"
-                                placeholder="Enter Company Name" required #name="ngModel" name="name"
-                                pattern="^[A-Za-z][A-Za-z0-9\s]*$" minlength="3" maxlength="20">
-                            <div *ngFor="let validation of viewModel.companyDetailsValidations.name">
-                                <div class="text-danger validationMsg"
-                                    *ngIf="(name.touched || viewModel.formSubmitted) && name.hasError(validation.type)">
-                                    {{ validation.message }}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row align-items-center p-lg-2 p-md-2 p-sm-2 p-2">
-                        <div class="col-lg-5 col-md-5 col-sm-12 col-12">
-                            <label> Date Of Establishment <span class="text-danger fs-5">*</span></label>
+        <div class="head">
+          <div>
+            <div class="kicker">Registration</div>
+            <h2 class="title">
+              {{ step===1 ? 'Add Company Info' : (step===2 ? 'Add Admin Info' : 'Review & Submit') }}
+            </h2>
+            <p class="subtitle">Complete the steps to sign up.</p>
+          </div>
+        </div>
 
-                        </div>
-                        <div class="col-lg-7 col-md-7 col-sm-12 col-12">
-                            <input type="date" class="form-control"
-                                [(ngModel)]="viewModel.AddCompanyDetail.companyDateOfEstablishment" required
-                                #companyDateOfEstablishment="ngModel" name="companyDateOfEstablishment">
-                            <div
-                                *ngFor="let validation of viewModel.companyDetailsValidations.companyDateOfEstablishment">
-                                <div class="text-danger validationMsg"
-                                    *ngIf="(companyDateOfEstablishment.touched || viewModel.formSubmitted) && companyDateOfEstablishment.hasError(validation.type)">
-                                    {{ validation.message }}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row align-items-center p-lg-2 p-md-2 p-sm-2 p-2">
-                        <div class="col-lg-5 col-md-5 col-sm-12 col-12">
-                            <label> Official Website <span class="text-danger fs-5">*</span> </label>
+        <!-- Stepper -->
+        <div class="stepper">
+          <button type="button" class="step"
+                  [class.active]="step===1"
+                  [class.done]="step>1"
+                  (click)="goStep(1, companyOverviewForm)">
+            <span class="dot">1</span><span class="txt">Company</span>
+          </button>
 
-                        </div>
-                        <div class="col-lg-7 col-md-7 col-sm-12 col-12">
-                            <input type="text" class="form-control"
-                                [(ngModel)]="viewModel.AddCompanyDetail.companyWebsite"
-                                placeholder="Enter Company Website" required #companyWebsite="ngModel"
-                                name="companyWebsite" minlength="3" maxlength="20" pattern="^[a-zA-Z0-9\s.,#-]+$">
-                            <div *ngFor="let validation of viewModel.companyDetailsValidations.companyWebsite">
-                                <div class="text-danger validationMsg"
-                                    *ngIf="(companyWebsite.touched || viewModel.formSubmitted) && companyWebsite.hasError(validation.type)">
-                                    {{ validation.message }}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row align-items-center p-lg-2 p-md-2 p-sm-2 p-2">
-                        <div class="col-lg-5 col-md-5 col-sm-12 col-12">
-                            <label> Contact Email <span class="text-danger fs-5">*</span></label>
+          <div class="line" [class.filled]="step>1"></div>
 
-                        </div>
-                        <div class="col-lg-7 col-md-7 col-sm-12 col-12">
-                            <input type="email" class="form-control"
-                                [(ngModel)]="viewModel.AddCompanyDetail.companyContactEmail"
-                                placeholder="Enter Comoany Email ID" required #contactEmail="ngModel"
-                                name="contactEmail" minlength="10" maxlength="20"
-                                pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$">
-                            <div *ngFor="let validation of viewModel.companyDetailsValidations.contactEmail">
-                                <div class="text-danger validationMsg"
-                                    *ngIf="(contactEmail.touched || viewModel.formSubmitted) && contactEmail.hasError(validation.type)">
-                                    {{ validation.message }}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row align-items-center p-lg-2 p-md-2 p-sm-2 p-2">
-                        <div class="col-lg-5 col-md-5 col-sm-12 col-12">
-                            <label> Contact Number <span class="text-danger fs-5">*</span></label>
+          <button type="button" class="step"
+                  [class.active]="step===2"
+                  [class.done]="step>2"
+                  (click)="goStep(2, companyOverviewForm)">
+            <span class="dot">2</span><span class="txt">Admin</span>
+          </button>
 
-                        </div>
-                        <div class="col-lg-7 col-md-7 col-sm-12 col-12">
-                            <input type="text" class="form-control"
-                                [(ngModel)]="viewModel.AddCompanyDetail.companyMobileNumber"
-                                placeholder="Enter Phone Number" required #companyMobileNumber="ngModel"
-                                name="companyMobileNumber" minlength="10" maxlength="10" pattern="^[0-9]{1,10}$">
-                            <div *ngFor="let validation of viewModel.companyDetailsValidations.companyMobileNumber">
-                                <div class="text-danger validationMsg"
-                                    *ngIf="(companyMobileNumber.touched || viewModel.formSubmitted) && companyMobileNumber.hasError(validation.type)">
-                                    {{ validation.message }}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+          <div class="line" [class.filled]="step>2"></div>
 
+          <button type="button" class="step"
+                  [class.active]="step===3"
+                  (click)="goStep(3, companyOverviewForm)">
+            <span class="dot">3</span><span class="txt">Review</span>
+          </button>
+        </div>
+
+        <form #companyOverviewForm="ngForm" class="formRoot" novalidate>
+
+          <!-- STEP 1 -->
+          <section class="stepPage" *ngIf="step===1">
+            <div class="grid">
+              <div class="field-block">
+                <label class="label">Company Code <span class="req">*</span></label>
+                <div class="field" [class.field-invalid]="(companyCode.touched || viewModel.formSubmitted) && companyCode.invalid">
+                  <span class="icon">🏷️</span>
+                  <input type="text" class="input"
+                         [(ngModel)]="viewModel.AddCompanyDetail.companyCode"
+                         placeholder="e.g. ACME"
+                         required #companyCode="ngModel" name="companyCode" minlength="3" maxlength="10">
+                  <span class="fieldGlow"></span>
                 </div>
-
-                <div class="col-lg-6 col-md-6 col-sm-6 col-6">
-                    <div class="row align-items-center p-lg-2 p-md-2 p-sm-2 p-2">
-                        <div class="col-lg-4 col-md-4 col-sm-12 col-">
-                            <label> First Name <span class="text-danger fs-5">*</span> </label>
-                        </div>
-
-                        <div class="col-lg-8 col-md-8 col-sm-12 col-12 ">
-                            <input type="text" class="form-control" [(ngModel)]="viewModel.addAdmin.firstName"
-                                placeholder="Enter First Name" required name="firstName" #firstName="ngModel"
-                                minlength="3" maxlength="15" pattern="^[A-Za-z][A-Za-z0-9]*">
-                            <div *ngFor="let validation of viewModel.companyDetailsValidations.firstName">
-                                <div *ngIf="(firstName.touched || viewModel.formSubmitted) && firstName.hasError(validation.type)"
-                                    class="text-danger validationMsg">
-                                    {{ validation.message }}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row align-items-center p-lg-2 p-md-2 p-sm-2 p-2">
-                        <div class="col-lg-4 col-md-4 col-sm-12 col-12">
-                            <label> Last Name <span class="text-danger fs-5">*</span> </label>
-
-                        </div>
-                        <div class="col-lg-8 col-md-8 col-sm-12 col-12">
-                            <input type="text" class="form-control" required
-                            [(ngModel)]="viewModel.addAdmin.lastName" placeholder="Enter Last Name"
-                            required name="lasttName" #lasttName="ngModel"
-                            pattern="^[A-Za-z][A-Za-z0-9]*$" minlength="3" maxlength="15">
-                        <div
-                            *ngFor="let validation of viewModel.companyDetailsValidations.lastName">
-                            <div *ngIf="(lasttName.touched || viewModel.formSubmitted) && lasttName.hasError(validation.type)"
-                                class=" text-danger validationMsg">
-                                {{validation.message}}
-                            </div>
-                        </div>
-                        </div>
-                    </div>
-                    <div class="row align-items-center p-lg-2 p-md-2 p-sm-2 p-2">
-                        <div class="col-lg-4 col-md-4 col-sm-12 col-12">
-                            <label> Personal Email Id <span class="text-danger fs-5">*</span> </label>
-
-                        </div>
-                        <div class="col-lg-8 col-md-8 col-sm-12 col-12">
-                            <input type="text" class="form-control"
-                            [(ngModel)]="viewModel.addAdmin.emailId"
-                            placeholder="Enter  Email Id" required name="email"
-                            minlength="6" maxlength="50" #email="ngModel"
-                            pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$">
-
-                        <div
-                            *ngFor="let validation of viewModel.companyDetailsValidations.email">
-                            <div *ngIf="(email.touched || viewModel.formSubmitted) && email.hasError(validation.type)"
-                                class="text-danger validationMsg">
-                                {{validation.message}}
-                            </div>
-                        </div>
-                        </div>
-                    </div>
-                    <div class="row align-items-center p-lg-2 p-md-2 p-sm-2 p-2">
-                        <div class="col-lg-4 col-md-4 col-sm-12 col-12">
-                            <label> Mobile Number <span class="text-danger fs-5">*</span> </label>
-
-                        </div>
-                        <div class="col-lg-8 col-md-8 col-sm-12 col-12">
-                            <input type="text" class="form-control"
-                            [(ngModel)]="viewModel.addAdmin.phoneNumber"
-                            placeholder="Enter Phone Number" name="MobileNumber"
-                            #phoneNumber="ngModel" required minlength="3" maxlength="15"
-                            pattern="^[0-9]{10}$">
-                        <div
-                            *ngFor="let validation of viewModel.companyDetailsValidations.phoneNumber">
-                            <div *ngIf="(phoneNumber.touched || viewModel.formSubmitted) && phoneNumber.hasError(validation.type)"
-                                class=" text-danger validationMsg">
-                                {{validation.message}}
-                            </div>
-                        </div>
-                        </div>
-                    </div>
-                    <div class="row align-items-center p-lg-2 p-md-2 p-sm-2 p-2">
-                        <div class="col-lg-4 col-md-4 col-sm-12 col-12">
-                            <label> D-O-B <span class="text-danger fs-5">*</span></label>
-
-                        </div>
-                        <div class="col-lg-8 col-md-8 col-sm-12 col-12">
-                            <input type="date" class="form-control" [(ngModel)]="viewModel.addAdmin.dateOfBirth"
-                            [max]="viewModel.disabledDate" [min]="viewModel.maxDate"
-                            [max]="disableDates()" [min]="disableToMinDates()" required name="dateOfBirth"
-                            #dateOfBirth="ngModel">
-                        <div *ngFor="let validation of viewModel.companyDetailsValidations.dateOfBirth">
-                            <div *ngIf="(dateOfBirth.touched || viewModel.formSubmitted) && dateOfBirth.hasError(validation.type)"
-                                class=" text-danger validationMsg">
-                                {{validation.message}}
-                            </div>
-                        </div>
-                        </div>
-                    </div>
-                    <div class="row align-items-center p-lg-2 p-md-2 p-sm-2 p-2">
-                        <div class="col-lg-4 col-md-4 col-sm-12 col-12">
-                            <label>Date Of Joining <span class="text-danger fs-5">*</span></label>
-
-                        </div>
-                        <div class="col-lg-8 col-md-8 col-sm-12 col-12">
-                            <input type="date" class="form-control" [(ngModel)]="viewModel.addAdmin.dateOfJoining"
-                            [max]="viewModel.disabledDate"  required name="dateOfJoining"
-                            #dateOfJoining="ngModel">
-                        <div *ngFor="let validation of viewModel.companyDetailsValidations.dateOfJoining">
-                            <div *ngIf="(dateOfJoining.touched || viewModel.formSubmitted) && dateOfJoining.hasError(validation.type)"
-                                class=" text-danger validationMsg">
-                                {{validation.message}}
-                            </div>
-                        </div>
-                        </div>
-                    </div>
+                <div *ngFor="let validation of viewModel.companyDetailsValidations.companyCode">
+                  <div class="validationMsg" *ngIf="(companyCode.touched || viewModel.formSubmitted) && companyCode.hasError(validation.type)">
+                    {{ validation.message }}
+                  </div>
                 </div>
+              </div>
+
+              <div class="field-block">
+                <label class="label">Company Name <span class="req">*</span></label>
+                <div class="field" [class.field-invalid]="(name.touched || viewModel.formSubmitted) && name.invalid">
+                  <span class="icon">🏢</span>
+                  <input type="text" class="input"
+                         [(ngModel)]="viewModel.AddCompanyDetail.name"
+                         placeholder="Acme Corporation"
+                         required #name="ngModel" name="name"
+                         pattern="^[A-Za-z][A-Za-z0-9\\s]*$" minlength="3" maxlength="40">
+                  <span class="fieldGlow"></span>
+                </div>
+                <div *ngFor="let validation of viewModel.companyDetailsValidations.name">
+                  <div class="validationMsg" *ngIf="(name.touched || viewModel.formSubmitted) && name.hasError(validation.type)">
+                    {{ validation.message }}
+                  </div>
+                </div>
+              </div>
+
+              <div class="field-block">
+                <label class="label">Date Of Establishment <span class="req">*</span></label>
+                <div class="field" [class.field-invalid]="(companyDateOfEstablishment.touched || viewModel.formSubmitted) && companyDateOfEstablishment.invalid">
+                  <span class="icon">📅</span>
+                  <input type="date" class="input"
+                         [(ngModel)]="viewModel.AddCompanyDetail.companyDateOfEstablishment"
+                         required #companyDateOfEstablishment="ngModel" name="companyDateOfEstablishment">
+                  <span class="fieldGlow"></span>
+                </div>
+                <div *ngFor="let validation of viewModel.companyDetailsValidations.companyDateOfEstablishment">
+                  <div class="validationMsg" *ngIf="(companyDateOfEstablishment.touched || viewModel.formSubmitted) && companyDateOfEstablishment.hasError(validation.type)">
+                    {{ validation.message }}
+                  </div>
+                </div>
+              </div>
+
+              <div class="field-block">
+                <label class="label">Official Website <span class="req">*</span></label>
+                <div class="field" [class.field-invalid]="(companyWebsite.touched || viewModel.formSubmitted) && companyWebsite.invalid">
+                  <span class="icon">🌐</span>
+                  <input type="text" class="input"
+                         [(ngModel)]="viewModel.AddCompanyDetail.companyWebsite"
+                         placeholder="https://acme.com"
+                         required #companyWebsite="ngModel" name="companyWebsite"
+                         minlength="3" maxlength="80">
+                  <span class="fieldGlow"></span>
+                </div>
+                <div *ngFor="let validation of viewModel.companyDetailsValidations.companyWebsite">
+                  <div class="validationMsg" *ngIf="(companyWebsite.touched || viewModel.formSubmitted) && companyWebsite.hasError(validation.type)">
+                    {{ validation.message }}
+                  </div>
+                </div>
+              </div>
+
+              <div class="field-block">
+                <label class="label">Contact Email <span class="req">*</span></label>
+                <div class="field" [class.field-invalid]="(contactEmail.touched || viewModel.formSubmitted) && contactEmail.invalid">
+                  <span class="icon">✉️</span>
+                  <input type="email" class="input"
+                         [(ngModel)]="viewModel.AddCompanyDetail.companyContactEmail"
+                         placeholder="contact@acme.com"
+                         required #contactEmail="ngModel" name="contactEmail"
+                         maxlength="80"
+                         pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$">
+                  <span class="fieldGlow"></span>
+                </div>
+                <div *ngFor="let validation of viewModel.companyDetailsValidations.contactEmail">
+                  <div class="validationMsg" *ngIf="(contactEmail.touched || viewModel.formSubmitted) && contactEmail.hasError(validation.type)">
+                    {{ validation.message }}
+                  </div>
+                </div>
+              </div>
+
+              <div class="field-block">
+                <label class="label">Contact Number <span class="req">*</span></label>
+                <div class="field" [class.field-invalid]="(companyMobileNumber.touched || viewModel.formSubmitted) && companyMobileNumber.invalid">
+                  <span class="icon">📞</span>
+                  <input type="text" class="input"
+                         [(ngModel)]="viewModel.AddCompanyDetail.companyMobileNumber"
+                         placeholder="10 digit number"
+                         required #companyMobileNumber="ngModel" name="companyMobileNumber"
+                         minlength="10" maxlength="10" pattern="^[0-9]{10}$">
+                  <span class="fieldGlow"></span>
+                </div>
+                <div *ngFor="let validation of viewModel.companyDetailsValidations.companyMobileNumber">
+                  <div class="validationMsg" *ngIf="(companyMobileNumber.touched || viewModel.formSubmitted) && companyMobileNumber.hasError(validation.type)">
+                    {{ validation.message }}
+                  </div>
+                </div>
+              </div>
             </div>
-        </form>
-    </div>
+          </section>
 
-    <!-- Button at the bottom -->
-    <div class="card-footer text-center">
-        <button type="submit" class="btn signUpBtn" (click)="registerNewCompanyAndAdminDetails(companyOverviewForm)">Sign Up</button>
-    </div>
+          <!-- STEP 2 -->
+          <section class="stepPage" *ngIf="step===2">
+            <div class="grid">
+              <div class="field-block">
+                <label class="label">First Name <span class="req">*</span></label>
+                <div class="field" [class.field-invalid]="(firstName.touched || viewModel.formSubmitted) && firstName.invalid">
+                  <span class="icon">👤</span>
+                  <input type="text" class="input"
+                         [(ngModel)]="viewModel.addAdmin.firstName"
+                         placeholder="First name"
+                         required name="firstName" #firstName="ngModel"
+                         minlength="2" maxlength="20" pattern="^[A-Za-z][A-Za-z0-9]*$">
+                  <span class="fieldGlow"></span>
+                </div>
+                <div *ngFor="let validation of viewModel.companyDetailsValidations.firstName">
+                  <div class="validationMsg" *ngIf="(firstName.touched || viewModel.formSubmitted) && firstName.hasError(validation.type)">
+                    {{ validation.message }}
+                  </div>
+                </div>
+              </div>
+
+              <div class="field-block">
+                <label class="label">Last Name <span class="req">*</span></label>
+                <div class="field" [class.field-invalid]="(lasttName.touched || viewModel.formSubmitted) && lasttName.invalid">
+                  <span class="icon">👤</span>
+                  <input type="text" class="input"
+                         [(ngModel)]="viewModel.addAdmin.lastName"
+                         placeholder="Last name"
+                         required name="lasttName" #lasttName="ngModel"
+                         minlength="2" maxlength="20" pattern="^[A-Za-z][A-Za-z0-9]*$">
+                  <span class="fieldGlow"></span>
+                </div>
+                <div *ngFor="let validation of viewModel.companyDetailsValidations.lastName">
+                  <div class="validationMsg" *ngIf="(lasttName.touched || viewModel.formSubmitted) && lasttName.hasError(validation.type)">
+                    {{ validation.message }}
+                  </div>
+                </div>
+              </div>
+
+              <div class="field-block">
+                <label class="label">Personal Email <span class="req">*</span></label>
+                <div class="field" [class.field-invalid]="(email.touched || viewModel.formSubmitted) && email.invalid">
+                  <span class="icon">✉️</span>
+                  <input type="email" class="input"
+                         [(ngModel)]="viewModel.addAdmin.emailId"
+                         placeholder="name@gmail.com"
+                         required name="email" #email="ngModel"
+                         maxlength="80"
+                         pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$">
+                  <span class="fieldGlow"></span>
+                </div>
+                <div *ngFor="let validation of viewModel.companyDetailsValidations.email">
+                  <div class="validationMsg" *ngIf="(email.touched || viewModel.formSubmitted) && email.hasError(validation.type)">
+                    {{ validation.message }}
+                  </div>
+                </div>
+              </div>
+
+              <div class="field-block">
+                <label class="label">Mobile Number <span class="req">*</span></label>
+                <div class="field" [class.field-invalid]="(phoneNumber.touched || viewModel.formSubmitted) && phoneNumber.invalid">
+                  <span class="icon">📱</span>
+                  <input type="text" class="input"
+                         [(ngModel)]="viewModel.addAdmin.phoneNumber"
+                         placeholder="10 digit number"
+                         name="MobileNumber" #phoneNumber="ngModel"
+                         required minlength="10" maxlength="10" pattern="^[0-9]{10}$">
+                  <span class="fieldGlow"></span>
+                </div>
+                <div *ngFor="let validation of viewModel.companyDetailsValidations.phoneNumber">
+                  <div class="validationMsg" *ngIf="(phoneNumber.touched || viewModel.formSubmitted) && phoneNumber.hasError(validation.type)">
+                    {{ validation.message }}
+                  </div>
+                </div>
+              </div>
+
+              <div class="field-block">
+                <label class="label">Date of Birth <span class="req">*</span></label>
+                <div class="field" [class.field-invalid]="(dateOfBirth.touched || viewModel.formSubmitted) && dateOfBirth.invalid">
+                  <span class="icon">🎂</span>
+                  <input type="date" class="input"
+                         [(ngModel)]="viewModel.addAdmin.dateOfBirth"
+                         [max]="maxDob" [min]="minDob"
+                         required name="dateOfBirth" #dateOfBirth="ngModel">
+                  <span class="fieldGlow"></span>
+                </div>
+                <div *ngFor="let validation of viewModel.companyDetailsValidations.dateOfBirth">
+                  <div class="validationMsg" *ngIf="(dateOfBirth.touched || viewModel.formSubmitted) && dateOfBirth.hasError(validation.type)">
+                    {{ validation.message }}
+                  </div>
+                </div>
+              </div>
+
+              <div class="field-block">
+                <label class="label">Date of Joining <span class="req">*</span></label>
+                <div class="field" [class.field-invalid]="(dateOfJoining.touched || viewModel.formSubmitted) && dateOfJoining.invalid">
+                  <span class="icon">🗓️</span>
+                  <input type="date" class="input"
+                         [(ngModel)]="viewModel.addAdmin.dateOfJoining"
+                         [max]="maxDoj" [min]="minDoj"
+                         required name="dateOfJoining" #dateOfJoining="ngModel">
+                  <span class="fieldGlow"></span>
+                </div>
+                <div *ngFor="let validation of viewModel.companyDetailsValidations.dateOfJoining">
+                  <div class="validationMsg" *ngIf="(dateOfJoining.touched || viewModel.formSubmitted) && dateOfJoining.hasError(validation.type)">
+                    {{ validation.message }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- STEP 3 -->
+          <section class="stepPage" *ngIf="step===3">
+            <div class="review">
+              <div class="reviewBox">
+                <div class="rTitle">Company</div>
+                <div class="rRow"><span>Code</span><b>{{ viewModel.AddCompanyDetail.companyCode || '—' }}</b></div>
+                <div class="rRow"><span>Name</span><b>{{ viewModel.AddCompanyDetail.name || '—' }}</b></div>
+                <div class="rRow"><span>Website</span><b>{{ viewModel.AddCompanyDetail.companyWebsite || '—' }}</b></div>
+                <div class="rRow"><span>Email</span><b>{{ viewModel.AddCompanyDetail.companyContactEmail || '—' }}</b></div>
+                <div class="rRow"><span>Phone</span><b>{{ viewModel.AddCompanyDetail.companyMobileNumber || '—' }}</b></div>
+              </div>
+
+              <div class="reviewBox">
+                <div class="rTitle">Admin</div>
+                <div class="rRow"><span>First</span><b>{{ viewModel.addAdmin.firstName || '—' }}</b></div>
+                <div class="rRow"><span>Last</span><b>{{ viewModel.addAdmin.lastName || '—' }}</b></div>
+                <div class="rRow"><span>Email</span><b>{{ viewModel.addAdmin.emailId || '—' }}</b></div>
+                <div class="rRow"><span>Phone</span><b>{{ viewModel.addAdmin.phoneNumber || '—' }}</b></div>
+                <div class="rRow"><span>DOB</span><b>{{ viewModel.addAdmin.dateOfBirth || '—' }}</b></div>
+                <div class="rRow"><span>DOJ</span><b>{{ viewModel.addAdmin.dateOfJoining || '—' }}</b></div>
+              </div>
+            </div>
+
+            <div class="reviewNote">Please verify details before submitting.</div>
+          </section>
+
+          <!-- footer -->
+          <div class="footer">
+            <button type="button" class="btn ghost" (click)="prev()" [disabled]="step===1">Back</button>
+
+            <button type="button" class="btn primary" *ngIf="step<3" (click)="next(companyOverviewForm)">
+              Next
+            </button>
+
+            <button type="button" class="btn primary" *ngIf="step===3" (click)="registerNewCompanyAndAdminDetails(companyOverviewForm)">
+              Sign Up
+            </button>
+          </div>
+
+        </form>
+      </div>
+    </section>
+  </div>
 </div>

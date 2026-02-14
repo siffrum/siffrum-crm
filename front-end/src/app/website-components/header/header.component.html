@@ -17,6 +17,18 @@
 
     <!-- Right side -->
     <div class="nav-actions">
+      <!-- ✅ Theme Toggle (Desktop) -->
+      <button
+        type="button"
+        class="theme-btn desktop-only"
+        (click)="theme.toggle()"
+        [attr.aria-label]="'Switch to ' + (theme.getMode() === 'dark' ? 'light' : 'dark') + ' mode'"
+      >
+        <span class="theme-ic" *ngIf="theme.getMode() === 'light'">☀️</span>
+        <span class="theme-ic" *ngIf="theme.getMode() === 'dark'">🌙</span>
+        <span class="theme-txt">{{ theme.getMode() === 'dark' ? 'Dark' : 'Light' }}</span>
+      </button>
+
       <!-- Desktop Login only -->
       <button class="btn btn-primary desktop-only" type="button" (click)="checkToken()">
         Login
@@ -52,6 +64,18 @@
       <a (click)="scrollToSection('security')">Security</a>
       <a (click)="scrollToSection('faq')">Queries</a>
       <a (click)="scrollToSection('pricing')">Pricing</a>
+
+      <!-- ✅ Theme Toggle (Mobile) -->
+      <button
+        type="button"
+        class="theme-btn mobile-theme"
+        (click)="theme.toggle()"
+        [attr.aria-label]="'Switch to ' + (theme.getMode() === 'dark' ? 'light' : 'dark') + ' mode'"
+      >
+        <span class="theme-ic" *ngIf="theme.getMode() === 'light'">☀️</span>
+        <span class="theme-ic" *ngIf="theme.getMode() === 'dark'">🌙</span>
+        <span class="theme-txt">{{ theme.getMode() === 'dark' ? 'Dark' : 'Light' }}</span>
+      </button>
 
       <!-- Mobile Login (ONLY here for mobile) -->
       <button class="btn btn-primary mobile-login" type="button" (click)="checkToken()">

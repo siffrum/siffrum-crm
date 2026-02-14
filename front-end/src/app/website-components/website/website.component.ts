@@ -9,6 +9,8 @@ import { CommonService } from "src/app/services/common.service";
 import { ContactUsService } from "src/app/services/contact-us.service";
 import { LogHandlerService } from "src/app/services/log-handler.service";
 import { WebsiteViewModel } from "src/app/view-models/website.viewmodel";
+import { ThemeService } from 'src/app/services/theme.service';
+
 
 @Component({
   selector: "app-website",

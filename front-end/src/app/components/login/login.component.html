@@ -1,116 +1,218 @@
-<div class="container-fluid">
-    <div class="row logIn m-lg-5 m-md-5 m-0 ">
-        <div class="col-lg-6 col-md-12 col-sm-12  px-0 mx-0 col1">
-            <div class="card cardFirst">
-                <div class="h2 mt-3 text-center">Coin Management</div>
-                <div class="card-body  cardBody">
-                    I am convinced that nothing we do is more important than hiring and developing people. At the end of the
-                    day, you bet on people, not on strategies
-                </div>
-                <div class="card-footer">
-                        "Train people well enough so they can leave. Treat them well enough so they don't want to".
-                </div>
-            </div>
+<!-- login.component.html -->
+<div class="auth" [ngClass]="{ 'dark': isDark }">
+  <!-- Background -->
+  <div class="bg">
+    <div class="grad g1"></div>
+    <div class="grad g2"></div>
+    <div class="grid"></div>
+    <div class="noise"></div>
+  </div>
+
+  <!-- Top controls -->
+  <div class="top-actions">
+    <button type="button" class="chip" (click)="goBack()" aria-label="Go back">
+      <span class="chip-ic">←</span>
+      <span>Back</span>
+    </button>
+
+    <button
+      type="button"
+      class="chip"
+      (click)="toggleTheme()"
+      [attr.aria-label]="isDark ? 'Switch to light mode' : 'Switch to dark mode'"
+    >
+      <span class="chip-ic">{{ isDark ? '🌙' : '☀️' }}</span>
+      <span>{{ isDark ? 'Dark' : 'Light' }}</span>
+    </button>
+  </div>
+
+  <main class="wrap">
+    <!-- Left / Brand -->
+    <section class="side">
+      <a class="brand" routerLink="/login" aria-label="Internal home">
+        <span class="mark" aria-hidden="true"></span>
+        <span class="name">Internal<span class="dot">.</span></span>
+      </a>
+
+      <h1 class="h1">
+        Welcome back.<br />
+        <span class="grad-text">Sign in to continue.</span>
+      </h1>
+
+      <p class="sub">
+        Secure access to accounts, pipeline, and operations tools — with role controls and audit-ready events.
+      </p>
+
+      <div class="mini">
+        <div class="mini-card">
+          <p class="k">Security</p>
+          <p class="v">RBAC</p>
         </div>
-        <div class="col-lg-6 col-md-12 col-sm-12 px-0 mx-0 ">
-            <div class="card cardSecond" >
-                <div class="row">
-                    <div class="col-12 text-center mb-5">
-                        <div class="profile_img_wrapper">
-                            <img src="/assets/logo/l2.webp" alt="profile" loading="lazy"
-                            class="profile_img">
-                        </div>
-                        <!-- <p class=" h3  ">Sign In</p> -->
-                    </div>
-                </div>
-                <div>
-                <div class="row">
-                    <div class="col-6">
-                        <div class="login__field">
-                            <i class="login__icon  bi bi-shield-lock-fill" (mouseenter)="viewModel.showTooltip = true"
-                                (mouseleave)="viewModel.showTooltip = false" [attr.title]="'Company Code'"
-                                [attr.data-placement]="'left'" [ngClass]="{ 'tooltip-show': viewModel.showTooltip }"></i>
-
-                            <input type="text" autocomplete="off" placeholder="Company Code" required="required"
-                            [(ngModel)]="viewModel.tokenRequest.companyCode" class="login__input" name="Companycode" #Companycode="ngModel">
-                            <div *ngFor="let validation of viewModel.validations.Companycode">
-                                <div *ngIf="(Companycode.touched) && Companycode.hasError(validation.type)"
-                                    class="text-danger">
-                                    {{validation.message}}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="login__field ">
-                            <select class="form-select " autocomplete="off" [(ngModel)]="viewModel.tokenRequest.roleType"
-                                aria-label="Default select example" name="SelectRole" #SelectRole="ngModel">
-                                <option value="undefined" disabled selected>Select Role</option>
-                                <option *ngFor="let item of viewModel.listRoles" [value]="item">{{ item }}</option>
-                            </select>
-                            <div *ngFor="let validation of viewModel.validations.SelectRole">
-                                <div *ngIf="(SelectRole.touched) && SelectRole.hasError(validation.type)"
-                                    class="text-danger">
-                                    {{validation.message}}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-
-
-                <div class="login__field">
-                    <i class="login__icon bi bi-person-fill" (mouseenter)="viewModel.showTooltip = true"
-                        (mouseleave)="viewModel.showTooltip = false"  [attr.title]="'UserName'"
-                        [attr.data-placement]="'left'" [ngClass]="{ 'tooltip-show': viewModel.showTooltip }"></i>
-
-                    <input type="text" autocomplete="off" placeholder="Enter your username" name="username" required="required"
-                        [(ngModel)]="viewModel.tokenRequest.loginId" class="login__input" #username="ngModel">
-                        <div *ngFor="let validation of viewModel.validations.username">
-                            <div *ngIf="(username.touched) && username.hasError(validation.type)"
-                                class="text-danger">
-                                {{validation.message}}
-                            </div>
-                        </div>
-
-                </div>
-                <div class="login__field">
-                    <div>
-                        <i class="login__icon bi bi-lock-fill"(mouseenter)="viewModel.showTooltip = true"
-                        (mouseleave)="viewModel.showTooltip = false" [attr.title]="'password'"
-                        [attr.data-placement]="'left'" [ngClass]="{ 'tooltip-show': viewModel.showTooltip }"></i>
-
-                        <input type="password" autocomplete="off" class="login__input" name="password" placeholder="Enter your Password" required="required"
-                            [(ngModel)]="viewModel.tokenRequest.password" [type]="viewModel.hide ? 'password' : 'text'" #password="ngModel">
-
-                        <i (click)="togglePassword()" class="bi bi-eye-fill eye" size="small"
-                            [ngClass]="[viewModel.eyeDefault]" (mouseenter)="viewModel.showTooltip = true"
-                            (mouseleave)="viewModel.showTooltip = false" [attr.title]="'View'"
-                            [attr.data-placement]="'left'" [ngClass]="{ 'tooltip-show': viewModel.showTooltip}">
-                        </i>
-                        <div *ngFor="let validation of viewModel.validations.password">
-                            <div *ngIf="(password.touched) && password.hasError(validation.type)"
-                                class="text-danger">
-                                {{validation.message}}
-                            </div>
-                        </div>
-                    </div>
-    
-                </div>
-                <div class="my-2">
-                    <input type="checkbox" autocomplete="off" name="rememberMe" [(ngModel)]="viewModel.rememberMe">
-                   <span class="login_text"> <small> Remember Me </small> </span>
-                </div>
-                <button type="submit" class="btn coinLoginButton" (click)='login()'>
-                    Log In
-                </button>
-                <span class="login_text mt-2">
-                    <u><a routerLink="/forgotPassword">Forgot Password</a></u><span class="registerLink">Don't have an account? &nbsp;<a class="text-success font-weight-normal" routerLink="/register">SignUp</a> </span>
-                </span>
-
-            </div>
+        <div class="mini-card">
+          <p class="k">Session</p>
+          <p class="v">Token</p>
         </div>
-    </div>
-    <!-- <div id="preloader"></div> -->
+        <div class="mini-card">
+          <p class="k">UX</p>
+          <p class="v">Fast</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Right / Form -->
+    <section class="panel">
+      <div class="card">
+        <div class="card-head">
+          <div>
+            <h2 class="title">Sign in</h2>
+            <p class="muted">Choose your role and enter your credentials.</p>
+          </div>
+
+          <div class="logo-wrap" aria-hidden="true">
+            <img src="/assets/logo/l2.webp" alt="logo" class="logo" loading="lazy" />
+          </div>
+        </div>
+
+        <div class="sep"></div>
+
+        <!-- Company + Role -->
+        <div class="two">
+          <div class="block">
+            <label class="label">Company Code</label>
+
+            <div class="control" [ngClass]="{ 'invalid': Companycode.touched && Companycode.invalid }">
+              <i class="bi bi-shield-lock-fill ic" aria-hidden="true"></i>
+              <input
+                type="text"
+                class="input"
+                autocomplete="off"
+                placeholder="Company Code"
+                required="required"
+                [(ngModel)]="viewModel.tokenRequest.companyCode"
+                name="Companycode"
+                #Companycode="ngModel"
+              />
+            </div>
+
+            <div *ngFor="let validation of viewModel.validations.Companycode">
+              <div *ngIf="Companycode.touched && Companycode.hasError(validation.type)" class="err">
+                {{ validation.message }}
+              </div>
+            </div>
+          </div>
+
+          <div class="block">
+            <label class="label">Role</label>
+
+            <select
+              class="select"
+              [ngClass]="{ 'invalid': SelectRole.touched && SelectRole.invalid }"
+              autocomplete="off"
+              required="required"
+              [(ngModel)]="viewModel.tokenRequest.roleType"
+              name="SelectRole"
+              #SelectRole="ngModel"
+            >
+              <option value="undefined" disabled selected>Select Role</option>
+              <option *ngFor="let item of viewModel.listRoles" [value]="item">{{ item }}</option>
+            </select>
+
+            <div *ngFor="let validation of viewModel.validations.SelectRole">
+              <div *ngIf="SelectRole.touched && SelectRole.hasError(validation.type)" class="err">
+                {{ validation.message }}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Username -->
+        <div class="block">
+          <label class="label">Username</label>
+
+          <div class="control" [ngClass]="{ 'invalid': username.touched && username.invalid }">
+            <i class="bi bi-person-fill ic" aria-hidden="true"></i>
+            <input
+              type="text"
+              class="input"
+              autocomplete="off"
+              placeholder="Enter your username"
+              required="required"
+              [(ngModel)]="viewModel.tokenRequest.loginId"
+              name="username"
+              #username="ngModel"
+            />
+          </div>
+
+          <div *ngFor="let validation of viewModel.validations.username">
+            <div *ngIf="username.touched && username.hasError(validation.type)" class="err">
+              {{ validation.message }}
+            </div>
+          </div>
+        </div>
+
+        <!-- Password -->
+        <div class="block">
+          <div class="row">
+            <label class="label">Password</label>
+            <button type="button" class="link" (click)="togglePassword()">Show / Hide</button>
+          </div>
+
+          <div class="control" [ngClass]="{ 'invalid': password.touched && password.invalid }">
+            <i class="bi bi-lock-fill ic" aria-hidden="true"></i>
+
+            <input
+              class="input pr"
+              autocomplete="off"
+              placeholder="Enter your password"
+              required="required"
+              [(ngModel)]="viewModel.tokenRequest.password"
+              name="password"
+              [type]="viewModel.hide ? 'password' : 'text'"
+              #password="ngModel"
+            />
+
+            <button type="button" class="eye" (click)="togglePassword()" aria-label="Toggle password">
+              <i class="bi bi-eye-fill"></i>
+            </button>
+          </div>
+
+          <div *ngFor="let validation of viewModel.validations.password">
+            <div *ngIf="password.touched && password.hasError(validation.type)" class="err">
+              {{ validation.message }}
+            </div>
+          </div>
+        </div>
+
+        <!-- Remember + Forgot -->
+        <div class="between">
+          <label class="check">
+            <input type="checkbox" name="rememberMe" [(ngModel)]="viewModel.rememberMe" />
+            <span>Remember me</span>
+          </label>
+
+          <a routerLink="/forgotPassword" class="link">Forgot password?</a>
+        </div>
+
+        <!-- Submit -->
+        <button
+          type="submit"
+          class="btn"
+          [disabled]="Companycode.invalid || SelectRole.invalid || username.invalid || password.invalid"
+          (click)="login()"
+        >
+          Continue
+        </button>
+
+        <div class="badges">
+          <span class="badge"><span class="dot ok"></span> Audit ready</span>
+          <span class="badge"><span class="dot blue"></span> RBAC</span>
+        </div>
+
+        <p class="foot">
+          Don’t have an account?
+          <a routerLink="/register" class="link strong">Sign up</a>
+        </p>
+      </div>
+    </section>
+  </main>
 </div>

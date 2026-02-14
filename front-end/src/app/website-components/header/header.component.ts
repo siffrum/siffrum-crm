@@ -12,6 +12,7 @@ import { RoleTypeSM } from "src/app/service-models/app/enums/role-type-s-m.enum"
 import { CommonService } from "src/app/services/common.service";
 import { LogHandlerService } from "src/app/services/log-handler.service";
 import { WebsiteViewModel } from "src/app/view-models/website.viewmodel";
+import { ThemeService } from "src/app/services/theme.service"; // ✅ added
 
 @Component({
   selector: "app-header",
@@ -23,7 +24,6 @@ export class HeaderComponent
   extends BaseComponent<WebsiteViewModel>
   implements OnInit
 {
-  // ✅ Added for modern navbar
   menuOpen = false;
   scrolled = false;
 
@@ -33,21 +33,17 @@ export class HeaderComponent
     private el: ElementRef,
     private renderer: Renderer2,
     private authGuard: AuthGuard,
-    private router: Router
+    private router: Router,
+    public theme: ThemeService // ✅ added
   ) {
     super(commonService, logService);
   }
 
   async ngOnInit() {
-    // keep your original behavior
     await this.navigateToSection("");
-    // set initial scroll state
     this.updateScrolledState();
   }
 
-  /* =========================
-     Scroll morph (adds .scrolled)
-     ========================= */
   @HostListener("window:scroll")
   onWindowScroll() {
     this.updateScrolledState();
@@ -57,10 +53,6 @@ export class HeaderComponent
     this.scrolled = (window.scrollY || 0) > 40;
   }
 
-  /* =========================
-     Mobile menu open/close
-     (keeps your method name)
-     ========================= */
   toggleMobileNav() {
     this.menuOpen = !this.menuOpen;
     this.syncMenuDomClasses();
@@ -72,13 +64,11 @@ export class HeaderComponent
     this.syncMenuDomClasses();
   }
 
-  // ESC closes mobile menu
   @HostListener("document:keydown.escape")
   onEsc() {
     this.closeMobileMenu();
   }
 
-  // click outside closes menu
   @HostListener("document:click", ["$event"])
   onDocClick(e: MouseEvent) {
     if (!this.menuOpen) return;
@@ -93,7 +83,6 @@ export class HeaderComponent
     if (!inside) this.closeMobileMenu();
   }
 
-  // ✅ keeps compatibility with old markup (#navbar + navbar-mobile, .mobile-nav-toggle icons)
   private syncMenuDomClasses() {
     const navbar = this.el.nativeElement.querySelector("#navbar");
     if (navbar) {
@@ -103,12 +92,8 @@ export class HeaderComponent
 
     const mobileMenu = this.el.nativeElement.querySelector("#mobile-menu");
     if (mobileMenu) {
-      // If you're using Tailwind "hidden"
       if (this.menuOpen) this.renderer.removeClass(mobileMenu, "hidden");
       else this.renderer.addClass(mobileMenu, "hidden");
-
-      // If you're using our SCSS dropdown wrapper, it relies on [class.open] in HTML
-      // so this is just extra safety; it won’t break anything.
     }
 
     const mobileNavToggle =
@@ -124,28 +109,17 @@ export class HeaderComponent
     }
   }
 
-  /* =========================
-     Link click helper (optional)
-     call this from HTML: (click)="onNavLinkClick('pricing')"
-     ========================= */
   onNavLinkClick(id: string) {
-    // smooth scroll if section exists
     const el = document.getElementById(id);
     if (el) el.scrollIntoView({ behavior: "smooth" });
-
-    // close mobile menu after clicking a link
     this.closeMobileMenu();
   }
 
-  /* =========================
-     Your original functions (unchanged)
-     ========================= */
   scrollToSection(target: string) {
     const element = document.getElementById(target);
     if (element) {
       element.scrollIntoView({ behavior: "smooth" });
     }
-    // ✅ close after click (doesn't affect desktop)
     this.closeMobileMenu();
   }
 

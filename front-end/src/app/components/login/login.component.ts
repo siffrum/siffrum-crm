@@ -10,17 +10,18 @@ import { LicenseInfoService } from "src/app/services/license-info.service";
 import { AppConstants } from "src/app-constants";
 
 @Component({
-    selector: "app-login",
-    templateUrl: "./login.component.html",
-    styleUrls: ["./login.component.scss"],
-    standalone: false
+  selector: "app-login",
+  templateUrl: "./login.component.html",
+  styleUrls: ["./login.component.scss"],
+  standalone: false
 })
-export class LoginComponent
-  extends BaseComponent<LoginViewModel>
-  implements OnInit {
+export class LoginComponent extends BaseComponent<LoginViewModel> implements OnInit {
   /**
    *@Dev Musaib
    */
+
+  isDark = false;
+
   constructor(
     commonService: CommonService,
     logService: LogHandlerService,
@@ -28,81 +29,99 @@ export class LoginComponent
     private router: Router,
     private licenseInfoService: LicenseInfoService
   ) {
-
     super(commonService, logService);
     this.viewModel = new LoginViewModel();
   }
 
-  async ngOnInit() {
+  async ngOnInit(): Promise<void> {
     this._commonService.layoutVM.toogleWrapper = "loginWrapper";
     this._commonService.layoutVM.showLeftSideMenu = false;
 
+    // ✅ Apply SAME theme as landing page first
     await this._commonService.loadDefaultTheme();
+
+    // ✅ Now sync the page state from actual global theme class
+    this.isDark =
+      document.documentElement.classList.contains("dark") ||
+      document.body.classList.contains("dark");
 
     await this._commonService.presentLoading();
     await setTimeout(async () => {
       await this._commonService.dismissLoader();
     }, 1000);
-    this.viewModel.listRoles = this._commonService.EnumToStringArray(RoleTypeSM).filter(item => item === 'ClientAdmin' || item === 'ClientEmployee');
+
+    this.viewModel.listRoles = this._commonService
+      .EnumToStringArray(RoleTypeSM)
+      .filter((item) => item === "ClientAdmin" || item === "ClientEmployee");
+
     this._exceptionHandler.logObject(this.viewModel);
   }
+
+  // ✅ Theme toggle (updates localStorage + global class so it matches landing)
+  toggleTheme(): void {
+    this.isDark = !this.isDark;
+    localStorage.setItem("internal_theme", this.isDark ? "dark" : "light");
+
+    document.documentElement.classList.toggle("dark", this.isDark);
+    document.body.classList.toggle("dark", this.isDark);
+  }
+
+  goBack(): void {
+    window.history.back();
+  }
+
   isFormValid(): boolean {
     let companyCode = !!this.viewModel.tokenRequest.companyCode;
     let selectRole = !!this.viewModel.tokenRequest.roleType;
     let loginId = !!this.viewModel.tokenRequest.loginId;
     let password = !!this.viewModel.tokenRequest.password;
-    return (companyCode && selectRole && loginId && password)
+    return companyCode && selectRole && loginId && password;
   }
+
   async login() {
     try {
       if (!this.isFormValid()) {
-        // Check if any required field is empty
-        await this._commonService.showSweetAlertToast({ title: 'Please fill All The Required Fields', icon: 'error' });
-        return; // Stop execution here if form is not valid
+        await this._commonService.showSweetAlertToast({
+          title: "Please fill All The Required Fields",
+          icon: "error"
+        });
+        return;
       }
+
       await this._commonService.presentLoading();
+
       let resp = await this.accountService.generateToken(
         this.viewModel.tokenRequest,
         this.viewModel
       );
+
       if (resp.isError) {
         this._exceptionHandler.logObject(resp.errorData);
-        this._commonService.showSweetAlertToast({ title: resp.errorData.displayMessage, icon: 'error' });
+        this._commonService.showSweetAlertToast({
+          title: resp.errorData.displayMessage,
+          icon: "error"
+        });
       } else if (resp.successData.accessToken != null) {
-        /**
-         * If login status Of User Is Reset Then Change Password First
-         */
-        let loginStatus = resp.successData.loginUserDetails.loginStatus.toString()
+        let loginStatus = resp.successData.loginUserDetails.loginStatus.toString();
+
         if (loginStatus == "PasswordResetRequired") {
           this.router.navigate(["/changePassword"]);
-        }
-        else {
+        } else {
           this._commonService.layoutVM.showLeftSideMenu = true;
           this._commonService.layoutVM.toogleWrapper = "wrapper";
           this._commonService.layoutVM.loggedUserName = resp.successData.loginUserDetails.loginId;
-          /**
-           * Get Trial License Info Of The User
-           */
-          // let userActiveTrialLicenseResponse = await this.licenseInfoService.getUserActiveTrialLicenseInfo();
-          // this.viewModel.userActiveTrialLicense = userActiveTrialLicenseResponse.successData
-          /**
-           * Get Mine User Active License Info
-           */
-          let mineUserActiveLicenseResponse = await this.licenseInfoService.getUserMineActiveLicenseInfo()
+
+          let mineUserActiveLicenseResponse =
+            await this.licenseInfoService.getUserMineActiveLicenseInfo();
+
           this.viewModel.mineUserActiveLicense = mineUserActiveLicenseResponse.successData;
+
           if (this.viewModel.mineUserActiveLicense != null) {
             this.router.navigate([AppConstants.WebRoutes.DASHBOARD]);
-            await this._commonService.ShowToastAtTopEnd(
-              "Login Successful",
-              "success"
-            );
-          }
-          else if (this.viewModel.mineUserActiveLicense == null) {
+            await this._commonService.ShowToastAtTopEnd("Login Successful", "success");
+          } else if (this.viewModel.mineUserActiveLicense == null) {
             this.router.navigate([AppConstants.WebRoutes.LICENSE]);
-            await this._commonService.ShowToastAtTopEnd(
-              "Buy License First",
-              "info"
-            );
+            await this._commonService.ShowToastAtTopEnd("Buy License First", "info");
           }
         }
       }
@@ -117,7 +136,6 @@ export class LoginComponent
       await this._commonService.dismissLoader();
     }
   }
-
 
   async togglePassword() {
     this.viewModel.hide = !this.viewModel.hide;
