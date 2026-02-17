@@ -1,0 +1,14 @@
+global using Reno.Foundation.CommonUtils;
+global using Reno.Web.Foundation.BAL;
+global using Reno.Web.Foundation.BAL.Security;
+global using Reno.Web.Foundation.Config;
+global using Reno.Web.Foundation.ServiceModels;
+global using Reno.Web.Foundation.ServiceModels.ApiContracts;
+global using Reno.Web.Foundation.ServiceModels.ApiContracts.Base;
+global using Reno.Web.Foundation.ServiceModels.CommonResponse;
+global using Reno.Web.Foundation.ServiceModels.Constants;
+global using Reno.Web.Foundation.ServiceModels.Enums;
+global using Reno.Web.Foundation.Web;
+global using Reno.Web.Foundation.Web.AutoMapper;
+global using Reno.Web.Foundation.Web.Filters;
+global using Reno.Web.Foundation.Web.Security;

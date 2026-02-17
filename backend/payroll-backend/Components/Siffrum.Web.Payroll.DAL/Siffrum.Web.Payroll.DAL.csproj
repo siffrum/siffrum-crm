@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<LangVersion>11.0</LangVersion>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Reference Include="Reno.Web.Foundation.DAL">
+			<HintPath>..\..\ReferenceDlls\Reno.Web.Foundation.DAL.dll</HintPath>
+		</Reference>
+		<Reference Include="Reno.Web.Foundation.DomainModels">
+			<HintPath>..\..\ReferenceDlls\Reno.Web.Foundation.DomainModels.dll</HintPath>
+		</Reference>
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Siffrum.Web.Payroll.DomainModels\Siffrum.Web.Payroll.DomainModels.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.11" />
+	</ItemGroup>
+
+</Project>

@@ -1,0 +1,11 @@
+global using Reno.Web.Foundation.ServiceModels.ApiContracts;
+global using Reno.Web.Foundation.ServiceModels.ApiContracts.Base;
+global using Reno.Web.Foundation.ServiceModels.Enums;
+global using Reno.Web.Foundation.ServiceModels.Exceptions;
+global using Reno.Web.Foundation.WebClient;
+global using Reno.Web.Foundation.WebClient.Configuration;
+global using System;
+global using System.Collections.Generic;
+global using System.Net.Http;
+global using System.Threading;
+global using System.Threading.Tasks;

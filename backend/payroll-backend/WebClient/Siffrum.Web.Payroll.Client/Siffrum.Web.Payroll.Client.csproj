@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<LangVersion>11.0</LangVersion>
+		<Nullable>enable</Nullable>
+		<Configurations>Debug;Release;Dev</Configurations>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Reference Include="Reno.Web.Foundation.WebClient">
+			<HintPath>..\..\ReferenceDlls\Reno.Web.Foundation.WebClient.dll</HintPath>
+		</Reference>
+		<Reference Include="Reno.Web.Foundation.ServiceModels">
+			<HintPath>..\..\ReferenceDlls\Reno.Web.Foundation.ServiceModels.dll</HintPath>
+		</Reference>
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\Components\Siffrum.Web.Payroll.ServiceModels\Siffrum.Web.Payroll.ServiceModels.csproj" />
+	</ItemGroup>
+
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+		<Exec Command="if $(ConfigurationName) == Dev ( call $(SolutionDir)DevCopyToTargetFolders.bat $(Version) $(TargetDir) $(TargetName))" />
+	</Target>
+
+</Project>

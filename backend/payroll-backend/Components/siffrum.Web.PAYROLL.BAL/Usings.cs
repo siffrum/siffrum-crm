@@ -1,0 +1,11 @@
+global using AutoMapper;
+global using Microsoft.EntityFrameworkCore;
+global using Reno.Foundation.CommonUtils;
+global using Reno.Web.Foundation.BAL;
+global using Reno.Web.Foundation.BAL.Security;
+global using Reno.Web.Foundation.ServiceModels.CommonResponse;
+global using Reno.Web.Foundation.ServiceModels.Enums;
+global using System;
+global using System.Collections.Generic;
+global using System.Linq;
+global using System.Threading.Tasks;

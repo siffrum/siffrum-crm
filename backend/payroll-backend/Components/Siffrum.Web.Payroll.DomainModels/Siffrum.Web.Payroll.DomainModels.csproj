@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<LangVersion>11.0</LangVersion>
+		<Nullable>disable</Nullable>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Reference Include="Reno.Web.Foundation.Config">
+			<HintPath>..\..\ReferenceDlls\Reno.Web.Foundation.Config.dll</HintPath>
+		</Reference>
+		<Reference Include="Reno.Web.Foundation.DomainModels">
+			<HintPath>..\..\ReferenceDlls\Reno.Web.Foundation.DomainModels.dll</HintPath>
+		</Reference>
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.1" />
+	</ItemGroup>
+
+</Project>

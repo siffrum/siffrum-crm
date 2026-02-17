@@ -1,0 +1,25 @@
+# Build stage
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
+WORKDIR /src
+
+# Copy repository files
+COPY . .
+
+# Restore solution
+RUN dotnet restore Siffrum.Web.Payroll.sln
+
+# Publish the API
+WORKDIR /src/UI/Siffrum.Web.Payroll.API
+RUN dotnet publish Siffrum.Web.Payroll.API.csproj -c Release -o /app/publish /p:UseAppHost=false
+
+# Runtime stage
+FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS runtime
+WORKDIR /app
+
+# Copy published output
+COPY --from=build /app/publish .
+
+ENV ASPNETCORE_URLS=http://+:80
+EXPOSE 80
+
+ENTRYPOINT ["dotnet", "Siffrum.Web.Payroll.API.dll"]

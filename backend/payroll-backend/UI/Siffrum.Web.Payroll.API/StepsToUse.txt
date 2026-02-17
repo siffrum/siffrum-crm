@@ -1,0 +1,36 @@
+'my' and 'mine' hold special meaning in urls, my means my company and mine means mine userId
+
+How to add process driven by process and service model
+How to add controller driven by process and service model
+How to add client driven by process and service model
+
+
+
+Copy DummySubjectController To desired folder
+Rename File
+FROM DummySubjectController TO DummyTeacherController - Filename
+ON Rename All Occurances -- press NO
+
+FROM dummySubject  To dummyTeacher (match case) - 10 occrances
+FROM DummySubjectProcess TO DummyTeacherProcess - 2 occrances
+FROM DummySubjects To DummyTeachers (match case)  - 2 occrances
+FROM DummySubject To DummyTeacher (match case)	 - 17 occrances
+Add usings for service model and process
+
+E.G.
+
+FROM DummySubjectController TO ClientCompanyDetailController - Filename
+FROM dummySubject  To clientCompanyDetail (match case) - 10 occrances
+FROM DummySubjectProcess TO ClientCompanyDetailProcess - 2 occrances
+FROM DummySubjects To ClientCompanyDetails (match case)  - 2 occrances
+FROM DummySubject To ClientCompanyDetail (match case)	 - 17 occrances
+Add usings for service model and process
+
+
+
+SELECT deqs.last_execution_time AS [Time], dest.TEXT AS [Query] 
+FROM sys.dm_exec_query_stats AS deqs CROSS APPLY sys.dm_exec_sql_text(deqs.sql_handle) AS dest
+ORDER BY deqs.last_execution_time DESC
+
+
+

@@ -1,0 +1,28 @@
+namespace Siffrum.Web.Payroll.DomainModels.Enums
+{
+    public enum ModuleNameDM
+    {
+        CompanyDetail = 0,
+        CompanyAddress = 1,
+        Employee = 2,
+        EmployeeAddress = 3,
+        Leave = 4,
+        BankDetail = 5,
+        EmployeeCTC = 6,
+        EmployeeDocument = 7,
+        EmployeeGenericPayroll = 8,
+        EmployeeReimbursement = 9,
+        PayrollTransacton = 10,
+        CompanyAccountTransaction = 11,
+        Document = 12,
+        GenerateLetters = 13,
+        Attendance = 14,
+        AttendanceShift = 15,
+        Reports = 16,
+        Setting = 17,
+        EmployeeDirectory = 18,
+        CompanyLetters = 19,
+        DashBoard = 20,
+        CompanyDepartment = 21
+    }
+}

@@ -1,0 +1,115 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Reference Include="BrainGateway.Authentication.Core">
+			<HintPath>..\..\ReferenceDlls\BrainGateway.Authentication.Core.dll</HintPath>
+		</Reference>
+		<Reference Include="Reno.Foundation.CommonUtils">
+			<HintPath>..\..\ReferenceDlls\Reno.Foundation.CommonUtils.dll</HintPath>
+		</Reference>
+		<Reference Include="Reno.Web.Foundation.BAL">
+			<HintPath>..\..\ReferenceDlls\Reno.Web.Foundation.BAL.dll</HintPath>
+		</Reference>
+		<Reference Include="Reno.Web.Foundation.Config">
+			<HintPath>..\..\ReferenceDlls\Reno.Web.Foundation.Config.dll</HintPath>
+		</Reference>
+		<Reference Include="Reno.Web.Foundation.DAL">
+			<HintPath>..\..\ReferenceDlls\Reno.Web.Foundation.DAL.dll</HintPath>
+		</Reference>
+		<Reference Include="Reno.Web.Foundation.DomainModels">
+			<HintPath>..\..\ReferenceDlls\Reno.Web.Foundation.DomainModels.dll</HintPath>
+		</Reference>
+		<Reference Include="Reno.Web.Foundation.ServiceModels">
+			<HintPath>..\..\ReferenceDlls\Reno.Web.Foundation.ServiceModels.dll</HintPath>
+		</Reference>
+		<Reference Include="Reno.Web.Foundation.Web">
+			<HintPath>..\..\ReferenceDlls\Reno.Web.Foundation.Web.dll</HintPath>
+		</Reference>
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="AutoMapper" Version="12.0.0" />
+		<PackageReference Include="DinkToPdf" Version="1.0.8" />
+		<PackageReference Include="DinkToPdfCopyDependencies" Version="1.0.8" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.12" />
+		<PackageReference Include="Microsoft.AspNetCore.OData" Version="8.0.12" />
+		<PackageReference Include="Microsoft.Data.SqlClient" Version="6.1.4" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.0">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+		<PackageReference Include="Npgsql" Version="7.0.6" />
+		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.11" />
+		<PackageReference Include="OpenXmlPowerTools-NetStandard" Version="4.4.21" />
+		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+		<PackageReference Include="System.Data.Common" Version="4.3.0" />
+		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.7.1" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\Components\Siffrum.Web.Payroll.BAL\Siffrum.Web.Payroll.BAL.csproj" />
+		<ProjectReference Include="..\..\Components\Siffrum.Web.Payroll.Config\Siffrum.Web.Payroll.Config.csproj" />
+		<ProjectReference Include="..\..\Components\Siffrum.Web.Payroll.DAL\Siffrum.Web.Payroll.DAL.csproj" />
+		<ProjectReference Include="..\..\Components\Siffrum.Web.Payroll.ServiceModels\Siffrum.Web.Payroll.ServiceModels.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="wwwroot\website\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Content Update="wwwroot\content\companies\logos\dummyCompanyLogo.jpg">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </Content>
+	  <Content Update="wwwroot\content\documents\AadharCard.pdf">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </Content>
+	  <Content Update="wwwroot\content\documents\appointmentletter.docx">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </Content>
+	  <Content Update="wwwroot\content\documents\InternetBill.pdf">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </Content>
+	  <Content Update="wwwroot\content\documents\offerletter.docx">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </Content>
+	  <Content Update="wwwroot\content\documents\payslip.html">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </Content>
+	  <Content Update="wwwroot\content\documents\payslip_backup.html">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </Content>
+	  <Content Update="wwwroot\content\documents\TravellingAllowanceBill.pdf">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </Content>
+	  <Content Update="wwwroot\content\loginusers\profile\Client.jpeg">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </Content>
+	  <Content Update="wwwroot\content\loginusers\profile\default_profile.jpg">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </Content>
+	  <Content Update="wwwroot\content\loginusers\profile\pic1.png">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </Content>
+	</ItemGroup>
+
+	<Target Name="CopyStaticInitFiles" AfterTargets="Publish">
+  <ItemGroup>
+    <StaticInitFiles Include="StaticInitFiles\**\*" />
+  </ItemGroup>
+
+  <Copy
+    SourceFiles="@(StaticInitFiles)"
+    DestinationFiles="@(StaticInitFiles->'$(PublishDir)%(RecursiveDir)%(Filename)%(Extension)')"
+    SkipUnchangedFiles="true" />
+</Target>
+	
+
+</Project>

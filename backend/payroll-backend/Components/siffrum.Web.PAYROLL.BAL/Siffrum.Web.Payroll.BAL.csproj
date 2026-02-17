@@ -1,0 +1,54 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<LangVersion>11.0</LangVersion>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <None Remove="C:\Users\dev05\.nuget\packages\dinktopdfcopydependencies\1.0.8\build\libwkhtmltox.dll" />
+	  <None Remove="C:\Users\dev05\.nuget\packages\dinktopdfcopydependencies\1.0.8\build\libwkhtmltox.dylib" />
+	  <None Remove="C:\Users\dev05\.nuget\packages\dinktopdfcopydependencies\1.0.8\build\libwkhtmltox.so" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Reference Include="BrainGateway.Authentication.Core">
+			<HintPath>..\..\ReferenceDlls\BrainGateway.Authentication.Core.dll</HintPath>
+		</Reference>
+		<Reference Include="Reno.Foundation.CommonUtils">
+			<HintPath>..\..\ReferenceDlls\Reno.Foundation.CommonUtils.dll</HintPath>
+		</Reference>
+		<Reference Include="Reno.Web.Foundation.BAL">
+			<HintPath>..\..\ReferenceDlls\Reno.Web.Foundation.BAL.dll</HintPath>
+		</Reference>
+		<Reference Include="Reno.Web.Foundation.DAL">
+			<HintPath>..\..\ReferenceDlls\Reno.Web.Foundation.DAL.dll</HintPath>
+		</Reference>
+		<Reference Include="Reno.Web.Foundation.DomainModels">
+			<HintPath>..\..\ReferenceDlls\Reno.Web.Foundation.DomainModels.dll</HintPath>
+		</Reference>
+		<Reference Include="Reno.Web.Foundation.ServiceModels">
+			<HintPath>..\..\ReferenceDlls\Reno.Web.Foundation.ServiceModels.dll</HintPath>
+		</Reference>
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="AutoMapper" Version="12.0.0" />
+		<PackageReference Include="DinkToPdf" Version="1.0.8" />
+		<PackageReference Include="DinkToPdfCopyDependencies" Version="1.0.8" />
+		<PackageReference Include="DocumentFormat.OpenXml" Version="2.8.1" />
+		<PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.17" />
+		<PackageReference Include="Microsoft.Data.SqlClient" Version="6.1.4" />
+		<PackageReference Include="Stripe.net" Version="41.28.0" />
+		<PackageReference Include="System.Data.OleDb" Version="7.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Siffrum.Web.Payroll.Config\Siffrum.Web.Payroll.Config.csproj" />
+		<ProjectReference Include="..\Siffrum.Web.Payroll.DAL\Siffrum.Web.Payroll.DAL.csproj" />
+		<ProjectReference Include="..\Siffrum.Web.Payroll.DomainModels\Siffrum.Web.Payroll.DomainModels.csproj" />
+		<ProjectReference Include="..\Siffrum.Web.Payroll.ServiceModels\Siffrum.Web.Payroll.ServiceModels.csproj" />
+	</ItemGroup>
+
+</Project>
