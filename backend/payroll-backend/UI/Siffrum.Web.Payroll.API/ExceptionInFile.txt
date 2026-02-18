@@ -225,4 +225,9 @@ Login failed for user 'sa'.
  Stacktrace -     at Microsoft.Data.SqlClient.SqlConnection.CreateCommand()
    at Reno.Web.Foundation.DAL.ErrorLogDALRoot.SaveErrorObjectInDb(ErrorLogRoot errorLog)
    at Reno.Web.Foundation.BAL.ErrorLogProcessRoot.SaveErrorObjectInDb(ErrorLogRoot errorLog)
+   at Reno.Web.Foundation.Web.ErrorLogHandlerRoot.LogExceptionInDb(Exception ex, HttpContext currentContext)Exception occured while logging Error IN DB - 
+ Message -  Object reference not set to an instance of an object. 
+ Stacktrace -     at Microsoft.Data.SqlClient.SqlConnection.CreateCommand()
+   at Reno.Web.Foundation.DAL.ErrorLogDALRoot.SaveErrorObjectInDb(ErrorLogRoot errorLog)
+   at Reno.Web.Foundation.BAL.ErrorLogProcessRoot.SaveErrorObjectInDb(ErrorLogRoot errorLog)
    at Reno.Web.Foundation.Web.ErrorLogHandlerRoot.LogExceptionInDb(Exception ex, HttpContext currentContext)

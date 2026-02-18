@@ -3,10 +3,13 @@ using Siffrum.Web.Payroll.DomainModels.Base;
 using Siffrum.Web.Payroll.DomainModels.v1.AppUsers;
 using Siffrum.Web.Payroll.DomainModels.v1.AppUsers.Login;
 using Siffrum.Web.Payroll.DomainModels.v1.Client;
+using Siffrum.Web.Payroll.DomainModels.v1.License; // ✅ ADDED (needed for license mapping)
+
 using Siffrum.Web.Payroll.ServiceModels.Base;
 using Siffrum.Web.Payroll.ServiceModels.v1.AppUsers;
 using Siffrum.Web.Payroll.ServiceModels.v1.AppUsers.Login;
 using Siffrum.Web.Payroll.ServiceModels.v1.Client;
+using Siffrum.Web.Payroll.ServiceModels.v1.License; // ✅ ADDED (needed for license mapping)
 
 namespace Siffrum.Web.Payroll.API.AutoMapperBinding
 {
@@ -34,6 +37,9 @@ namespace Siffrum.Web.Payroll.API.AutoMapperBinding
                 cfg.CreateMap<PayrollTransactionDM, PayrollTransactionSM>().ReverseMap();
                 cfg.CreateMap<PermissionDM, PermissionSM>().ReverseMap();
                 cfg.CreateMap<CompanyModulesDM, CompanyModulesSM>().ReverseMap();
+
+            
+
                 // create auto mapping from DM to SM with same names
                 var mapResp = cfg.RegisterAutoMapperFromDmToSm<SiffrumPayrollDomainModelBase<object>, SiffrumPayrollServiceModelBase<object>>();
                 Console.WriteLine("AutoMappings Success: " + mapResp.SuccessfullMaps.Count);
