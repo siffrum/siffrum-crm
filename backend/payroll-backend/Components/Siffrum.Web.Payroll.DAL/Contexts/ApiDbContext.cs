@@ -6,6 +6,7 @@ using Siffrum.Web.Payroll.DomainModels.v1.Client;
 using Siffrum.Web.Payroll.DomainModels.v1.FilesInDb;
 using Siffrum.Web.Payroll.DomainModels.v1.General;
 using Siffrum.Web.Payroll.DomainModels.v1.License;
+using Siffrum.Web.Payroll.DomainModels.v1.Notifications;
 
 namespace Siffrum.Web.Payroll.DAL.Contexts
 {
@@ -71,6 +72,7 @@ namespace Siffrum.Web.Payroll.DAL.Contexts
         public DbSet<CompanyLicenseDetailsDM> CompanyLicenseDetails { get; set; }
         public DbSet<SQLReportMasterDM> SQLReportMasters { get; set; }
         public DbSet<ContactUsDM> ContactUs { get; set; }
+        public DbSet<ClientNotificationDM> ClientNotifications { get; set; }
 
         #endregion Application Specific Tables
 

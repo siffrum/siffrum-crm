@@ -1,6 +1,7 @@
 using Siffrum.Web.Payroll.DomainModels.Enums;
 using Siffrum.Web.Payroll.DomainModels.v1.AppUsers.Login;
 using Siffrum.Web.Payroll.DomainModels.v1.Client;
+using Siffrum.Web.Payroll.DomainModels.v1.Notifications;
 using System.Collections.Generic;
 
 namespace Siffrum.Web.Payroll.DomainModels.v1.AppUsers
@@ -36,6 +37,10 @@ namespace Siffrum.Web.Payroll.DomainModels.v1.AppUsers
 
         [StringLength(50)]
         public string Designation { get; set; }
+        [MaxLength(200)]
+        public string OneSignalPlayerId { get; set; }
+
+      
 
         //[ForeignKey(nameof(ClientUserAddress))]
         //public int? ClientUserAddressId { get; set; }
@@ -65,6 +70,7 @@ namespace Siffrum.Web.Payroll.DomainModels.v1.AppUsers
         public virtual HashSet<ClientEmployeeCTCDetailDM> ClientEmployeeCTCDetail { get; set; }
 
         public virtual HashSet<PayrollTransactionDM> PayrollTransaction { get; set; }
+        public virtual HashSet<ClientNotificationDM> ClientNotifications { get; set; }
 
     }
 }

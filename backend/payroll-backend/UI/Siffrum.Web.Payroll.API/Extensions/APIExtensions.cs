@@ -5,6 +5,7 @@ using Microsoft.OData.ModelBuilder;
 using Microsoft.OpenApi.Models;
 using Siffrum.Web.Payroll.API.AutoMapperBinding;
 using Siffrum.Web.Payroll.API.Security;
+using Siffrum.Web.Payroll.API.Services.Notifications;
 using Siffrum.Web.Payroll.BAL.Base;
 using Siffrum.Web.Payroll.Config;
 using Siffrum.Web.Payroll.ServiceModels.Enums;
@@ -199,6 +200,7 @@ namespace Siffrum.Web.Payroll.API.Extensions
             #region Stripe
             Stripe.StripeConfiguration.ApiKey = configObject.StripeSettings.PrivateKey;
             #endregion
+            services.AddHttpClient<INotificationDeliveryService, OneSignalNotificationService>();
         }
 
 
