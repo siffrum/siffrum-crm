@@ -72,7 +72,7 @@ namespace Siffrum.Web.Payroll.BAL.Dummy
         {
             if (dummySubjectSM != null && objIdToUpdate > 0)
             {
-                DummySubjectDM objDM = await _apiDbContext.DummySubjects.FindAsync(objIdToUpdate);
+                DummySubjectDM ?  objDM = await _apiDbContext.DummySubjects.FindAsync(objIdToUpdate);
                 if (objDM != null)
                 {
                     dummySubjectSM.Id = objIdToUpdate;
