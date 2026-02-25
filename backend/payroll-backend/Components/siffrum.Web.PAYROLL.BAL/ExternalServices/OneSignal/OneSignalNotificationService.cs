@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using System.Net.Http;
 using System.Text;
+using System.Text.Json;
 
 namespace Siffrum.Web.Payroll.API.Services.Notifications
 {
@@ -45,3 +46,4 @@ namespace Siffrum.Web.Payroll.API.Services.Notifications
             return response.IsSuccessStatusCode;
         }
     }
+}
