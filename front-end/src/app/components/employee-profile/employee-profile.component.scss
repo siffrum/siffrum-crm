@@ -1,0 +1,126 @@
+.emp-profile {
+  padding: 12px 10px 24px;
+}
+
+/* Tabs card */
+.ep-tabs-card {
+  border-radius: 16px;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  background: linear-gradient(135deg, rgba(0, 51, 102, 0.10), rgba(59, 130, 246, 0.10));
+  box-shadow: 0 12px 30px rgba(2, 6, 23, 0.06);
+  padding: 12px;
+  margin-bottom: 12px;
+}
+
+.ep-tabs-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 4px 4px 10px 4px;
+}
+
+.ep-kicker {
+  font-size: 12px;
+  letter-spacing: 0.3px;
+  opacity: 0.85;
+}
+
+.ep-title {
+  font-size: 18px;
+  font-weight: 900;
+  color: #0f172a;
+  line-height: 1.1;
+}
+
+.ep-btn {
+  border: 1px solid rgba(15, 23, 42, 0.10);
+  background: rgba(255, 255, 255, 0.78);
+  border-radius: 12px;
+  padding: 10px 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 800;
+  box-shadow: 0 10px 18px rgba(2, 6, 23, 0.06);
+  cursor: pointer;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.92);
+  }
+}
+
+.ep-tabs-scroll {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 6px 2px;
+
+  &::-webkit-scrollbar {
+    height: 8px;
+  }
+}
+
+.ep-tab {
+  border: 1px solid rgba(15, 23, 42, 0.10);
+  background: rgba(255, 255, 255, 0.82);
+  border-radius: 999px;
+  padding: 10px 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 800;
+  font-size: 13px;
+  white-space: nowrap;
+  box-shadow: 0 10px 18px rgba(2, 6, 23, 0.05);
+  transition: transform .12s ease, background .12s ease, border-color .12s ease;
+  cursor: pointer;
+
+  i {
+    font-size: 16px;
+    opacity: 0.9;
+  }
+
+  &:hover {
+    transform: translateY(-1px);
+    background: rgba(255, 255, 255, 0.94);
+  }
+
+  &.active {
+    background: rgba(0, 51, 102, 0.12);
+    border-color: rgba(0, 51, 102, 0.30);
+    color: #003366;
+  }
+}
+
+/* Content card */
+.ep-content-card {
+  border-radius: 16px;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: 0 12px 30px rgba(2, 6, 23, 0.06);
+  padding: 14px;
+}
+
+.ep-pane {
+  animation: epFade .18s ease both;
+}
+
+@keyframes epFade {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .ep-tabs-head {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .ep-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}

@@ -1,77 +1,168 @@
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-        <div class="breadcrumb-container">
-            <nav aria-label="breadcrumb">
-                <ul class="breadcrumb">
-                    <li class="breadcrumb-item" [ngClass]="viewModel.tabLocation == 0 ? 'active-tab' : ''" *ngIf="viewModel.showEmployeeInfoTab">
-                        <a (click)="updateTabLocation(0)">
-                            <span> Overview </span>
-                        </a>
-                    </li>
-                    <li class="breadcrumb-item" [ngClass]="viewModel.tabLocation == 1 ? 'active-tab' : ''"*ngIf="viewModel.showEmployeeAddressTab" >
-                        <a (click)="updateTabLocation(1)">
-                            <span> Address </span>
-                        </a>
-                    </li>
-                    <li class="breadcrumb-item" [ngClass]="viewModel.tabLocation == 2 ? 'active-tab' : ''" *ngIf="viewModel.showEmployeeBankDetailsTab">
-                        <a (click)="updateTabLocation(2)">
-                            <span> Bank Details </span>
-                        </a>
-                    </li>
-                    <li class="breadcrumb-item" [ngClass]="viewModel.tabLocation == 3 ? 'active-tab' : ''" *ngIf="viewModel.showEmployeeDocumentsTab">
-                        <a (click)="updateTabLocation(3)">
-                            <span> Documents </span>
-                        </a>
-                    </li>
-                    <li class="breadcrumb-item" [ngClass]="viewModel.tabLocation == 4 ? 'active-tab' : ''" *ngIf="viewModel.showEmployeeSalaryTab">
-                        <a (click)="updateTabLocation(4)">
-                            <span> Salary </span>
-                        </a>
-                    </li>
-                    <li class="breadcrumb-item" [ngClass]="viewModel.tabLocation == 5 ? 'active-tab' : ''" *ngIf="viewModel.showEmployeeLeavesTab">
-                        <a (click)="updateTabLocation(5)">
-                            <span> Leaves </span>
-                        </a>
-                    </li>
-                    <li class="breadcrumb-item" [ngClass]="viewModel.tabLocation == 6 ? 'active-tab' : ''" *ngIf="viewModel.showEmployeeLettersTab">
-                        <a (click)="updateTabLocation(6)">
-                            <span> Generate Letter </span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
+<div class="emp-profile container-fluid">
+  <div class="row">
+
+    <!-- TABS HEADER -->
+    <div class="col-12">
+      <div class="ep-tabs-card">
+        <div class="ep-tabs-head">
+          <div>
+            <div class="ep-kicker">Employee</div>
+            <div class="ep-title">Profile</div>
+          </div>
+
+          <!-- optional edit button (uses your existing method only) -->
+          <button
+            type="button"
+            class="ep-btn"
+            (click)="editDetails()">
+            <i class="bi" [ngClass]="viewModel.isReadonly ? 'bi-pencil-square' : 'bi-check2-circle'"></i>
+            <span>{{ viewModel.isReadonly ? 'Edit' : 'Done' }}</span>
+          </button>
         </div>
+
+        <div class="ep-tabs-scroll" role="tablist" aria-label="Employee profile tabs">
+          <button
+            type="button"
+            class="ep-tab"
+            [ngClass]="viewModel.tabLocation == 0 ? 'active' : ''"
+            *ngIf="viewModel.showEmployeeInfoTab"
+            (click)="updateTabLocation(0)">
+            <i class="bi bi-person-badge"></i>
+            <span>Overview</span>
+          </button>
+
+          <button
+            type="button"
+            class="ep-tab"
+            [ngClass]="viewModel.tabLocation == 1 ? 'active' : ''"
+            *ngIf="viewModel.showEmployeeAddressTab"
+            (click)="updateTabLocation(1)">
+            <i class="bi bi-geo-alt"></i>
+            <span>Address</span>
+          </button>
+
+          <button
+            type="button"
+            class="ep-tab"
+            [ngClass]="viewModel.tabLocation == 2 ? 'active' : ''"
+            *ngIf="viewModel.showEmployeeBankDetailsTab"
+            (click)="updateTabLocation(2)">
+            <i class="bi bi-bank"></i>
+            <span>Bank</span>
+          </button>
+
+          <button
+            type="button"
+            class="ep-tab"
+            [ngClass]="viewModel.tabLocation == 3 ? 'active' : ''"
+            *ngIf="viewModel.showEmployeeDocumentsTab"
+            (click)="updateTabLocation(3)">
+            <i class="bi bi-folder2-open"></i>
+            <span>Documents</span>
+          </button>
+
+          <button
+            type="button"
+            class="ep-tab"
+            [ngClass]="viewModel.tabLocation == 4 ? 'active' : ''"
+            *ngIf="viewModel.showEmployeeSalaryTab"
+            (click)="updateTabLocation(4)">
+            <i class="bi bi-cash-coin"></i>
+            <span>Salary</span>
+          </button>
+
+          <button
+            type="button"
+            class="ep-tab"
+            [ngClass]="viewModel.tabLocation == 5 ? 'active' : ''"
+            *ngIf="viewModel.showEmployeeLeavesTab"
+            (click)="updateTabLocation(5)">
+            <i class="bi bi-calendar2-check"></i>
+            <span>Leaves</span>
+          </button>
+
+          <button
+            type="button"
+            class="ep-tab"
+            [ngClass]="viewModel.tabLocation == 6 ? 'active' : ''"
+            *ngIf="viewModel.showEmployeeLettersTab"
+            (click)="updateTabLocation(6)">
+            <i class="bi bi-envelope-paper"></i>
+            <span>Letter</span>
+          </button>
         </div>
-        <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-               <!-- Employee Personal Info Tab -->
-    <div class="row" *ngIf="viewModel.tabLocation == 0 ">
-        <app-employee-info [employee]="viewModel.employee" [isReadOnly]="viewModel.isReadonly" [isaddmode]="false"></app-employee-info>
+      </div>
     </div>
-    <!-- Employee Address Tab -->
-    <div class="row" *ngIf="viewModel.tabLocation == 1">
-        <app-employee-address-info [employee]="viewModel.employee" [isReadonly]="viewModel.isReadonly" [isaddmode]="false" [isEditMode]="true"></app-employee-address-info>
-    </div>
-    <!-- Employee Bank Details Tab -->
-    <div class="row" *ngIf="viewModel.tabLocation == 2">
-        <app-employee-bank-info [employee]="viewModel.employee" [isReadonly]="viewModel.isReadonly" [isaddmode]="false" [isEditMode]="true"></app-employee-bank-info>
-    </div>
-    <!-- Employee Documents Tab -->
-    <div class="row" *ngIf="viewModel.tabLocation == 3">
-        <app-employee-document-info [employee]="viewModel.employee" [isReadonly]="viewModel.isReadonly" [isaddmode]="false" [isEditMode]="true"></app-employee-document-info>
-    </div>
-    <!-- Employee Salary Details Tab -->
-    <div class="row" *ngIf="viewModel.tabLocation == 4">
-        <app-employee-salary-info [empid]="viewModel.employee.id" [readonly]="viewModel.isReadonly" [isaddmode]="false"></app-employee-salary-info>
-    </div>
-    <!-- Employee Leaves Tab -->
-    <div class="row" *ngIf="viewModel.tabLocation == 5">
-        <app-employee-leaves-info [employee]="viewModel.employee" [isReadOnly]="viewModel.isReadonly" [isAdminMode]="false"></app-employee-leaves-info>
-    </div>
-    <!-- Employee Generate Letter Tab -->
-    <div *ngIf="viewModel.tabLocation == 6">
-        <app-employee-generate-letter-info [employee]="viewModel.employee" [isaddmode]="false"></app-employee-generate-letter-info>
-    </div>
+
+    <!-- CONTENT -->
+    <div class="col-12">
+      <div class="ep-content-card">
+        <!-- Employee Personal Info Tab -->
+        <div class="row ep-pane" *ngIf="viewModel.tabLocation == 0">
+          <app-employee-info
+            [employee]="viewModel.employee"
+            [isReadOnly]="viewModel.isReadonly"
+            [isaddmode]="false">
+          </app-employee-info>
         </div>
+
+        <!-- Employee Address Tab -->
+        <div class="row ep-pane" *ngIf="viewModel.tabLocation == 1">
+          <app-employee-address-info
+            [employee]="viewModel.employee"
+            [isReadonly]="viewModel.isReadonly"
+            [isaddmode]="false"
+            [isEditMode]="true">
+          </app-employee-address-info>
+        </div>
+
+        <!-- Employee Bank Details Tab -->
+        <div class="row ep-pane" *ngIf="viewModel.tabLocation == 2">
+          <app-employee-bank-info
+            [employee]="viewModel.employee"
+            [isReadonly]="viewModel.isReadonly"
+            [isaddmode]="false"
+            [isEditMode]="true">
+          </app-employee-bank-info>
+        </div>
+
+        <!-- Employee Documents Tab -->
+        <div class="row ep-pane" *ngIf="viewModel.tabLocation == 3">
+          <app-employee-document-info
+            [employee]="viewModel.employee"
+            [isReadonly]="viewModel.isReadonly"
+            [isaddmode]="false"
+            [isEditMode]="true">
+          </app-employee-document-info>
+        </div>
+
+        <!-- Employee Salary Details Tab (✅ strict-safe) -->
+        <div class="row ep-pane" *ngIf="viewModel.tabLocation == 4 && viewModel.employee">
+          <app-employee-salary-info
+            [empid]="viewModel.employee.id"
+            [readonly]="viewModel.isReadonly"
+            [isaddmode]="false">
+          </app-employee-salary-info>
+        </div>
+
+        <!-- Employee Leaves Tab -->
+        <div class="row ep-pane" *ngIf="viewModel.tabLocation == 5">
+          <app-employee-leaves-info
+            [employee]="viewModel.employee"
+            [isReadOnly]="viewModel.isReadonly"
+            [isAdminMode]="false">
+          </app-employee-leaves-info>
+        </div>
+
+        <!-- Employee Generate Letter Tab -->
+        <div class="ep-pane" *ngIf="viewModel.tabLocation == 6">
+          <app-employee-generate-letter-info
+            [employee]="viewModel.employee"
+            [isaddmode]="false">
+          </app-employee-generate-letter-info>
+        </div>
+      </div>
     </div>
+
+  </div>
 </div>

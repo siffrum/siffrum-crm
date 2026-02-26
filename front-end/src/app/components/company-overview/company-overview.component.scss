@@ -1,108 +1,171 @@
+/* Page spacing */
+:host {
+  display: block;
+}
 
+.breadcrumb {
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  gap: 10px;
+}
+.breadcrumb-item a {
+  cursor: pointer;
+  text-decoration: none;
+  color: var(--text-color);
+  font-weight: 600;
+  opacity: 0.7;
+}
+.breadcrumb-item.active-tab a {
+  opacity: 1;
+  color: var(--primary-color, #3b82f6);
+}
+.breadcrumb-item.active-tab {
+  border-bottom: 2px solid var(--primary-color, #3b82f6);
+}
 
-.mainContainer {
-    display: grid;
-    grid-auto-flow: column;
-    padding: 8px;
-  }
+/* Card polish */
+.card.slide-up-animation {
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+  background: var(--card-bg, var(--top-side-nav-background-color));
+}
 
-  .logo_wrapper {
-    margin: auto;
-  }
-  .company-logo_img_wrapper {
-    position: relative;
-    max-width:100%;
-    max-height: 100%;
-    // border: 4px solid var(--border-color);
-    border-radius: 10%;
-    display: inline-block;
-  }
-  .logo_img {
-    width: 185px;
-    height: 185px;
-    object-fit: cover;
-    border-radius: 10%;
-  }
+.card-header {
+  background: transparent;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 14px 16px;
+  font-weight: 700;
+}
 
-  .company-logo_img_wrapper::before {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    // background: linear-gradient(#e66465, #9198e5);
-    z-index: -1;
-    width: calc(100% + 13px);
-    height: calc(100% + 13px);
-    border-radius: 50%;
-  }
-  @media only screen and (min-width: 770px) {
-    .company-logo_img_wrapper {
-      margin-top: 30px;
-      margin-bottom:0%
-    }
-  }
-  .addLogoIcon {
-    position: absolute;
-    top: 100%;
-    left: 38%;
-    transform: translate(-50%, -50%);
-    color: var(--text-color);
-    background-color: var(--top-side-nav-background-color);
-    font-size: 20px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 28px;
-    height: 28px;
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    // margin: 5px;
-    z-index: 2;
-  }
+.card-body {
+  padding: 16px !important;
+}
 
-  .deleteLogoIcon{
-    position: absolute;
-    top: 100%;
-    left: 52%;
-    transform: translate(-50%, -50%);
-    color: var(--text-color);
-    background-color: var(--top-side-nav-background-color);
-    font-size: 17px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 28px;
-    height: 28px;
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    // margin: 5px;
-    z-index: 2;
-  }
+/* Form rows */
+.firstDiv .row.align-items-center {
+  padding: 10px 0;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.06);
+}
+.firstDiv .row.align-items-center:last-child {
+  border-bottom: 0;
+}
+
+label {
+  font-weight: 600;
+  color: var(--text-color);
+  margin-bottom: 0;
+  opacity: 0.9;
+}
+
+.form-control {
+  border-radius: 12px;
+  padding: 10px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text-color);
+}
+.form-control:focus {
+  box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.15);
+  border-color: rgba(59, 130, 246, 0.6);
+}
+
+.validationMsg {
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+/* Right logo section */
+.secondDiv {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.logoCard {
+  width: 100%;
+  max-width: 260px;
+  border-radius: 16px;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* ✅ clean logo wrapper */
+.company-logo_img_wrapper {
+  position: relative;
+  width: 190px;
+  height: 190px;
+  margin: 0 auto;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.logo_img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* remove your circle pseudo border (it was wrong) */
+.company-logo_img_wrapper::before {
+  display: none;
+}
+
+/* ✅ Action buttons on image */
+.logo-actions {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  display: flex;
+  gap: 10px;
+  z-index: 5;
+}
+
+.iconBtn {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  color: var(--text-color);
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+}
+.iconBtn:hover {
+  transform: translateY(-1px);
+}
+
+/* Buttons row */
+.coinButton {
+  border-radius: 12px;
+  padding: 10px 14px;
+}
+
+/* Responsive reorder */
+.firstDiv {
+  order: 1;
+}
+.secondDiv {
+  order: 2;
+}
+
+@media (max-width: 770px) {
   .firstDiv {
-    order: 1;
-  }
-
-  .secondDiv {
     order: 2;
+    margin-top: 12px;
   }
-  .fileInput{
-    display: none;
+  .secondDiv {
+    order: 1;
+    margin-bottom: 12px;
   }
-  @media (max-width: 770px) {
-    .firstDiv {
-      order: 2;
-      margin-top: 10%;
-    }
-
-    .secondDiv {
-      order: 1;
-
-    }
-  }
-
-
+}
+.fileInput {
+  display: none;
+}

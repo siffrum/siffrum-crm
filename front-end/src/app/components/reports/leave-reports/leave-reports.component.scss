@@ -1,58 +1,272 @@
-.tableFixHead {
-    overflow-y: auto; /* make the table scrollable if height is more than 200 px  */
-    height: 300px; /* gives an initial height of 200px to the table */
-  }
-@media only screen and (max-width: 760px),
-(min-device-width: 768px) and (max-device-width: 1024px) {
-    table,
-    thead,
-    tbody,
-    th,
-    td,
-    tr {
-        display: block;
-        width: 100%;
-    }
-    thead tr {
-        position: relative;
-        display: none;
-    }
-    tr {
-        margin-top: 1rem;
-    }
-    td {
-        // border: 1px solid rgb(151, 143, 143);
-        position: relative;
-        padding-left: 50%;
-    }
-    td:before {
-        position: absolute;
-        left: 5px;
-        font-size: var(--table-header-font-size);
-        font-weight: var(--table-header-font-weight)
-    }
-    td:nth-of-type(1):before {
-        content: "Employee Name";
-    }
-    td:nth-of-type(2):before {
-        content: "Leave Type";
-    }
-    td:nth-of-type(3):before {
-        content: "Start Date";
-    }
-    td:nth-of-type(4):before {
-        content: "End Date";
-    }
-    td:nth-of-type(5):before {
-        content: "Employee Comment";
-    }
+.leave-page {
+  padding: 10px 0 26px;
 }
 
+/* Header */
+.leave-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 10px 12px;
+
+  .kicker {
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #7b8796;
+  }
+
+  .title {
+    margin: 6px 0 4px 0;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+  }
+
+  .sub {
+    margin: 0;
+    color: #6b7280;
+    font-size: 14px;
+  }
+
+  .head-actions .btn {
+    border-radius: 14px;
+    padding: 10px 14px;
+    white-space: nowrap;
+  }
+}
+
+/* Filters Card */
+.leave-filters {
+  border-radius: 18px;
+  padding: 16px;
+  background:
+    radial-gradient(900px 350px at 15% 0%, rgba(59,130,246,0.10), transparent 55%),
+    radial-gradient(900px 350px at 95% 10%, rgba(16,185,129,0.08), transparent 55%),
+    rgba(255,255,255,0.65);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--box-shadow);
+  margin: 0 12px;
+}
+
+.form-label {
+  font-weight: 800;
+  color: var(--text-color);
+  font-size: 13px;
+  margin-bottom: 6px;
+}
+
+.nice-input {
+  border-radius: 14px;
+  padding: 12px 12px;
+  border: 1px solid var(--border-color);
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.nice-select {
+  border-radius: 14px;
+  padding: 10px 12px;
+  border: 1px solid var(--border-color);
+  background: rgba(255, 255, 255, 0.9);
+}
+
+/* Search */
+.search {
+  position: relative;
+
+  i {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0.7;
+  }
+
+  .search-input {
+    padding-left: 38px;
+  }
+}
+
+/* Custom range */
+.range-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.range-item {
+  position: relative;
+
+  .range-chip {
+    position: absolute;
+    left: 10px;
+    top: -10px;
+    padding: 4px 8px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 800;
+    background: rgba(0, 51, 102, 0.10);
+    color: var(--breadcrmb-activeLnk-background);
+    border: 1px solid var(--border-color);
+  }
+}
+
+/* Table block */
+.leave-table-wrap {
+  margin: 14px 12px 0 12px;
+  border-radius: 18px;
+  border: 1px solid var(--border-color);
+  background: rgba(255,255,255,0.65);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.06);
+  overflow: hidden;
+}
+
+.table-head {
+  padding: 14px 16px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  border-bottom: 1px solid var(--border-color);
+
+  .kicker {
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #7b8796;
+  }
+
+  .th-title {
+    font-weight: 900;
+    font-size: 16px;
+    margin-top: 4px;
+  }
+
+  .count-pill {
+    border-radius: 999px;
+    padding: 8px 12px;
+    border: 1px solid var(--border-color);
+    background: rgba(0, 51, 102, 0.08);
+    color: var(--breadcrmb-activeLnk-background);
+    font-weight: 800;
+    font-size: 12px;
+    white-space: nowrap;
+  }
+}
+
+.soft-table {
+  background: rgba(255,255,255,0.78);
+}
+
+/* sticky table */
+.tableFixHead {
+  overflow-y: auto;
+  height: 300px;
+}
+.tableFixHead thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: rgba(255,255,255,0.95);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.comment-cell {
+  max-width: 420px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cell-strong {
+  font-weight: 900;
+}
+
+.type-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-weight: 800;
+  font-size: 12px;
+  border: 1px solid var(--border-color);
+  background: rgba(0, 51, 102, 0.10);
+  color: var(--breadcrmb-activeLnk-background);
+}
+
+/* Pagination */
+.pager {
+  padding: 10px 12px;
+  display: flex;
+  justify-content: center;
+  border-top: 1px solid var(--border-color);
+}
+
+/* Your existing pagination theme */
 ngb-pagination ::ng-deep a {
-    color: #000000;
+  color: #000000;
 }
 ngb-pagination ::ng-deep .page-item.active .page-link {
-    border-color: var(--border-color);
-    background-color: var(--pagging-background-color);
-    color: var(--text-color);
+  border-color: var(--border-color);
+  background-color: var(--pagging-background-color);
+  color: var(--text-color);
+}
+
+/* Mobile table (same behavior you had, but nicer spacing) */
+@media only screen and (max-width: 760px) {
+  .range-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Optional: keep your old mobile table conversion exactly */
+@media only screen and (max-width: 760px),
+(min-device-width: 768px) and (max-device-width: 1024px) {
+  table,
+  thead,
+  tbody,
+  th,
+  td,
+  tr {
+    display: block;
+    width: 100%;
+  }
+
+  thead tr {
+    position: relative;
+    display: none;
+  }
+
+  tr {
+    margin-top: 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    overflow: hidden;
+    background: rgba(255,255,255,0.9);
+  }
+
+  td {
+    position: relative;
+    padding-left: 50%;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+  td:before {
+    position: absolute;
+    left: 12px;
+    font-size: var(--table-header-font-size);
+    font-weight: var(--table-header-font-weight);
+    opacity: 0.75;
+  }
+
+  td:nth-of-type(1):before { content: "Employee Name"; }
+  td:nth-of-type(2):before { content: "Leave Type"; }
+  td:nth-of-type(3):before { content: "Start Date"; }
+  td:nth-of-type(4):before { content: "End Date"; }
+  td:nth-of-type(5):before { content: "Employee Comment"; }
 }

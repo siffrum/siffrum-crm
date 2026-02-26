@@ -191,4 +191,75 @@ export class SideMenuComponent
       this.router.navigate(['/sql-report', { id: this.viewModel.sqlReportObj.id, selectedReportName: selectedReport.reportName }]);
     }
   }
+
+  private dashboardViewMap: Record<string, string> = {
+  "Home": "home",
+  "CRM": "crm_apps",
+  "Reports": "reports",
+  "Analytics": "analytics",
+  "Payroll": "payroll",
+  "Notifications": "notifications",
+  "Settings": "settings"
+};
+
+goToDashboardView(menuItem: any) {
+  const name = (menuItem?.itemName || "").trim();
+  const view = this.dashboardViewMap[name];
+
+  if (view) {
+    this.router.navigate(['/dashboard'], {
+      queryParams: { view: view }
+    });
+  } else if (menuItem?.itemRoute?.length > 0) {
+    this.router.navigate([menuItem.itemRoute]);
+  }
 }
+
+// Dashboard items should go to /dashboard?view=xxx
+isDashboardViewItem(menuItem: any): boolean {
+  const name = (menuItem?.itemName || "").toLowerCase().trim();
+  return [
+    "home",
+    "crm",
+    "reports",
+    "analytics",
+    "payroll",
+    "notifications",
+    "settings",
+  ].includes(name);
+}
+
+private getDashboardViewKey(menuItem: any): string {
+  const name = (menuItem?.itemName || "").toLowerCase().trim();
+
+  // keep view keys consistent with your DashboardComponent
+  if (name === "home") return "home";
+  if (name === "crm") return "crm";
+  if (name === "reports") return "reports";
+  if (name === "analytics") return "analytics";
+  if (name === "payroll") return "payroll";
+  if (name === "notifications") return "notifications";
+  if (name === "settings") return "settings";
+
+  return "home";
+}
+
+getMenuRouterLink(menuItem: any): any[] | string {
+  // Dashboard view items
+  if (this.isDashboardViewItem(menuItem)) {
+    return ["/dashboard"];
+  }
+
+  // Normal routing from your existing sideMenuItems
+  return menuItem?.itemRoute;
+}
+
+getMenuQueryParams(menuItem: any): any {
+  if (this.isDashboardViewItem(menuItem)) {
+    return { view: this.getDashboardViewKey(menuItem) };
+  }
+  return null;
+}
+}
+
+

@@ -1,156 +1,317 @@
-<!--Company Attendance Shift List  Tab--satrt -->
-<div class="row mt-2">
-    <div class="col-lg-6 col-md-12 col-sm-12 col-12 mb-2">
-        <button class="btn coinButton" (click)="openCompanyDepartmentModal(0)">
-            Add New Department
-            &#43; </button>
+<div class="dept-page">
+  <div class="dept-shell soft-grad shadow-soft">
+
+    <!-- Header -->
+    <div class="dept-head">
+      <div>
+        <div class="kicker">Company</div>
+        <div class="title">Departments</div>
+        <p class="sub">Manage department codes, managers, locations and descriptions.</p>
+      </div>
+
+      <div class="head-right">
+        <button class="btn coinButton btn-add" (click)="openCompanyDepartmentModal(0)">
+          Add New Department &#43;
+        </button>
+      </div>
     </div>
-    <div class="col-lg-12">
-        <table class="table mb-0">
-            <thead>
-                <tr>
-                    <th class="firstTableHead"> Department Code </th>
-                    <th> Name</th>
-                    <th> Manager</th>
-                    <th> Location </th>
-                    <th>Description</th>
-                    <th *ngIf="viewModel.Permission?.delete || viewModel.Permission?.edit">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let data of viewModel.departmentList">
-                    <td>{{data.departmentCode}}</td>
-                    <td>{{data.departmentName}} </td>
-                    <td>{{data.departmentManager}} </td>
-                    <td> {{data.departmenntLocation}}</td>
-                    <td>{{data.departmentDescription}}</td>
-                    <td *ngIf="viewModel.Permission?.edit ||viewModel.Permission?.delete">
-                        <div>
-                            <i class="bi bi-pencil-square smallIcon ms-0" (click)="openCompanyDepartmentModal( data.id)"
-                                *ngIf="viewModel.Permission?.edit" (mouseenter)="viewModel.showTooltip = true"
-                                (mouseleave)="viewModel.showTooltip = false" [attr.title]="'Edit'"
-                                [attr.data-placement]="'left'" [ngClass]="{ 'tooltip-show': viewModel.showTooltip }">
-                            </i>
-                            &nbsp;
-                            <i class="bi bi-trash smallIcon ms-0" (click)="deleteCompanyDepartment(data.id)"
-                                *ngIf="viewModel.Permission?.delete" (mouseenter)="viewModel.showTooltip = true"
-                                (mouseleave)="viewModel.showTooltip = false" [attr.title]="'Delete'"
-                                [attr.data-placement]="'left'"
-                                [ngClass]="{ 'tooltip-show': viewModel.showTooltip }"></i>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
+
+    <!-- Table Card -->
+    <div class="dept-card">
+      <div class="table-responsive">
+        <table class="table mb-0 dept-table">
+          <thead>
+            <tr>
+              <th class="w-code">Department Code</th>
+              <th>Name</th>
+              <th>Manager</th>
+              <th>Location</th>
+              <th>Description</th>
+              <th class="w-actions" *ngIf="viewModel.Permission?.delete || viewModel.Permission?.edit">
+                Actions
+              </th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let data of viewModel.departmentList">
+              <td>
+                <span class="code-chip">{{ data.departmentCode }}</span>
+              </td>
+
+              <td>
+                <div class="cell-title">{{ data.departmentName }}</div>
+              </td>
+
+              <td>
+                <div class="cell-muted">{{ data.departmentManager }}</div>
+              </td>
+
+              <td>
+                <span class="badge-soft">{{ data.departmenntLocation }}</span>
+              </td>
+
+              <td>
+                <div class="cell-trunc" [attr.title]="data.departmentDescription">
+                  {{ data.departmentDescription }}
+                </div>
+              </td>
+
+              <td *ngIf="viewModel.Permission?.edit || viewModel.Permission?.delete">
+                <div class="action-group">
+                  <button
+                    type="button"
+                    class="icon-btn"
+                    *ngIf="viewModel.Permission?.edit"
+                    (click)="openCompanyDepartmentModal(data.id)"
+                    (mouseenter)="viewModel.showTooltip = true"
+                    (mouseleave)="viewModel.showTooltip = false"
+                    [attr.title]="'Edit'"
+                  >
+                    <i class="bi bi-pencil-square"></i>
+                  </button>
+
+                  <button
+                    type="button"
+                    class="icon-btn danger"
+                    *ngIf="viewModel.Permission?.delete"
+                    (click)="deleteCompanyDepartment(data.id)"
+                    (mouseenter)="viewModel.showTooltip = true"
+                    (mouseleave)="viewModel.showTooltip = false"
+                    [attr.title]="'Delete'"
+                  >
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+
+            <!-- Empty State -->
+            <tr *ngIf="!viewModel.departmentList || viewModel.departmentList.length === 0">
+              <td [attr.colspan]="(viewModel.Permission?.delete || viewModel.Permission?.edit) ? 6 : 5">
+                <div class="empty">
+                  <div class="empty-ic"><i class="bi bi-diagram-3"></i></div>
+                  <h4>No departments yet</h4>
+                  <p>Add your first department to get started.</p>
+                  <button class="btn coinButton btn-add" (click)="openCompanyDepartmentModal(0)">
+                    Add New Department &#43;
+                  </button>
+                </div>
+              </td>
+            </tr>
+
+          </tbody>
         </table>
+      </div>
     </div>
+
+  </div>
 </div>
-<!-- open Modal -->
-<div class="modal expandIn" tabindex="-1" role="dialog" [ngStyle]="{'display':viewModel.displayStyle}">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4>Department</h4>
-                <button type="button" class="btn-close" (click)="closePopup(departmentForm)"></button>
-            </div>
-            <form #departmentForm="ngForm">
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-lg-4 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
-                            <label> Department Code <span class="text-danger fs-5">*</span> </label>
-                        </div>
-                        <div class="col-lg-8 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
-                            <input type="text" class="form-control" required name="departmentCode"
-                                #departmentCode="ngModel" [(ngModel)]="viewModel.department.departmentCode"
-                                minlength="3" maxlength="8" placeholder="Enter Department Code"
-                                (focus)="validateDepartmentCode($event)">
 
-                            <div *ngFor="let validation of viewModel.validations.departmentCode">
-                                <div *ngIf="(departmentCode.touched || viewModel.formSubmitted ) && departmentCode.hasError(validation.type)"
-                                    class="text-danger validationMsg">
-                                    {{validation.message}}
-                                </div>
-                            </div>
-                        </div>
+<!-- Backdrop (click to close) -->
+<div
+  class="modal-backdrop"
+  *ngIf="viewModel.displayStyle === 'block'"
+  (click)="closePopup(departmentForm)"
+></div>
 
-                        <div class="col-lg-4 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
-                            <label> Department Name <span class="text-danger fs-5">*</span></label>
-                        </div>
+<!-- Modal -->
+<div
+  class="modal dept-modal"
+  tabindex="-1"
+  role="dialog"
+  [ngStyle]="{ 'display': viewModel.displayStyle }"
+  [ngClass]="{ 'show': viewModel.displayStyle === 'block' }"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
 
-                        <div class="col-lg-8 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
-                            <input type="text" class="form-control" required
-                                [(ngModel)]="viewModel.department.departmentName" pattern="^[A-Za-z][A-Za-z0-9\s]*$"
-                                name="departmentName" minlength="2" maxlength="50" placeholder="Enter Department Name"
-                                #departmentName="ngModel">
-
-                            <div *ngFor="let validation of viewModel.validations.departmentName">
-                                <div *ngIf="(departmentName.touched || viewModel.formSubmitted) && departmentName.hasError(validation.type)"
-                                    class="text-danger  validationMsg">
-                                    {{validation.message}}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
-                            <label> Manager Name <span class="text-danger fs-5">*</span> </label>
-                        </div>
-                        <div class="col-lg-8 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
-                            <input type="text" class="form-control" required name="departmentManager"
-                                [(ngModel)]="viewModel.department.departmentManager" minlength="3" maxlength="30"
-                                placeholder="Enter Manager Name" #departmentManager="ngModel"
-                                pattern="^[A-Za-z][A-Za-z0-9]*$">
-
-                            <div *ngFor="let validation of viewModel.validations.departmentManager">
-                                <div *ngIf="(departmentManager.touched || viewModel.formSubmitted) && departmentManager.hasError(validation.type)"
-                                    class="text-danger  validationMsg">
-                                    {{validation.message}}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
-                            <label> Location <span class="text-danger fs-5">*</span> </label>
-                        </div>
-                        <div class="col-lg-8 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
-                            <input type="text" class="form-control" required name="departmenntLocation"
-                                pattern="^[A-Za-z][A-Za-z0-9\s]*$"
-                                [(ngModel)]="viewModel.department.departmenntLocation" minlength="5" maxlength="50"
-                                placeholder="Enter Department Location" #departmenntLocation="ngModel">
-
-                            <div *ngFor="let validation of viewModel.validations.departmenntLocation">
-                                <div *ngIf="(departmenntLocation.touched || viewModel.formSubmitted) && departmenntLocation.hasError(validation.type)"
-                                    class="text-danger  validationMsg">
-                                    {{validation.message}}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
-                            <label> Description </label>
-                        </div>
-                        <div class="col-lg-8 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
-                            <input type="text" class="form-control"
-                                [(ngModel)]="viewModel.department.departmentDescription"
-                                name="departmentDescription" #departmentDescription="ngModel" minlength="5"
-                                maxlength="50" placeholder="Enter Department Description"
-                                pattern="^[A-Za-z][A-Za-z0-9\s]*$">
-                            <div *ngFor="let validation of viewModel.validations.departmentDescription">
-                                <div *ngIf="(departmentDescription.touched || viewModel.formSubmitted) && departmentDescription.hasError(validation.type)"
-                                    class="text-danger  validationMsg">
-                                    {{validation.message}}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end" *ngIf=" !viewModel.editMode">
-                        <button class="btn coinButton" (click)="addCompanyDepartment(departmentForm)"
-                            *ngIf="viewModel.Permission?.add">Save </button>
-                    </div>
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end"
-                        *ngIf="viewModel.editMode &&viewModel.Permission?.edit">
-                        <button class="btn coinButton" (click)="updateCompanyDepartmentDetails(departmentForm)">
-                            Update</button>
-                    </div>
-                </div>
-            </form>
+      <div class="modal-header">
+        <div>
+          <div class="modal-title">Department</div>
+          <div class="modal-sub">Fill the details below and save.</div>
         </div>
+        <button type="button" class="btn-close" (click)="closePopup(departmentForm)"></button>
+      </div>
+
+      <form #departmentForm="ngForm">
+        <div class="modal-body">
+          <div class="form-grid">
+
+            <!-- Department Code -->
+            <div class="fg">
+              <label class="form-label">
+                Department Code <span class="req">*</span>
+              </label>
+
+              <input
+                type="text"
+                class="form-control"
+                required
+                name="departmentCode"
+                #departmentCode="ngModel"
+                [(ngModel)]="viewModel.department.departmentCode"
+                minlength="3"
+                maxlength="8"
+                placeholder="e.g. HR01"
+                (focus)="validateDepartmentCode($event)"
+              />
+
+              <div *ngFor="let validation of viewModel.validations.departmentCode">
+                <div
+                  *ngIf="(departmentCode.touched || viewModel.formSubmitted) && departmentCode.hasError(validation.type)"
+                  class="text-danger validationMsg"
+                >
+                  {{ validation.message }}
+                </div>
+              </div>
+            </div>
+
+            <!-- Department Name -->
+            <div class="fg">
+              <label class="form-label">
+                Department Name <span class="req">*</span>
+              </label>
+
+              <input
+                type="text"
+                class="form-control"
+                required
+                [(ngModel)]="viewModel.department.departmentName"
+                pattern="^[A-Za-z][A-Za-z0-9\s]*$"
+                name="departmentName"
+                minlength="2"
+                maxlength="50"
+                placeholder="e.g. Human Resources"
+                #departmentName="ngModel"
+              />
+
+              <div *ngFor="let validation of viewModel.validations.departmentName">
+                <div
+                  *ngIf="(departmentName.touched || viewModel.formSubmitted) && departmentName.hasError(validation.type)"
+                  class="text-danger validationMsg"
+                >
+                  {{ validation.message }}
+                </div>
+              </div>
+            </div>
+
+            <!-- Manager Name -->
+            <div class="fg">
+              <label class="form-label">
+                Manager Name <span class="req">*</span>
+              </label>
+
+              <input
+                type="text"
+                class="form-control"
+                required
+                name="departmentManager"
+                [(ngModel)]="viewModel.department.departmentManager"
+                minlength="3"
+                maxlength="30"
+                placeholder="e.g. Aamir"
+                #departmentManager="ngModel"
+                pattern="^[A-Za-z][A-Za-z0-9]*$"
+              />
+
+              <div *ngFor="let validation of viewModel.validations.departmentManager">
+                <div
+                  *ngIf="(departmentManager.touched || viewModel.formSubmitted) && departmentManager.hasError(validation.type)"
+                  class="text-danger validationMsg"
+                >
+                  {{ validation.message }}
+                </div>
+              </div>
+            </div>
+
+            <!-- Location -->
+            <div class="fg">
+              <label class="form-label">
+                Location <span class="req">*</span>
+              </label>
+
+              <input
+                type="text"
+                class="form-control"
+                required
+                name="departmenntLocation"
+                pattern="^[A-Za-z][A-Za-z0-9\s]*$"
+                [(ngModel)]="viewModel.department.departmenntLocation"
+                minlength="5"
+                maxlength="50"
+                placeholder="e.g. Srinagar HQ"
+                #departmenntLocation="ngModel"
+              />
+
+              <div *ngFor="let validation of viewModel.validations.departmenntLocation">
+                <div
+                  *ngIf="(departmenntLocation.touched || viewModel.formSubmitted) && departmenntLocation.hasError(validation.type)"
+                  class="text-danger validationMsg"
+                >
+                  {{ validation.message }}
+                </div>
+              </div>
+            </div>
+
+            <!-- Description -->
+            <div class="fg full">
+              <label class="form-label">Description</label>
+
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="viewModel.department.departmentDescription"
+                name="departmentDescription"
+                #departmentDescription="ngModel"
+                minlength="5"
+                maxlength="50"
+                placeholder="Short description (optional)"
+                pattern="^[A-Za-z][A-Za-z0-9\s]*$"
+              />
+
+              <div *ngFor="let validation of viewModel.validations.departmentDescription">
+                <div
+                  *ngIf="(departmentDescription.touched || viewModel.formSubmitted) && departmentDescription.hasError(validation.type)"
+                  class="text-danger validationMsg"
+                >
+                  {{ validation.message }}
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <div class="footer-actions">
+
+            <button type="button" class="btn btn-light" (click)="closePopup(departmentForm)">
+              Cancel
+            </button>
+
+            <button
+              class="btn coinButton"
+              type="button"
+              (click)="addCompanyDepartment(departmentForm)"
+              *ngIf="!viewModel.editMode && viewModel.Permission?.add"
+            >
+              Save
+            </button>
+
+            <button
+              class="btn coinButton"
+              type="button"
+              (click)="updateCompanyDepartmentDetails(departmentForm)"
+              *ngIf="viewModel.editMode && viewModel.Permission?.edit"
+            >
+              Update
+            </button>
+
+          </div>
+        </div>
+      </form>
+
     </div>
+  </div>
 </div>

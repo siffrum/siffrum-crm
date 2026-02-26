@@ -1,22 +1,114 @@
-<div class="row " *ngIf="viewModel.Permission?.view">
-    <div class="col-lg-4 col-md-4 col-sm-4 generateLetter">
-        <div class="card text-center mb-3">
-            <div class="card-body">
-                <img src="assets/images/reimbersement.webp" class="img-fluid">
-                <h2> Generate PaySlip </h2>
-                <select class="form-select" [(ngModel)]="viewModel.selectedMonth" (change)="onMonthChange()" aria-label="Default select example">
-                    <option value="" disabled>SELECT MONTH</option>
-                       <option *ngFor="let item of viewModel.months" [value]="item"> {{item}} </option>
-                </select>
-            </div>
-        </div>
+<section class="gl-shell" *ngIf="viewModel.Permission?.view">
+
+  <!-- Header -->
+  <div class="gl-head">
+    <div>
+      <div class="gl-kicker">Documents</div>
+      <h2 class="gl-title">Generate Letters</h2>
+      <p class="gl-sub">Download payslips and employee letters instantly.</p>
     </div>
-    <div class="col-lg-4 col-md-4 col-sm-4 generateLetter" *ngFor="let item of viewModel.letterList">
-        <div class="card text-center mb-3">
-            <div class="card-body">
-                <img src="assets/images/experienceLetter.webp" class="img-fluid mb-lg-4" (click)="downloadEmployeeLetter(item.id)">
-                <h2> Generate {{item.name}} </h2>
-            </div>
-        </div>
+
+    <div class="gl-actions">
+      <button class="btn gl-refresh" type="button" (click)="loadPageData()">
+        <i class="bi bi-arrow-repeat"></i>
+        Refresh
+      </button>
     </div>
-</div>
+  </div>
+
+  <!-- Grid -->
+  <div class="row g-3 gl-grid">
+
+    <!-- PaySlip Card -->
+    <div class="col-12 col-md-6 col-lg-4">
+      <div class="gl-card">
+        <div class="gl-card-top">
+          <div class="gl-ic">
+            <img src="assets/images/reimbersement.webp" alt="PaySlip" />
+          </div>
+
+          <div class="gl-meta">
+            <h3 class="gl-card-title">Generate PaySlip</h3>
+            <p class="gl-card-sub">Select month to download PDF.</p>
+          </div>
+        </div>
+
+        <div class="gl-card-body">
+          <label class="gl-label">Month</label>
+
+          <div class="gl-select-wrap">
+            <select
+              class="form-select gl-select"
+              [(ngModel)]="viewModel.selectedMonth"
+              (change)="onMonthChange()"
+              aria-label="Select month"
+            >
+              <option value="" disabled selected>SELECT MONTH</option>
+              <option *ngFor="let item of viewModel.months" [value]="item">
+                {{ item }}
+              </option>
+            </select>
+
+            <i class="bi bi-calendar3 gl-select-ic"></i>
+          </div>
+
+          <div class="gl-hint">
+            Tip: latest months are at the top.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Letters -->
+    <div class="col-12 col-md-6 col-lg-4" *ngFor="let item of viewModel.letterList">
+      <div class="gl-card gl-click" (click)="downloadEmployeeLetter(item.id)" role="button" tabindex="0"
+           (keydown.enter)="downloadEmployeeLetter(item.id)" (keydown.space)="$event.preventDefault(); downloadEmployeeLetter(item.id)">
+        <div class="gl-card-top">
+          <div class="gl-ic">
+            <img src="assets/images/experienceLetter.webp" alt="Letter" />
+          </div>
+
+          <div class="gl-meta">
+            <h3 class="gl-card-title">Generate {{ item.name }}</h3>
+            <p class="gl-card-sub">Click to download document.</p>
+          </div>
+        </div>
+
+        <div class="gl-card-body gl-row">
+          <div class="gl-chip">
+            <i class="bi bi-file-earmark-text"></i>
+            Letter
+          </div>
+
+          <button class="btn gl-btn" type="button" (click)="$event.stopPropagation(); downloadEmployeeLetter(item.id)">
+            <i class="bi bi-download"></i>
+            Download
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Empty State -->
+    <div class="col-12" *ngIf="!viewModel.letterList || viewModel.letterList.length === 0">
+      <div class="gl-empty">
+        <i class="bi bi-inbox"></i>
+        <div>
+          <h4>No letters available</h4>
+          <p>Your company hasn’t configured letter templates yet.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- No permission -->
+<section class="gl-shell" *ngIf="!viewModel.Permission?.view">
+  <div class="gl-empty gl-denied">
+    <i class="bi bi-shield-lock"></i>
+    <div>
+      <h4>Access denied</h4>
+      <p>You don’t have permission to view Generate Letters module.</p>
+    </div>
+  </div>
+</section>

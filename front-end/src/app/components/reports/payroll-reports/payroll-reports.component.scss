@@ -1,60 +1,169 @@
-.tableFixHead {
-    overflow-y: auto; /* make the table scrollable if height is more than 200 px  */
-    height: 300px; /* gives an initial height of 200px to the table */
+.payroll-page {
+  padding: 12px 0 26px;
+}
+
+/* Header */
+.payroll-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 12px;
+
+  .kicker {
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #7b8796;
   }
-@media only screen and (max-width: 760px),
-(min-device-width: 768px) and (max-device-width: 1024px) {
-    table,
-    thead,
-    tbody,
-    th,
-    td,
-    tr {
-        display: block;
-        width: 100%;
-    }
-    thead tr {
-        position: relative;
-        display: none;
-    }
-    tr {
-        margin-top: 1rem;
-    }
-    td {
-        // border: 1px solid rgb(151, 143, 143);
-        position: relative;
-        padding-left: 50%;
-    }
-    td:before {
-        position: absolute;
-        left: 5px;
-        font-size: var(--table-header-font-size);
-        font-weight: var(--table-header-font-weight)
-    }
-    td:nth-of-type(1):before {
-        content: "Employee Name";
-    }
-    td:nth-of-type(2):before {
-        content: "Designation";
-    }
-    td:nth-of-type(3):before {
-        content: "Amount";
-    }
-    td:nth-of-type(4):before {
-        content: "Mode";
-    }
-    td:nth-of-type(5):before {
-        content: "Payment For";
-    }
-    td:nth-of-type(6):before {
-        content: "Status";
-    }
+
+  .title {
+    margin: 6px 0 4px 0;
+    font-weight: 900;
+  }
+
+  .sub {
+    margin: 0;
+    color: #6b7280;
+    font-size: 14px;
+  }
 }
-ngb-pagination ::ng-deep a {
-    color: #000000;
+
+/* Filters Card */
+.payroll-filters {
+  margin: 0 12px;
+  padding: 16px;
+  border-radius: 18px;
+  border: 1px solid var(--border-color);
+  background: rgba(255,255,255,0.65);
+  backdrop-filter: blur(12px);
+  box-shadow: var(--box-shadow);
 }
-ngb-pagination ::ng-deep .page-item.active .page-link {
-    border-color: var(--border-color);
-    background-color: var(--pagging-background-color);
-    color: var(--text-color);
+
+.form-label {
+  font-weight: 800;
+  font-size: 13px;
+}
+
+.nice-input,
+.nice-select {
+  border-radius: 14px;
+  border: 1px solid var(--border-color);
+  background: rgba(255,255,255,0.9);
+}
+
+/* Search */
+.search {
+  position: relative;
+
+  i {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0.7;
+  }
+
+  .search-input {
+    padding-left: 38px;
+  }
+}
+
+/* Date range */
+.range-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.range-item {
+  position: relative;
+
+  .range-chip {
+    position: absolute;
+    left: 10px;
+    top: -10px;
+    padding: 4px 8px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 800;
+    background: rgba(0,51,102,0.10);
+    color: var(--breadcrmb-activeLnk-background);
+    border: 1px solid var(--border-color);
+  }
+}
+
+/* Table */
+.payroll-table-wrap {
+  margin: 14px 12px 0 12px;
+  border-radius: 18px;
+  border: 1px solid var(--border-color);
+  background: rgba(255,255,255,0.65);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.06);
+  overflow: hidden;
+}
+
+.table-head {
+  padding: 14px 16px;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border-color);
+
+  .th-title {
+    font-weight: 900;
+  }
+
+  .count-pill {
+    border-radius: 999px;
+    padding: 8px 12px;
+    border: 1px solid var(--border-color);
+    background: rgba(0,51,102,0.08);
+    font-weight: 800;
+    font-size: 12px;
+  }
+}
+
+.tableFixHead {
+  overflow-y: auto;
+  height: 300px;
+}
+
+.tableFixHead thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: rgba(255,255,255,0.95);
+}
+
+.cell-strong {
+  font-weight: 900;
+}
+
+.amount-cell {
+  font-weight: 800;
+  color: var(--breadcrmb-activeLnk-background);
+}
+
+.status-pill {
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-weight: 800;
+  font-size: 12px;
+  border: 1px solid var(--border-color);
+  background: rgba(0,51,102,0.10);
+}
+
+.pager {
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  border-top: 1px solid var(--border-color);
+}
+
+/* Mobile table */
+@media only screen and (max-width: 760px) {
+  .range-grid {
+    grid-template-columns: 1fr;
+  }
 }

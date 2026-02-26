@@ -1,44 +1,46 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
+import Chart from "chart.js/auto";
+
+import { BaseComponent } from "../base.component";
 import { CommonService } from "src/app/services/common.service";
 import { LogHandlerService } from "src/app/services/log-handler.service";
 import { DashboardViewModel } from "src/app/view-models/dashboard.viewmodel";
-import { BaseComponent } from "../base.component";
 import { AccountService } from "src/app/services/account.service";
 import { AuthGuard } from "src/app/guard/auth.guard";
 import { RoleTypeSM } from "src/app/service-models/app/enums/role-type-s-m.enum";
-import { ModuleNameSM } from "src/app/service-models/app/enums/module-name-s-m.enum";
-import Chart from 'chart.js/auto';
 import { AdminDashboardService } from "src/app/services/admin-dashboard.service";
 
 @Component({
-    selector: "app-dashboard",
-    templateUrl: "./dashboard.component.html",
-    styleUrls: ["./dashboard.component.scss"],
-    standalone: false
+  selector: "app-dashboard",
+  templateUrl: "./dashboard.component.html",
+  styleUrls: ["./dashboard.component.scss"],
+  standalone: false,
 })
 export class DashboardComponent
   extends BaseComponent<DashboardViewModel>
-  implements OnInit {
+  implements OnInit
+{
+  barChart: Chart | null = null;
+  pieChart: Chart | null = null;
+
   constructor(
     commonService: CommonService,
     logService: LogHandlerService,
     private adminDashBoardService: AdminDashboardService,
     private accountService: AccountService,
-    private authGuard: AuthGuard,
-
+    private authGuard: AuthGuard
   ) {
     super(commonService, logService);
     this.viewModel = new DashboardViewModel();
   }
-  // @DEV : Musaib
+
   async ngOnInit() {
     this._commonService.layoutVM.showLeftSideMenu = true;
-    // this._commonService.layoutVM.toogleWrapper
-    this._commonService.layoutVM.toggleSideMenu = 'default';
-    this._commonService.layoutVM.toogleWrapper = 'wrapper';
+    this._commonService.layoutVM.toggleSideMenu = "default";
+    this._commonService.layoutVM.toogleWrapper = "wrapper";
 
     try {
-      let roleType: any = RoleTypeSM[this._commonService.layoutVM.tokenRole];
+      const roleType: any = RoleTypeSM[this._commonService.layoutVM.tokenRole];
       if (roleType === "ClientAdmin" || roleType === "ClientEmployee") {
         await this._commonService.applyThemeGlobally();
       } else {
@@ -47,175 +49,159 @@ export class DashboardComponent
     } catch (error) {
       console.error("Error loading theme:", error);
     }
+
     // Loader
     await this._commonService.presentLoading();
-    await setTimeout(async () => {
+    setTimeout(async () => {
       await this._commonService.dismissLoader();
-    }, 1000);
+    }, 800);
 
     this._commonService.layoutVM.PageTitle = this.viewModel.PageTitle;
-    if (!(await this.authGuard.IsTokenValid)) {
+
+    const tokenValid = await this.authGuard.IsTokenValid();
+    if (!tokenValid) {
       await this._commonService.ShowToastAtTopEnd("Please Login", "warning");
+      return;
     }
-    await this._commonService.dismissLoader();
+
     await this.getloggedInUser();
     await this.loadPageData();
-    this.getModulePermission();
-    this.BarChart();
-    this.PieChart();
   }
-  // Add a property to store the sub-items for the report cards
-  //get permissions
 
-  getEmptySlotsCount(): any {
-    let itemsWithPermissions = this._commonService.layoutVM.sideMenuItems.filter(item => item.permission);
-    let remainingItems = 4 - (itemsWithPermissions.length % 4);
-    return remainingItems === 4 ? 0 : remainingItems;
-  }
-  async getModulePermission(): Promise<ModuleNameSM | any> {
-    this._commonService.layoutVM.dashboardItems.forEach(async (element) => {
-      let permission = await this.accountService.getMyModulePermissions(
-        element.moduleName
-      );
-      if (permission) {
-        if (permission.isStandAlone)
-          element.permission = permission.isEnabledForClient;
-        else
-          element.permission = permission.isEnabledForClient && permission.view;
+  // ==============================
+  // GET LOGGED USER (NO TS ERROR)
+  // ==============================
+  async getloggedInUser(): Promise<boolean> {
+    try {
+      const tokenValid = await this.authGuard.IsTokenValid();
+      if (!tokenValid) return false;
+
+      const user: any = await this.accountService.getUserFromStorage();
+      if (user == null || user === "") return false;
+
+      if (typeof user === "string") {
+        const raw = user.trim();
+        if (!raw) return false;
+
+        try {
+          const parsed = JSON.parse(raw);
+          (this.viewModel as any).employee = parsed;
+          return true;
+        } catch {
+          (this.viewModel as any).employee = { userName: raw } as any;
+          return true;
+        }
       }
-    });
+
+      (this.viewModel as any).employee = user;
+      return true;
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
   }
-  /**
-   * Get All Data For Dashboard
-   */
+
+  // ==============================
+  // LOAD DASHBOARD DATA
+  // ==============================
   override async loadPageData() {
     try {
       await this._commonService.presentLoading();
-      let resp =
-        await this.adminDashBoardService.getAllDachboardDataItems();
+
+      const resp = await this.adminDashBoardService.getAllDachboardDataItems();
       if (resp.isError) {
         await this._exceptionHandler.logObject(resp);
         this._commonService.showSweetAlertToast({
-          title: 'Error!',
+          title: "Error!",
           text: resp.errorData.displayMessage,
           position: "top-end",
-          icon: "error"
+          icon: "error",
         });
-      } else {
-        this.viewModel.adminDashboardVM = resp.successData;
+        return;
       }
+
+      this.viewModel.adminDashboardVM = resp.successData;
+
+      // Render charts AFTER DOM paints
+      setTimeout(() => {
+        this.BarChart();
+        this.PieChart();
+      }, 150);
     } catch (error) {
-      throw error;
+      console.error(error);
     } finally {
       await this._commonService.dismissLoader();
     }
-  }
-  async getloggedInUser() {
-    try {
-      await this._commonService.presentLoading();
-      let tokenValid = await this.authGuard.IsTokenValid();
-      if (!tokenValid) {
-        return false;
-      } else {
-        let user = await this.accountService.getUserFromStorage();
-        if (user == "") {
-          return false;
-        }
-        this.viewModel.employee = user;
-      }
-    } catch (error) {
-      throw error;
-    } finally {
-      await this._commonService.dismissLoader();
-    }
-    return;
   }
 
-  barChart: any = []
+  // ==============================
+  // BAR CHART
+  // ==============================
   BarChart(): void {
-    // Extract department names and employee counts
-    let employeeCounts = this.viewModel.adminDashboardVM.clientCompanyDepartment.map(data => data.employeeCount);
-    let departmentNames = this.viewModel.adminDashboardVM.clientCompanyDepartment.map(data => data.departmentName);
-    let maxBarsToShow = 10;
-    let slicedDepartmentNames = departmentNames.slice(0, maxBarsToShow);
-    let slicedEmployeeCounts = employeeCounts.slice(0, maxBarsToShow);
-    this.barChart = new Chart('barChart', {
-      type: 'bar',
-      data: {
-        labels: slicedDepartmentNames,
-        datasets: [
-          {
-            label: 'No. Of Employees',
-            data: slicedEmployeeCounts,
-            backgroundColor: [
-              'rgba(255, 99, 132, 0.2)',
-              'rgba(255, 159, 64, 0.2)',
-              'rgba(255, 205, 86, 0.2)',
-              'rgba(75, 192, 192, 0.2)',
-              'rgba(54, 162, 235, 0.2)',
-              'rgba(153, 102, 255, 0.2)',
-              'rgba(201, 203, 207, 0.2)'
-            ],
-            borderColor: [
-              'rgb(255, 99, 132)',
-              'rgb(255, 159, 64)',
-              'rgb(255, 205, 86)',
-              'rgb(75, 192, 192)',
-              'rgb(54, 162, 235)',
-              'rgb(153, 102, 255)',
-              'rgb(201, 203, 207)'
-            ],
-            borderWidth: 1
-          }]
+    const dept = this.viewModel.adminDashboardVM?.clientCompanyDepartment;
+    if (!dept || !dept.length) return;
 
-      },
-      options: {
-        scales: {
-          y: {
-            type: 'linear', // Ensure you have 'linear' here
-            position: 'left',
-            beginAtZero: true,
-          },
-        },
-      },
-    });
-  }
-  pieChart: any = []
-  PieChart() {
-    this.pieChart = new Chart('pieChart', {
-      type: 'pie',
+    const labels = dept.slice(0, 10).map((d: any) => d.departmentName);
+    const values = dept.slice(0, 10).map((d: any) => d.employeeCount);
+
+    if (this.barChart) {
+      this.barChart.destroy();
+      this.barChart = null;
+    }
+
+    this.barChart = new Chart("barChart", {
+      type: "bar",
       data: {
-        labels: ['Present', 'Leave', 'Absent'],
+        labels,
         datasets: [
           {
-            label: 'No. of Employees',
-            data: [this.viewModel.adminDashboardVM.numberOfEmployeesPresent, this.viewModel.adminDashboardVM.numberOfEmployeeOnLeave, this.viewModel.adminDashboardVM.numberOfEmployeesAbsent],
-            backgroundColor: [
-              '#2ed8b6',
-              '#FFB64D',
-              '#FF5370',
-            ],
-            borderColor: [
-              '#2ed8b6',
-              '#FFB64D',
-              '#FF5370',
-            ],
-            borderWidth: 1
-          }]
+            label: "No. Of Employees",
+            data: values,
+            borderWidth: 1,
+          },
+        ],
       },
       options: {
+        responsive: true,
+        maintainAspectRatio: false,
         scales: {
-          y: {
-            type: 'linear', // Ensure you have 'linear' here
-            position: 'left',
-            beginAtZero: true,
-          },
+          y: { beginAtZero: true },
         },
       },
     });
   }
 
+  // ==============================
+  // PIE CHART
+  // ==============================
+  PieChart(): void {
+    const vm = this.viewModel.adminDashboardVM;
+    if (!vm) return;
 
+    const present = vm.numberOfEmployeesPresent ?? 0;
+    const leave = vm.numberOfEmployeeOnLeave ?? 0;
+    const absent = vm.numberOfEmployeesAbsent ?? 0;
 
+    if (this.pieChart) {
+      this.pieChart.destroy();
+      this.pieChart = null;
+    }
+
+    this.pieChart = new Chart("pieChart", {
+      type: "pie",
+      data: {
+        labels: ["Present", "Leave", "Absent"],
+        datasets: [
+          {
+            data: [present, leave, absent],
+            borderWidth: 1,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+      },
+    });
+  }
 }
-

@@ -1,59 +1,375 @@
-.modal-content {
-    max-width: 610px; /* Adjust the value to your desired width */
-    margin: auto;
-  }
+/* ===============================
+   Company Departments - FULL SCSS
+   =============================== */
 
-  @media only screen and (max-width: 760px),
-(min-device-width: 768px) and (max-device-width: 1024px) {
-    table,
-    thead,
-    tbody,
-    th,
-    td,
-    tr {
-        display: block;
-        width: 100%;
-    }
-    thead tr {
-        position: relative;
-        display: none;
-    }
-    tr {
-        margin-top: 1rem;
-    }
-    td {
-        // border: 1px solid rgb(151, 143, 143);
-        position: relative;
-        padding-left: 50%;
-        font-size: 10px;
-    }
-    td:before {
-        position: absolute;
-        left: 5px;
-        font-size: var(--table-header-font-size);
-        font-weight: var(--table-header-font-weight)
-    }
-    td:nth-of-type(1):before {
-        content: "Department Code";
-    }
-    td:nth-of-type(2):before {
-        content: "Department Name";
-    }
-    td:nth-of-type(3):before {
-        content: "Manager Name";
-    }
-    td:nth-of-type(4):before {
-        content: "Location";
-    }
-    td:nth-of-type(5):before {
-        content: "Description";
-    }
-    td:nth-of-type(6):before {
-        content: "Actions";
-    }
+.dept-page {
+  padding: 14px 6px;
 }
 
-.validationMsg{
-    font-size: 11px;
-    padding: 6px;
+/* Shell */
+.soft-grad {
+  background: radial-gradient(1200px 300px at 20% 0%, rgba(59, 130, 246, 0.14), transparent 60%),
+    radial-gradient(900px 280px at 90% 20%, rgba(16, 185, 129, 0.12), transparent 55%),
+    #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 18px;
+}
+
+.shadow-soft {
+  box-shadow: 0 18px 45px rgba(15, 23, 42, 0.08);
+}
+
+.dept-shell {
+  padding: 18px;
+}
+
+/* Header */
+.dept-head {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+
+  .kicker {
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(15, 23, 42, 0.6);
+    font-weight: 600;
+  }
+
+  .title {
+    font-size: 22px;
+    margin: 2px 0 4px;
+    font-weight: 800;
+    color: #0f172a;
+  }
+
+  .sub {
+    margin: 0;
+    color: rgba(15, 23, 42, 0.65);
+  }
+
+  .head-right {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+}
+
+.btn-add {
+  height: 40px;
+  border-radius: 12px;
+}
+
+/* Card + table */
+.dept-card {
+  margin-top: 14px;
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(15, 23, 42, 0.06);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.table-responsive {
+  overflow-x: auto;
+}
+
+.dept-table {
+  thead th {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: rgba(15, 23, 42, 0.65);
+    background: rgba(15, 23, 42, 0.03);
+    border-bottom: 1px solid rgba(15, 23, 42, 0.06);
+    padding: 14px 14px;
+    white-space: nowrap;
+  }
+
+  tbody td {
+    padding: 14px 14px;
+    vertical-align: middle;
+    border-bottom: 1px solid rgba(15, 23, 42, 0.06);
+  }
+
+  tbody tr:hover {
+    background: rgba(59, 130, 246, 0.04);
+  }
+
+  .w-code {
+    width: 160px;
+  }
+
+  .w-actions {
+    width: 140px;
+  }
+}
+
+/* Cell styles */
+.code-chip {
+  display: inline-flex;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-weight: 800;
+  font-size: 12px;
+  background: rgba(59, 130, 246, 0.12);
+  color: #1d4ed8;
+}
+
+.cell-title {
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.cell-muted {
+  color: rgba(15, 23, 42, 0.7);
+}
+
+.cell-trunc {
+  max-width: 320px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: rgba(15, 23, 42, 0.7);
+}
+
+.badge-soft {
+  background: rgba(16, 185, 129, 0.12);
+  color: #047857;
+  border: 1px solid rgba(16, 185, 129, 0.18);
+  font-weight: 700;
+  border-radius: 999px;
+  padding: 6px 10px;
+}
+
+/* Actions */
+.action-group {
+  display: inline-flex;
+  gap: 8px;
+}
+
+.icon-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  background: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+
+  i {
+    font-size: 16px;
+    color: rgba(15, 23, 42, 0.75);
+  }
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 20px rgba(15, 23, 42, 0.08);
+  }
+
+  &.danger {
+    border-color: rgba(239, 68, 68, 0.25);
+
+    i {
+      color: #ef4444;
+    }
+  }
+}
+
+/* Empty state */
+.empty {
+  padding: 36px 16px;
+  text-align: center;
+
+  .empty-ic {
+    width: 54px;
+    height: 54px;
+    border-radius: 16px;
+    margin: 0 auto 10px;
+    display: grid;
+    place-items: center;
+    background: rgba(59, 130, 246, 0.12);
+    color: #1d4ed8;
+
+    i {
+      font-size: 22px;
+    }
+  }
+
+  h4 {
+    margin: 6px 0 6px;
+    font-weight: 900;
+    color: #0f172a;
+  }
+
+  p {
+    margin: 0 0 14px;
+    color: rgba(15, 23, 42, 0.65);
+  }
+}
+
+/* Validation messages */
+.validationMsg {
+  font-size: 12px;
+  padding: 6px 2px;
+}
+
+/* Form labels + required */
+.form-label {
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.req {
+  color: #ef4444;
+  font-weight: 900;
+}
+
+/* Inputs */
+.form-control {
+  border-radius: 12px;
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  background: rgba(255, 255, 255, 0.92);
+
+  &:focus {
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
+    border-color: rgba(59, 130, 246, 0.45);
+  }
+}
+
+/* ===============================
+   Modal Overlay + Popup (FIXED)
+   =============================== */
+
+/* Backdrop */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.55);
+  z-index: 1040;
+}
+
+/* Modal container - IMPORTANT: hidden by default */
+.dept-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1050;
+  padding: 16px;
+
+  /* default hidden, so close works */
+  display: none;
+
+  align-items: center;
+  justify-content: center;
+
+  .modal-dialog {
+    width: 100%;
+    max-width: 720px;
+    margin: 0;
+    transform: translateY(6px);
+    transition: transform 0.14s ease;
+  }
+
+  .modal-content {
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    box-shadow: 0 30px 70px rgba(15, 23, 42, 0.22);
+    animation: pop 0.14s ease;
+  }
+
+  .modal-header {
+    background: rgba(15, 23, 42, 0.03);
+    border-bottom: 1px solid rgba(15, 23, 42, 0.06);
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 10px;
+
+    .modal-title {
+      font-weight: 900;
+      color: #0f172a;
+      font-size: 18px;
+      line-height: 1.1;
+    }
+
+    .modal-sub {
+      font-size: 13px;
+      color: rgba(15, 23, 42, 0.6);
+      margin-top: 3px;
+    }
+
+    .btn-close {
+      margin-top: 2px;
+    }
+  }
+
+  .modal-body {
+    padding: 16px;
+  }
+
+  .modal-footer {
+    border-top: 1px solid rgba(15, 23, 42, 0.06);
+    background: rgba(255, 255, 255, 0.7);
+    padding: 12px 16px;
+  }
+}
+
+/* Show state */
+.dept-modal.show {
+  display: flex;
+}
+
+.dept-modal.show .modal-dialog {
+  transform: translateY(0);
+}
+
+/* Modal form grid */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+
+  .fg.full {
+    grid-column: 1 / -1;
+  }
+}
+
+/* Footer actions */
+.footer-actions {
+  width: 100%;
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+@keyframes pop {
+  from {
+    transform: scale(0.98);
+    opacity: 0.7;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* ===============================
+   Responsive
+   =============================== */
+@media (max-width: 768px) {
+  .cell-trunc {
+    max-width: 180px;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
 }

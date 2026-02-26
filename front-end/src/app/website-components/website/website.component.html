@@ -2,7 +2,7 @@
 
 <main class="website-page">
   <!-- HERO -->
-  <section class="hero relative overflow-hidden px-6 pt-36 md:pt-52 pb-24">
+  <section class="hero relative overflow-hidden px-4 sm:px-6 pt-28 sm:pt-32 md:pt-44 lg:pt-52 pb-16 sm:pb-20 md:pb-24">
     <!-- soft background glows -->
     <div class="glow glow-left"></div>
     <div class="glow glow-right"></div>
@@ -35,12 +35,10 @@
       <!-- floating right donut -->
       <div class="hero-float hidden xl:block top-0 -right-10 w-72 glass-card p-6 rounded-[2.5rem] metric-card fast">
         <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-5 text-left">SLA</p>
-        <div class="relative w-32 h-32 mx-auto">
+        <div class="relative w-28 h-28 md:w-32 md:h-32 mx-auto">
           <svg viewBox="0 0 36 36" class="w-full h-full transform -rotate-90">
-            <circle cx="18" cy="18" r="15.9" fill="transparent" stroke="currentColor" stroke-width="3.5"
-                    class="text-slate-100"></circle>
-            <circle cx="18" cy="18" r="15.9" fill="transparent" stroke="#2563eb" stroke-width="3.5"
-                    stroke-dasharray="84 100"></circle>
+            <circle cx="18" cy="18" r="15.9" fill="transparent" stroke="currentColor" stroke-width="3.5" class="text-slate-100"></circle>
+            <circle cx="18" cy="18" r="15.9" fill="transparent" stroke="#2563eb" stroke-width="3.5" stroke-dasharray="84 100"></circle>
           </svg>
           <div class="absolute inset-0 flex flex-col items-center justify-center">
             <span class="text-2xl font-black">94%</span>
@@ -54,8 +52,11 @@
 
       <!-- center content -->
       <div class="hero-center text-center">
-        <div class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-slate-100 border border-slate-200/60
-                    text-[10px] font-black uppercase tracking-[0.25em] text-blue-600 mb-8">
+        <div
+          class="inline-flex items-center gap-2 px-4 sm:px-5 py-2 rounded-full bg-slate-100 border border-slate-200/60
+                 text-[10px] font-black uppercase tracking-[0.25em] text-blue-600 mb-6 sm:mb-8
+                 max-w-full flex-wrap justify-center"
+        >
           <span class="relative flex h-2 w-2">
             <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
             <span class="relative inline-flex rounded-full h-2 w-2 bg-blue-600"></span>
@@ -63,45 +64,43 @@
           CRM + Ops • Role-based access • Audit-ready
         </div>
 
-        <h1 class="hero-title text-5xl sm:text-6xl md:text-8xl font-extrabold text-gradient">
-          Run payroll + operations<br class="hidden sm:block" />
+        <h1 class="hero-title text-[2.4rem] sm:text-5xl md:text-7xl lg:text-8xl font-extrabold text-gradient leading-[1.05]">
+          Run payroll + operations
+          <br class="hidden sm:block" />
           from one workspace.
         </h1>
 
-        <p class="mt-7 text-lg md:text-2xl text-slate-500 max-w-3xl mx-auto font-medium leading-relaxed">
+        <p class="mt-5 sm:mt-7 text-base sm:text-lg md:text-xl lg:text-2xl text-slate-500 max-w-3xl mx-auto font-medium leading-relaxed">
           Track pipeline, manage employees, approvals, and automate workflows—without juggling multiple tools.
         </p>
 
         <!-- Buttons -->
-        <div class="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4">
-          <a routerLink="/login" class="btn btn-primary w-full sm:w-auto">
-            Login
-          </a>
-
-          <a href="#product" class="btn btn-secondary w-full sm:w-auto">
-            See features
-          </a>
+        <div class="mt-8 sm:mt-10 md:mt-12 flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 sm:gap-4">
+          <a routerLink="/login" class="btn btn-primary w-full sm:w-auto">Login</a>
+          <a href="#product" class="btn btn-secondary w-full sm:w-auto">See features</a>
         </div>
 
         <!-- Console mock -->
-        <div class="mt-14 max-w-6xl mx-auto">
-          <div class="relative bg-slate-950 p-3 md:p-6 rounded-[3.5rem] border border-white/10
-                      shadow-[0_50px_110px_-25px_rgba(0,0,0,0.55)]">
-            <div class="flex items-center px-6 mb-8 h-4 gap-2">
+        <div class="mt-10 sm:mt-12 md:mt-14 max-w-6xl mx-auto">
+          <div
+            class="relative bg-slate-950 p-3 sm:p-4 md:p-6 rounded-[2rem] sm:rounded-[2.5rem] md:rounded-[3.5rem]
+                   border border-white/10 shadow-[0_50px_110px_-25px_rgba(0,0,0,0.55)] overflow-hidden"
+          >
+            <div class="flex items-center px-4 sm:px-6 mb-6 sm:mb-8 h-4 gap-2">
               <div class="flex gap-2">
                 <div class="w-3 h-3 rounded-full bg-red-500/20"></div>
                 <div class="w-3 h-3 rounded-full bg-amber-500/20"></div>
                 <div class="w-3 h-3 rounded-full bg-emerald-500/20"></div>
               </div>
-              <div class="ml-6 h-3 w-44 bg-white/5 rounded-full"></div>
+              <div class="ml-4 sm:ml-6 h-3 w-28 sm:w-44 bg-white/5 rounded-full"></div>
               <div class="ml-auto hidden md:flex items-center gap-2">
                 <div class="h-3 w-20 bg-white/5 rounded-full"></div>
                 <div class="h-3 w-14 bg-white/5 rounded-full"></div>
               </div>
             </div>
 
-            <div class="grid grid-cols-12 gap-6 px-2 pb-2">
-              <div class="col-span-3 hidden md:block space-y-4">
+            <div class="grid grid-cols-12 gap-4 sm:gap-6 px-2 pb-2">
+              <div class="col-span-12 md:col-span-3 md:block hidden space-y-4">
                 <div class="bg-white/5 rounded-3xl p-6 border border-white/5 text-left">
                   <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Next actions</p>
                   <p class="text-2xl font-black text-white mt-1">18</p>
@@ -115,30 +114,30 @@
                 </div>
               </div>
 
-              <div class="col-span-12 md:col-span-9 bg-white/[0.03] rounded-[2.5rem] border border-white/5 p-8">
-                <div class="flex justify-between items-start mb-10">
+              <div class="col-span-12 md:col-span-9 bg-white/[0.03] rounded-[2rem] sm:rounded-[2.5rem] border border-white/5 p-5 sm:p-7 md:p-8">
+                <div class="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4 mb-8 sm:mb-10">
                   <div class="text-left">
-                    <h4 class="text-white font-bold text-xl">Overview</h4>
+                    <h4 class="text-white font-bold text-lg sm:text-xl">Overview</h4>
                     <p class="text-slate-500 text-sm mt-1">Fast, simple UI components</p>
                   </div>
-                  <div class="flex gap-2">
+                  <div class="flex gap-2 justify-start sm:justify-end">
                     <div class="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[10px] font-black uppercase tracking-widest text-slate-300">7d</div>
                     <div class="px-3 py-1 rounded-full bg-blue-600 text-[10px] font-black uppercase tracking-widest text-white">30d</div>
                     <div class="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[10px] font-black uppercase tracking-widest text-slate-300">90d</div>
                   </div>
                 </div>
 
-                <div class="flex items-end justify-between h-56 gap-3 md:gap-6 px-2">
+                <div class="flex items-end justify-between h-44 sm:h-52 md:h-56 gap-2 sm:gap-3 md:gap-6 px-1 sm:px-2">
                   <div class="flex-1 bg-blue-600/20 rounded-t-2xl relative"><div class="absolute bottom-0 inset-x-0 bg-blue-600 rounded-t-2xl" style="height: 62%"></div></div>
                   <div class="flex-1 bg-blue-600/20 rounded-t-2xl relative"><div class="absolute bottom-0 inset-x-0 bg-blue-600 rounded-t-2xl" style="height: 82%"></div></div>
                   <div class="flex-1 bg-indigo-500/20 rounded-t-2xl relative"><div class="absolute bottom-0 inset-x-0 bg-indigo-500 rounded-t-2xl" style="height: 48%"></div></div>
                   <div class="flex-1 bg-blue-600/20 rounded-t-2xl relative"><div class="absolute bottom-0 inset-x-0 bg-blue-600 rounded-t-2xl" style="height: 92%"></div></div>
                   <div class="flex-1 bg-blue-600/20 rounded-t-2xl relative"><div class="absolute bottom-0 inset-x-0 bg-blue-600 rounded-t-2xl" style="height: 70%"></div></div>
-                  <div class="flex-1 bg-indigo-500/20 rounded-t-2xl relative"><div class="absolute bottom-0 inset-x-0 bg-indigo-500 rounded-t-2xl" style="height: 63%"></div></div>
-                  <div class="flex-1 bg-blue-600/20 rounded-t-2xl relative"><div class="absolute bottom-0 inset-x-0 bg-blue-600 rounded-t-2xl" style="height: 40%"></div></div>
+                  <div class="hidden sm:block flex-1 bg-indigo-500/20 rounded-t-2xl relative"><div class="absolute bottom-0 inset-x-0 bg-indigo-500 rounded-t-2xl" style="height: 63%"></div></div>
+                  <div class="hidden md:block flex-1 bg-blue-600/20 rounded-t-2xl relative"><div class="absolute bottom-0 inset-x-0 bg-blue-600 rounded-t-2xl" style="height: 40%"></div></div>
                 </div>
 
-                <div class="mt-8 grid grid-cols-3 gap-4">
+                <div class="mt-6 sm:mt-8 grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
                   <div class="rounded-2xl bg-white/5 border border-white/10 p-4">
                     <p class="text-[10px] font-black uppercase tracking-widest text-slate-400">Hot deals</p>
                     <p class="text-2xl font-black text-white mt-1">9</p>
@@ -156,7 +155,7 @@
             </div>
           </div>
 
-          <div class="mt-10 flex flex-wrap items-center justify-center gap-3 text-xs font-bold text-slate-500">
+          <div class="mt-8 sm:mt-10 flex flex-wrap items-center justify-center gap-2 sm:gap-3 text-[11px] sm:text-xs font-bold text-slate-500 px-2">
             <span class="pill">RBAC</span>
             <span class="pill">Audit logs</span>
             <span class="pill">Exports</span>
@@ -168,184 +167,167 @@
     </div>
   </section>
 
- <!-- Logo cloud -->
-    <section class="py-16 border-y border-slate-100 dark:border-slate-800">
-      <div class="max-w-7xl mx-auto px-6">
-        <p class="text-center text-[10px] font-black text-slate-400 uppercase tracking-[0.4em] mb-10">
-          Trusted by teams building faster operations
-        </p>
-        <div class="flex flex-wrap justify-center gap-14 md:justify-between transition-all duration-700">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg"
-               class="h-8 grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition-all duration-500 cursor-pointer"
-               alt="Google">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg"
-               class="h-8 grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition-all duration-500 cursor-pointer"
-               alt="Netflix">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg"
-               class="h-8 grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition-all duration-500 cursor-pointer"
-               alt="Amazon">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg"
-               class="h-8 grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition-all duration-500 cursor-pointer"
-               alt="Microsoft">
-        </div>
+  <!-- Logo cloud -->
+  <section class="logo-cloud py-12 sm:py-16 border-y border-slate-100 dark:border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+      <p class="text-center text-[10px] font-black text-slate-400 uppercase tracking-[0.4em] mb-8 sm:mb-10">
+        Trusted by teams building faster operations
+      </p>
+
+      <div class="flex flex-wrap justify-center gap-x-10 gap-y-6 sm:gap-x-14 md:justify-between">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg" class="h-6 sm:h-7 md:h-8" alt="Google" />
+        <img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg" class="h-6 sm:h-7 md:h-8" alt="Netflix" />
+        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" class="h-6 sm:h-7 md:h-8" alt="Amazon" />
+        <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" class="h-6 sm:h-7 md:h-8" alt="Microsoft" />
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- ✅ From here onwards: keep your existing sections as-is.
-         I only added reveal classes + hover-glow (light-touch) and fixed nav/mobile/theme/reveal duplication. -->
-
-    <!-- Product / Outcomes -->
-    <section id="product" class="py-28 md:py-36 px-6 reveal reveal-up">
-      <!-- YOUR ORIGINAL PRODUCT SECTION CONTENT (unchanged) -->
-      <!-- (paste your existing Product section content here) -->
-      <!-- For brevity: keep exactly what you already wrote -->
-      <!-- START: Original content -->
-      <div class="max-w-7xl mx-auto">
-        <div class="text-center mb-14 md:mb-20">
-          <h2 class="text-sm font-black text-blue-600 uppercase tracking-[0.5em] mb-6">Product</h2>
-          <h3 class="text-5xl md:text-7xl font-extrabold tracking-tighter mb-6 leading-[0.95]">
-            Built for teams that ship.<br><span class="text-slate-300 dark:text-slate-800">Not for slide decks.</span>
-          </h3>
-          <p class="text-lg md:text-xl text-slate-500 dark:text-slate-400 max-w-3xl mx-auto font-medium">
-            Clean UI, predictable flows, and the controls admins need. Everything feels like one system—because it is.
-          </p>
-        </div>
-
-        <div class="grid md:grid-cols-12 gap-6">
-          <div class="md:col-span-7 glass-card rounded-[3rem] md:rounded-[4rem] p-10 md:p-12 overflow-hidden relative hover-glow">
-            <span class="bg-blue-600 text-white text-[10px] font-black px-4 py-1 rounded-full uppercase tracking-widest">Core CRM</span>
-            <h4 class="text-3xl md:text-4xl font-black mt-6 mb-4">Pipeline you can trust</h4>
-            <p class="text-slate-500 dark:text-slate-400 text-lg max-w-xl">
-              Simple stages, clear ownership, and fast edits. Keep the team aligned without messy custom screens.
-            </p>
-
-            <div class="mt-10 grid sm:grid-cols-2 gap-4">
-              <div class="rounded-[2rem] bg-white/70 dark:bg-slate-950/40 border border-white/40 dark:border-white/5 p-6">
-                <p class="text-xs font-black uppercase tracking-widest text-slate-400">Deals</p>
-                <p class="text-lg font-black mt-2">Stage + owner</p>
-                <p class="text-sm text-slate-500 dark:text-slate-400 font-semibold mt-1">No confusion, no duplicate work.</p>
-              </div>
-              <div class="rounded-[2rem] bg-white/70 dark:bg-slate-950/40 border border-white/40 dark:border-white/5 p-6">
-                <p class="text-xs font-black uppercase tracking-widest text-slate-400">Accounts</p>
-                <p class="text-lg font-black mt-2">Timeline</p>
-                <p class="text-sm text-slate-500 dark:text-slate-400 font-semibold mt-1">Notes, tasks, and touchpoints.</p>
-              </div>
-            </div>
-
-            <div class="absolute -bottom-24 -right-20 w-72 h-72 bg-blue-600/20 blur-3xl rounded-full"></div>
-          </div>
-
-          <div class="md:col-span-5 bg-slate-900 text-white rounded-[3rem] md:rounded-[4rem] p-10 md:p-12 overflow-hidden relative hover-glow">
-            <span class="bg-blue-600 text-white text-[10px] font-black px-4 py-1 rounded-full uppercase tracking-widest">Ops</span>
-            <h4 class="text-2xl md:text-3xl font-black mt-6 mb-4">Approvals + automation</h4>
-            <p class="text-slate-300">
-              Build repeatable flows: onboarding, access requests, renewals, and invoicing—without a messy toolchain.
-            </p>
-
-            <div class="mt-10 space-y-3">
-              <div class="flex items-center gap-3 bg-white/5 border border-white/10 rounded-2xl p-4">
-                <div class="w-10 h-10 rounded-2xl bg-blue-600/25 flex items-center justify-center font-black">1</div>
-                <div>
-                  <p class="font-black">Trigger</p>
-                  <p class="text-xs text-slate-300 font-semibold">Lead created / employee onboarded</p>
-                </div>
-              </div>
-              <div class="flex items-center gap-3 bg-white/5 border border-white/10 rounded-2xl p-4">
-                <div class="w-10 h-10 rounded-2xl bg-indigo-500/25 flex items-center justify-center font-black">2</div>
-                <div>
-                  <p class="font-black">Route</p>
-                  <p class="text-xs text-slate-300 font-semibold">Assign owner, SLA, notifications</p>
-                </div>
-              </div>
-              <div class="flex items-center gap-3 bg-white/5 border border-white/10 rounded-2xl p-4">
-                <div class="w-10 h-10 rounded-2xl bg-emerald-500/25 flex items-center justify-center font-black">3</div>
-                <div>
-                  <p class="font-black">Log</p>
-                  <p class="text-xs text-slate-300 font-semibold">Track actions for audits</p>
-                </div>
-              </div>
-            </div>
-
-            <div class="absolute -bottom-24 -left-24 w-72 h-72 bg-blue-600/25 blur-3xl rounded-full"></div>
-          </div>
-        </div>
-
-        <div class="mt-16 grid md:grid-cols-3 gap-6">
-          <div class="glass-card rounded-[2.5rem] p-8 border border-blue-500/10 hover-glow reveal reveal-left" style="--d:80ms">
-            <p class="text-sm text-slate-600 dark:text-slate-300 font-semibold leading-relaxed">
-              “Feels fast. Our team stopped arguing about where the truth is—pipeline and tasks are finally consistent.”
-            </p>
-            <div class="mt-5 soft-divider"></div>
-            <p class="mt-5 text-xs font-black uppercase tracking-widest text-slate-400">Sales ops • Mid-market</p>
-          </div>
-          <div class="glass-card rounded-[2.5rem] p-8 border border-blue-500/10 hover-glow reveal reveal-zoom" style="--d:160ms">
-            <p class="text-sm text-slate-600 dark:text-slate-300 font-semibold leading-relaxed">
-              “The UI is clean and the roles make sense. Admin controls are strong without being complicated.”
-            </p>
-            <div class="mt-5 soft-divider"></div>
-            <p class="mt-5 text-xs font-black uppercase tracking-widest text-slate-400">IT admin • 200 seats</p>
-          </div>
-          <div class="glass-card rounded-[2.5rem] p-8 border border-blue-500/10 hover-glow reveal reveal-right" style="--d:240ms">
-            <p class="text-sm text-slate-600 dark:text-slate-300 font-semibold leading-relaxed">
-              “Exports and audit logs were the missing piece. We finally have a simple story for compliance.”
-            </p>
-            <div class="mt-5 soft-divider"></div>
-            <p class="mt-5 text-xs font-black uppercase tracking-widest text-slate-400">Ops lead • Enterprise</p>
-          </div>
-        </div>
-      </div>
-      <!-- END: Original content -->
-    </section>
-
-
-
-    <!-- Use cases -->
-  <section id="usecases" class="py-28 md:py-36 px-6 bg-slate-50 dark:bg-slate-900/50 reveal">
+  <!-- Product / Outcomes -->
+  <section id="product" class="py-24 sm:py-28 md:py-36 px-4 sm:px-6 reveal reveal-up">
     <div class="max-w-7xl mx-auto">
-      <div class="text-center mb-14 md:mb-20">
-        <h2 class="text-sm font-black text-blue-600 uppercase tracking-[0.5em] mb-6">Use cases</h2>
-        <h3 class="text-4xl md:text-6xl font-extrabold tracking-tighter mb-6 leading-[0.95]">
+      <div class="text-center mb-12 sm:mb-14 md:mb-20">
+        <h2 class="text-sm font-black text-blue-600 uppercase tracking-[0.5em] mb-5 sm:mb-6">Product</h2>
+        <h3 class="text-4xl sm:text-5xl md:text-7xl font-extrabold tracking-tighter mb-5 sm:mb-6 leading-[0.98]">
+          Built for teams that ship.<br><span class="text-slate-300 dark:text-slate-800">Not for slide decks.</span>
+        </h3>
+        <p class="text-base sm:text-lg md:text-xl text-slate-500 dark:text-slate-400 max-w-3xl mx-auto font-medium">
+          Clean UI, predictable flows, and the controls admins need. Everything feels like one system—because it is.
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-12 gap-5 sm:gap-6">
+        <div class="md:col-span-7 glass-card rounded-[2.25rem] sm:rounded-[3rem] md:rounded-[4rem] p-7 sm:p-10 md:p-12 overflow-hidden relative hover-glow">
+          <span class="bg-blue-600 text-white text-[10px] font-black px-4 py-1 rounded-full uppercase tracking-widest">Core CRM</span>
+          <h4 class="text-2xl sm:text-3xl md:text-4xl font-black mt-5 sm:mt-6 mb-3 sm:mb-4">Pipeline you can trust</h4>
+          <p class="text-slate-500 dark:text-slate-400 text-base sm:text-lg max-w-xl">
+            Simple stages, clear ownership, and fast edits. Keep the team aligned without messy custom screens.
+          </p>
+
+          <div class="mt-8 sm:mt-10 grid sm:grid-cols-2 gap-4">
+            <div class="rounded-[1.5rem] sm:rounded-[2rem] bg-white/70 dark:bg-slate-950/40 border border-white/40 dark:border-white/5 p-6">
+              <p class="text-xs font-black uppercase tracking-widest text-slate-400">Deals</p>
+              <p class="text-lg font-black mt-2">Stage + owner</p>
+              <p class="text-sm text-slate-500 dark:text-slate-400 font-semibold mt-1">No confusion, no duplicate work.</p>
+            </div>
+            <div class="rounded-[1.5rem] sm:rounded-[2rem] bg-white/70 dark:bg-slate-950/40 border border-white/40 dark:border-white/5 p-6">
+              <p class="text-xs font-black uppercase tracking-widest text-slate-400">Accounts</p>
+              <p class="text-lg font-black mt-2">Timeline</p>
+              <p class="text-sm text-slate-500 dark:text-slate-400 font-semibold mt-1">Notes, tasks, and touchpoints.</p>
+            </div>
+          </div>
+
+          <div class="absolute -bottom-24 -right-20 w-72 h-72 bg-blue-600/20 blur-3xl rounded-full"></div>
+        </div>
+
+        <div class="md:col-span-5 bg-slate-900 text-white rounded-[2.25rem] sm:rounded-[3rem] md:rounded-[4rem] p-7 sm:p-10 md:p-12 overflow-hidden relative hover-glow">
+          <span class="bg-blue-600 text-white text-[10px] font-black px-4 py-1 rounded-full uppercase tracking-widest">Ops</span>
+          <h4 class="text-xl sm:text-2xl md:text-3xl font-black mt-5 sm:mt-6 mb-3 sm:mb-4">Approvals + automation</h4>
+          <p class="text-slate-300 text-sm sm:text-base">
+            Build repeatable flows: onboarding, access requests, renewals, and invoicing—without a messy toolchain.
+          </p>
+
+          <div class="mt-8 sm:mt-10 space-y-3">
+            <div class="flex items-center gap-3 bg-white/5 border border-white/10 rounded-2xl p-4">
+              <div class="w-10 h-10 rounded-2xl bg-blue-600/25 flex items-center justify-center font-black">1</div>
+              <div>
+                <p class="font-black">Trigger</p>
+                <p class="text-xs text-slate-300 font-semibold">Lead created / employee onboarded</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-3 bg-white/5 border border-white/10 rounded-2xl p-4">
+              <div class="w-10 h-10 rounded-2xl bg-indigo-500/25 flex items-center justify-center font-black">2</div>
+              <div>
+                <p class="font-black">Route</p>
+                <p class="text-xs text-slate-300 font-semibold">Assign owner, SLA, notifications</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-3 bg-white/5 border border-white/10 rounded-2xl p-4">
+              <div class="w-10 h-10 rounded-2xl bg-emerald-500/25 flex items-center justify-center font-black">3</div>
+              <div>
+                <p class="font-black">Log</p>
+                <p class="text-xs text-slate-300 font-semibold">Track actions for audits</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="absolute -bottom-24 -left-24 w-72 h-72 bg-blue-600/25 blur-3xl rounded-full"></div>
+        </div>
+      </div>
+
+      <div class="mt-12 sm:mt-16 grid md:grid-cols-3 gap-5 sm:gap-6">
+        <div class="glass-card rounded-[2rem] sm:rounded-[2.5rem] p-7 sm:p-8 border border-blue-500/10 hover-glow reveal reveal-left" style="--d:80ms">
+          <p class="text-sm text-slate-600 dark:text-slate-300 font-semibold leading-relaxed">
+            “Feels fast. Our team stopped arguing about where the truth is—pipeline and tasks are finally consistent.”
+          </p>
+          <div class="mt-5 soft-divider"></div>
+          <p class="mt-5 text-xs font-black uppercase tracking-widest text-slate-400">Sales ops • Mid-market</p>
+        </div>
+        <div class="glass-card rounded-[2rem] sm:rounded-[2.5rem] p-7 sm:p-8 border border-blue-500/10 hover-glow reveal reveal-zoom" style="--d:160ms">
+          <p class="text-sm text-slate-600 dark:text-slate-300 font-semibold leading-relaxed">
+            “The UI is clean and the roles make sense. Admin controls are strong without being complicated.”
+          </p>
+          <div class="mt-5 soft-divider"></div>
+          <p class="mt-5 text-xs font-black uppercase tracking-widest text-slate-400">IT admin • 200 seats</p>
+        </div>
+        <div class="glass-card rounded-[2rem] sm:rounded-[2.5rem] p-7 sm:p-8 border border-blue-500/10 hover-glow reveal reveal-right" style="--d:240ms">
+          <p class="text-sm text-slate-600 dark:text-slate-300 font-semibold leading-relaxed">
+            “Exports and audit logs were the missing piece. We finally have a simple story for compliance.”
+          </p>
+          <div class="mt-5 soft-divider"></div>
+          <p class="mt-5 text-xs font-black uppercase tracking-widest text-slate-400">Ops lead • Enterprise</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Use cases -->
+  <section id="usecases" class="py-24 sm:py-28 md:py-36 px-4 sm:px-6 bg-slate-50 dark:bg-slate-900/50 reveal">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center mb-12 sm:mb-14 md:mb-20">
+        <h2 class="text-sm font-black text-blue-600 uppercase tracking-[0.5em] mb-5 sm:mb-6">Use cases</h2>
+        <h3 class="text-3xl sm:text-4xl md:text-6xl font-extrabold tracking-tighter mb-5 sm:mb-6 leading-[0.98]">
           Built for real workflows.
         </h3>
-        <p class="text-lg md:text-xl text-slate-500 dark:text-slate-400 max-w-3xl mx-auto font-medium">
+        <p class="text-base sm:text-lg md:text-xl text-slate-500 dark:text-slate-400 max-w-3xl mx-auto font-medium">
           Everything here is the stuff teams actually do every day—no “magic AI” claims.
         </p>
       </div>
 
-      <div class="grid md:grid-cols-12 gap-6">
-        <div class="md:col-span-4 glass-card rounded-[3rem] p-10 border border-blue-500/10">
+      <div class="grid md:grid-cols-12 gap-5 sm:gap-6">
+        <div class="md:col-span-4 glass-card rounded-[2.25rem] sm:rounded-[3rem] p-7 sm:p-10 border border-blue-500/10">
           <p class="text-[10px] font-black uppercase tracking-widest text-slate-400">Sales</p>
-          <h4 class="text-2xl font-black mt-4">Deal execution</h4>
-          <p class="mt-3 text-slate-500 dark:text-slate-400 font-semibold">
+          <h4 class="text-xl sm:text-2xl font-black mt-4">Deal execution</h4>
+          <p class="mt-3 text-slate-500 dark:text-slate-400 font-semibold text-sm sm:text-base">
             Stage movement, task reminders, and clean notes—so reps stop losing context.
           </p>
-          <div class="mt-8 flex flex-wrap gap-2">
+          <div class="mt-7 sm:mt-8 flex flex-wrap gap-2">
             <span class="px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-[11px] font-black text-slate-500">Stages</span>
             <span class="px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-[11px] font-black text-slate-500">Tasks</span>
             <span class="px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-[11px] font-black text-slate-500">Notes</span>
           </div>
         </div>
 
-        <div class="md:col-span-4 glass-card rounded-[3rem] p-10 border border-blue-500/10">
+        <div class="md:col-span-4 glass-card rounded-[2.25rem] sm:rounded-[3rem] p-7 sm:p-10 border border-blue-500/10">
           <p class="text-[10px] font-black uppercase tracking-widest text-slate-400">People Ops</p>
-          <h4 class="text-2xl font-black mt-4">Onboarding flows</h4>
-          <p class="mt-3 text-slate-500 dark:text-slate-400 font-semibold">
+          <h4 class="text-xl sm:text-2xl font-black mt-4">Onboarding flows</h4>
+          <p class="mt-3 text-slate-500 dark:text-slate-400 font-semibold text-sm sm:text-base">
             Collect documents, assign equipment, and track approvals from one place.
           </p>
-          <div class="mt-8 flex flex-wrap gap-2">
+          <div class="mt-7 sm:mt-8 flex flex-wrap gap-2">
             <span class="px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-[11px] font-black text-slate-500">Checklists</span>
             <span class="px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-[11px] font-black text-slate-500">Approvals</span>
             <span class="px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-[11px] font-black text-slate-500">Roles</span>
           </div>
         </div>
 
-        <div class="md:col-span-4 glass-card rounded-[3rem] p-10 border border-blue-500/10">
+        <div class="md:col-span-4 glass-card rounded-[2.25rem] sm:rounded-[3rem] p-7 sm:p-10 border border-blue-500/10">
           <p class="text-[10px] font-black uppercase tracking-widest text-slate-400">Support</p>
-          <h4 class="text-2xl font-black mt-4">Service desk</h4>
-          <p class="mt-3 text-slate-500 dark:text-slate-400 font-semibold">
+          <h4 class="text-xl sm:text-2xl font-black mt-4">Service desk</h4>
+          <p class="mt-3 text-slate-500 dark:text-slate-400 font-semibold text-sm sm:text-base">
             Intake, triage, and escalation with audit-friendly logs.
           </p>
-          <div class="mt-8 flex flex-wrap gap-2">
+          <div class="mt-7 sm:mt-8 flex flex-wrap gap-2">
             <span class="px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-[11px] font-black text-slate-500">Tickets</span>
             <span class="px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-[11px] font-black text-slate-500">SLA</span>
             <span class="px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-[11px] font-black text-slate-500">Audit</span>
@@ -353,22 +335,22 @@
         </div>
       </div>
 
-      <!-- integrations row (simple + professional) -->
-      <div class="mt-16 glass-card rounded-[3rem] p-10 border border-blue-500/10">
+      <!-- integrations row -->
+      <div class="mt-10 sm:mt-16 glass-card rounded-[2.25rem] sm:rounded-[3rem] p-7 sm:p-10 border border-blue-500/10">
         <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
           <div>
             <p class="text-[10px] font-black uppercase tracking-widest text-blue-600">Integrations</p>
-            <h4 class="text-2xl md:text-3xl font-black mt-3">Connect what you already use</h4>
-            <p class="mt-2 text-slate-500 dark:text-slate-400 font-semibold max-w-2xl">
+            <h4 class="text-xl sm:text-2xl md:text-3xl font-black mt-3">Connect what you already use</h4>
+            <p class="mt-2 text-slate-500 dark:text-slate-400 font-semibold max-w-2xl text-sm sm:text-base">
               Webhooks + export formats that work with typical stacks (email, sheets, BI, internal services).
             </p>
           </div>
-          <a href="app.html" class="bg-blue-600 text-white px-8 py-4 rounded-2xl font-black text-xs uppercase tracking-widest hover:scale-[1.03] transition-all">
+          <a href="app.html" class="bg-blue-600 text-white px-7 sm:px-8 py-3.5 sm:py-4 rounded-2xl font-black text-xs uppercase tracking-widest hover:scale-[1.03] transition-all w-full md:w-auto text-center">
             View dashboard
           </a>
         </div>
 
-        <div class="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-4">
+        <div class="mt-7 sm:mt-10 grid grid-cols-2 sm:grid-cols-4 gap-4">
           <div class="rounded-2xl bg-white/70 dark:bg-slate-950/40 border border-white/40 dark:border-white/5 p-5">
             <p class="text-xs font-black">CSV / JSON</p>
             <p class="text-xs text-slate-500 dark:text-slate-400 font-semibold mt-1">Exports</p>
@@ -391,19 +373,19 @@
   </section>
 
   <!-- Security -->
-  <section id="security" class="py-28 md:py-36 px-6 reveal">
+  <section id="security" class="py-24 sm:py-28 md:py-36 px-4 sm:px-6 reveal">
     <div class="max-w-7xl mx-auto">
-      <div class="grid lg:grid-cols-2 gap-10 items-center">
-        <div class="glass-card rounded-[3rem] p-10 md:p-12 border border-blue-500/10">
+      <div class="grid lg:grid-cols-2 gap-8 sm:gap-10 items-center">
+        <div class="glass-card rounded-[2.25rem] sm:rounded-[3rem] p-7 sm:p-10 md:p-12 border border-blue-500/10">
           <p class="text-sm font-black text-blue-600 uppercase tracking-[0.5em] mb-5">Security</p>
-          <h3 class="text-4xl md:text-5xl font-extrabold tracking-tighter leading-tight">
+          <h3 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tighter leading-tight">
             Admin controls you can explain.
           </h3>
-          <p class="text-lg text-slate-500 dark:text-slate-400 mt-6 font-medium">
+          <p class="text-base sm:text-lg text-slate-500 dark:text-slate-400 mt-5 sm:mt-6 font-medium">
             Roles, permissions, and audit trails designed for real reviews—not for marketing screenshots.
           </p>
 
-          <div class="mt-8 grid sm:grid-cols-2 gap-4">
+          <div class="mt-7 sm:mt-8 grid sm:grid-cols-2 gap-4">
             <div class="p-5 rounded-[2rem] bg-white/70 dark:bg-slate-950/40 border border-white/40 dark:border-white/5">
               <p class="text-xs font-black uppercase tracking-widest text-slate-400">Access</p>
               <p class="text-lg font-black mt-2">RBAC</p>
@@ -416,20 +398,20 @@
             </div>
           </div>
 
-          <div class="mt-8 flex flex-wrap gap-3">
-            <a href="auth.html" class="px-8 py-4 rounded-2xl bg-blue-600 text-white font-black text-xs uppercase tracking-widest hover:scale-[1.03] transition">
+          <div class="mt-7 sm:mt-8 flex flex-col sm:flex-row flex-wrap gap-3">
+            <a href="auth.html" class="px-7 sm:px-8 py-3.5 sm:py-4 rounded-2xl bg-blue-600 text-white font-black text-xs uppercase tracking-widest hover:scale-[1.03] transition text-center w-full sm:w-auto">
               Login
             </a>
-            <a href="#faq" class="px-8 py-4 rounded-2xl bg-slate-100 dark:bg-slate-800 font-black text-xs uppercase tracking-widest hover:scale-[1.03] transition">
+            <a href="#faq" class="px-7 sm:px-8 py-3.5 sm:py-4 rounded-2xl bg-slate-100 dark:bg-slate-800 font-black text-xs uppercase tracking-widest hover:scale-[1.03] transition text-center w-full sm:w-auto">
               Read queries
             </a>
           </div>
         </div>
 
-        <div class="rounded-[3rem] p-10 md:p-12 bg-slate-950 text-white border border-white/10 overflow-hidden relative">
+        <div class="rounded-[2.25rem] sm:rounded-[3rem] p-7 sm:p-10 md:p-12 bg-slate-950 text-white border border-white/10 overflow-hidden relative">
           <div class="absolute inset-0 opacity-30"
-               style="background: radial-gradient(circle at 20% 20%, rgba(37,99,235,.55), transparent 40%),
-                      radial-gradient(circle at 80% 60%, rgba(99,102,241,.55), transparent 45%);"></div>
+            style="background: radial-gradient(circle at 20% 20%, rgba(37,99,235,.55), transparent 40%),
+                   radial-gradient(circle at 80% 60%, rgba(99,102,241,.55), transparent 45%);"></div>
 
           <div class="relative">
             <p class="text-[10px] font-black uppercase tracking-[0.3em] text-slate-300">Audit example</p>
@@ -463,8 +445,7 @@
             <div class="mt-10">
               <p class="text-xs text-slate-300 font-bold">Encryption at rest • Backups • Access controls</p>
               <div class="mt-4 h-2 w-full rounded-full bg-white/10 overflow-hidden">
-                <div class="h-full w-2/3 bg-gradient-to-r from-blue-600 to-indigo-500 animate-shimmer"
-                     style="background-size: 200% 100%;"></div>
+                <div class="h-full w-2/3 bg-gradient-to-r from-blue-600 to-indigo-500 animate-shimmer" style="background-size: 200% 100%;"></div>
               </div>
             </div>
           </div>
@@ -474,310 +455,233 @@
     </div>
   </section>
 
-  <!-- Queries / FAQ -->
-<section id="faq" class="py-28 md:py-40 px-6 bg-slate-50 dark:bg-slate-950/50 relative overflow-hidden">
-  <!-- Decorative background elements -->
-  <div class="absolute top-0 left-1/4 w-96 h-96 bg-blue-500/10 blur-[120px] rounded-full -z-10"></div>
-  <div class="absolute bottom-0 right-1/4 w-96 h-96 bg-indigo-500/10 blur-[120px] rounded-full -z-10"></div>
+  <!-- FAQ (same as your section, just responsive padding) -->
+  <section id="faq" class="py-24 sm:py-28 md:py-40 px-4 sm:px-6 bg-slate-50 dark:bg-slate-950/50 relative overflow-hidden">
+    <div class="absolute top-0 left-1/4 w-96 h-96 bg-blue-500/10 blur-[120px] rounded-full -z-10"></div>
+    <div class="absolute bottom-0 right-1/4 w-96 h-96 bg-indigo-500/10 blur-[120px] rounded-full -z-10"></div>
 
-  <div class="max-w-7xl mx-auto">
-    <div class="grid lg:grid-cols-12 gap-16 items-start">
-      
-      <!-- Left Column: Content & FAQ -->
-      <div class="lg:col-span-7">
-        <div class="mb-12">
-          <span class="inline-block py-1 px-3 rounded-full bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-[10px] font-bold uppercase tracking-[0.2em] mb-4">
-            Support Center
-          </span>
-          <h2 class="text-4xl md:text-6xl font-extrabold tracking-tight mb-6 leading-tight">
-            Common <span class="text-blue-600">Queries.</span><br/>
-            Simple Answers.
-          </h2>
-          <p class="text-lg text-slate-500 dark:text-slate-400 max-w-xl font-medium">
-            Everything you need to know about the platform integration and capabilities.
-          </p>
+    <div class="max-w-7xl mx-auto">
+      <div class="grid lg:grid-cols-12 gap-10 sm:gap-16 items-start">
+
+        <!-- Left Column -->
+        <div class="lg:col-span-7">
+          <div class="mb-10 sm:mb-12">
+            <span class="inline-block py-1 px-3 rounded-full bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-[10px] font-bold uppercase tracking-[0.2em] mb-4">
+              Support Center
+            </span>
+            <h2 class="text-3xl sm:text-4xl md:text-6xl font-extrabold tracking-tight mb-6 leading-tight">
+              Common <span class="text-blue-600">Queries.</span><br />
+              Simple Answers.
+            </h2>
+            <p class="text-base sm:text-lg text-slate-500 dark:text-slate-400 max-w-xl font-medium">
+              Everything you need to know about the platform integration and capabilities.
+            </p>
+          </div>
+
+          <div class="space-y-4">
+            <details class="group faq-item bg-white dark:bg-slate-900/40 border border-slate-200 dark:border-slate-800 rounded-3xl overflow-hidden transition-all duration-300 hover:border-blue-500/30" open>
+              <summary class="flex items-center justify-between cursor-pointer p-6 list-none">
+                <span class="font-bold text-lg text-slate-900 dark:text-slate-100">Is this connected to a real backend?</span>
+                <div class="w-8 h-8 flex items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800 group-open:rotate-180 transition-transform duration-300">
+                  <svg class="w-4 h-4 text-slate-600 dark:text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
+              </summary>
+              <div class="px-6 pb-6 text-slate-500 dark:text-slate-400 leading-relaxed font-medium">
+                This is a production-style frontend demo. Data is stored in
+                <code class="px-1.5 py-0.5 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded text-sm">LocalStorage</code>
+                for speed, with service hooks structured so you can swap to API endpoints (.NET, Node, etc.) effortlessly.
+              </div>
+            </details>
+
+            <details class="group faq-item bg-white dark:bg-slate-900/40 border border-slate-200 dark:border-slate-800 rounded-3xl overflow-hidden transition-all duration-300 hover:border-blue-500/30">
+              <summary class="flex items-center justify-between cursor-pointer p-6 list-none">
+                <span class="font-bold text-lg text-slate-900 dark:text-slate-100">Can I add roles and permissions?</span>
+                <div class="w-8 h-8 flex items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800 group-open:rotate-180 transition-transform duration-300">
+                  <svg class="w-4 h-4 text-slate-600 dark:text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
+              </summary>
+              <div class="px-6 pb-6 text-slate-500 dark:text-slate-400 leading-relaxed font-medium">
+                Absolutely. The UI is built with RBAC (Role-Based Access Control) in mind. You can toggle visibility for Admins,
+                Managers, and Finance roles directly within the component logic.
+              </div>
+            </details>
+
+            <details class="group faq-item bg-white dark:bg-slate-900/40 border border-slate-200 dark:border-slate-800 rounded-3xl overflow-hidden transition-all duration-300 hover:border-blue-500/30">
+              <summary class="flex items-center justify-between cursor-pointer p-6 list-none">
+                <span class="font-bold text-lg text-slate-900 dark:text-slate-100">Does it support exports and reports?</span>
+                <div class="w-8 h-8 flex items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800 group-open:rotate-180 transition-transform duration-300">
+                  <svg class="w-4 h-4 text-slate-600 dark:text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
+              </summary>
+              <div class="px-6 pb-6 text-slate-500 dark:text-slate-400 leading-relaxed font-medium">
+                Yes. Integrated data tables support CSV and JSON exports. For visual reporting, the dashboard is pre-configured to
+                handle Chart.js or Recharts data structures.
+              </div>
+            </details>
+          </div>
         </div>
 
-        <div class="space-y-4">
-          <!-- FAQ Item 1 -->
-          <details class="group faq-item bg-white dark:bg-slate-900/40 border border-slate-200 dark:border-slate-800 rounded-3xl overflow-hidden transition-all duration-300 hover:border-blue-500/30" open>
-            <summary class="flex items-center justify-between cursor-pointer p-6 list-none">
-              <span class="font-bold text-lg text-slate-900 dark:text-slate-100">Is this connected to a real backend?</span>
-              <div class="w-8 h-8 flex items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800 group-open:rotate-180 transition-transform duration-300">
-                <svg class="w-4 h-4 text-slate-600 dark:text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/>
-                </svg>
-              </div>
-            </summary>
-            <div class="px-6 pb-6 text-slate-500 dark:text-slate-400 leading-relaxed font-medium">
-              This is a production-style frontend demo. Data is stored in <code class="px-1.5 py-0.5 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded text-sm">LocalStorage</code> for speed, with service hooks structured so you can swap to API endpoints (.NET, Node, etc.) effortlessly.
-            </div>
-          </details>
+        <!-- Right Column -->
+        <div class="lg:col-span-5">
+          <div class="relative group">
+            <div class="absolute -inset-1 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-[2.5rem] blur opacity-20 group-hover:opacity-40 transition duration-1000"></div>
 
-          <!-- FAQ Item 2 -->
-          <details class="group faq-item bg-white dark:bg-slate-900/40 border border-slate-200 dark:border-slate-800 rounded-3xl overflow-hidden transition-all duration-300 hover:border-blue-500/30">
-            <summary class="flex items-center justify-between cursor-pointer p-6 list-none">
-              <span class="font-bold text-lg text-slate-900 dark:text-slate-100">Can I add roles and permissions?</span>
-              <div class="w-8 h-8 flex items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800 group-open:rotate-180 transition-transform duration-300">
-                <svg class="w-4 h-4 text-slate-600 dark:text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/>
-                </svg>
+            <div class="relative bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-[2rem] p-7 sm:p-8 md:p-10 shadow-xl shadow-blue-500/5">
+              <div class="flex items-center gap-4 mb-8">
+                <div class="w-12 h-12 rounded-2xl bg-blue-600 flex items-center justify-center text-white shadow-lg shadow-blue-500/30">
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+                  </svg>
+                </div>
+                <div>
+                  <h4 class="text-xl sm:text-2xl font-bold">Still curious?</h4>
+                  <p class="text-sm text-slate-500 dark:text-slate-400 font-medium">Get a response within 2 hours.</p>
+                </div>
               </div>
-            </summary>
-            <div class="px-6 pb-6 text-slate-500 dark:text-slate-400 leading-relaxed font-medium">
-              Absolutely. The UI is built with **RBAC (Role-Based Access Control)** in mind. You can toggle visibility for Admins, Managers, and Finance roles directly within the component logic.
-            </div>
-          </details>
 
-          <!-- FAQ Item 3 -->
-          <details class="group faq-item bg-white dark:bg-slate-900/40 border border-slate-200 dark:border-slate-800 rounded-3xl overflow-hidden transition-all duration-300 hover:border-blue-500/30">
-            <summary class="flex items-center justify-between cursor-pointer p-6 list-none">
-              <span class="font-bold text-lg text-slate-900 dark:text-slate-100">Does it support exports and reports?</span>
-              <div class="w-8 h-8 flex items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800 group-open:rotate-180 transition-transform duration-300">
-                <svg class="w-4 h-4 text-slate-600 dark:text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/>
-                </svg>
-              </div>
-            </summary>
-            <div class="px-6 pb-6 text-slate-500 dark:text-slate-400 leading-relaxed font-medium">
-              Yes. Integrated data tables support CSV and JSON exports. For visual reporting, the dashboard is pre-configured to handle Chart.js or Recharts data structures.
-            </div>
-          </details>
-        </div>
-      </div>
-
-      <!-- Right Column: Contact Form Card -->
-      <div class="lg:col-span-5">
-        <div class="relative group">
-          <!-- Background Glow Effect -->
-          <div class="absolute -inset-1 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-[2.5rem] blur opacity-20 group-hover:opacity-40 transition duration-1000"></div>
-          
-          <div class="relative bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-[2rem] p-8 md:p-10 shadow-xl shadow-blue-500/5">
-            <div class="flex items-center gap-4 mb-8">
-              <div class="w-12 h-12 rounded-2xl bg-blue-600 flex items-center justify-center text-white shadow-lg shadow-blue-500/30">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/>
-                </svg>
-              </div>
-              <div>
-                <h4 class="text-2xl font-bold">Still curious?</h4>
-                <p class="text-sm text-slate-500 dark:text-slate-400 font-medium">Get a response within 2 hours.</p>
-              </div>
-            </div>
-
-            <form class="space-y-4">
-              <div class="relative">
+              <form class="space-y-4">
                 <input type="text" placeholder="Your name"
-                       class="w-full pl-5 pr-5 py-4 rounded-2xl bg-slate-50 dark:bg-slate-950/50 border border-slate-200 dark:border-slate-800 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all outline-none font-medium text-sm">
-              </div>
-              <div class="relative">
+                  class="w-full pl-5 pr-5 py-4 rounded-2xl bg-slate-50 dark:bg-slate-950/50 border border-slate-200 dark:border-slate-800 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all outline-none font-medium text-sm" />
                 <input type="email" placeholder="Email address"
-                       class="w-full pl-5 pr-5 py-4 rounded-2xl bg-slate-50 dark:bg-slate-950/50 border border-slate-200 dark:border-slate-800 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all outline-none font-medium text-sm">
-              </div>
-              <div class="relative">
+                  class="w-full pl-5 pr-5 py-4 rounded-2xl bg-slate-50 dark:bg-slate-950/50 border border-slate-200 dark:border-slate-800 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all outline-none font-medium text-sm" />
                 <textarea rows="4" placeholder="How can we help?"
-                          class="w-full pl-5 pr-5 py-4 rounded-2xl bg-slate-50 dark:bg-slate-950/50 border border-slate-200 dark:border-slate-800 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all outline-none font-medium text-sm resize-none"></textarea>
-              </div>
+                  class="w-full pl-5 pr-5 py-4 rounded-2xl bg-slate-50 dark:bg-slate-950/50 border border-slate-200 dark:border-slate-800 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all outline-none font-medium text-sm resize-none"></textarea>
 
-             <button
-  type="submit"
-  class="group w-full inline-flex items-center justify-center gap-2
-         bg-blue-600 text-white
-         px-6 py-3.5
-         rounded-lg
-         font-semibold text-sm uppercase tracking-wide
-         transition-all duration-200
-         hover:bg-blue-700 hover:shadow-md hover:shadow-blue-500/30
-         focus:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/30
-         active:scale-[0.98]">
+                <button
+                  type="submit"
+                  class="group w-full inline-flex items-center justify-center gap-2 bg-blue-600 text-white
+                         px-6 py-3.5 rounded-lg font-semibold text-sm uppercase tracking-wide
+                         transition-all duration-200 hover:bg-blue-700 hover:shadow-md hover:shadow-blue-500/30
+                         focus:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/30 active:scale-[0.98]">
+                  <span>Send message</span>
+                  <svg class="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                  </svg>
+                </button>
 
-  <span>Send message</span>
-
-  <svg
-    class="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5"
-    fill="none"
-    stroke="currentColor"
-    viewBox="0 0 24 24"
-    aria-hidden="true">
-    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-          d="M14 5l7 7m0 0l-7 7m7-7H3" />
-  </svg>
-</button>
-
-
-              <p class="text-[11px] text-slate-400 font-medium text-center mt-6">
-                <span class="inline-block w-2 h-2 rounded-full bg-green-500 mr-2 animate-pulse"></span>
-                We are currently online
-              </p>
-            </form>
+                <p class="text-[11px] text-slate-400 font-medium text-center mt-6">
+                  <span class="inline-block w-2 h-2 rounded-full bg-green-500 mr-2 animate-pulse"></span>
+                  We are currently online
+                </p>
+              </form>
+            </div>
           </div>
         </div>
-      </div>
 
+      </div>
     </div>
-  </div>
-</section>
+  </section>
+
   <!-- Pricing -->
-<section id="pricing" class="py-28 md:py-36 px-6 reveal">
-  <div class="max-w-7xl mx-auto">
-    <!-- Header -->
-    <div class="text-center mb-16 md:mb-24">
-      <h2 class="text-5xl md:text-6xl font-extrabold tracking-tighter mb-8">Pricing</h2>
+  <section id="pricing" class="py-24 sm:py-28 md:py-36 px-4 sm:px-6 reveal">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center mb-12 sm:mb-16 md:mb-24">
+        <h2 class="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tighter mb-6 sm:mb-8">Pricing</h2>
 
-      <div class="flex flex-col items-center gap-6">
-        <!-- Toggle -->
-        <div class="inline-flex items-center p-1.5 bg-slate-100 dark:bg-slate-900 rounded-[2rem] border border-slate-200 dark:border-slate-800">
-          <button
-            id="monthly-btn"
-            class="px-7 py-2.5 rounded-full text-xs font-black uppercase tracking-widest transition-all duration-300 text-slate-500 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white"
-          >
-            Monthly
-          </button>
-          <button
-            id="yearly-btn"
-            class="px-7 py-2.5 rounded-full text-xs font-black uppercase tracking-widest transition-all duration-300 bg-blue-600 text-white shadow-lg shadow-blue-500/30"
-          >
-            Yearly
-          </button>
-        </div>
-
-        <div class="flex items-center gap-3">
-          <span class="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-500 text-[10px] font-black uppercase tracking-widest border border-emerald-500/20">
-            2 months free
-          </span>
-          <span class="text-slate-400 text-xs font-bold">on yearly plans</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Plans -->
-    <div class="grid lg:grid-cols-3 gap-8 items-stretch">
-      <!-- Starter -->
-      <div class="p-10 md:p-12 rounded-[3.5rem] border border-slate-100 dark:border-slate-800 hover:border-blue-500/60 transition-all bg-white/70 dark:bg-slate-950/20 backdrop-blur flex flex-col">
-        <h4 class="text-xl font-black mb-2">Starter</h4>
-        <p class="text-slate-500 dark:text-slate-400 text-sm mb-8 font-semibold">For small teams and pilots.</p>
-
-        <div class="text-5xl font-black tracking-tighter mb-8">$0</div>
-
-        <ul class="space-y-4 mb-10">
-          <li class="text-sm font-bold flex items-center gap-3">
-            <span class="w-2 h-2 rounded-full bg-blue-600"></span> 1,000 Contacts
-          </li>
-          <li class="text-sm font-bold flex items-center gap-3">
-            <span class="w-2 h-2 rounded-full bg-blue-600"></span> Basic CRM
-          </li>
-          <li class="text-sm font-bold flex items-center gap-3 opacity-35">
-            <span class="w-2 h-2 rounded-full bg-slate-400"></span> Advanced workflow rules
-          </li>
-        </ul>
-
-        <!-- Normal button -->
-        <a
-          href="auth.html"
-          class="mt-auto w-full h-12 rounded-xl bg-slate-900 dark:bg-slate-800 text-white
-                 font-black text-xs uppercase tracking-widest flex items-center justify-center
-                 hover:bg-blue-600 transition-all"
-        >
-          Start
-        </a>
-      </div>
-
-      <!-- Professional -->
-      <div class="p-10 md:p-12 rounded-[3.5rem] bg-slate-950 text-white shadow-2xl relative overflow-hidden border border-white/10 scale-105 z-10 flex flex-col">
-        <div class="absolute top-8 right-8 bg-blue-600 text-[10px] font-black px-4 py-1 rounded-full uppercase tracking-widest">
-          Recommended
-        </div>
-
-        <h4 class="text-xl font-black mb-2">Professional</h4>
-        <p class="text-slate-300 text-sm mb-8 font-semibold">For teams that need ops + governance.</p>
-
-        <div class="mb-8">
-          <div class="flex items-baseline gap-2">
-            <span class="text-6xl font-black tracking-tighter" id="pro-price">$712</span>
-            <span class="text-sm text-slate-400 font-bold" id="pro-period">/mo</span>
+        <div class="flex flex-col items-center gap-6">
+          <div class="inline-flex items-center p-1.5 bg-slate-100 dark:bg-slate-900 rounded-[2rem] border border-slate-200 dark:border-slate-800">
+            <button id="monthly-btn" class="px-6 sm:px-7 py-2.5 rounded-full text-xs font-black uppercase tracking-widest transition-all duration-300 text-slate-500 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white">
+              Monthly
+            </button>
+            <button id="yearly-btn" class="px-6 sm:px-7 py-2.5 rounded-full text-xs font-black uppercase tracking-widest transition-all duration-300 bg-blue-600 text-white shadow-lg shadow-blue-500/30">
+              Yearly
+            </button>
           </div>
-          <p id="savings-badge" class="text-emerald-400 text-[11px] font-bold mt-3">
-            Save with yearly billing
-          </p>
+
+          <div class="flex items-center gap-3">
+            <span class="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-500 text-[10px] font-black uppercase tracking-widest border border-emerald-500/20">
+              2 months free
+            </span>
+            <span class="text-slate-400 text-xs font-bold">on yearly plans</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid lg:grid-cols-3 gap-6 sm:gap-8 items-stretch">
+        <div class="p-8 sm:p-10 md:p-12 rounded-[2.25rem] sm:rounded-[3.5rem] border border-slate-100 dark:border-slate-800 hover:border-blue-500/60 transition-all bg-white/70 dark:bg-slate-950/20 backdrop-blur flex flex-col">
+          <h4 class="text-xl font-black mb-2">Starter</h4>
+          <p class="text-slate-500 dark:text-slate-400 text-sm mb-8 font-semibold">For small teams and pilots.</p>
+          <div class="text-5xl font-black tracking-tighter mb-8">$0</div>
+
+          <ul class="space-y-4 mb-10">
+            <li class="text-sm font-bold flex items-center gap-3"><span class="w-2 h-2 rounded-full bg-blue-600"></span> 1,000 Contacts</li>
+            <li class="text-sm font-bold flex items-center gap-3"><span class="w-2 h-2 rounded-full bg-blue-600"></span> Basic CRM</li>
+            <li class="text-sm font-bold flex items-center gap-3 opacity-35"><span class="w-2 h-2 rounded-full bg-slate-400"></span> Advanced workflow rules</li>
+          </ul>
+
+          <a href="auth.html" class="mt-auto w-full h-12 rounded-xl bg-slate-900 dark:bg-slate-800 text-white font-black text-xs uppercase tracking-widest flex items-center justify-center hover:bg-blue-600 transition-all">
+            Start
+          </a>
         </div>
 
-        <ul class="space-y-4 mb-10">
-          <li class="text-sm font-bold flex items-center gap-3">
-            <span class="w-2 h-2 rounded-full bg-blue-500"></span> 10,000 Contacts
-          </li>
-          <li class="text-sm font-bold flex items-center gap-3">
-            <span class="w-2 h-2 rounded-full bg-blue-500"></span> Automations + exports
-          </li>
-          <li class="text-sm font-bold flex items-center gap-3">
-            <span class="w-2 h-2 rounded-full bg-blue-500"></span> Audit logs + roles
-          </li>
-        </ul>
+        <!-- scale only on large screens to avoid mobile overflow -->
+        <div class="p-8 sm:p-10 md:p-12 rounded-[2.25rem] sm:rounded-[3.5rem] bg-slate-950 text-white shadow-2xl relative overflow-hidden border border-white/10 lg:scale-105 lg:z-10 flex flex-col">
+          <div class="absolute top-8 right-8 bg-blue-600 text-[10px] font-black px-4 py-1 rounded-full uppercase tracking-widest">
+            Recommended
+          </div>
 
-        <!-- Normal button (no big slab) -->
-        <a
-          href="auth.html"
-          class="mt-auto w-full h-12 rounded-xl bg-slate-900 dark:bg-slate-800 text-white
-                 font-black text-xs uppercase tracking-widest flex items-center justify-center
-                 hover:bg-blue-600 transition-all"
-        >
-          Buy
-        </a>
+          <h4 class="text-xl font-black mb-2">Professional</h4>
+          <p class="text-slate-300 text-sm mb-8 font-semibold">For teams that need ops + governance.</p>
 
-        <div class="absolute -bottom-24 -left-24 w-72 h-72 bg-blue-600/25 blur-3xl rounded-full"></div>
+          <div class="mb-8">
+            <div class="flex items-baseline gap-2">
+              <span class="text-6xl font-black tracking-tighter" id="pro-price">$712</span>
+              <span class="text-sm text-slate-400 font-bold" id="pro-period">/mo</span>
+            </div>
+            <p id="savings-badge" class="text-emerald-400 text-[11px] font-bold mt-3">
+              Save with yearly billing
+            </p>
+          </div>
+
+          <ul class="space-y-4 mb-10">
+            <li class="text-sm font-bold flex items-center gap-3"><span class="w-2 h-2 rounded-full bg-blue-500"></span> 10,000 Contacts</li>
+            <li class="text-sm font-bold flex items-center gap-3"><span class="w-2 h-2 rounded-full bg-blue-500"></span> Automations + exports</li>
+            <li class="text-sm font-bold flex items-center gap-3"><span class="w-2 h-2 rounded-full bg-blue-500"></span> Audit logs + roles</li>
+          </ul>
+
+          <a href="auth.html" class="mt-auto w-full h-12 rounded-xl bg-slate-900 dark:bg-slate-800 text-white font-black text-xs uppercase tracking-widest flex items-center justify-center hover:bg-blue-600 transition-all">
+            Buy
+          </a>
+
+          <div class="absolute -bottom-24 -left-24 w-72 h-72 bg-blue-600/25 blur-3xl rounded-full"></div>
+        </div>
+
+        <div class="p-8 sm:p-10 md:p-12 rounded-[2.25rem] sm:rounded-[3.5rem] border border-slate-100 dark:border-slate-800 hover:border-blue-500/60 transition-all bg-white/70 dark:bg-slate-950/20 backdrop-blur flex flex-col">
+          <h4 class="text-xl font-black mb-2">Enterprise</h4>
+          <p class="text-slate-500 dark:text-slate-400 text-sm mb-8 font-semibold">For multi-team governance + custom needs.</p>
+          <div class="text-5xl font-black tracking-tighter mb-8">Custom</div>
+
+          <ul class="space-y-4 mb-10">
+            <li class="text-sm font-bold flex items-center gap-3"><span class="w-2 h-2 rounded-full bg-blue-600"></span> Unlimited access + roles</li>
+            <li class="text-sm font-bold flex items-center gap-3"><span class="w-2 h-2 rounded-full bg-blue-600"></span> Advanced controls</li>
+            <li class="text-sm font-bold flex items-center gap-3"><span class="w-2 h-2 rounded-full bg-blue-600"></span> Dedicated support</li>
+          </ul>
+
+          <a href="auth.html" class="mt-auto w-full h-12 rounded-xl bg-slate-900 dark:bg-slate-800 text-white font-black text-xs uppercase tracking-widest flex items-center justify-center hover:bg-blue-600 transition-all">
+            Talk to sales
+          </a>
+        </div>
       </div>
 
-      <!-- Enterprise -->
-      <div class="p-10 md:p-12 rounded-[3.5rem] border border-slate-100 dark:border-slate-800 hover:border-blue-500/60 transition-all bg-white/70 dark:bg-slate-950/20 backdrop-blur flex flex-col">
-        <h4 class="text-xl font-black mb-2">Enterprise</h4>
-        <p class="text-slate-500 dark:text-slate-400 text-sm mb-8 font-semibold">For multi-team governance + custom needs.</p>
+      <div class="mt-12 sm:mt-20 glass-card rounded-[2.25rem] sm:rounded-[3rem] p-7 sm:p-10 flex flex-col md:flex-row items-center justify-between gap-6 sm:gap-8 border border-blue-500/10">
+        <div class="text-center md:text-left">
+          <p class="text-2xl sm:text-3xl font-extrabold tracking-tighter">Want to try the UI?</p>
+          <p class="text-slate-500 dark:text-slate-400 font-semibold mt-1">Open the demo app and explore roles.</p>
+        </div>
 
-        <div class="text-5xl font-black tracking-tighter mb-8">Custom</div>
-
-        <ul class="space-y-4 mb-10">
-          <li class="text-sm font-bold flex items-center gap-3">
-            <span class="w-2 h-2 rounded-full bg-blue-600"></span> Unlimited access + roles
-          </li>
-          <li class="text-sm font-bold flex items-center gap-3">
-            <span class="w-2 h-2 rounded-full bg-blue-600"></span> Advanced controls
-          </li>
-          <li class="text-sm font-bold flex items-center gap-3">
-            <span class="w-2 h-2 rounded-full bg-blue-600"></span> Dedicated support
-          </li>
-        </ul>
-
-        <!-- Normal button -->
-        <a
-          href="auth.html"
-          class="mt-auto w-full h-12 rounded-xl bg-slate-900 dark:bg-slate-800 text-white
-                 font-black text-xs uppercase tracking-widest flex items-center justify-center
-                 hover:bg-blue-600 transition-all"
-        >
-          Talk to sales
+        <a href="app.html" class="h-12 px-8 rounded-xl bg-blue-600 text-white font-black text-xs uppercase tracking-widest flex items-center justify-center hover:scale-[1.03] transition-all w-full md:w-auto">
+          Open App
         </a>
       </div>
     </div>
-
-    <!-- CTA -->
-    <div class="mt-20 glass-card rounded-[3rem] p-10 flex flex-col md:flex-row items-center justify-between gap-8 border border-blue-500/10">
-      <div class="text-center md:text-left">
-        <p class="text-3xl font-extrabold tracking-tighter">Want to try the UI?</p>
-        <p class="text-slate-500 dark:text-slate-400 font-semibold mt-1">Open the demo app and explore roles.</p>
-      </div>
-
-      <!-- Normal CTA -->
-      <a
-        href="app.html"
-        class="h-12 px-8 rounded-xl bg-blue-600 text-white
-               font-black text-xs uppercase tracking-widest flex items-center justify-center
-               hover:scale-[1.03] transition-all"
-      >
-        Open App
-      </a>
-    </div>
-  </div>
-</section>
-
+  </section>
 </main>
-
 
 <app-footer></app-footer>

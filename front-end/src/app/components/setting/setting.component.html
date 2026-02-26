@@ -1,146 +1,257 @@
-<div class="container">
-<div class="row">
-  <div class="col-md-2"></div>
-    <div class="col-md-8 my-5">
-      <div class="card">
-        <div class="card-header border-bottom mb-3 d-flex">
-          <ul class="nav nav-tabs card-header-tabs nav-gap-x-1 " role="tablist">
-            <ul>
+<div class="settings-page">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-xl-9 col-lg-10 col-md-11 my-4">
 
-            </ul>
-            <li class="nav-item" (click)="updateTabLocation(0)" [ngClass]="viewModel.tablocation == 0 ? 'active-tab' : ''">
-              <i class="bi bi-gear smallIcon ms-0"
-               (mouseenter)="viewModel.showTooltip = true"
-              (mouseleave)="viewModel.showTooltip = false" [attr.title]="'Account Setting'" [attr.data-placement]="'left'"
-              [ngClass]="{ 'tooltip-show': viewModel.showTooltip }"></i>
-              <small class="item-name"> Account Setting </small>
-            </li>
-            <li class="nav-item" (click)="updateTabLocation(1)" [ngClass]="viewModel.tablocation == 1 ? 'active-tab' : ''">
-              <i class="bi bi-shield-check smallIcon ms-0"
-              (mouseenter)="viewModel.showTooltip = true"
-             (mouseleave)="viewModel.showTooltip = false" [attr.title]="'Security'" [attr.data-placement]="'left'"
-             [ngClass]="{ 'tooltip-show': viewModel.showTooltip }"></i>
-             <small class="item-name"> Security</small>
+        <div class="settings-shell">
 
-            </li>
-            <li class="nav-item" (click)="updateTabLocation(2)" [ngClass]="viewModel.tablocation == 2 ? 'active-tab' : ''">
-              <i class="bi bi-bell smallIcon ms-0"
-               (mouseenter)="viewModel.showTooltip = true"
-              (mouseleave)="viewModel.showTooltip = false" [attr.title]="'Notification Setting'" [attr.data-placement]="'left'"
-              [ngClass]="{ 'tooltip-show': viewModel.showTooltip }"></i>
-              <small class="item-name"> Notification Setting </small>
+          <!-- Top header -->
+          <div class="settings-top">
+            <div class="top-left">
+              <div class="kicker">Preferences</div>
+              <h2 class="title">Settings</h2>
+              <p class="sub">
+                Manage your account, security, notifications and appearance.
+              </p>
+            </div>
 
-            </li>
-            <li class="nav-item">
-              <a class="dropdown-toggle " (click)="loadPageData()" role="button"
-              data-bs-toggle="dropdown" aria-expanded="false">
-              <i class="bi bi-brightness-high smallIcon"   (mouseenter)="viewModel.showTooltip = true"
-              (mouseleave)="viewModel.showTooltip = false" [attr.title]="'Change Theme '" [attr.data-placement]="'left'"
-              [ngClass]="{ 'tooltip-show': viewModel.showTooltip }"></i>
-              <small class="item-name"> Change Theme </small>
+            <div class="top-right">
+              <!-- Theme dropdown -->
+              <div class="dropdown">
+                <button
+                  class="btn theme-btn dropdown-toggle"
+                  type="button"
+                  id="themeDropdown"
+                  (click)="loadPageData()"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  <i class="bi bi-brightness-high"></i>
+                  <span class="d-sm-inline d-none">Theme</span>
+                </button>
 
-              </a>
-              <ul class="dropdown-menu" aria-labelledby="themeDropdown">
-                <li *ngFor="let theme of viewModel.clientTheme" (click)="updateTheme(theme)">
-                  <a class="dropdown-item">
-                    {{ theme.name }}
-                  </a>
-                </li>
-              </ul>
-            </li>
-
-          </ul>
-        </div>
-        <div class="card-body tab-content">
-
-          <!-- Account Settings -->
-          <div class="row" *ngIf="viewModel.tablocation == 0 ">
-            <h6>ACCOUNT SETTINGS</h6>
-            <hr>
-            <form>
-              <div class="form-group">
-                <label for="username">Username</label>
-                <input type="text" class="form-control" id="username" aria-describedby="usernameHelp"
-                  placeholder="Enter your username" value="kennethvaldez">
-                <small  class="form-text "><p> After changing your username, your old username
-                  becomes available for anyone else to claim.</p></small>
-              </div>
-              <hr>
-              <div class="form-group">
-                <label class="d-block text-danger">Delete Account</label>
-                <p class=" font-size-sm">Once you delete your account, there is no going back. Please be
-                  certain.</p>
-              </div>
-              <button class="btn btn-danger" type="button">Delete Account</button>
-            </form>
-          </div>
-          <!-- Change Password -->
-          <div class="row" *ngIf="viewModel.tablocation == 1 ">
-            <app-change-password></app-change-password>
-          </div>
-          <!-- Notification Setting -->
-          <div class="row" *ngIf="viewModel.tablocation == 2 ">
-            <h6>NOTIFICATION SETTINGS</h6>
-            <hr>
-            <form>
-              <div class="form-group">
-                <label for="SecurityAlerts"class="d-block mb-0">Security Alerts</label>
-                <div class="small  mb-3"><p> Receive security alert notifications via email</p></div>
-                <div class="custom-control custom-checkbox">
-                  <input type="checkbox" class="custom-control-input me-2" id="customCheck1" checked="">
-                  <label class="custom-control-label" for="customCheck1">Email each time a vulnerability is
-                    found</label>
-                </div>
-                <div class="custom-control custom-checkbox">
-                  <input type="checkbox" class="custom-control-input me-2" id="customCheck2" checked="">
-                  <label class="custom-control-label" for="customCheck2">Email a digest summary of vulnerability</label>
-                </div>
-              </div>
-              <div class="form-group mb-0">
-                <label class="d-block">SMS Notifications</label>
-                <ul class="list-group list-group-sm">
-                  <li class="list-group-item has-icon">
-                    Comments
-                    <div class="form-check form-switch">
-                      <input type="checkbox" class="form-check-input"  id="customSwitch1" checked="">
-                      <label class="custom-control-label" for="customSwitch1"></label>
-                    </div>
+                <ul class="dropdown-menu dropdown-menu-end theme-dd" aria-labelledby="themeDropdown">
+                  <li class="px-3 py-2 dd-head">
+                    <div class="dd-title">Choose Theme</div>
+                    <div class="dd-sub">Apply instantly across the app</div>
                   </li>
-                  <li class="list-group-item has-icon">
-                    Updates From People
-                    <div class="form-check form-switch">
-                      <input type="checkbox" class="form-check-input"  id="customSwitch2">
-                      <label class="custom-control-label" for="customSwitch2"></label>
-                    </div>
-                  </li>
-                  <li class="list-group-item has-icon">
-                    Reminders
-                    <div class="form-check form-switch">
-                      <input type="checkbox" class="form-check-input"  id="customSwitch3" checked="">
-                      <label class="custom-control-label" for="customSwitch3"></label>
-                    </div>
-                  </li>
-                  <li class="list-group-item has-icon">
-                    Events
-                    <div class="form-check form-switch">
-                      <input type="checkbox" class="form-check-input"  id="customSwitch4" checked="">
-                      <label class="custom-control-label" for="customSwitch4"></label>
-                    </div>
-                  </li>
-                  <li class="list-group-item has-icon">
-                    Pages You Follow
-                    <div class="form-check form-switch">
-                      <input type="checkbox" class="form-check-input"  id="customSwitch5">
-                      <label class="custom-control-label" for="customSwitch5"></label>
-                    </div>
+                  <li><hr class="dropdown-divider"></li>
+
+                  <li *ngFor="let theme of viewModel.clientTheme" (click)="updateTheme(theme)">
+                    <a class="dropdown-item dd-item">
+                      <span class="dot"></span>
+                      <span class="name">{{ theme.name }}</span>
+                      <i class="bi bi-chevron-right ms-auto"></i>
+                    </a>
                   </li>
                 </ul>
               </div>
-            </form>
+
+            </div>
           </div>
+
+          <!-- Tabs -->
+          <div class="settings-tabs-wrap">
+            <button
+              type="button"
+              class="tab-pill"
+              (click)="updateTabLocation(0)"
+              [ngClass]="viewModel.tablocation == 0 ? 'active' : ''"
+            >
+              <i class="bi bi-gear"></i>
+              <span>Account</span>
+            </button>
+
+            <button
+              type="button"
+              class="tab-pill"
+              (click)="updateTabLocation(1)"
+              [ngClass]="viewModel.tablocation == 1 ? 'active' : ''"
+            >
+              <i class="bi bi-shield-check"></i>
+              <span>Security</span>
+            </button>
+
+            <button
+              type="button"
+              class="tab-pill"
+              (click)="updateTabLocation(2)"
+              [ngClass]="viewModel.tablocation == 2 ? 'active' : ''"
+            >
+              <i class="bi bi-bell"></i>
+              <span>Notifications</span>
+            </button>
+          </div>
+
+          <!-- Content Card -->
+          <div class="settings-card">
+
+            <!-- Account -->
+            <div *ngIf="viewModel.tablocation == 0" class="panel">
+              <div class="panel-head">
+                <div class="ph-left">
+                  <h5>Account settings</h5>
+                  <p>Update your basic account info.</p>
+                </div>
+                <div class="ph-badge">
+                  <i class="bi bi-person-circle"></i>
+                  <span>Profile</span>
+                </div>
+              </div>
+
+              <div class="divider"></div>
+
+              <form class="panel-body">
+                <div class="row g-3">
+                  <div class="col-md-7">
+                    <label class="form-label">Username</label>
+                    <input class="form-control nice-input" type="text" placeholder="Enter username" value="kennethvaldez" />
+                    <div class="help">
+                      After changing your username, your old username becomes available for anyone else to claim.
+                    </div>
+                  </div>
+
+                  <div class="col-md-5">
+                    <label class="form-label">Email</label>
+                    <input class="form-control nice-input" type="email" placeholder="Enter email" value="user@email.com" />
+                    <div class="help">Used for login, alerts and password resets.</div>
+                  </div>
+                </div>
+
+                <div class="divider soft"></div>
+
+                <div class="danger-zone">
+                  <div class="dz-left">
+                    <div class="dz-title">
+                      <i class="bi bi-exclamation-triangle"></i>
+                      Delete account
+                    </div>
+                    <div class="dz-sub">
+                      Once you delete your account, there is no going back. Please be certain.
+                    </div>
+                  </div>
+
+                  <button class="btn btn-danger dz-btn" type="button">
+                    <i class="bi bi-trash3 me-2"></i> Delete
+                  </button>
+                </div>
+              </form>
+            </div>
+
+            <!-- Security -->
+            <div *ngIf="viewModel.tablocation == 1" class="panel">
+              <div class="panel-head">
+                <div class="ph-left">
+                  <h5>Security</h5>
+                  <p>Keep your account safe with a strong password.</p>
+                </div>
+                <div class="ph-badge">
+                  <i class="bi bi-shield-lock"></i>
+                  <span>Protected</span>
+                </div>
+              </div>
+
+              <div class="divider"></div>
+
+              <div class="panel-body">
+                <app-change-password></app-change-password>
+              </div>
+            </div>
+
+            <!-- Notifications -->
+            <div *ngIf="viewModel.tablocation == 2" class="panel">
+              <div class="panel-head">
+                <div class="ph-left">
+                  <h5>Notifications</h5>
+                  <p>Control what updates you receive.</p>
+                </div>
+                <div class="ph-badge">
+                  <i class="bi bi-bell-fill"></i>
+                  <span>Alerts</span>
+                </div>
+              </div>
+
+              <div class="divider"></div>
+
+              <form class="panel-body">
+                <div class="notify-block">
+                  <div class="nb-head">
+                    <div>
+                      <div class="nb-title">Security alerts</div>
+                      <div class="nb-sub">Receive security notifications via email.</div>
+                    </div>
+                  </div>
+
+                  <div class="form-check nice-check">
+                    <input class="form-check-input" type="checkbox" id="sec1" checked />
+                    <label class="form-check-label" for="sec1">
+                      Email each time a vulnerability is found
+                    </label>
+                  </div>
+
+                  <div class="form-check nice-check">
+                    <input class="form-check-input" type="checkbox" id="sec2" checked />
+                    <label class="form-check-label" for="sec2">
+                      Email a digest summary of vulnerabilities
+                    </label>
+                  </div>
+                </div>
+
+                <div class="divider soft"></div>
+
+                <div class="notify-block">
+                  <div class="nb-head">
+                    <div>
+                      <div class="nb-title">SMS notifications</div>
+                      <div class="nb-sub">Toggle SMS updates for specific activity.</div>
+                    </div>
+                  </div>
+
+                  <div class="toggle-list">
+                    <div class="toggle-row">
+                      <span>Comments</span>
+                      <div class="form-check form-switch m-0">
+                        <input class="form-check-input" type="checkbox" id="sw1" checked />
+                      </div>
+                    </div>
+
+                    <div class="toggle-row">
+                      <span>Updates from people</span>
+                      <div class="form-check form-switch m-0">
+                        <input class="form-check-input" type="checkbox" id="sw2" />
+                      </div>
+                    </div>
+
+                    <div class="toggle-row">
+                      <span>Reminders</span>
+                      <div class="form-check form-switch m-0">
+                        <input class="form-check-input" type="checkbox" id="sw3" checked />
+                      </div>
+                    </div>
+
+                    <div class="toggle-row">
+                      <span>Events</span>
+                      <div class="form-check form-switch m-0">
+                        <input class="form-check-input" type="checkbox" id="sw4" checked />
+                      </div>
+                    </div>
+
+                    <div class="toggle-row">
+                      <span>Pages you follow</span>
+                      <div class="form-check form-switch m-0">
+                        <input class="form-check-input" type="checkbox" id="sw5" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+
+          </div>
+          <!-- /Content card -->
 
         </div>
       </div>
     </div>
   </div>
-  </div>
+</div>

@@ -1,74 +1,200 @@
-.tableFixHead {
-    overflow-y: auto; /* make the table scrollable if height is more than 200 px  */
-    height: 400px; /* gives an initial height of 200px to the table */
+.emp-shell {
+  padding-bottom: 8px;
+}
+
+.emp-count {
+  font-weight: 600;
+  color: #334155;
+
+  .count {
+    display: inline-block;
+    margin-left: 6px;
+    padding: 2px 10px;
+    border-radius: 999px;
+    background: rgba(59, 130, 246, 0.12);
+    color: #1d4ed8;
+    font-weight: 700;
+  }
+}
+
+.shadow-soft {
+  border-radius: 14px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+  border: 1px solid rgba(148, 163, 184, 0.25);
+}
+
+.tableWrap {
+  width: 100%;
+  overflow: auto;
+  max-height: calc(100vh - 260px);
+}
+
+/* sticky head */
+.tableFixHead thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+.emp-table {
+  margin: 0;
+
+  thead th {
+    background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+    color: #0f172a;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.2px;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.35);
+    padding: 14px 14px;
+    white-space: nowrap;
   }
 
-@media only screen and (max-width: 760px),
-(min-device-width: 768px) and (max-device-width: 1024px) {
-    table,
-    thead,
-    tbody,
-    th,
-    td,
-    tr {
-        display: block;
-        width: 100%;
-    }
-    thead tr {
-        position: relative;
-        display: none;
-    }
-    tr {
-        margin-top: 1rem;
-    }
-    td {
-        // border: 1px solid rgb(151, 143, 143);
-        position: relative;
-        padding-left: 50%;
-    }
-    td:before {
-        position: absolute;
-        left: 5px;
-        font-size: var(--table-header-font-size);
-        font-weight: var(--table-header-font-weight)
-    }
-    td:nth-of-type(1):before {
-        content: "Code";
-    }
-    td:nth-of-type(2):before {
-        content: "Role";
-    }
-    td:nth-of-type(3):before {
-        content: "Name";
-    }
-    td:nth-of-type(4):before {
-        content: "Email ID";
-    }
-    td:nth-of-type(5):before {
-        content: "Mobile";
-    }
-    td:nth-of-type(6):before {
-        content: "Designation";
-    }
-    td:nth-of-type(7):before {
-        content: "Date Of Joining";
-    }
-    td:nth-of-type(8):before {
-        content: "Actions";
-    }
-}
-.smallIcon {
-    display: inline-block;
-    margin-left: 12px;
-    padding: 3px;
+  tbody td {
+    padding: 14px 14px;
+    border-bottom: 1px solid rgba(226, 232, 240, 0.9);
+    color: #0f172a;
+    vertical-align: middle;
+    font-size: 13.5px;
+  }
+
+  tbody tr:hover td {
+    background: rgba(59, 130, 246, 0.04);
+  }
 }
 
+.mono {
+  font-variant-numeric: tabular-nums;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+    "Courier New", monospace;
+  font-size: 13px;
+  color: #0f172a;
+}
 
-// .customPagination a {
-//     color: #000000;
-// }
-// .customPagination .page-item.active .page-link {
-//     border-color: var(--border-color);
-//     background-color: var(--pagging-background-color);
-//     color: var(--text-color);
-// }
+.nameCell .name {
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.truncate {
+  max-width: 220px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(99, 102, 241, 0.12);
+  color: #4338ca;
+  font-weight: 700;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.emp-search {
+  position: relative;
+
+  i.bi-search {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #64748b;
+    font-size: 14px;
+  }
+
+  .form-control {
+    padding-left: 36px;
+    padding-right: 36px;
+    border-radius: 12px;
+    border: 1px solid rgba(148, 163, 184, 0.35);
+    box-shadow: none;
+    height: 42px;
+  }
+
+  .form-control:focus {
+    border-color: rgba(59, 130, 246, 0.65);
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.12);
+  }
+
+  .clear-btn {
+    position: absolute;
+    right: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: 0;
+    background: transparent;
+    color: #64748b;
+    padding: 8px;
+    border-radius: 10px;
+  }
+
+  .clear-btn:hover {
+    background: rgba(148, 163, 184, 0.15);
+    color: #0f172a;
+  }
+}
+
+.form-select {
+  height: 42px;
+  border-radius: 12px;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  box-shadow: none;
+}
+
+.form-select:focus {
+  border-color: rgba(59, 130, 246, 0.65);
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.12);
+}
+
+.actionBtns {
+  display: inline-flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.iconBtn {
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  background: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #0f172a;
+  transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
+}
+
+.iconBtn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 18px rgba(15, 23, 42, 0.10);
+  background: rgba(59, 130, 246, 0.05);
+}
+
+.iconBtn.danger:hover {
+  background: rgba(239, 68, 68, 0.08);
+  border-color: rgba(239, 68, 68, 0.35);
+  color: #b91c1c;
+}
+
+.empty {
+  color: #64748b;
+  font-weight: 600;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .truncate {
+    max-width: 160px;
+  }
+  .tableWrap {
+    max-height: calc(100vh - 320px);
+  }
+}

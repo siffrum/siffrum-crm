@@ -1,281 +1,418 @@
-<div class="row py-lg-2 py-md-2 py-sm-2 py-2">
+<!-- LEAVES / HEADER BAR -->
+<div class="leaves-shell">
 
-    <div class="col-lg-6 col-md-6 col-sm-12 col-12" *ngIf="!isAdminMode">
-        <button class="btn coinButton" (click)="openEmployeeLeaveModal( 0)" *ngIf="viewModel.Permission?.view"> Add
-            Employee Leave &#43; </button>
+  <div class="leaves-topbar">
+    <div class="left" *ngIf="!isAdminMode">
+      <div class="title-wrap">
+        <h5 class="title">Leaves</h5>
+        <p class="sub">Apply for leave and track approval status.</p>
+      </div>
     </div>
 
-    <div class="col-lg-12 col-md-12 col-sm-12 col-12  text-end" *ngIf="isAdminMode">
-        <label> Total Number of Company Leaves: </label><span> {{viewModel.pagination.totalCount}}</span>
+    <div class="right">
+      <div class="count-pill" *ngIf="isAdminMode">
+        <span class="lbl">Total Company Leaves</span>
+        <span class="val">{{ viewModel.pagination.totalCount }}</span>
+      </div>
+
+      <div class="count-pill" *ngIf="!isAdminMode">
+        <span class="lbl">Total Employee Leaves</span>
+        <span class="val">{{ viewModel.pagination.totalCount }}</span>
+      </div>
+
+      <button
+        class="btn btn-primary-soft"
+        (click)="openEmployeeLeaveModal(0)"
+        *ngIf="!isAdminMode && viewModel.Permission?.view"
+        type="button"
+      >
+        <i class="bi bi-plus-lg me-2"></i>
+        Add Employee Leave
+      </button>
+    </div>
+  </div>
+
+  <!-- TABLE CARD -->
+  <div class="table-card">
+
+    <!-- Admin Table -->
+    <div class="table-responsive tableFixHead tableFixHeadAdmin" *ngIf="isAdminMode">
+      <table class="table table-modern mb-0">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Leave Type</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Employee Comment</th>
+            <th>Status</th>
+            <th class="text-end" *ngIf="viewModel.Permission?.delete">Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let item of viewModel.companyEmployeeLeavesListExtended">
+            <td class="name-cell">
+              <div class="avatar">{{ (item.userName || '?')?.charAt(0) }}</div>
+              <div class="name-meta">
+                <div class="name">{{ item.userName }}</div>
+                <div class="muted">Employee</div>
+              </div>
+            </td>
+
+            <td>
+              <span class="type-pill">{{ item.leaveType }}</span>
+            </td>
+
+            <td>{{ item.leaveDateFromUTC | date:'longDate' }}</td>
+            <td>{{ item.leaveDateToUTC | date:'longDate' }}</td>
+
+            <td class="comment-cell">
+              <span *ngIf="item.employeeComment; else noComment">
+                {{ item.employeeComment }}
+              </span>
+              <ng-template #noComment>
+                <span class="muted">—</span>
+              </ng-template>
+            </td>
+
+            <td>
+              <!-- Pending -->
+              <div class="status-wrap" *ngIf="item.isApproved == null">
+                <span class="badge badge-pending">
+                  <i class="bi bi-hourglass-split me-1"></i> Pending
+                </span>
+
+                <div class="actions-inline">
+                  <button
+                    class="btn btn-status btn-approve"
+                    (click)="updateEmployeeLeave(item, viewModel.employeeLeaveExtended.isApproved = true)"
+                    type="button"
+                  >
+                    <i class="bi bi-check2-circle me-1"></i> Approve
+                  </button>
+
+                  <button
+                    class="btn btn-status btn-reject"
+                    (click)="openEmployeeLeaveModal(item.id)"
+                    type="button"
+                  >
+                    <i class="bi bi-x-circle me-1"></i> Reject
+                  </button>
+                </div>
+              </div>
+
+              <!-- Approved / Rejected -->
+              <div class="status-wrap" *ngIf="item.isApproved !== null">
+                <span class="badge badge-approved" *ngIf="item.isApproved == true">
+                  <i class="bi bi-check-circle-fill me-1"></i> Approved
+                </span>
+
+                <span class="badge badge-rejected" *ngIf="item.isApproved == false">
+                  <i class="bi bi-x-circle-fill me-1"></i> Rejected
+                </span>
+              </div>
+            </td>
+
+            <td class="text-end" *ngIf="viewModel.Permission?.delete">
+              <button
+                class="icon-btn danger"
+                type="button"
+                (click)="deleteEmployeeLeaveByleaveId(item.id)"
+                (mouseenter)="viewModel.showTooltip = true"
+                (mouseleave)="viewModel.showTooltip = false"
+                [attr.title]="'Delete'"
+                [attr.data-placement]="'left'"
+                [ngClass]="{ 'tooltip-show': viewModel.showTooltip }"
+              >
+                <i class="bi bi-trash"></i>
+              </button>
+            </td>
+          </tr>
+
+          <tr *ngIf="!viewModel.companyEmployeeLeavesListExtended || viewModel.companyEmployeeLeavesListExtended.length === 0">
+            <td colspan="7" class="empty-row">
+              <div class="empty-state">
+                <i class="bi bi-inbox"></i>
+                <div>
+                  <div class="empty-title">No leaves found</div>
+                  <div class="empty-sub">Company leaves will show here once created.</div>
+                </div>
+              </div>
+            </td>
+          </tr>
+
+        </tbody>
+      </table>
     </div>
 
-    <div class="col-lg-6 col-md-6 col-sm-12 col-12  text-end" *ngIf="!isAdminMode">
-        <label> Total Number of Employee Leaves: </label><span>{{viewModel.pagination.totalCount}}</span>
+    <!-- Employee Table -->
+    <div class="table-responsive tableFixHead" *ngIf="!isAdminMode">
+      <table class="table table-modern mb-0">
+        <thead>
+          <tr>
+            <th class="firstTableHead">Leave Type</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Employee Comment</th>
+            <th>Status</th>
+            <th class="text-end" *ngIf="viewModel.Permission?.edit || viewModel.Permission?.delete">Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let item of viewModel.employeeLeavesList">
+            <td><span class="type-pill">{{ item.leaveType }}</span></td>
+            <td>{{ item.leaveDateFromUTC | date:'longDate' }}</td>
+            <td>{{ item.leaveDateToUTC | date:'longDate' }}</td>
+
+            <td class="comment-cell">
+              <span *ngIf="item.employeeComment; else noComment2">
+                {{ item.employeeComment }}
+              </span>
+              <ng-template #noComment2>
+                <span class="muted">—</span>
+              </ng-template>
+            </td>
+
+            <td>
+              <span class="badge badge-pending" *ngIf="item.isApproved == null">
+                <i class="bi bi-hourglass-split me-1"></i> Pending
+              </span>
+              <span class="badge badge-approved" *ngIf="item.isApproved == true">
+                <i class="bi bi-check-circle-fill me-1"></i> Approved
+              </span>
+              <span class="badge badge-rejected" *ngIf="item.isApproved == false">
+                <i class="bi bi-x-circle-fill me-1"></i> Rejected
+              </span>
+            </td>
+
+            <td class="text-end" *ngIf="viewModel.Permission?.edit || viewModel.Permission?.delete">
+              <button
+                class="icon-btn"
+                type="button"
+                *ngIf="viewModel.Permission?.edit"
+                (click)="openEmployeeLeaveModal(item.id)"
+                (mouseenter)="viewModel.showTooltip = true"
+                (mouseleave)="viewModel.showTooltip = false"
+                [attr.title]="'Edit'"
+                [attr.data-placement]="'left'"
+                [ngClass]="{ 'tooltip-show': viewModel.showTooltip }"
+              >
+                <i class="bi bi-pencil-square"></i>
+              </button>
+
+              <button
+                class="icon-btn danger ms-2"
+                type="button"
+                *ngIf="viewModel.Permission?.delete"
+                (click)="deleteEmployeeLeaveByleaveId(item.id)"
+                (mouseenter)="viewModel.showTooltip = true"
+                (mouseleave)="viewModel.showTooltip = false"
+                [attr.title]="'Delete'"
+                [attr.data-placement]="'left'"
+                [ngClass]="{ 'tooltip-show': viewModel.showTooltip }"
+              >
+                <i class="bi bi-trash"></i>
+              </button>
+            </td>
+          </tr>
+
+          <tr *ngIf="!viewModel.employeeLeavesList || viewModel.employeeLeavesList.length === 0">
+            <td colspan="6" class="empty-row">
+              <div class="empty-state">
+                <i class="bi bi-inbox"></i>
+                <div>
+                  <div class="empty-title">No leaves found</div>
+                  <div class="empty-sub">Your applied leaves will show here.</div>
+                </div>
+              </div>
+            </td>
+          </tr>
+
+        </tbody>
+      </table>
     </div>
+
+  </div>
+
+  <!-- PAGINATION -->
+  <div class="pager-wrap" *ngIf="viewModel.pagination && viewModel.pagination.totalCount">
+    <pagination (selectedPageNum)="loadPagedataWithPagination($event)" [viewModel]="viewModel.pagination">
+    </pagination>
+  </div>
 
 </div>
 
+<!-- MODAL (Same bindings, just styled) -->
+<div class="modal expandIn leaves-modal" tabindex="-1" role="dialog"
+  [ngStyle]="{'display': viewModel.displayStyle, 'z-index': 1050}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content modal-modern">
 
-<div class="row ">
+      <div class="modal-header">
+        <div class="head-txt">
+          <div class="kicker">{{ viewModel.isAddMode ? 'Create' : 'Update' }}</div>
 
-    <div class="col-lg-12 col-md-12 col-sm-12 col-12 tableFixHead tableFixHeadAdmin " *ngIf="isAdminMode">
-
-        <table class="table mb-0">
-
-            <thead>
-                <tr>
-                    <th> Name </th>
-                    <th> Leave Type </th>
-                    <th> Start Date </th>
-                    <th> End Date </th>
-                    <th> Employee Comment</th>
-                    <th> Status</th>
-                    <th *ngIf="viewModel.Permission?.delete">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let item of viewModel.companyEmployeeLeavesListExtended">
-                    <td> {{item.userName}} </td>
-                    <td> {{item.leaveType}} </td>
-                    <td> {{item.leaveDateFromUTC | date: 'longDate'}} </td>
-                    <td> {{item.leaveDateToUTC | date: 'longDate'}} </td>
-                    <td> {{item.employeeComment}} </td>
-                    <td>
-                        <div class="row" *ngIf="item.isApproved == null">
-
-                            <div class="col-lg-6 col-md-6 col-sm-6 mt-1">
-                                <button class="btn approvedBtn"
-                                    (click)="updateEmployeeLeave(item, viewModel.employeeLeaveExtended.isApproved = true)">
-                                    Approve </button>
-                            </div>
-                            <div class="col-lg-6 col-md-6 col-sm-6 mt-1">
-                                <button class="btn rejectedBtn" (click)="openEmployeeLeaveModal( item.id)">
-                                    Reject </button>
-                            </div>
-                        </div>
-                        <div class="row" *ngIf="item.isApproved !== null">
-                            <div class="col-lg-12" *ngIf="item.isApproved == true">
-                                <button class="btn approvedBtn"> Approved </button>
-                            </div>
-                            <div class="col-lg-10" *ngIf="item.isApproved == false">
-                                <button class="btn rejectedBtn"> Rejected </button>
-                            </div>
-                        </div>
-
-                    </td>
-
-                    <td *ngIf="viewModel.Permission?.delete ">
-                        <i class="bi bi-trash smallIcon" *ngIf="viewModel.Permission?.delete"
-                            (click)="deleteEmployeeLeaveByleaveId(item.id)" (mouseenter)="viewModel.showTooltip = true"
-                            (mouseleave)="viewModel.showTooltip = false" [attr.title]="'Delete'"
-                            [attr.data-placement]="'left'" [ngClass]="{ 'tooltip-show': viewModel.showTooltip }"></i>
-                    </td>
-
-                </tr>
-
-            </tbody>
-
-        </table>
-    </div>
-    <div class="col-lg-12 col-md-12 col-sm-12 tableFixHead " *ngIf="!isAdminMode">
-        <table class="table mb-0">
-            <thead>
-                <tr>
-                    <th class="firstTableHead"> Leave Type </th>
-                    <th> Start Date </th>
-                    <th> End Date </th>
-                    <th> Employee Comment </th>
-                    <th>Status</th>
-                    <th *ngIf="viewModel.Permission?.edit || viewModel.Permission?.delete">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let item of viewModel.employeeLeavesList">
-                    <td> {{item.leaveType}} </td>
-                    <td> {{item.leaveDateFromUTC | date:'longDate'}} </td>
-                    <td> {{item.leaveDateToUTC | date:'longDate'}} </td>
-                    <td> {{item.employeeComment}} </td>
-                    <td>
-
-                        <div class="row">
-
-                            <div class="col-lg-12 col-md-6 col-sm-6 col-6" *ngIf="item.isApproved == null">
-                                <button class="btn pendingBtn"> Pending </button>
-                            </div>
-
-                            <div class="col-lg-12 col-md-6 col-sm-6 col-6" *ngIf="item.isApproved == true">
-                                <button class="btn approvedBtn"> Approved </button>
-                            </div>
-
-                            <div class="col-lg-12 col-md-6 col-sm-6 col-6" *ngIf="item.isApproved == false">
-                                <button class="btn rejectedBtn"> Rejected </button>
-                            </div>
-                        </div>
-                    </td>
-                    <td *ngIf="viewModel.Permission?.edit || viewModel.Permission?.delete">
-                        <i class="bi bi-pencil-square smallIcon ms-0" *ngIf="viewModel.Permission?.edit"
-                            (click)="openEmployeeLeaveModal( item.id)" (mouseenter)="viewModel.showTooltip = true"
-                            (mouseleave)="viewModel.showTooltip = false" [attr.title]="'Edit'"
-                            [attr.data-placement]="'left'" [ngClass]="{ 'tooltip-show': viewModel.showTooltip }">
-                        </i>
-                        <i class="bi bi-trash smallIcon" *ngIf="viewModel.Permission?.delete"
-                            (click)="deleteEmployeeLeaveByleaveId(item.id)" (mouseenter)="viewModel.showTooltip = true"
-                            (mouseleave)="viewModel.showTooltip = false" [attr.title]="'Delete'"
-                            [attr.data-placement]="'left'" [ngClass]="{ 'tooltip-show': viewModel.showTooltip }"></i>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-    <div class="col-lg-12 col-md-12 col-sm-12 col-12 d-flex justify-content-center pt-1"
-        *ngIf="isAdminMode &&viewModel.pagination && viewModel.pagination.totalCount">
-        <pagination (selectedPageNum)="loadPagedataWithPagination($event)" [viewModel]="viewModel.pagination">
-        </pagination>
-    </div>
-    <div class="col-lg-12 col-md-12 col-sm-12 col-12 d-flex justify-content-center pt-1"
-        *ngIf="!isAdminMode &&viewModel.pagination && viewModel.pagination.totalCount">
-        <pagination (selectedPageNum)="loadPagedataWithPagination($event)" [viewModel]="viewModel.pagination">
-        </pagination>
-    </div>
-</div>
-<!-- Open Add Employee Leave Modal -->
-<div class="modal expandIn" tabindex="-1" role="dialog" [ngStyle]="{'display':viewModel.displayStyle ,'z-index': 1050}">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="col-lg-11 col-md-11 col-sm-11 col-11" *ngIf="viewModel.isAddMode">
-                    <h6> Add Leave {{employee.loginId}} </h6>
-                </div>
-
-                <div class="col-lg-11 col-md-11 col-sm-11 col-11" *ngIf="!viewModel.isAddMode">
-                    <h6> Edit Leave {{viewModel.employeeLeaveExtended.userName}} </h6>
-                </div>
-
-                <button type="button" class="btn-close" (click)="closePopup(leaveForm)"></button>
-            </div>
-            <form #leaveForm="ngForm">
-                <div class="modal-body">
-
-                    <div class="row">
-
-                        <div class="col-lg-5 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
-                            <label> Leave Type <span class="text-danger fs-5">*</span> </label>
-                        </div>
-
-                        <div class="col-lg-7 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
-                            <select class="form-select" aria-label="Default select example"
-                                [(ngModel)]="viewModel.employeeLeaveExtended.leaveType" [disabled]="isAdminMode || viewModel.employeeLeaveExtended.isApproved == true || viewModel.employeeLeaveExtended.isApproved == false"
-                                name="leaveType" #leaveType="ngModel" required>
-                                <option value="undefined" disabled selected>Select Leave type</option>
-                                <option *ngFor="let item of viewModel.leaveTypes" value="{{item}}"> {{item}}
-                                </option>
-                            </select>
-                            <div *ngFor="let validation of viewModel.validations.leaveType">
-                                <div *ngIf="(leaveType.touched || viewModel.formSubmitted) && leaveType.hasError(validation.type)"
-                                    class="text-danger">
-                                    {{validation.message}}
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-5 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
-                            <label> Leave From <span class="text-danger fs-5">*</span> </label>
-                        </div>
-
-                        <div class="col-lg-7 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
-                            <div class="input-group">
-                                <input type="date" class="form-control"
-                                    [(ngModel)]="viewModel.employeeLeaveExtended.leaveDateFromUTC"
-                                    [min]="disabledPastPastDates()" [disabled]="isAdminMode || viewModel.employeeLeaveExtended.isApproved == true || viewModel.employeeLeaveExtended.isApproved == false"   #leaveFrom="ngModel"
-                                    name="leaveFrom" required>
-                            </div>
-                            <div *ngFor="let validation of viewModel.validations.leaveDateFromUTC">
-                                <div *ngIf="(leaveFrom.touched || viewModel.formSubmitted) && leaveFrom.hasError(validation.type)"
-                                    class="text-danger">
-                                    {{validation.message}}
-                                </div>
-                            </div>
-                        </div>
-
-
-                        <div class="col-lg-5 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
-                            <label> Leave To <span class="text-danger fs-5">*</span> </label>
-                        </div>
-
-                        <div class="col-lg-7 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
-                            <input type="date" class="form-control"
-                                [(ngModel)]="viewModel.employeeLeaveExtended.leaveDateToUTC" [min]="disabledPastPastDates()"
-                                [disabled]="isAdminMode || viewModel.employeeLeaveExtended.isApproved == true || viewModel.employeeLeaveExtended.isApproved == false"  #leaveDateToUTC="ngModel" name="leaveDateToUTC" required>
-                            <div *ngFor="let validation of viewModel.validations.leaveDateToUTC">
-                                <div *ngIf="(leaveDateToUTC.touched || viewModel.formSubmitted) && leaveDateToUTC.hasError(validation.type)"
-                                    class="text-danger">
-                                    {{validation.message}}
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-5 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
-                            <label> Employee Comment </label>
-                        </div>
-
-                        <div class="col-lg-7 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
-                            <input type="text" class="form-control"
-                                [(ngModel)]="viewModel.employeeLeaveExtended.employeeComment" [disabled]="isAdminMode || viewModel.employeeLeaveExtended.isApproved == true || viewModel.employeeLeaveExtended.isApproved == false"
-                                name="employeeComment" #employeeComment="ngModel">
-                            <div *ngFor="let validation of viewModel.validations.employeeComment"
-                                pattern="^[A-Za-z][A-Za-z0-9\s]*$" minlength="5" maxlength="50">
-                                <div *ngIf="(employeeComment.touched || viewModel.formSubmitted) && employeeComment.hasError(validation.type)"
-                                    class="text-danger">
-                                    {{validation.message}}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-5 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2" *ngIf="isAdminMode">
-                            <label> Approver Comment </label>
-                        </div>
-                        <div class="col-lg-7 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2" *ngIf="isAdminMode">
-                            <input type="text" class="form-control" name="approvalComment"
-                                [(ngModel)]="viewModel.employeeLeaveExtended.approvalComment"
-                                [disabled]="isAdminMode || viewModel.employeeLeaveExtended.isApproved == true || viewModel.employeeLeaveExtended.isApproved == false" >
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end"
-                        *ngIf="viewModel.isAddMode && !isAdminMode &&viewModel.Permission?.add">
-                        <button class="btn coinButton" (click)="addEmployeeLeave(leaveForm)"> Add Leave </button>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-6 col-md-6 col-sm-6 mt-1"
-                            *ngIf="isAdminMode && viewModel.employeeLeaveExtended.isApproved == null && viewModel.showApproveBtn">
-                            <button class="btn approvedBtn"
-                                (click)="updateEmployeeLeave(viewModel.employeeLeaveExtended, viewModel.employeeLeaveExtended.isApproved = true)">
-                                Approve
-                            </button>
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6 mt-1"
-                            *ngIf="isAdminMode && viewModel.employeeLeaveExtended.isApproved == null">
-                            <button class="btn rejectedBtn"
-                                (click)="updateEmployeeLeave(viewModel.employeeLeaveExtended, viewModel.employeeLeaveExtended.isApproved = false)">
-                                Reject
-                            </button>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-12 mt-1" *ngIf="viewModel.employeeLeaveExtended.isApproved == true ">
-                            <button class="btn approvedBtn"> Approved </button>
-                        </div>
-                        <div class="col-lg-12 mt-1" *ngIf="viewModel.employeeLeaveExtended.isApproved == false">
-                            <button class="btn rejectedBtn"> Rejected </button>
-                        </div>
-                    </div>
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end"
-                        *ngIf="!viewModel.isAddMode && !isAdminMode && viewModel.employeeLeaveExtended.isApproved == null">
-                        <button class="btn coinButton" (click)="updateEmployeeLeave(viewModel.employeeLeaveExtended)">
-                            Update Details </button>
-                    </div>
-                </div>
-            </form>
+          <h6 class="m-title" *ngIf="viewModel.isAddMode">Add Leave {{ employee.loginId }}</h6>
+          <h6 class="m-title" *ngIf="!viewModel.isAddMode">Edit Leave {{ viewModel.employeeLeaveExtended.userName }}</h6>
         </div>
+
+        <button type="button" class="btn-close" (click)="closePopup(leaveForm)"></button>
+      </div>
+
+      <form #leaveForm="ngForm">
+        <div class="modal-body">
+          <div class="form-grid">
+
+            <!-- Leave Type -->
+            <div class="fg">
+              <label>Leave Type <span class="req">*</span></label>
+              <select
+                class="form-select form-control-modern"
+                [(ngModel)]="viewModel.employeeLeaveExtended.leaveType"
+                [disabled]="isAdminMode || viewModel.employeeLeaveExtended.isApproved == true || viewModel.employeeLeaveExtended.isApproved == false"
+                name="leaveType"
+                #leaveType="ngModel"
+                required
+              >
+                <option value="undefined" disabled selected>Select Leave type</option>
+                <option *ngFor="let item of viewModel.leaveTypes" value="{{ item }}">{{ item }}</option>
+              </select>
+
+              <div *ngFor="let validation of viewModel.validations.leaveType">
+                <div *ngIf="(leaveType.touched || viewModel.formSubmitted) && leaveType.hasError(validation.type)"
+                  class="text-danger small">
+                  {{ validation.message }}
+                </div>
+              </div>
+            </div>
+
+            <!-- Leave From -->
+            <div class="fg">
+              <label>Leave From <span class="req">*</span></label>
+              <input
+                type="date"
+                class="form-control form-control-modern"
+                [(ngModel)]="viewModel.employeeLeaveExtended.leaveDateFromUTC"
+                [min]="disabledPastPastDates()"
+                [disabled]="isAdminMode || viewModel.employeeLeaveExtended.isApproved == true || viewModel.employeeLeaveExtended.isApproved == false"
+                #leaveFrom="ngModel"
+                name="leaveFrom"
+                required
+              />
+              <div *ngFor="let validation of viewModel.validations.leaveDateFromUTC">
+                <div *ngIf="(leaveFrom.touched || viewModel.formSubmitted) && leaveFrom.hasError(validation.type)"
+                  class="text-danger small">
+                  {{ validation.message }}
+                </div>
+              </div>
+            </div>
+
+            <!-- Leave To -->
+            <div class="fg">
+              <label>Leave To <span class="req">*</span></label>
+              <input
+                type="date"
+                class="form-control form-control-modern"
+                [(ngModel)]="viewModel.employeeLeaveExtended.leaveDateToUTC"
+                [min]="disabledPastPastDates()"
+                [disabled]="isAdminMode || viewModel.employeeLeaveExtended.isApproved == true || viewModel.employeeLeaveExtended.isApproved == false"
+                #leaveDateToUTC="ngModel"
+                name="leaveDateToUTC"
+                required
+              />
+              <div *ngFor="let validation of viewModel.validations.leaveDateToUTC">
+                <div *ngIf="(leaveDateToUTC.touched || viewModel.formSubmitted) && leaveDateToUTC.hasError(validation.type)"
+                  class="text-danger small">
+                  {{ validation.message }}
+                </div>
+              </div>
+            </div>
+
+            <!-- Employee Comment -->
+            <div class="fg full">
+              <label>Employee Comment</label>
+              <input
+                type="text"
+                class="form-control form-control-modern"
+                [(ngModel)]="viewModel.employeeLeaveExtended.employeeComment"
+                [disabled]="isAdminMode || viewModel.employeeLeaveExtended.isApproved == true || viewModel.employeeLeaveExtended.isApproved == false"
+                name="employeeComment"
+                #employeeComment="ngModel"
+              />
+              <div *ngFor="let validation of viewModel.validations.employeeComment"
+                pattern="^[A-Za-z][A-Za-z0-9\s]*$" minlength="5" maxlength="50">
+                <div *ngIf="(employeeComment.touched || viewModel.formSubmitted) && employeeComment.hasError(validation.type)"
+                  class="text-danger small">
+                  {{ validation.message }}
+                </div>
+              </div>
+            </div>
+
+            <!-- Approver Comment -->
+            <div class="fg full" *ngIf="isAdminMode">
+              <label>Approver Comment</label>
+              <input
+                type="text"
+                class="form-control form-control-modern"
+                name="approvalComment"
+                [(ngModel)]="viewModel.employeeLeaveExtended.approvalComment"
+                [disabled]="isAdminMode || viewModel.employeeLeaveExtended.isApproved == true || viewModel.employeeLeaveExtended.isApproved == false"
+              />
+            </div>
+
+          </div>
+        </div>
+
+        <div class="modal-footer modal-footer-modern">
+
+          <!-- Add -->
+          <div class="w-100 d-flex justify-content-end"
+            *ngIf="viewModel.isAddMode && !isAdminMode && viewModel.Permission?.add">
+            <button class="btn btn-primary-soft" type="button" (click)="addEmployeeLeave(leaveForm)">
+              <i class="bi bi-plus-lg me-2"></i> Add Leave
+            </button>
+          </div>
+
+          <!-- Admin Approve/Reject -->
+          <div class="w-100 d-flex justify-content-end gap-2"
+            *ngIf="isAdminMode && viewModel.employeeLeaveExtended.isApproved == null">
+            <button class="btn btn-status btn-approve" type="button"
+              *ngIf="viewModel.showApproveBtn"
+              (click)="updateEmployeeLeave(viewModel.employeeLeaveExtended, viewModel.employeeLeaveExtended.isApproved = true)">
+              <i class="bi bi-check2-circle me-1"></i> Approve
+            </button>
+
+            <button class="btn btn-status btn-reject" type="button"
+              (click)="updateEmployeeLeave(viewModel.employeeLeaveExtended, viewModel.employeeLeaveExtended.isApproved = false)">
+              <i class="bi bi-x-circle me-1"></i> Reject
+            </button>
+          </div>
+
+          <!-- Approved/Rejected display -->
+          <div class="w-100 d-flex justify-content-end"
+            *ngIf="isAdminMode && viewModel.employeeLeaveExtended.isApproved !== null">
+            <span class="badge badge-approved" *ngIf="viewModel.employeeLeaveExtended.isApproved == true">
+              <i class="bi bi-check-circle-fill me-1"></i> Approved
+            </span>
+            <span class="badge badge-rejected" *ngIf="viewModel.employeeLeaveExtended.isApproved == false">
+              <i class="bi bi-x-circle-fill me-1"></i> Rejected
+            </span>
+          </div>
+
+          <!-- Update for Employee -->
+          <div class="w-100 d-flex justify-content-end"
+            *ngIf="!viewModel.isAddMode && !isAdminMode && viewModel.employeeLeaveExtended.isApproved == null">
+            <button class="btn btn-primary-soft" type="button"
+              (click)="updateEmployeeLeave(viewModel.employeeLeaveExtended)">
+              <i class="bi bi-save2 me-2"></i> Update Details
+            </button>
+          </div>
+
+        </div>
+      </form>
+
     </div>
+  </div>
 </div>

@@ -1,16 +1,313 @@
-
-//------Calendar CSS-----//
- .cal-month-view{
-      color: black;
- }
- .cal-day-number{
-  color: black !important;
- }
- .cal-month-view .cal-day-badge {
-display:none;
+/* ===== Shell ===== */
+.att-shell {
+  padding: 14px 10px;
 }
-/* For small screens */
-@media only screen and (max-width: 600px) {
+
+/* Soft card (matches your dashboard feel) */
+.card-soft {
+  background: var(--card-bg, #ffffff);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(2, 6, 23, 0.06);
+}
+
+/* ===== Top bar ===== */
+.att-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 16px 16px;
+}
+
+.att-top-left {
+  min-width: 0;
+}
+
+.att-kicker {
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(100, 116, 139, 0.95);
+  margin-bottom: 8px;
+}
+
+/* Shift block */
+.att-shift {
+  display: grid;
+  gap: 6px;
+}
+
+.shift-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: fit-content;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(37, 99, 235, 0.10);
+  color: rgba(37, 99, 235, 0.95);
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.shift-badge .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(37, 99, 235, 0.95);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.18);
+}
+
+.shift-title {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--text, #0f172a);
+  line-height: 1.2;
+}
+
+.shift-time {
+  font-size: 13px;
+  color: rgba(71, 85, 105, 0.95);
+  font-weight: 600;
+}
+
+.shift-time .sep {
+  margin: 0 6px;
+  opacity: 0.7;
+}
+
+/* Empty state */
+.att-empty {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 12px;
+  border-radius: 14px;
+  background: rgba(148, 163, 184, 0.10);
+}
+
+.empty-ic {
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  background: rgba(148, 163, 184, 0.20);
+}
+
+.empty-title {
+  font-weight: 800;
+  color: var(--text, #0f172a);
+  line-height: 1.2;
+}
+
+.empty-sub {
+  font-size: 12px;
+  color: rgba(71, 85, 105, 0.95);
+  margin-top: 2px;
+}
+
+/* ===== Buttons ===== */
+.att-top-right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.btn-soft {
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  background: rgba(255, 255, 255, 0.75);
+  color: var(--text, #0f172a);
+  border-radius: 12px;
+  padding: 10px 14px;
+  font-weight: 800;
+  font-size: 13px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.btn-soft:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 24px rgba(2, 6, 23, 0.10);
+}
+
+.btn-soft .ic {
+  font-size: 14px;
+  opacity: 0.85;
+}
+
+.btn-in {
+  background: rgba(16, 185, 129, 0.10);
+  border-color: rgba(16, 185, 129, 0.25);
+}
+
+.btn-out {
+  background: rgba(244, 63, 94, 0.10);
+  border-color: rgba(244, 63, 94, 0.25);
+}
+
+/* ===== Calendar card ===== */
+.att-card {
+  padding: 0;
+  overflow: hidden;
+}
+
+.att-card-head {
+  display: grid;
+  grid-template-columns: 140px 1fr 140px;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 14px;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+  background: rgba(148, 163, 184, 0.08);
+}
+
+.att-month {
+  text-align: center;
+}
+
+.month-title {
+  font-weight: 900;
+  color: var(--text, #0f172a);
+}
+
+.month-sub {
+  font-size: 12px;
+  color: rgba(71, 85, 105, 0.95);
+  margin-top: 2px;
+}
+
+.btn-nav {
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  background: rgba(255, 255, 255, 0.80);
+  color: var(--text, #0f172a);
+  border-radius: 12px;
+  padding: 10px 12px;
+  font-weight: 800;
+  font-size: 13px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.btn-nav:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 24px rgba(2, 6, 23, 0.08);
+}
+
+.btn-nav:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-nav .chev {
+  font-size: 18px;
+  line-height: 0;
+}
+
+/* Body */
+.att-card-body {
+  padding: 10px 12px 14px;
+}
+
+/* ===== Your existing scroll container (kept) ===== */
+.tableFixHead {
+  overflow-y: auto;
+  height: 460px;
+  scrollbar-width: none;
+}
+.tableFixHead::-webkit-scrollbar {
+  display: none;
+}
+
+/* ====== CALENDAR THEME (angular-calendar) ====== */
+.cal-month-view {
+  color: var(--text, #0f172a);
+}
+
+/* remove badge dots */
+.cal-month-view .cal-day-badge {
+  display: none;
+}
+
+/* day number style */
+.cal-day-number {
+  color: var(--text, #0f172a) !important;
+  font-weight: 800;
+  opacity: 0.9;
+}
+
+/* cell styling */
+.cal-month-view .cal-day-cell {
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid rgba(15, 23, 42, 0.06);
+  background: rgba(255, 255, 255, 0.65);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.cal-month-view .cal-day-cell:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 22px rgba(2, 6, 23, 0.08);
+}
+
+/* today highlight */
+.cal-month-view .cal-day.cal-today {
+  background: rgba(37, 99, 235, 0.10);
+}
+
+/* event pill (Present/Absent etc.) */
+.cal-month-view .cal-event {
+  border-radius: 999px;
+  padding: 2px 8px;
+  font-weight: 800;
+  font-size: 11px;
+  border: 1px solid rgba(15, 23, 42, 0.10);
+  background: rgba(148, 163, 184, 0.14);
+  color: rgba(15, 23, 42, 0.92);
+}
+
+/* If your events title is 'P' / 'A' / etc, make it look like status chips */
+.cal-month-view .cal-event-title {
+  font-weight: 900;
+}
+
+/* Small screens */
+@media (max-width: 600px) {
+  .att-top {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .att-card-head {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .btn-nav {
+    width: 100%;
+  }
+
+  .att-top-right {
+    justify-content: stretch;
+  }
+
+  .btn-soft {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .tableFixHead {
+    height: 420px;
+  }
+
   .cal-month-view .cal-days .cal-cell-row {
     height: auto !important;
   }
@@ -22,19 +319,11 @@ display:none;
   }
 }
 
-.btn-default{
-  color: var(--button-text-color);
-  background: var(--button-background-color);
-}
-.btn-default :hover{
-  background: var(--hover-background-color)!important;
-}
-/* For medium screens */
-@media only screen and (min-width: 600px) and (max-width: 992px) {
+/* Medium */
+@media (min-width: 600px) and (max-width: 992px) {
   .cal-month-view .cal-days .cal-cell-row {
     height: 5rem !important;
   }
-
   .cal-month-view .cal-day-number {
     margin-top: 2rem;
     margin-right: 2rem;
@@ -42,56 +331,14 @@ display:none;
   }
 }
 
-/* For large screens */
-@media only screen and (min-width: 992px) {
+/* Large */
+@media (min-width: 992px) {
   .cal-month-view .cal-days .cal-cell-row {
     height: 7rem !important;
   }
-
-
   .cal-month-view .cal-day-number {
     margin-top: 2.8rem;
     margin-right: 4rem;
     font-size: x-large;
   }
-}
-
-.cal-month-view .cal-day.cal-day-highlight::after {
-  opacity: 0.6;
-}
-.cal-month-view .cal-day-cell {
-  min-height: 80px;
-}
-
-.cal-month-view .cal-cell-top {
-  min-height: 66px;
-  flex: 1;
-}
-
-
-.tableFixHead {
-  overflow-y: auto; /* make the table scrollable if height is more than 200 px  */
-  height: 400px; /* gives an initial height of 200px to the table */
-  scrollbar-width: none;
-
-}
-.tableFixHead thead th {
-  position: sticky; /* make the table heads sticky */
-  top: 0px; /* table head will be placed from the top of the table and sticks to it */
-  // z-index: 9999;
-}
-.tableFixHead::-webkit-scrollbar {
-  display: none;
-}
-
-.tableFixHead::-webkit-scrollbar-thumb {
-  display: none;
-}
-
-.tableFixHead::-webkit-scrollbar-thumb:hover {
-  display: none;
-}
-
-.no-bullets {
-  list-style-type: none;
 }

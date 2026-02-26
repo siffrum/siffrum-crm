@@ -1,58 +1,94 @@
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-lg-6 col-md-6 col-sm-6 text-start">
-      <div *ngIf="viewModel.currentShift">
-        <ul class="no-bullets">
-          <li>
-            <span><p> {{ viewModel.currentShift.shiftName }} - {{ viewModel.currentShift.shiftFrom | date: 'hh:mm a' }} to {{ viewModel.currentShift.shiftTo | date: 'hh:mm a' }}</p></span>
-          </li>
-        </ul>
-      </div>
-        <div *ngIf="!viewModel.currentShift">
-          <span><b>No office hours available at the moment.</b></span>
+<!-- ATTENDANCE HEADER STRIP -->
+<div class="att-shell">
+
+  <div class="att-top card-soft">
+    <div class="att-top-left">
+      <div class="att-kicker">Attendance</div>
+
+      <ng-container *ngIf="viewModel.currentShift; else noShift">
+        <div class="att-shift">
+          <div class="shift-badge">
+            <span class="dot"></span>
+            <span class="txt">Current Shift</span>
+          </div>
+
+          <div class="shift-title">
+            {{ viewModel.currentShift.shiftName }}
+          </div>
+
+          <div class="shift-time">
+            {{ viewModel.currentShift.shiftFrom | date: 'hh:mm a' }}
+            <span class="sep">→</span>
+            {{ viewModel.currentShift.shiftTo | date: 'hh:mm a' }}
+          </div>
         </div>
+      </ng-container>
+
+      <ng-template #noShift>
+        <div class="att-empty">
+          <div class="empty-ic">⏳</div>
+          <div>
+            <div class="empty-title">No office hours</div>
+            <div class="empty-sub">No shift is available at the moment.</div>
+          </div>
+        </div>
+      </ng-template>
     </div>
-    <div class="col-lg-6 col-md-6 col-sm-6 col-6 text-end" *ngIf="viewModel.currentShift">
-      <button class="btn coinButton me-2" *ngIf="viewModel.isCheckInButton &&viewModel.companyAttendanceShiftDetailsList && viewModel.companyAttendanceShiftDetailsList.length > 0 &&viewModel.Permission?.add"
+
+    <!-- ACTIONS -->
+    <div class="att-top-right" *ngIf="viewModel.currentShift">
+      <button
+        class="btn-soft btn-in me-2"
+        *ngIf="viewModel.isCheckInButton
+          && viewModel.companyAttendanceShiftDetailsList
+          && viewModel.companyAttendanceShiftDetailsList.length > 0
+          && viewModel.Permission?.add"
         (click)="checkIn(viewModel.currentDate)">
+        <span class="ic">↗</span>
         Check In
       </button>
-      <button class="btn coinButton"
-      *ngIf="viewModel.isCheckOutButton &&viewModel.companyAttendanceShiftDetailsList && viewModel.companyAttendanceShiftDetailsList.length > 0 &&viewModel.Permission?.edit"
+
+      <button
+        class="btn-soft btn-out"
+        *ngIf="viewModel.isCheckOutButton
+          && viewModel.companyAttendanceShiftDetailsList
+          && viewModel.companyAttendanceShiftDetailsList.length > 0
+          && viewModel.Permission?.edit"
         (click)="checkOut(viewModel.currentDate)">
+        <span class="ic">↘</span>
         Check Out
       </button>
     </div>
   </div>
-</div>
-<div class="row mt-2">
-  <div class="col-lg-12 col-md-12 col-sm-12 col-12 ">
-    <div class="card">
-      <div class="card-header">
-        <div class="row">
-          <div class="col-lg-4 col-md-4 col-sm-4 col-4">
-            <button class="btn btn-default" (click)="prevMonth()">
-              Prev
-            </button>
-          </div>
-          <div class="col-lg-4 col-md-4 col-sm-4 col-4 text-center">
-            <span> {{ viewModel.viewDate | date: "MMMM y" }}</span>
-          </div>
-          <div class="col-lg-4 col-md-4 col-sm-4 col-4 text-end">
-            <button class="btn btn-default" (click)="nextMonth()">
-              Next
-            </button>
-          </div>
-        </div>
+
+  <!-- CALENDAR CARD -->
+  <div class="att-card card-soft mt-2">
+    <div class="att-card-head">
+      <button class="btn-nav" (click)="prevMonth()">
+        <span class="chev">‹</span>
+        Prev
+      </button>
+
+      <div class="att-month">
+        <div class="month-title">{{ viewModel.viewDate | date: "MMMM y" }}</div>
+        <div class="month-sub">Tap a day to view status</div>
       </div>
-      <div class="card-body p-0 px-2 " *ngIf="viewModel.Permission?.view">
-        <div class="row">
-          <div class="col-lg-12 col-md-12 col-sm-12 col-12 tableFixHead" [ngSwitch]="viewModel.view" >
-            <mwl-calendar-month-view *ngSwitchCase="viewModel.CalendarView.Month"[viewDate]="viewModel.viewDate" [events]="viewModel.events" >
-          </mwl-calendar-month-view>
-          </div>
-        </div>
+
+      <button class="btn-nav" (click)="nextMonth()" [disabled]="viewModel.isNextButtonDisabled">
+        Next
+        <span class="chev">›</span>
+      </button>
+    </div>
+
+    <div class="att-card-body" *ngIf="viewModel.Permission?.view">
+      <div class="tableFixHead" [ngSwitch]="viewModel.view">
+        <mwl-calendar-month-view
+          *ngSwitchCase="viewModel.CalendarView.Month"
+          [viewDate]="viewModel.viewDate"
+          [events]="viewModel.events">
+        </mwl-calendar-month-view>
       </div>
     </div>
   </div>
+
 </div>

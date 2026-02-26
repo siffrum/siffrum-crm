@@ -113,6 +113,8 @@ export class LoginComponent extends BaseComponent<LoginViewModel> implements OnI
 
           let mineUserActiveLicenseResponse =
             await this.licenseInfoService.getUserMineActiveLicenseInfo();
+            console.log(mineUserActiveLicenseResponse);
+            
 
           this.viewModel.mineUserActiveLicense = mineUserActiveLicenseResponse.successData;
 

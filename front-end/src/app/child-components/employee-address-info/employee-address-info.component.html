@@ -1,205 +1,345 @@
-<div class="container-fluid">
-    <div class="row py-lg-2">
-        <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-            <button class="btn coinButton mb-2" (click)="openEmployeeAddressInfoModal(0)"
-                *ngIf="viewModel.Permission?.add"> Add New Address &#43; </button>
-        </div>
+<div class="addr-page">
+
+  <!-- Header row -->
+  <div class="addr-head">
+    <div class="left">
+      <div class="kicker">Employees</div>
+      <h2 class="title">Employee Address</h2>
+      <p class="sub">Manage employee addresses with quick add, edit and delete.</p>
     </div>
 
-    <div class="row">
-        <div class="col-lg-12 col-md-12 col-sm-12 col-12  text-end"><label>Total Count:
-                <span>{{viewModel.pagination.totalCount}}</span></label> </div>
-        <div class="col-lg-12 col-md-12 col-sm-12 col-12 tableFixHead">
+    <div class="right">
+      <div class="count-pill">
+        <i class="bi bi-collection"></i>
+        <span>Total</span>
+        <b>{{ viewModel.pagination.totalCount }}</b>
+      </div>
 
-            <table class="table mb-0">
-
-                <thead>
-                    <tr>
-                        <th> Employee </th>
-                        <th> Country </th>
-                        <th> State </th>
-                        <th> City </th>
-                        <th> Pincode </th>
-                        <th> Address 1 </th>
-                        <th> Address 2 </th>
-                        <th>Address Type</th>
-                        <th *ngIf="viewModel.Permission?.edit || viewModel.Permission?.delete">Actions</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    <tr *ngFor="let item of viewModel.employeeAddressList">
-                        <td> {{employee.loginId}} </td>
-                        <td> {{item.country}} </td>
-                        <td> {{item.state}} </td>
-                        <td> {{item.city}} </td>
-                        <td> {{item.pinCode}} </td>
-                        <td> {{item.address1}} </td>
-                        <td> {{item.address2}} </td>
-                        <td> {{item.clientUserAddressType}} </td>
-                        <td *ngIf="viewModel.Permission?.edit ||viewModel.Permission?.delete">
-                            <i class="bi bi-pencil-square smallIcon ms-0"
-                                (click)="openEmployeeAddressInfoModal( item.id)"
-                                (mouseenter)="viewModel.showTooltip = true" (mouseleave)="viewModel.showTooltip = false"
-                                [attr.title]="'Edit'" [attr.data-placement]="'left'"
-                                [ngClass]="{ 'tooltip-show': viewModel.showTooltip }"
-                                *ngIf="viewModel.Permission?.edit">
-                            </i>
-                            <i class="bi bi-trash smallIcon" (click)="deleteEmployeeAddressByAddressId(item.id)"
-                                (mouseenter)="viewModel.showTooltip = true" (mouseleave)="viewModel.showTooltip = false"
-                                [attr.title]="'Delete'" [attr.data-placement]="'left'"
-                                [ngClass]="{ 'tooltip-show': viewModel.showTooltip }"
-                                *ngIf="viewModel.Permission?.delete"></i>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="col-lg-12 col-md-12 col-sm-12 col-12 d-flex justify-content-center pt-1"
-            *ngIf="viewModel.pagination && viewModel.pagination.totalCount>0">
-            <pagination (selectedPageNum)="loadPagedataWithPagination($event)" [viewModel]="viewModel.pagination">
-            </pagination>
-        </div>
+      <button
+        class="btn btn-primary-soft"
+        (click)="openEmployeeAddressInfoModal(0)"
+        *ngIf="viewModel.Permission?.add"
+        type="button"
+      >
+        <i class="bi bi-plus-lg"></i>
+        <span>Add New Address</span>
+      </button>
     </div>
+  </div>
+
+  <!-- Table Card -->
+  <div class="addr-card">
+    <div class="addr-table-wrap tableFixHead">
+
+      <table class="table addr-table mb-0">
+        <thead>
+          <tr>
+            <th>Employee</th>
+            <th>Country</th>
+            <th>State</th>
+            <th>City</th>
+            <th>Pincode</th>
+            <th>Address 1</th>
+            <th>Address 2</th>
+            <th>Address Type</th>
+            <th *ngIf="viewModel.Permission?.edit || viewModel.Permission?.delete" class="text-end">Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let item of viewModel.employeeAddressList">
+            <td class="emp-cell">
+              <div class="emp-badge">
+                <span class="dot"></span>
+                <span class="txt">{{ employee.loginId }}</span>
+              </div>
+            </td>
+
+            <td>{{ item.country }}</td>
+            <td>{{ item.state }}</td>
+            <td>{{ item.city }}</td>
+            <td><span class="pill">{{ item.pinCode }}</span></td>
+            <td class="truncate" [attr.title]="item.address1">{{ item.address1 }}</td>
+            <td class="truncate" [attr.title]="item.address2">{{ item.address2 }}</td>
+            <td><span class="type-pill">{{ item.clientUserAddressType }}</span></td>
+
+            <td
+              *ngIf="viewModel.Permission?.edit || viewModel.Permission?.delete"
+              class="text-end"
+            >
+              <div class="actions">
+                <button
+                  type="button"
+                  class="icon-btn"
+                  (click)="openEmployeeAddressInfoModal(item.id)"
+                  [attr.title]="'Edit'"
+                  *ngIf="viewModel.Permission?.edit"
+                >
+                  <i class="bi bi-pencil-square"></i>
+                </button>
+
+                <button
+                  type="button"
+                  class="icon-btn danger"
+                  (click)="deleteEmployeeAddressByAddressId(item.id)"
+                  [attr.title]="'Delete'"
+                  *ngIf="viewModel.Permission?.delete"
+                >
+                  <i class="bi bi-trash"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+
+          <tr *ngIf="!viewModel.employeeAddressList || viewModel.employeeAddressList.length === 0">
+            <td [attr.colspan]="(viewModel.Permission?.edit || viewModel.Permission?.delete) ? 9 : 8">
+              <div class="empty">
+                <i class="bi bi-inboxes"></i>
+                <div>
+                  <h5>No addresses found</h5>
+                  <p>Add an address to get started.</p>
+                </div>
+                <button
+                  class="btn btn-primary-soft"
+                  (click)="openEmployeeAddressInfoModal(0)"
+                  *ngIf="viewModel.Permission?.add"
+                  type="button"
+                >
+                  <i class="bi bi-plus-lg"></i>
+                  Add Address
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+
+    <!-- Pagination -->
+    <div
+      class="addr-foot"
+      *ngIf="viewModel.pagination && viewModel.pagination.totalCount > 0"
+    >
+      <pagination
+        (selectedPageNum)="loadPagedataWithPagination($event)"
+        [viewModel]="viewModel.pagination"
+      ></pagination>
+    </div>
+  </div>
 </div>
-<div class="modal expandIn" tabindex="-1" role="dialog" [ngStyle]="{'display':viewModel.displayStyle}">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="col-lg-11 col-md-11 col-sm-11 col-11" *ngIf="isaddmode">
-                    <h5> Add Employee Address </h5>
-                </div>
 
-                <div class="col-lg-11 col-md-11 col-sm-11 col-11" *ngIf="isEditMode && !viewModel.editMode">
-                    <h5> Add Employee Address </h5>
-                </div>
+<!-- MODAL -->
+<div class="modal addr-modal" tabindex="-1" role="dialog" [ngStyle]="{ display: viewModel.displayStyle }">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
 
-                <div class="col-lg-11 col-md-11 col-sm-11 col-11" *ngIf="isEditMode && viewModel.editMode">
-                    <h5> Edit Employee Address </h5>
-                </div>
+      <div class="modal-header">
+        <div class="mh-left">
+          <div class="kicker">Employee</div>
 
-                <button type="button" class="btn-close" (click)="closePopup(addressForm)"></button>
-            </div>
-            <form #addressForm="ngForm">
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-lg-4 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
-                            <label> Country <span class="text-danger fs-5">*</span> </label>
-                        </div>
+          <h5 class="m-title" *ngIf="isaddmode">Add Employee Address</h5>
+          <h5 class="m-title" *ngIf="isEditMode && !viewModel.editMode">Add Employee Address</h5>
+          <h5 class="m-title" *ngIf="isEditMode && viewModel.editMode">Edit Employee Address</h5>
 
-                        <div class="col-lg-8 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
-                            <input type="text" class="form-control" required name="country"
-                                [(ngModel)]="viewModel.employeeAddress.country" pattern="^[A-Za-z][A-Za-z0-9\s]*$"
-                                placeholder="Country" #country="ngModel" minlength="3" maxlength="20">
-                            <ng-container *ngFor="let validation of viewModel.validations.country">
-                                <div class="text-danger validationMsg"
-                                    *ngIf="(country.touched || viewModel.formSubmitted) && country.hasError(validation.type)">
-                                    {{ validation.message }}
-                                </div>
-                            </ng-container>
-                        </div>
-
-                        <div class="col-lg-4 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
-                            <label> State <span class="text-danger fs-5">*</span> </label>
-                        </div>
-
-                        <div class="col-lg-8 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
-                            <input type="text" class="form-control" required name="state"
-                                [(ngModel)]="viewModel.employeeAddress.state" pattern="^[A-Za-z][A-Za-z0-9\s]*$"
-                                placeholder="State" #state="ngModel" minlength="2" maxlength="20">
-                            <ng-container *ngFor="let validation of viewModel.validations.state">
-                                <div *ngIf="(state.touched || viewModel.formSubmitted) && state.hasError(validation.type)"
-                                    class="text-danger validationMsg">
-                                    {{validation.message}}
-                                </div>
-                            </ng-container>
-                        </div>
-
-                        <div class="col-lg-4 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
-                            <label> City <span class="text-danger fs-5">*</span> </label>
-                        </div>
-
-                        <div class="col-lg-8 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
-                            <input type="text" class="form-control" required name="city"
-                                [(ngModel)]="viewModel.employeeAddress.city" placeholder="City" #city="ngModel"
-                                pattern="^[A-Za-z][A-Za-z0-9\s]*$" minlength="3" maxlength="30">
-                            <div *ngFor="let validation of viewModel.validations.city">
-                                <div *ngIf="(city.touched || viewModel.formSubmitted) && city.hasError(validation.type)"
-                                    class="text-danger validationMsg">
-                                    {{validation.message}}
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-4 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
-                            <label> Pincode <span class="text-danger fs-5">*</span> </label>
-                        </div>
-
-                        <div class="col-lg-8 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
-                            <input type="text" class="form-control" required name="pinCode"
-                                [(ngModel)]="viewModel.employeeAddress.pinCode" placeholder="Pin Code"
-                                #pincode="ngModel" pattern="^\d{6}$" minlength="3" maxlength="20">
-                            <div *ngFor="let validation of viewModel.validations.pincode">
-                                <div *ngIf="(pincode.touched || viewModel.formSubmitted) && pincode.hasError(validation.type)"
-                                    class="text-danger validationMsg">
-                                    {{validation.message}}
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-4 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
-                            <label> Address One <span class="text-danger fs-5">*</span> </label>
-                        </div>
-
-                        <div class="col-lg-8 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
-                            <input type="text" class="form-control" required name="address1"
-                                [(ngModel)]="viewModel.employeeAddress.address1" placeholder="Permenant Address"
-                                #address1="ngModel" pattern="^[A-Za-z][A-Za-z0-9\s]*$" minlength="3" maxlength="50">
-                            <div *ngFor="let validation of viewModel.validations.address1">
-                                <div *ngIf="(address1.touched || viewModel.formSubmitted) && address1.hasError(validation.type)"
-                                    class="text-danger validationMsg">
-                                    {{validation.message}}
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-4 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
-                            <label> Address Two </label>
-                        </div>
-
-                        <div class="col-lg-8 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
-                            <input type="text" class="form-control" [(ngModel)]="viewModel.employeeAddress.address2"
-                                name="address2" placeholder="Temporary Address" #address2="ngModel"
-                                pattern="^[A-Za-z][A-Za-z0-9\s]*$" minlength="3" maxlength="50">
-                            <div *ngFor="let validation of viewModel.validations.address2">
-                                <div *ngIf="(address2.touched || viewModel.formSubmitted) && address2.hasError(validation.type)"
-                                    class="text-danger validationMsg">
-                                    {{validation.message}}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end"
-                        *ngIf="isaddmode &&viewModel.Permission?.add">
-                        <button class="btn coinButton" (click)="addEmployeeAddressInfo(addressForm)"> Save & Next
-                        </button>
-                        <a class="skipLink d-block" (click)="skipEmployeeFurther()"> Skip for Now </a>
-                    </div>
-
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end"
-                        *ngIf="isEditMode && !viewModel.editMode &&viewModel.Permission?.add">
-                        <button class="btn coinButton" (click)="addEmployeeAddressInfo(addressForm)"
-                            *ngIf="viewModel.Permission?.add"> Save </button>
-                    </div>
-
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end"
-                        *ngIf="isEditMode && viewModel.editMode &&viewModel.Permission?.edit">
-                        <button class="btn coinButton" (click)="updateEmployeeAddressInfo(addressForm)"> Update Details
-                        </button>
-                    </div>
-                </div>
-            </form>
+          <div class="m-sub">Fill required fields and save.</div>
         </div>
+
+        <button type="button" class="btn-close" (click)="closePopup(addressForm)"></button>
+      </div>
+
+      <form #addressForm="ngForm">
+        <div class="modal-body">
+
+          <div class="form-grid">
+
+            <!-- Country -->
+            <div class="fg">
+              <label>Country <span class="req">*</span></label>
+              <input
+                type="text"
+                class="form-control soft-input"
+                required
+                name="country"
+                [(ngModel)]="viewModel.employeeAddress.country"
+                pattern="^[A-Za-z][A-Za-z0-9\s]*$"
+                placeholder="e.g. India"
+                #country="ngModel"
+                minlength="3"
+                maxlength="20"
+              />
+              <ng-container *ngFor="let validation of viewModel.validations.country">
+                <div class="text-danger validationMsg"
+                  *ngIf="(country.touched || viewModel.formSubmitted) && country.hasError(validation.type)">
+                  {{ validation.message }}
+                </div>
+              </ng-container>
+            </div>
+
+            <!-- State -->
+            <div class="fg">
+              <label>State <span class="req">*</span></label>
+              <input
+                type="text"
+                class="form-control soft-input"
+                required
+                name="state"
+                [(ngModel)]="viewModel.employeeAddress.state"
+                pattern="^[A-Za-z][A-Za-z0-9\s]*$"
+                placeholder="e.g. Jammu & Kashmir"
+                #state="ngModel"
+                minlength="2"
+                maxlength="20"
+              />
+              <ng-container *ngFor="let validation of viewModel.validations.state">
+                <div class="text-danger validationMsg"
+                  *ngIf="(state.touched || viewModel.formSubmitted) && state.hasError(validation.type)">
+                  {{ validation.message }}
+                </div>
+              </ng-container>
+            </div>
+
+            <!-- City -->
+            <div class="fg">
+              <label>City <span class="req">*</span></label>
+              <input
+                type="text"
+                class="form-control soft-input"
+                required
+                name="city"
+                [(ngModel)]="viewModel.employeeAddress.city"
+                placeholder="e.g. Srinagar"
+                #city="ngModel"
+                pattern="^[A-Za-z][A-Za-z0-9\s]*$"
+                minlength="3"
+                maxlength="30"
+              />
+              <ng-container *ngFor="let validation of viewModel.validations.city">
+                <div class="text-danger validationMsg"
+                  *ngIf="(city.touched || viewModel.formSubmitted) && city.hasError(validation.type)">
+                  {{ validation.message }}
+                </div>
+              </ng-container>
+            </div>
+
+            <!-- Pincode -->
+            <div class="fg">
+              <label>Pincode <span class="req">*</span></label>
+              <input
+                type="text"
+                class="form-control soft-input"
+                required
+                name="pinCode"
+                [(ngModel)]="viewModel.employeeAddress.pinCode"
+                placeholder="6-digit pincode"
+                #pincode="ngModel"
+                pattern="^\d{6}$"
+                minlength="6"
+                maxlength="6"
+              />
+              <ng-container *ngFor="let validation of viewModel.validations.pincode">
+                <div class="text-danger validationMsg"
+                  *ngIf="(pincode.touched || viewModel.formSubmitted) && pincode.hasError(validation.type)">
+                  {{ validation.message }}
+                </div>
+              </ng-container>
+            </div>
+
+            <!-- Address 1 -->
+            <div class="fg full">
+              <label>Address One <span class="req">*</span></label>
+              <input
+                type="text"
+                class="form-control soft-input"
+                required
+                name="address1"
+                [(ngModel)]="viewModel.employeeAddress.address1"
+                placeholder="Permanent address"
+                #address1="ngModel"
+                pattern="^[A-Za-z][A-Za-z0-9\s]*$"
+                minlength="3"
+                maxlength="50"
+              />
+              <ng-container *ngFor="let validation of viewModel.validations.address1">
+                <div class="text-danger validationMsg"
+                  *ngIf="(address1.touched || viewModel.formSubmitted) && address1.hasError(validation.type)">
+                  {{ validation.message }}
+                </div>
+              </ng-container>
+            </div>
+
+            <!-- Address 2 -->
+            <div class="fg full">
+              <label>Address Two</label>
+              <input
+                type="text"
+                class="form-control soft-input"
+                [(ngModel)]="viewModel.employeeAddress.address2"
+                name="address2"
+                placeholder="Temporary address (optional)"
+                #address2="ngModel"
+                pattern="^[A-Za-z][A-Za-z0-9\s]*$"
+                minlength="3"
+                maxlength="50"
+              />
+              <ng-container *ngFor="let validation of viewModel.validations.address2">
+                <div class="text-danger validationMsg"
+                  *ngIf="(address2.touched || viewModel.formSubmitted) && address2.hasError(validation.type)">
+                  {{ validation.message }}
+                </div>
+              </ng-container>
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="modal-footer">
+
+          <div class="left-actions" *ngIf="isaddmode && viewModel.Permission?.add">
+            <a class="skipLink" (click)="skipEmployeeFurther()">Skip for now</a>
+          </div>
+
+          <div class="right-actions">
+
+            <button type="button" class="btn btn-light-soft" (click)="closePopup(addressForm)">
+              Cancel
+            </button>
+
+            <button
+              type="button"
+              class="btn btn-primary-soft"
+              (click)="addEmployeeAddressInfo(addressForm)"
+              *ngIf="isaddmode && viewModel.Permission?.add"
+            >
+              <i class="bi bi-check2-circle"></i>
+              Save & Next
+            </button>
+
+            <button
+              type="button"
+              class="btn btn-primary-soft"
+              (click)="addEmployeeAddressInfo(addressForm)"
+              *ngIf="isEditMode && !viewModel.editMode && viewModel.Permission?.add"
+            >
+              <i class="bi bi-check2-circle"></i>
+              Save
+            </button>
+
+            <button
+              type="button"
+              class="btn btn-primary-soft"
+              (click)="updateEmployeeAddressInfo(addressForm)"
+              *ngIf="isEditMode && viewModel.editMode && viewModel.Permission?.edit"
+            >
+              <i class="bi bi-arrow-repeat"></i>
+              Update Details
+            </button>
+
+          </div>
+        </div>
+      </form>
+
     </div>
+  </div>
 </div>

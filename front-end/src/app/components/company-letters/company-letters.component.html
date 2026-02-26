@@ -1,258 +1,197 @@
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-lg-12 col-md-12 col-sm-12 col-12 py-lg-2 py-md-2 py-sm-2 py-2">
-            <button class="btn coinButton" (click)="openLetterModalPopUp()" *ngIf="viewModel.Permission?.add"> Add New
-                Letter &#43; </button>
-        </div>
+<div class="cl-page">
+  <!-- Top Bar -->
+  <div class="cl-topbar">
+    <div class="cl-title">
+      <div class="kicker">Documents</div>
+      <h2>Company Letters</h2>
+      <p class="sub">Upload proformat letters and download them anytime.</p>
     </div>
-    <div class="row">
-        <div class="col-lg-8 col-md-8 col-sm-12 col-12">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th class="firstTableHead" width="30%"> Document Name </th>
-                        <th width="45%"> Description </th>
-                        <th>Extension</th>
-                        <th width="100%" *ngIf="viewModel.Permission?.delete || viewModel.Permission?.edit">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let item of viewModel.companyLetterList">
-                        <td> {{item.name}} </td>
-                        <td> {{item.description}} </td>
-                        <td> {{item.extension}} </td>
-                        <td *ngIf="viewModel.Permission?.edit || viewModel.Permission?.delete">
-                            <i class="bi bi-cloud-download smallIcon d-inline-block"
-                                (click)="getCompanyLetterByLetterId(item.id)"
-                                (mouseenter)="viewModel.showTooltip = true" (mouseleave)="viewModel.showTooltip = false"
-                                [attr.title]="'Download'" [attr.data-placement]="'left'"
-                                [ngClass]="{ 'tooltip-show': viewModel.showTooltip }"
-                                *ngIf="viewModel.Permission?.edit">
-                            </i>
 
-                            <i class="bi bi-trash smallIcon d-inline-block"
-                                (click)="deleteCompanyLetterByLetterId(item.id)"
-                                (mouseenter)="viewModel.showTooltip = true" (mouseleave)="viewModel.showTooltip = false"
-                                [attr.title]="'Delete'" [attr.data-placement]="'left'"
-                                [ngClass]="{ 'tooltip-show': viewModel.showTooltip }"
-                                *ngIf="viewModel.Permission?.delete">
-                            </i>
-                        </td>
+    <div class="cl-actions">
+      <!-- Search -->
+      <div class="cl-search">
+        <i class="bi bi-search"></i>
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Search by name / description / extension..."
+          [(ngModel)]="searchText"
+          (ngModelChange)="applySearch()"
+        />
+        <button
+          class="btn btn-light clearBtn"
+          type="button"
+          *ngIf="searchText.trim().length"
+          (click)="clearSearch()"
+        >
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
 
-                    </tr>
-                </tbody>
+      <!-- Add Button -->
+      <button
+        class="btn coinButton addBtn"
+        (click)="openLetterModalPopUp()"
+        *ngIf="viewModel.Permission?.add"
+      >
+        <i class="bi bi-plus-lg me-2"></i>
+        Add New Letter
+      </button>
+    </div>
+  </div>
+
+  <div class="row g-3">
+    <!-- LEFT: Table -->
+    <div class="col-lg-8 col-md-8 col-12">
+      <div class="card cl-card shadow-soft">
+        <div class="card-header cl-card-head">
+          <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+            <div class="d-flex align-items-center gap-2">
+              <span class="pill">
+                <i class="bi bi-file-earmark-text me-2"></i>Letters
+              </span>
+
+              <!-- ✅ FIXED (no ?. no ?? no ||) -->
+              <span class="muted">
+                {{ filteredCompanyLetterList.length }} items
+              </span>
+            </div>
+
+            <div class="muted small">
+              Allowed: <b>.doc</b>, <b>.pdf</b>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-body p-0">
+          <div class="table-responsive cl-table-wrap">
+            <table class="table cl-table align-middle mb-0">
+              <thead>
+                <tr>
+                  <th width="30%">Document Name</th>
+                  <th width="45%">Description</th>
+                  <th>Extension</th>
+                  <th
+                    class="text-end"
+                    *ngIf="viewModel.Permission?.delete || viewModel.Permission?.edit"
+                    style="width: 140px;"
+                  >
+                    Actions
+                  </th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <!-- Empty State -->
+                <tr *ngIf="filteredCompanyLetterList.length === 0">
+                  <td colspan="4" class="p-4">
+                    <div class="emptyState">
+                      <div class="emptyIcon">
+                        <i class="bi bi-inbox"></i>
+                      </div>
+                      <div>
+                        <h6 class="mb-1">No letters found</h6>
+                        <p class="mb-0 muted">
+                          Try a different search, or add a new letter.
+                        </p>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+
+                <!-- Data Rows -->
+                <tr *ngFor="let item of filteredCompanyLetterList; let i = index">
+                  <td>
+                    <div class="docName">
+                      <div class="docIc">
+                        <i class="bi bi-file-earmark"></i>
+                      </div>
+                      <div>
+                        <div class="name text-truncate">{{ item.name }}</div>
+                        <div class="muted small text-truncate">
+                          ID: {{ item.id }}
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+
+                  <td>
+                    <div class="text-truncate">
+                      {{ item.description || '-' }}
+                    </div>
+                  </td>
+
+                  <td>
+                    <span class="extBadge">{{ item.extension || '-' }}</span>
+                  </td>
+
+                  <td
+                    class="text-end"
+                    *ngIf="viewModel.Permission?.edit || viewModel.Permission?.delete"
+                  >
+                    <div class="actionBtns justify-content-end">
+                      <!-- Download -->
+                      <button
+                        class="iconBtn"
+                        type="button"
+                        (click)="getCompanyLetterByLetterId(item.id)"
+                        [disabled]="isBusyId === item.id"
+                        *ngIf="viewModel.Permission?.edit"
+                      >
+                        <i class="bi bi-cloud-download"></i>
+                      </button>
+
+                      <!-- Delete -->
+                      <button
+                        class="iconBtn danger"
+                        type="button"
+                        (click)="deleteCompanyLetterByLetterId(item.id)"
+                        [disabled]="isBusyId === item.id"
+                        *ngIf="viewModel.Permission?.delete"
+                      >
+                        <i class="bi bi-trash"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+
+              </tbody>
             </table>
+          </div>
         </div>
-        <div class="col-lg-4 col-md-4 col-sm-12 col-12 p-0">
-            <div class="card">
-                <div class="card-header">
-                    <div class="row">
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-6">
-                            <span> Property </span>
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-6 text-center">
-                            <span>
-                                Placeholder
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-body pt-0">
-                    <div class="row">
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-6 p-0 py-2">
-                            <span>
-                                Company Name
-                            </span>
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-6 p-0 py-2 text-end">
-                            <span>
-                                companyname
-                            </span>
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-6 p-0 py-2">
-                            <span>
-                                Company Address 1
-                            </span>
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-6 p-0 py-2 text-end">
-                            <span>
-                                companyaddress1
-                            </span>
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-6 p-0 py-2">
-                            <span>
-                                Company Address 2
-                            </span>
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-6 p-0 py-2 text-end">
-                            <span>
-                                companyaddress2
-                            </span>
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-6 p-0 py-2">
-                            <span>
-                                Company Country
-                            </span>
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-6 p-0 py-2 text-end">
-                            <span>
-                                companycountry
-                            </span>
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-6 p-0 py-2">
-                            <span>
-                                Company Pincode
-                            </span>
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-6 p-0 py-2 text-end">
-                            <span>
-                                companypincode
-                            </span>
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-6 p-0 py-2">
-                            <span>
-                                Company Code
-                            </span>
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-6 p-0 py-2 text-end">
-                            <span>
-                                companycode
-                            </span>
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-6 p-0 py-2">
-                            <span>
-                                Company Email
-                            </span>
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-6 p-0 py-2 text-end">
-                            <span>
-                                companyemail
-                            </span>
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-6 p-0 py-2">
-                            <span>
-                                Company Website
-                            </span>
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-6 p-0 py-2 text-end">
-                            <span>
-                                companywebsite
-                            </span>
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-6 p-0 py-2">
-                            <span>
-                                Company Phone
-                            </span>
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-6 p-0 py-2 text-end">
-                            <span>
-                                companyphone
-                            </span>
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-6 p-0 py-2">
-                            <span>
-                                Employee Name
-                            </span>
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-6 p-0 py-2 text-end">
-                            <span>
-                                employeename
-                            </span>
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-6 p-0 py-2">
-                            <span>
-                                Employee Email
-                            </span>
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-6 p-0 py-2 text-end">
-                            <span>
-                                employeeemail
-                            </span>
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-6 p-0 py-2">
-                            <span>
-                                Employee Designation
-                            </span>
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-6 p-0 py-2 text-end">
-                            <span>
-                                employeedesignation
-                            </span>
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-6 p-0 py-2">
-                            <span>
-                                Date of Joining
-                            </span>
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-6 p-0 py-2 text-end">
-                            <span>
-                                employeedateofjoining
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-footer">
-                    <b> Note: </b>
-                    <small> Document proformat which is uploaded will have dynamic properties which will be
-                        replaced by
-                        placeholders dynamically. Please replace the properties with placeholders in your document
-                        mentioned in the table below.
-                    </small>
-                </div>
-            </div>
-        </div>
+      </div>
     </div>
-</div>
 
-<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':viewModel.displayStyle}">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="col-lg-10">
-                    <label> Add Company Letter </label>
-                </div>
-                <button type="button" class="btn-close" (click)="closePopup()"></button>
+    <!-- RIGHT SIDE -->
+    <div class="col-lg-4 col-md-4 col-12">
+      <div class="card cl-card shadow-soft cl-side">
+        <div class="card-header cl-card-head">
+          <div class="d-flex align-items-center justify-content-between">
+            <div>
+              <div class="kicker">Dynamic Fields</div>
+              <div class="sideTitle">Placeholders</div>
             </div>
-            <div class="modal-body">
-                <div class="row">
-
-                    <div class="col-lg-5 col-md-6 col-sm-12 col-12 p-2">
-                        <label> Document Name <span class="text-danger fs-5">*</span> </label>
-                    </div>
-
-                    <div class="col-lg-7 col-md-6 col-sm-12 col-12 p-2">
-                        <input type="text" class="form-control" [(ngModel)]="viewModel.companyLetter.name"
-                            placeholder="Enter Document Name" value="{{viewModel.companyLetter.name}}">
-                    </div>
-
-                    <div class="col-lg-5 col-md-6 col-sm-12 col-12 p-2">
-                        <label> Document Description </label>
-                    </div>
-
-                    <div class="col-lg-7 col-md-6 col-sm-12 col-12 p-2">
-                        <textarea class="form-control textbox" [(ngModel)]="viewModel.companyLetter.description"
-                            value="{{viewModel.companyLetter.description}}"
-                            placeholder="Enter Document Description"></textarea>
-                    </div>
-
-                    <div class="col-lg-5 col-md-6 col-sm-12 col-12 p-2">
-                        <label> Upload Document <span class="text-danger fs-5">*</span> </label>
-                    </div>
-
-                    <div class="col-lg-7 col-md-6 col-sm-12 col-12 p-2">
-                        <input type="file" class="form-control" [(ngModel)]="viewModel.companyLetter.letterData"
-                            value="{{viewModel.companyLetter.letterData}}" accept=".doc,.pdf"
-                            (change)="uploadDocument($event)">
-                    </div>
-
-                </div>
-            </div>
-            <div class="modal-footer">
-
-                <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end">
-                    <button class="btn coinButton" (click)="addCompanyLetter()"> Save Document </button>
-                </div>
-            </div>
+            <span class="pill pill-lite">
+              <i class="bi bi-braces me-2"></i>Template
+            </span>
+          </div>
         </div>
+
+        <div class="card-body cl-side-body">
+          <div class="kv" *ngFor="let p of placeholderList">
+            <div class="k">{{ p.label }}</div>
+            <div class="v">{{ p.value }}</div>
+          </div>
+        </div>
+
+        <div class="card-footer cl-side-foot">
+          <b>Note:</b>
+          <small>
+            The uploaded document can contain placeholders.
+            These will be replaced dynamically.
+          </small>
+        </div>
+      </div>
     </div>
+  </div>
 </div>

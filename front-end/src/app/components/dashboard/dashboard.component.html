@@ -1,75 +1,172 @@
-<div class="container-fluid">
-    <div class="row ">
-        <div class="col-lg-3 col-md-3 col-sm-6 p-1">
-            <div class="card">
-                <div class="card-body text-center bg-c-blue">
-                    <div class="card-title mb-0 mt-0 d-block">
-                        <i class="bi bi-people d-inline"></i>&nbsp;
-                        <h5 class="d-inline">Admins</h5>&nbsp;&nbsp;<h5 class=" d-inline">
-                            {{viewModel.adminDashboardVM.numberOfAdmins}}</h5>
-                    </div>
-                    <div class="card-title mb-0 mt-0 d-block">
-                        <i class="bi bi-people d-inline"></i>&nbsp;
-                        <h6 class="d-inline">Employees</h6>&nbsp;<h5 class=" d-inline">
-                            {{viewModel.adminDashboardVM.numberOfEmployees}}</h5>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-3 col-md-3 col-sm-6 p-1">
-            <div class="card">
-                <div class="card-body bg-c-green">
-                    <div class="card-title mb-0 mt-0 text-center d-block">
-                        <i class="bi bi-card-list d-inline"></i>&nbsp;
-                        <h5 class="d-inline">Leaves</h5>
-                    </div>
-                    <p class=" d-inline">Approved:&nbsp;{{viewModel.adminDashboardVM.numberOfLeavesApproved}}</p>&nbsp;&nbsp;
-                    <p class=" d-inline">Rejected:&nbsp;{{viewModel.adminDashboardVM.numberOfLeavesRejected}}</p>
-                    <p class="d-inline"> Pending:&nbsp;{{viewModel.adminDashboardVM.numberOfLeavesPending}}</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-3 col-md-3 col-sm-6 p-1">
-            <div class="card">
-                <div class="card-body text-center bg-c-yellow">
-                    <div class="card-title mb-0 mt-0 d-block">
-                        <i class="bi bi-bell d-inline"></i>
-                        <h5 class="d-inline">Notifications</h5>&nbsp;
-                        <p class=" d-inline">23</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-3 col-md-3 col-sm-6 p-1">
-            <div class="card">
-                <div class="card-body bg-c-pink">
-                    <div class="card-title mb-0 mt-0 text-center d-block">
-                        <i class="bi bi-currency-dollar d-inline"></i>
-                        <h5 class="d-inline">Expenses</h5>
-                    </div>
-                        <p class=" d-inline">Monthly:&nbsp;$100</p> &nbsp;&nbsp;
-                        <p class=" d-inline">Yearly:&nbsp;$1000</p>
-                </div>
-            </div>
-        </div>
+<div class="dw">
+  <!-- Header strip -->
+  <div class="dw-head">
+    <div class="dw-head-left">
+      <div class="kicker">Overview</div>
+      <div class="title">Dashboard</div>
+      <div class="sub">Quick snapshot of admins, employees, leaves and expenses.</div>
     </div>
-    <div class="row scrollable-row">
-        <div class="col-lg-8 col-md-12 col-sm-12 mt-3">
-            <div class="card">
 
-                <div class="card-body barChart">
-                    <canvas id="barChart">{{barChart}}</canvas>
-                </div>
-            </div>
-
-        </div>
-
-        <div class="col-lg-4 col-md-12 col-sm-12 p-3">
-            <div class="card">
-                <div class="card-body pieChart">
-                    <canvas id="pieChart">{{pieChart}}</canvas>
-                </div>
-            </div>
-        </div>
+    <div class="dw-head-right">
+      <div class="pill">
+        <i class="bi bi-shield-check"></i>
+        <span>Secure</span>
+      </div>
+      <div class="pill soft">
+        <i class="bi bi-clock-history"></i>
+        <span>Live</span>
+      </div>
     </div>
+  </div>
+
+  <!-- Stat cards -->
+  <div class="row g-3">
+    <!-- Admins + Employees -->
+    <div class="col-xl-4 col-lg-6 col-md-6">
+      <div class="stat-card tone-blue">
+        <div class="stat-top">
+          <div class="stat-ic">
+            <i class="bi bi-people"></i>
+          </div>
+          <div class="stat-meta">
+            <div class="stat-label">Admins</div>
+            <div class="stat-value">
+              {{ viewModel.adminDashboardVM.numberOfAdmins || 0 }}
+            </div>
+          </div>
+        </div>
+
+        <div class="stat-divider"></div>
+
+        <div class="stat-bottom">
+          <div class="mini">
+            <div class="mini-label">Employees</div>
+            <div class="mini-value">
+              {{ viewModel.adminDashboardVM.numberOfEmployees || 0 }}
+            </div>
+          </div>
+
+          <div class="mini-chip">
+            <i class="bi bi-arrow-up-right"></i>
+            <span>Active</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Leaves -->
+    <div class="col-xl-4 col-lg-6 col-md-6">
+      <div class="stat-card tone-green">
+        <div class="stat-top">
+          <div class="stat-ic">
+            <i class="bi bi-card-checklist"></i>
+          </div>
+          <div class="stat-meta">
+            <div class="stat-label">Leaves</div>
+            <div class="stat-value">
+              {{
+                (viewModel.adminDashboardVM.numberOfLeavesApproved || 0) +
+                  (viewModel.adminDashboardVM.numberOfLeavesRejected || 0) +
+                  (viewModel.adminDashboardVM.numberOfLeavesPending || 0)
+              }}
+            </div>
+          </div>
+        </div>
+
+        <div class="triple">
+          <div class="tri">
+            <div class="tri-dot ok"></div>
+            <div class="tri-label">Approved</div>
+            <div class="tri-value">
+              {{ viewModel.adminDashboardVM.numberOfLeavesApproved || 0 }}
+            </div>
+          </div>
+          <div class="tri">
+            <div class="tri-dot no"></div>
+            <div class="tri-label">Rejected</div>
+            <div class="tri-value">
+              {{ viewModel.adminDashboardVM.numberOfLeavesRejected || 0 }}
+            </div>
+          </div>
+          <div class="tri">
+            <div class="tri-dot wait"></div>
+            <div class="tri-label">Pending</div>
+            <div class="tri-value">
+              {{ viewModel.adminDashboardVM.numberOfLeavesPending || 0 }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Expenses -->
+    <div class="col-xl-4 col-lg-12 col-md-12">
+      <div class="stat-card tone-pink">
+        <div class="stat-top">
+          <div class="stat-ic">
+            <i class="bi bi-cash-coin"></i>
+          </div>
+          <div class="stat-meta">
+            <div class="stat-label">Expenses</div>
+            <div class="stat-value">$ 1,000</div>
+          </div>
+        </div>
+
+        <div class="two">
+          <div class="two-box">
+            <div class="two-label">Monthly</div>
+            <div class="two-value">$100</div>
+          </div>
+          <div class="two-box">
+            <div class="two-label">Yearly</div>
+            <div class="two-value">$1000</div>
+          </div>
+        </div>
+
+        <div class="hint">
+          <i class="bi bi-info-circle"></i>
+          <span>Connect API later to show real expense totals.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Charts -->
+  <div class="row g-3 mt-1">
+    <div class="col-xl-8 col-lg-12">
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <div class="panel-title">Employees by Department</div>
+            <div class="panel-sub">Top departments based on headcount.</div>
+          </div>
+          <div class="panel-chip">
+            <i class="bi bi-bar-chart"></i>
+            <span>Bar</span>
+          </div>
+        </div>
+        <div class="panel-body chart-h">
+          <canvas id="barChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-4 col-lg-12">
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <div class="panel-title">Attendance Split</div>
+            <div class="panel-sub">Present vs Leave vs Absent.</div>
+          </div>
+          <div class="panel-chip soft">
+            <i class="bi bi-pie-chart"></i>
+            <span>Pie</span>
+          </div>
+        </div>
+        <div class="panel-body chart-h-sm">
+          <canvas id="pieChart"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

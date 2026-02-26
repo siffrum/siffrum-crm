@@ -1,17 +1,36 @@
-/* ===== GLOBAL BASE ===== */
+/* =========================
+   GLOBAL BASE
+========================= */
 html, body { height: 100%; }
+* { box-sizing: border-box; }
 
 body{
+  margin: 0;
   font-family: 'Plus Jakarta Sans', sans-serif;
   background: #ffffff;
   color: #0f172a;
   transition: background-color .35s ease, color .35s ease;
+
+  /* ✅ lock browser scroll (scroll only inside .app-content) */
+  overflow: hidden;
 }
 
 html.dark body{
   background: #020617;
   color: #e2e8f0;
 }
+
+/* ✅ Angular root must stretch */
+app-root{
+  display: block;
+  height: 100%;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+/* =========================
+   VISUAL HELPERS
+========================= */
 
 /* Subtle grain */
 .grain{ position: relative; }
@@ -64,4 +83,90 @@ html.dark .soft-divider{
   outline: 3px solid rgba(37, 99, 235, .55);
   outline-offset: 3px;
   border-radius: 16px;
+}
+
+/* =========================================================
+   APP LAYOUT (FINAL, WORKING WITH YOUR HTML)
+   <div class="app-shell" [ngClass]="toogleWrapper">
+     <app-side-menu id="sidebar">
+     <div class="app-main" id="content">
+       <app-top-nav>
+       <div class="app-content"><router-outlet/></div>
+========================================================= */
+
+/* app shell must always be full height */
+.app-shell{
+  display: flex !important;
+  height: 100vh !important;
+  min-height: 100vh !important;
+  width: 100% !important;
+  overflow: hidden !important;
+  align-items: stretch !important;
+}
+
+/* these are injected via toogleWrapper on the SAME element */
+.app-shell.wrapper,
+.app-shell.toggleWrapper,
+.app-shell.loginWrapper{
+  margin-left: 0 !important;
+  width: 100% !important;
+  height: 100vh !important;
+  min-height: 100vh !important;
+  overflow: hidden !important;
+}
+
+/* sidebar (host element has id="sidebar") */
+#sidebar{
+  flex: 0 0 auto !important;
+  align-self: stretch !important;
+  height: 100vh !important;
+  min-height: 100vh !important;
+  max-width: none !important;
+  box-shadow: none !important;
+}
+
+/* main column */
+.app-main{
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+  height: 100vh !important;
+  min-height: 100vh !important;
+  overflow: hidden !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+/* your HTML adds id="content" on app-main sometimes */
+#content{
+  width: 100% !important;
+  height: 100vh !important;
+  min-height: 100vh !important;
+  overflow: hidden !important;
+  padding: 0 !important;
+  background: transparent !important;
+}
+
+/* ONLY this area scrolls */
+.app-content{
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  overflow: auto !important;
+  padding: 10px !important;
+  background: transparent !important;
+}
+
+/* =========================================================
+   LEGACY SAFETY (prevents old hacks from breaking layout)
+========================================================= */
+.wrapper,
+.toggleWrapper,
+.loginWrapper{
+  /* keep them harmless if used elsewhere */
+  width: auto !important;
+  margin-left: 0 !important;
+}
+
+/* prevent any old content sizing from fighting */
+#content{
+  max-width: 100% !important;
 }

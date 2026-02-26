@@ -1,177 +1,311 @@
-<div class="container-fluid">
-    <div class="row py-lg-2">
-        <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-            <button class="btn coinButton" (click)="openEmployeeBankModal(0)" *ngIf="viewModel.Permission?.add"> Add New
-                Bank Info &#43; </button>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-12 col-md-12 col-sm-12 col-12  text-end"><label>Total Count:
-                <span>{{viewModel.pagination.totalCount}}</span></label> </div>
+<div class="bank-page">
 
-        <div class="col-lg-12 col-md-12 col-sm-12 col-12 tableFixHead">
-
-            <table class="table mb-0">
-
-                <thead>
-                    <tr>
-                        <th> Employee Name </th>
-                        <th> Bank Name </th>
-                        <th> Branch </th>
-                        <th> Account Number </th>
-                        <th>IFSC Code</th>
-                        <th *ngIf="viewModel.Permission?.edit || viewModel.Permission?.delete">Actions</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    <tr *ngFor="let item of viewModel.employeeBankList ">
-                        <td> {{employee.loginId}} </td>
-                        <td> {{item.bankName}} </td>
-                        <td> {{item.branch}} </td>
-                        <td> {{item.accountNo}} </td>
-                        <td> {{item.ifscCode}} </td>
-                        <td *ngIf="viewModel.Permission?.edit || viewModel.Permission?.delete">
-                            <i class="bi bi-pencil-square smallIcon ms-0" (click)="openEmployeeBankModal( item.id)"
-                                (mouseenter)="viewModel.showTooltip = true" (mouseleave)="viewModel.showTooltip = false"
-                                [attr.title]="'Edit'" [attr.data-placement]="'left'"
-                                [ngClass]="{ 'tooltip-show': viewModel.showTooltip }"
-                                *ngIf="viewModel.Permission?.edit">
-                            </i>
-                            <i class=" bi bi-trash smallIcon" (click)="deleteEmployeeBankByBankId(item.id)"
-                                (mouseenter)="viewModel.showTooltip = true" (mouseleave)="viewModel.showTooltip = false"
-                                [attr.title]="'Delete'" [attr.data-placement]="'left'"
-                                [ngClass]="{ 'tooltip-show': viewModel.showTooltip }"
-                                *ngIf="viewModel.Permission?.delete"></i>
-                        </td>
-                    </tr>
-
-                </tbody>
-
-            </table>
-
-        </div>
-        <div class="col-lg-12 col-md-12 col-sm-12 col-12 d-flex justify-content-center pt-1"
-            *ngIf="viewModel.pagination && viewModel.pagination.totalCount>0">
-            <pagination (selectedPageNum)="loadPagedataWithPagination($event)" [viewModel]="viewModel.pagination">
-            </pagination>
-        </div>
-
+  <!-- Header -->
+  <div class="bank-head">
+    <div class="left">
+      <div class="kicker">Employees</div>
+      <h2 class="title">Employee Bank Info</h2>
+      <p class="sub">Add and manage bank details securely for payroll and transfers.</p>
     </div>
 
-    <!-- <div class="row">
+    <div class="right">
+      <div class="count-pill">
+        <i class="bi bi-collection"></i>
+        <span>Total</span>
+        <b>{{ viewModel.pagination.totalCount }}</b>
+      </div>
 
-    </div> -->
+      <button
+        class="btn btn-primary-soft"
+        (click)="openEmployeeBankModal(0)"
+        *ngIf="viewModel.Permission?.add"
+        type="button"
+      >
+        <i class="bi bi-plus-lg"></i>
+        <span>Add New Bank Info</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Table Card -->
+  <div class="bank-card">
+    <div class="bank-table-wrap tableFixHead">
+
+      <table class="table bank-table mb-0">
+        <thead>
+          <tr>
+            <th>Employee</th>
+            <th>Bank Name</th>
+            <th>Branch</th>
+            <th>Account Number</th>
+            <th>IFSC Code</th>
+            <th *ngIf="viewModel.Permission?.edit || viewModel.Permission?.delete" class="text-end">Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let item of viewModel.employeeBankList">
+            <td class="emp-cell">
+              <div class="emp-badge">
+                <span class="dot"></span>
+                <span class="txt">{{ employee.loginId }}</span>
+              </div>
+            </td>
+
+            <td>
+              <span class="strong">{{ item.bankName }}</span>
+            </td>
+
+            <td class="truncate" [attr.title]="item.branch">{{ item.branch }}</td>
+
+            <td>
+              <span class="mono">{{ item.accountNo }}</span>
+            </td>
+
+            <td>
+              <span class="ifsc-pill">{{ item.ifscCode }}</span>
+            </td>
+
+            <td *ngIf="viewModel.Permission?.edit || viewModel.Permission?.delete" class="text-end">
+              <div class="actions">
+
+                <button
+                  type="button"
+                  class="icon-btn"
+                  (click)="openEmployeeBankModal(item.id)"
+                  [attr.title]="'Edit'"
+                  *ngIf="viewModel.Permission?.edit"
+                >
+                  <i class="bi bi-pencil-square"></i>
+                </button>
+
+                <button
+                  type="button"
+                  class="icon-btn danger"
+                  (click)="deleteEmployeeBankByBankId(item.id)"
+                  [attr.title]="'Delete'"
+                  *ngIf="viewModel.Permission?.delete"
+                >
+                  <i class="bi bi-trash"></i>
+                </button>
+
+              </div>
+            </td>
+          </tr>
+
+          <tr *ngIf="!viewModel.employeeBankList || viewModel.employeeBankList.length === 0">
+            <td [attr.colspan]="(viewModel.Permission?.edit || viewModel.Permission?.delete) ? 6 : 5">
+              <div class="empty">
+                <i class="bi bi-bank2"></i>
+                <div>
+                  <h5>No bank details found</h5>
+                  <p>Add bank info to continue payroll setup.</p>
+                </div>
+                <button
+                  class="btn btn-primary-soft"
+                  (click)="openEmployeeBankModal(0)"
+                  *ngIf="viewModel.Permission?.add"
+                  type="button"
+                >
+                  <i class="bi bi-plus-lg"></i>
+                  Add Bank Info
+                </button>
+              </div>
+            </td>
+          </tr>
+
+        </tbody>
+      </table>
+
+    </div>
+
+    <!-- Pagination -->
+    <div
+      class="bank-foot"
+      *ngIf="viewModel.pagination && viewModel.pagination.totalCount > 0"
+    >
+      <pagination
+        (selectedPageNum)="loadPagedataWithPagination($event)"
+        [viewModel]="viewModel.pagination"
+      ></pagination>
+    </div>
+  </div>
+
 </div>
-<div class="modal expandIn" tabindex="-1" role="dialog" [ngStyle]="{'display':viewModel.displayStyle}">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="col-lg-11 col-md-11 col-sm-11 col-11" *ngIf="isaddmode">
-                    <h5> Add Employee Bank Details </h5>
-                </div>
 
-                <div class="col-lg-11 col-md-11 col-sm-11 col-11" *ngIf="isEditMode && !viewModel.editMode">
-                    <h5> Add Employee Bank Details </h5>
-                </div>
+<!-- MODAL -->
+<div class="modal bank-modal" tabindex="-1" role="dialog" [ngStyle]="{ display: viewModel.displayStyle }">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
 
-                <div class="col-lg-11 col-md-11 col-sm-11 col-11" *ngIf="isEditMode && viewModel.editMode">
-                    <h5> Edit Employee Bank Details </h5>
-                </div>
+      <div class="modal-header">
+        <div class="mh-left">
+          <div class="kicker">Employee</div>
 
-                <button type="button" class="btn-close" (click)="closePopup(bankDetailForm)"></button>
-            </div>
-            <form #bankDetailForm="ngForm">
-                <div class="modal-body">
-                    <div class="row">
+          <h5 class="m-title" *ngIf="isaddmode">Add Employee Bank Details</h5>
+          <h5 class="m-title" *ngIf="isEditMode && !viewModel.editMode">Add Employee Bank Details</h5>
+          <h5 class="m-title" *ngIf="isEditMode && viewModel.editMode">Edit Employee Bank Details</h5>
 
-                        <div class="col-lg-5 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
-                            <label> Bank Name <span class="text-danger fs-5">*</span> </label>
-                        </div>
-
-                        <div class="col-lg-7 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
-                            <input type="text" class="form-control" required name="bankName"
-                                pattern="^[A-Za-z][A-Za-z0-9\s]*$" [(ngModel)]="viewModel.employeeBank.bankName"
-                                minlength="3" maxlength="30" placeholder="Enter Bank Name" #bankName="ngModel">
-                            <div *ngFor="let validation of viewModel.validations.bankName">
-                                <div *ngIf="(bankName.touched || viewModel.formSubmitted) && bankName.hasError(validation.type)"
-                                    class="text-danger validationMsg">
-                                    {{validation.message}}
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-5 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
-                            <label> Branch Name <span class="text-danger fs-5">*</span> </label>
-                        </div>
-
-                        <div class="col-lg-7 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
-                            <input type="text" class="form-control" required name="branchName"
-                                pattern="^[A-Za-z][A-Za-z0-9\s]*$" [(ngModel)]="viewModel.employeeBank.branch"
-                                minlength="3" maxlength="20" placeholder="Enter Branch name" #branchName="ngModel">
-                            <div *ngFor="let validation of viewModel.validations.branchName">
-                                <div *ngIf="(branchName.touched || viewModel.formSubmitted) && branchName.hasError(validation.type)"
-                                    class="text-danger validationMsg">
-                                    {{validation.message}}
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-5 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
-                            <label> Account Number <span class="text-danger fs-5">*</span> </label>
-                        </div>
-
-                        <div class="col-lg-7 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
-                            <input type="text" class="form-control" required name="accountNo" pattern="^[0-9]{1,20}$"
-                                [(ngModel)]="viewModel.employeeBank.accountNo" minlength="5" maxlength="20"
-                                placeholder="Enter Account Number" #accountNo="ngModel" pattern="^[0-9]{3,10}$">
-                            <div *ngFor="let validation of viewModel.validations.accountNo">
-                                <div *ngIf="(accountNo.touched || viewModel.formSubmitted) && accountNo.hasError(validation.type)"
-                                    class="text-danger validationMsg">
-                                    {{validation.message}}
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-5 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
-                            <label> Ifsc Code <span class="text-danger fs-5">*</span> </label>
-                        </div>
-
-                        <div class="col-lg-7 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
-                            <input type="text" class="form-control" required name="ifscCode" pattern="^[A-Za-z0-9]+$"
-                                [(ngModel)]="viewModel.employeeBank.ifscCode" minlength="5" maxlength="11"
-                                placeholder="Enter IFSC Code" #ifscCode="ngModel">
-                            <div *ngFor="let validation of viewModel.validations.ifscCode">
-                                <div *ngIf="(ifscCode.touched || viewModel.formSubmitted) && ifscCode.hasError(validation.type)"
-                                    class="text-danger validationMsg">
-                                    {{validation.message}}
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-                <div class="modal-footer">
-
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end"
-                        *ngIf="isaddmode &&viewModel.Permission?.add">
-                        <button class="btn coinButton" (click)="addEmployeeBankInfo(bankDetailForm)"> Save & Next
-                        </button>
-                        <a class="skipLink d-block" (click)="skipEmployeeFurther()"> Skip for Now </a>
-                    </div>
-
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end"
-                        *ngIf="isEditMode && !viewModel.editMode &&viewModel.Permission?.add">
-                        <button class="btn coinButton" (click)="addEmployeeBankInfo(bankDetailForm)"> Save </button>
-                    </div>
-
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-12 text-end"
-                        *ngIf="isEditMode && viewModel.editMode &&viewModel.Permission?.edit">
-                        <button class="btn coinButton" (click)="updateEmployeeBankInfo(bankDetailForm)"> Update Details
-                        </button>
-                    </div>
-                </div>
-            </form>
+          <div class="m-sub">Enter bank details carefully and save.</div>
         </div>
+
+        <button type="button" class="btn-close" (click)="closePopup(bankDetailForm)"></button>
+      </div>
+
+      <form #bankDetailForm="ngForm">
+        <div class="modal-body">
+
+          <div class="form-grid">
+
+            <!-- Bank Name -->
+            <div class="fg">
+              <label>Bank Name <span class="req">*</span></label>
+              <input
+                type="text"
+                class="form-control soft-input"
+                required
+                name="bankName"
+                pattern="^[A-Za-z][A-Za-z0-9\s]*$"
+                [(ngModel)]="viewModel.employeeBank.bankName"
+                minlength="3"
+                maxlength="30"
+                placeholder="e.g. HDFC Bank"
+                #bankName="ngModel"
+              />
+              <ng-container *ngFor="let validation of viewModel.validations.bankName">
+                <div
+                  class="text-danger validationMsg"
+                  *ngIf="(bankName.touched || viewModel.formSubmitted) && bankName.hasError(validation.type)"
+                >
+                  {{ validation.message }}
+                </div>
+              </ng-container>
+            </div>
+
+            <!-- Branch Name -->
+            <div class="fg">
+              <label>Branch Name <span class="req">*</span></label>
+              <input
+                type="text"
+                class="form-control soft-input"
+                required
+                name="branchName"
+                pattern="^[A-Za-z][A-Za-z0-9\s]*$"
+                [(ngModel)]="viewModel.employeeBank.branch"
+                minlength="3"
+                maxlength="20"
+                placeholder="e.g. Lal Chowk"
+                #branchName="ngModel"
+              />
+              <ng-container *ngFor="let validation of viewModel.validations.branchName">
+                <div
+                  class="text-danger validationMsg"
+                  *ngIf="(branchName.touched || viewModel.formSubmitted) && branchName.hasError(validation.type)"
+                >
+                  {{ validation.message }}
+                </div>
+              </ng-container>
+            </div>
+
+            <!-- Account Number -->
+            <div class="fg">
+              <label>Account Number <span class="req">*</span></label>
+              <input
+                type="text"
+                class="form-control soft-input mono"
+                required
+                name="accountNo"
+                [(ngModel)]="viewModel.employeeBank.accountNo"
+                minlength="5"
+                maxlength="20"
+                placeholder="Enter account number"
+                #accountNo="ngModel"
+                pattern="^[0-9]{1,20}$"
+              />
+              <ng-container *ngFor="let validation of viewModel.validations.accountNo">
+                <div
+                  class="text-danger validationMsg"
+                  *ngIf="(accountNo.touched || viewModel.formSubmitted) && accountNo.hasError(validation.type)"
+                >
+                  {{ validation.message }}
+                </div>
+              </ng-container>
+            </div>
+
+            <!-- IFSC -->
+            <div class="fg">
+              <label>IFSC Code <span class="req">*</span></label>
+              <input
+                type="text"
+                class="form-control soft-input"
+                required
+                name="ifscCode"
+                pattern="^[A-Za-z0-9]+$"
+                [(ngModel)]="viewModel.employeeBank.ifscCode"
+                minlength="5"
+                maxlength="11"
+                placeholder="e.g. HDFC0001234"
+                #ifscCode="ngModel"
+              />
+              <ng-container *ngFor="let validation of viewModel.validations.ifscCode">
+                <div
+                  class="text-danger validationMsg"
+                  *ngIf="(ifscCode.touched || viewModel.formSubmitted) && ifscCode.hasError(validation.type)"
+                >
+                  {{ validation.message }}
+                </div>
+              </ng-container>
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="modal-footer">
+
+          <div class="left-actions" *ngIf="isaddmode && viewModel.Permission?.add">
+            <a class="skipLink" (click)="skipEmployeeFurther()">Skip for now</a>
+          </div>
+
+          <div class="right-actions">
+            <button type="button" class="btn btn-light-soft" (click)="closePopup(bankDetailForm)">
+              Cancel
+            </button>
+
+            <button
+              type="button"
+              class="btn btn-primary-soft"
+              (click)="addEmployeeBankInfo(bankDetailForm)"
+              *ngIf="isaddmode && viewModel.Permission?.add"
+            >
+              <i class="bi bi-check2-circle"></i>
+              Save & Next
+            </button>
+
+            <button
+              type="button"
+              class="btn btn-primary-soft"
+              (click)="addEmployeeBankInfo(bankDetailForm)"
+              *ngIf="isEditMode && !viewModel.editMode && viewModel.Permission?.add"
+            >
+              <i class="bi bi-check2-circle"></i>
+              Save
+            </button>
+
+            <button
+              type="button"
+              class="btn btn-primary-soft"
+              (click)="updateEmployeeBankInfo(bankDetailForm)"
+              *ngIf="isEditMode && viewModel.editMode && viewModel.Permission?.edit"
+            >
+              <i class="bi bi-arrow-repeat"></i>
+              Update Details
+            </button>
+          </div>
+
+        </div>
+      </form>
+
     </div>
+  </div>
 </div>

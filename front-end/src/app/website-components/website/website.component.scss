@@ -18,6 +18,9 @@
 .website-page {
   color: #0f172a; /* slate-900 */
   animation: pageIn .55s ease both;
+
+  /* ✅ prevents random horizontal scroll on mobile */
+  overflow-x: clip;
 }
 
 :host-context(.dark) .website-page {
@@ -48,6 +51,13 @@
 .glow-right { background: rgb(99 102 241); bottom: -40px; right: -80px; animation: glowDriftB 14s ease-in-out infinite; }
 
 :host-context(.dark) .glow { opacity: 0.25; }
+
+/* ✅ mobile glow sizing so it doesn't create overflow */
+@media (max-width: 640px) {
+  .glow { width: 520px; height: 520px; filter: blur(110px); }
+  .glow-left { top: -220px; left: -240px; }
+  .glow-right { bottom: -220px; right: -260px; }
+}
 
 @keyframes glowDriftA {
   0%,100% { transform: translate(0,0) scale(1); }
@@ -161,6 +171,12 @@
   background: rgba(241, 245, 249, 1);
   border: 1px solid rgba(226, 232, 240, 1);
   color: rgba(51, 65, 85, 1);
+
+  /* ✅ never overflow */
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+  max-width: 100%;
 }
 
 :host-context(.dark) .pill {
@@ -170,7 +186,7 @@
 }
 
 /* -----------------------------
-   LOGO HOVER (optional)
+   LOGO HOVER
 ------------------------------ */
 .logo-cloud img {
   opacity: .45;
@@ -328,8 +344,6 @@
 
 /* =========================================================
    REVEAL ANIMATIONS (matches your TS: .active)
-   - default hidden
-   - .active makes it visible
    ========================================================= */
 .reveal {
   opacity: 0;
@@ -354,16 +368,10 @@
 .reveal.active.reveal-zoom  { transform: scale(1); }
 
 /* =========================================================
-   FAQ (Queries section) animations + dark fixes
+   FAQ animations + dark fixes
    ========================================================= */
-
-/* smooth open content when [open] toggles */
-#faq details.faq-item > div {
-  transform-origin: top;
-}
-#faq details.faq-item[open] > div {
-  animation: faqOpen .28s ease both;
-}
+#faq details.faq-item > div { transform-origin: top; }
+#faq details.faq-item[open] > div { animation: faqOpen .28s ease both; }
 @keyframes faqOpen {
   from { opacity: 0; transform: translateY(-6px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -375,41 +383,19 @@
   border-color: rgba(255, 255, 255, 0.10) !important;
   box-shadow: 0 30px 70px -35px rgba(0,0,0,.75);
 }
-
-/* Summary question text */
-:host-context(.dark) #faq details.faq-item summary span {
-  color: rgba(255, 255, 255, 0.92) !important;
-}
-
-/* Answer text */
-:host-context(.dark) #faq details.faq-item > div {
-  color: rgba(203, 213, 225, 0.85) !important;
-}
-
-/* The little circle button at right */
+:host-context(.dark) #faq details.faq-item summary span { color: rgba(255, 255, 255, 0.92) !important; }
+:host-context(.dark) #faq details.faq-item > div { color: rgba(203, 213, 225, 0.85) !important; }
 :host-context(.dark) #faq details.faq-item summary div {
   background: rgba(255, 255, 255, 0.06) !important;
   border: 1px solid rgba(255, 255, 255, 0.10);
 }
-
-/* Chevron icon color */
-:host-context(.dark) #faq details.faq-item summary svg {
-  color: rgba(226, 232, 240, 0.85) !important;
-}
-
-/* Code tag inside answer */
+:host-context(.dark) #faq details.faq-item summary svg { color: rgba(226, 232, 240, 0.85) !important; }
 :host-context(.dark) #faq code {
   background: rgba(37, 99, 235, 0.14) !important;
   color: rgba(147, 197, 253, 0.95) !important;
   border: 1px solid rgba(147, 197, 253, 0.18);
 }
-
-/* Hover border premium */
-:host-context(.dark) #faq details.faq-item:hover {
-  border-color: rgba(147, 197, 253, 0.22) !important;
-}
-
-/* Right big card in dark */
+:host-context(.dark) #faq details.faq-item:hover { border-color: rgba(147, 197, 253, 0.22) !important; }
 :host-context(.dark) #faq .relative.bg-white {
   background: rgba(2, 6, 23, 0.55) !important;
   border-color: rgba(255, 255, 255, 0.10) !important;
@@ -423,21 +409,15 @@
   color: rgba(255, 255, 255, 0.92) !important;
 }
 :host-context(.dark) #faq input::placeholder,
-:host-context(.dark) #faq textarea::placeholder {
-  color: rgba(203, 213, 225, 0.55) !important;
-}
+:host-context(.dark) #faq textarea::placeholder { color: rgba(203, 213, 225, 0.55) !important; }
 :host-context(.dark) #faq input:focus,
 :host-context(.dark) #faq textarea:focus {
   outline: none !important;
   border-color: rgba(147, 197, 253, 0.45) !important;
   box-shadow: 0 0 0 5px rgba(147, 197, 253, 0.16) !important;
 }
-:host-context(.dark) #faq .text-slate-500 {
-  color: rgba(203, 213, 225, 0.75) !important;
-}
-:host-context(.dark) #faq p.text-slate-400 {
-  color: rgba(203, 213, 225, 0.70) !important;
-}
+:host-context(.dark) #faq .text-slate-500 { color: rgba(203, 213, 225, 0.75) !important; }
+:host-context(.dark) #faq p.text-slate-400 { color: rgba(203, 213, 225, 0.70) !important; }
 
 /* -----------------------------
    RESPONSIVE

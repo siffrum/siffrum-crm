@@ -7,8 +7,8 @@ export const environment = {
   apiResponseCacheTimeoutInMinutes: 5,
   enableResponseCacheProcessing: true,
   applicationVersion: '0.0.1',
-  // apiBaseUrl: 'http://192.168.29.71:3000/',
-  apiBaseUrl:"http://localhost:4404/",
+  apiBaseUrl: 'https://unenviously-ungentlemanlike-sherlyn.ngrok-free.dev/',
+  // apiBaseUrl:"http://localhost:4404/",
   apiDefaultTimeout: 10,
   animationTimeoutinMS: 1000,
   LoggingInfo: {

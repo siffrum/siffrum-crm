@@ -1,55 +1,174 @@
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-lg-10 col-md-10 col-sm-10 col-10">
-            <nav aria-label="breadcrumb">
-                <ul class="breadcrumb">
-                    <li class="breadcrumb-item" [ngClass]="viewModel.wizardLocation == 0 ? 'active-tab' : ''">
-                        <a>
-                            <span> Employee Info </span>
-                        </a>
-                    </li>
-                    <li class="breadcrumb-item" [ngClass]="viewModel.wizardLocation == 1 ? 'active-tab' : ''">
-                        <a>
-                            <span> Address </span>
-                        </a>
-                    </li>
-                    <li class="breadcrumb-item" [ngClass]="viewModel.wizardLocation == 2 ? 'active-tab' : ''">
-                        <a>
-                            <span> Bank Details </span>
-                        </a>
-                    </li>
-                    <li class="breadcrumb-item" [ngClass]="viewModel.wizardLocation == 3 ? 'active-tab' : ''">
-                        <a>
-                            <span> Documents </span>
-                        </a>
-                    </li>
-                    <li class="breadcrumb-item" [ngClass]="viewModel.wizardLocation == 4 ? 'active-tab' : ''">
-                        <a>
-                            <span> Salary </span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
+<section class="empwiz-shell">
+
+  <!-- Header -->
+  <div class="empwiz-head">
+    <div>
+      <div class="kicker">Employees</div>
+      <h2 class="title">Add Employee</h2>
+      <p class="sub">Complete the employee profile step by step.</p>
     </div>
-    <!-- Employee Personal Info Tab -->
-    <div class="row" *ngIf="viewModel.wizardLocation == 0">
-        <app-employee-info [employee]="employeeInfo" [isReadOnly]="viewModel.isReadonly" [isaddmode]="viewModel.isAddMode" (newItemEvent)="recieveEmployeeFromChild($event)"></app-employee-info>
+
+    <!-- Step counter -->
+    <div class="step-chip">
+      Step <b>{{ viewModel.wizardLocation + 1 }}</b> / 5
     </div>
-    <!-- Employee Address Tab -->
-    <div class="row" *ngIf="viewModel.wizardLocation == 1">
-        <app-employee-address-info [employee]="employeeInfo" [isReadonly]="viewModel.isReadonly" [isaddmode]="viewModel.isAddMode" (newItemEvent)="recieveAddressFromChild($event)"></app-employee-address-info>
+  </div>
+
+  <!-- Progress bar -->
+  <div class="progressx">
+    <div class="bar" [style.width.%]="((viewModel.wizardLocation + 1) / 5) * 100"></div>
+  </div>
+
+  <!-- Steps (Breadcrumb upgraded) -->
+  <nav class="empwiz-steps" aria-label="Employee wizard steps">
+    <button type="button"
+            class="step"
+            [class.active]="viewModel.wizardLocation === 0"
+            [class.done]="viewModel.wizardLocation > 0"
+            (click)="goToStep(0)">
+      <span class="dot"><i class="bi" [ngClass]="viewModel.wizardLocation > 0 ? 'bi-check-lg' : 'bi-1-circle'"></i></span>
+      <span class="txt">
+        <span class="label">Employee Info</span>
+        <span class="hint">Personal details</span>
+      </span>
+    </button>
+
+    <button type="button"
+            class="step"
+            [class.active]="viewModel.wizardLocation === 1"
+            [class.done]="viewModel.wizardLocation > 1"
+            (click)="goToStep(1)">
+      <span class="dot"><i class="bi" [ngClass]="viewModel.wizardLocation > 1 ? 'bi-check-lg' : 'bi-2-circle'"></i></span>
+      <span class="txt">
+        <span class="label">Address</span>
+        <span class="hint">Home / office</span>
+      </span>
+    </button>
+
+    <button type="button"
+            class="step"
+            [class.active]="viewModel.wizardLocation === 2"
+            [class.done]="viewModel.wizardLocation > 2"
+            (click)="goToStep(2)">
+      <span class="dot"><i class="bi" [ngClass]="viewModel.wizardLocation > 2 ? 'bi-check-lg' : 'bi-3-circle'"></i></span>
+      <span class="txt">
+        <span class="label">Bank Details</span>
+        <span class="hint">Salary account</span>
+      </span>
+    </button>
+
+    <button type="button"
+            class="step"
+            [class.active]="viewModel.wizardLocation === 3"
+            [class.done]="viewModel.wizardLocation > 3"
+            (click)="goToStep(3)">
+      <span class="dot"><i class="bi" [ngClass]="viewModel.wizardLocation > 3 ? 'bi-check-lg' : 'bi-4-circle'"></i></span>
+      <span class="txt">
+        <span class="label">Documents</span>
+        <span class="hint">IDs / proofs</span>
+      </span>
+    </button>
+
+    <button type="button"
+            class="step"
+            [class.active]="viewModel.wizardLocation === 4"
+            (click)="goToStep(4)">
+      <span class="dot"><i class="bi bi-5-circle"></i></span>
+      <span class="txt">
+        <span class="label">Salary</span>
+        <span class="hint">Structure</span>
+      </span>
+    </button>
+  </nav>
+
+  <!-- Body -->
+  <div class="empwiz-card">
+
+    <!-- Step content -->
+    <div class="empwiz-body">
+      <!-- Employee Personal Info Tab -->
+      <div *ngIf="viewModel.wizardLocation == 0" class="step-pane">
+        <app-employee-info
+          [employee]="employeeInfo"
+          [isReadOnly]="viewModel.isReadonly"
+          [isaddmode]="viewModel.isAddMode"
+          (newItemEvent)="recieveEmployeeFromChild($event)">
+        </app-employee-info>
+      </div>
+
+      <!-- Employee Address Tab -->
+      <div *ngIf="viewModel.wizardLocation == 1" class="step-pane">
+        <app-employee-address-info
+          [employee]="employeeInfo"
+          [isReadonly]="viewModel.isReadonly"
+          [isaddmode]="viewModel.isAddMode"
+          (newItemEvent)="recieveAddressFromChild($event)">
+        </app-employee-address-info>
+      </div>
+
+      <!-- Employee Bank Details Tab -->
+      <div *ngIf="viewModel.wizardLocation == 2" class="step-pane">
+        <app-employee-bank-info
+          [employee]="employeeInfo"
+          [isReadonly]="viewModel.isReadonly"
+          [isaddmode]="viewModel.isAddMode"
+          (newItemEvent)="recieveBankFromChild($event)">
+        </app-employee-bank-info>
+      </div>
+
+      <!-- Employee Documents Tab -->
+      <div *ngIf="viewModel.wizardLocation == 3" class="step-pane">
+        <app-employee-document-info
+          [employee]="employeeInfo"
+          [isReadonly]="viewModel.isReadonly"
+          [isaddmode]="viewModel.isAddMode">
+        </app-employee-document-info>
+      </div>
+
+      <!-- Employee Salary Tab -->
+      <div *ngIf="viewModel.wizardLocation == 4" class="step-pane">
+        <app-employee-salary-info
+          [isaddmode]="viewModel.isAddMode">
+        </app-employee-salary-info>
+      </div>
     </div>
-    <!-- Employee Bank Details Tab -->
-    <div class="row" *ngIf="viewModel.wizardLocation == 2">
-        <app-employee-bank-info [employee]="employeeInfo" [isReadonly]="viewModel.isReadonly" [isaddmode]="viewModel.isAddMode" (newItemEvent)="recieveBankFromChild($event)"></app-employee-bank-info>
+
+    <!-- Footer controls -->
+    <div class="empwiz-foot">
+      <button type="button"
+              class="btn btn-light"
+              (click)="previousWizardLocation()"
+              [disabled]="viewModel.wizardLocation === 0">
+        <i class="bi bi-arrow-left me-2"></i>
+        Back
+      </button>
+
+      <div class="right">
+        <!-- Optional helper -->
+        <span class="note" *ngIf="viewModel.wizardLocation < 4">
+          Complete this step to continue.
+        </span>
+
+        <!-- Next button (manual) -->
+        <button type="button"
+                class="btn coinButton"
+                (click)="nextWizardLocation()"
+                *ngIf="viewModel.wizardLocation < 4"
+                [disabled]="!canGoNext()">
+          Next
+          <i class="bi bi-arrow-right ms-2"></i>
+        </button>
+
+        <!-- Finish -->
+        <button type="button"
+                class="btn coinButton"
+                *ngIf="viewModel.wizardLocation === 4"
+                (click)="finishWizard()">
+          <i class="bi bi-check2-circle me-2"></i>
+          Finish
+        </button>
+      </div>
     </div>
-    <!-- Employee Salary Details Tab -->
-    <div class="row" *ngIf="viewModel.wizardLocation == 3">
-        <app-employee-document-info [employee]="employeeInfo" [isReadonly]="viewModel.isReadonly" [isaddmode]="viewModel.isAddMode"></app-employee-document-info>
-    </div>
-    <!-- Employee Documents Tab -->
-    <div class="row" *ngIf="viewModel.wizardLocation == 4">
-        <app-employee-salary-info  [isaddmode]="viewModel.isAddMode"></app-employee-salary-info>
-    </div>
-</div>
+
+  </div>
+</section>
