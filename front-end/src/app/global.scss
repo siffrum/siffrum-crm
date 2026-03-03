@@ -1,172 +1,213 @@
-/* =========================
+/* =========================================================
    GLOBAL BASE
-========================= */
-html, body { height: 100%; }
-* { box-sizing: border-box; }
+========================================================= */
 
-body{
+html, body {
+  height: 100%;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Theme Tokens */
+:root {
+  --app-bg: #ffffff;
+  --app-text: #0f172a;
+  --app-surface: rgba(255,255,255,.72);
+  --app-border: rgba(15,23,42,.08);
+
+  --nav-bg: rgba(255,255,255,.72);
+  --nav-border: rgba(15,23,42,.08);
+}
+
+html.dark {
+  --app-bg: #020617;
+  --app-text: #e2e8f0;
+  --app-surface: rgba(15,23,42,.72);
+  --app-border: rgba(255,255,255,.10);
+
+  --nav-bg: rgba(15,23,42,.58);
+  --nav-border: rgba(255,255,255,.08);
+}
+
+body {
   margin: 0;
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  background: #ffffff;
-  color: #0f172a;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  background: var(--app-bg);
+  color: var(--app-text);
   transition: background-color .35s ease, color .35s ease;
 
-  /* ✅ lock browser scroll (scroll only inside .app-content) */
+  /* Your layout system */
   overflow: hidden;
 }
 
-html.dark body{
-  background: #020617;
-  color: #e2e8f0;
-}
-
-/* ✅ Angular root must stretch */
-app-root{
+app-root {
   display: block;
   height: 100%;
   min-height: 100vh;
   overflow: hidden;
 }
 
-/* =========================
-   VISUAL HELPERS
-========================= */
+/* Prevent horizontal overflow */
+img, svg, canvas, video {
+  max-width: 100%;
+}
 
-/* Subtle grain */
-.grain{ position: relative; }
-.grain::before{
-  content:"";
+/* =========================================================
+   VISUAL HELPERS
+========================================================= */
+
+.grain {
+  position: relative;
+}
+
+.grain::before {
+  content: "";
   position: fixed;
   inset: 0;
-  pointer-events:none;
+  pointer-events: none;
   opacity: .028;
   z-index: 9999;
   background-image: radial-gradient(rgba(0,0,0,.45) 1px, transparent 1px);
   background-size: 14px 14px;
   mix-blend-mode: soft-light;
 }
-html.dark .grain::before{ opacity: .024; }
 
-/* Glass helper */
-.glass-card{
-  background: rgba(255, 255, 255, 0.72);
+html.dark .grain::before {
+  opacity: .024;
+}
+
+.glass-card {
+  background: var(--app-surface);
   backdrop-filter: blur(18px);
-  border: 1px solid rgba(15, 23, 42, 0.08);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid var(--app-border);
   box-shadow: 0 25px 60px -20px rgba(0,0,0,.10);
 }
-html.dark .glass-card{
-  background: rgba(15, 23, 42, 0.72);
-  border: 1px solid rgba(255,255,255,.10);
+
+html.dark .glass-card {
   box-shadow: 0 30px 70px -25px rgba(0,0,0,.60);
 }
 
-.text-gradient{
-  background: linear-gradient(135deg, #0f172a 0%, #2563eb 55%, #6366f1 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-html.dark .text-gradient{
-  background: linear-gradient(135deg, #ffffff 0%, #60a5fa 55%, #a5b4fc 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.soft-divider{
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(148,163,184,0.35), transparent);
-}
-html.dark .soft-divider{
-  background: linear-gradient(90deg, transparent, rgba(148,163,184,0.18), transparent);
-}
-
-:focus-visible{
-  outline: 3px solid rgba(37, 99, 235, .55);
-  outline-offset: 3px;
-  border-radius: 16px;
-}
-
 /* =========================================================
-   APP LAYOUT (FINAL, WORKING WITH YOUR HTML)
-   <div class="app-shell" [ngClass]="toogleWrapper">
-     <app-side-menu id="sidebar">
-     <div class="app-main" id="content">
-       <app-top-nav>
-       <div class="app-content"><router-outlet/></div>
+   APP LAYOUT (STABLE VERSION)
 ========================================================= */
 
-/* app shell must always be full height */
-.app-shell{
+.app-shell {
   display: flex !important;
   height: 100vh !important;
-  min-height: 100vh !important;
   width: 100% !important;
   overflow: hidden !important;
   align-items: stretch !important;
 }
 
-/* these are injected via toogleWrapper on the SAME element */
-.app-shell.wrapper,
-.app-shell.toggleWrapper,
-.app-shell.loginWrapper{
-  margin-left: 0 !important;
-  width: 100% !important;
-  height: 100vh !important;
-  min-height: 100vh !important;
-  overflow: hidden !important;
-}
-
-/* sidebar (host element has id="sidebar") */
-#sidebar{
+/* Sidebar */
+#sidebar {
   flex: 0 0 auto !important;
-  align-self: stretch !important;
   height: 100vh !important;
   min-height: 100vh !important;
   max-width: none !important;
-  box-shadow: none !important;
 }
 
-/* main column */
-.app-main{
+/* Main Column */
+.app-main {
   flex: 1 1 auto !important;
   min-width: 0 !important;
   height: 100vh !important;
-  min-height: 100vh !important;
-  overflow: hidden !important;
   display: flex !important;
   flex-direction: column !important;
+  overflow: hidden !important;
 }
 
-/* your HTML adds id="content" on app-main sometimes */
-#content{
+/* Content Wrapper */
+#content {
   width: 100% !important;
   height: 100vh !important;
-  min-height: 100vh !important;
   overflow: hidden !important;
   padding: 0 !important;
-  background: transparent !important;
-}
-
-/* ONLY this area scrolls */
-.app-content{
-  flex: 1 1 auto !important;
-  min-height: 0 !important;
-  overflow: auto !important;
-  padding: 10px !important;
-  background: transparent !important;
 }
 
 /* =========================================================
-   LEGACY SAFETY (prevents old hacks from breaking layout)
+   ONLY THIS SCROLLS
 ========================================================= */
-.wrapper,
-.toggleWrapper,
-.loginWrapper{
-  /* keep them harmless if used elsewhere */
-  width: auto !important;
-  margin-left: 0 !important;
+
+.app-content {
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  overflow: auto !important;
+  overflow-x: hidden !important;
+
+  background: var(--app-bg) !important;
+  color: var(--app-text) !important;
+
+  padding: 0 !important;
 }
 
-/* prevent any old content sizing from fighting */
-#content{
+/* =========================================================
+   TOP NAV — FULL WIDTH + STICKY (FINAL FIX)
+========================================================= */
+
+/* Force full width */
+app-top-nav .iw-topbar {
+  width: 100% !important;
   max-width: 100% !important;
+
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 9999 !important;
+
+  background: var(--nav-bg) !important;
+  border-bottom: 1px solid var(--nav-border) !important;
+
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* Remove bootstrap container padding */
+app-top-nav .iw-topbar-inner.container-fluid {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+/* Remove row negative margins */
+app-top-nav .iw-topbar-inner .row {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+/* Keep your spacing clean */
+app-top-nav .iw-topbar-inner {
+  padding: 10px 14px !important;
+}
+
+/* Make sure no max-width boxes nav */
+app-top-nav .container,
+app-top-nav .container-fluid,
+app-top-nav .mx-auto,
+app-top-nav .max-w-7xl {
+  max-width: 100% !important;
+  width: 100% !important;
+}
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+app-footer,
+.crm-footer {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+}
+
+/* =========================================================
+   LEGACY SAFETY
+========================================================= */
+
+.wrapper,
+.toggleWrapper,
+.loginWrapper {
+  width: auto !important;
+  margin-left: 0 !important;
 }

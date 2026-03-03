@@ -1,51 +1,435 @@
+:host {
+  display: block;
+}
 
-@media only screen and (max-width: 760px),
-(min-device-width: 768px) and (max-device-width: 1024px) {
-    table,
-    thead,
-    tbody,
-    th,
-    td,
-    tr {
-        display: block;
-        width: 100%;
-    }
-    thead tr {
-        position: relative;
-        display: none;
-    }
-    tr {
-        margin-top: 1rem;
-    }
-    td {
-        // border: 1px solid rgb(151, 143, 143);
-        position: relative;
-        padding-left: 50%;
-        font-size: 10px;
-    }
-    td:before {
-        position: absolute;
-        left: 5px;
-        font-size: var(--table-header-font-size);
-        font-weight: var(--table-header-font-weight)
-    }
-    td:nth-of-type(1):before {
-        content: "Salary Component";
-    }
+/* Shell */
+.ps-shell {
+  padding: 12px 8px;
+}
 
-    td:nth-of-type(2):before {
-        content: "Description";
-    }
-    td:nth-of-type(3):before {
-        content: "Percentage";
-    }
-    td:nth-of-type(4):before {
-        content: "Calculation Type";
-    }
-    td:nth-of-type(5):before {
-        content: "Period Type";
-    }
-    td:nth-of-type(6):before {
-        content: "Actions";
-    }
+/* Header */
+.ps-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.ps-title .kicker {
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+.ps-title .title {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 2px 0 4px;
+}
+
+.ps-title .sub {
+  margin: 0;
+  opacity: 0.75;
+  font-size: 13px;
+}
+
+.ps-actions {
+  display: flex;
+  gap: 8px;
+}
+
+/* Card */
+.ps-card {
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
+  overflow: hidden;
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.12);
+}
+
+/* Table */
+.ps-table-wrap {
+  overflow: auto;
+}
+
+.ps-table {
+  margin: 0;
+  width: 100%;
+}
+
+.ps-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  backdrop-filter: blur(10px);
+  background: rgba(0, 0, 0, 0.15);
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  opacity: 0.85;
+  padding: 14px 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.ps-table tbody td {
+  padding: 14px 14px;
+  vertical-align: middle;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.ps-table tbody tr:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.th-first {
+  padding-left: 18px !important;
+}
+
+.td-strong .td-main {
+  font-weight: 650;
+}
+
+.td-muted {
+  opacity: 0.75;
+}
+
+.th-small {
+  width: 140px;
+}
+
+.th-actions {
+  width: 120px;
+  text-align: right;
+}
+
+.td-actions {
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* Pills / chips */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  font-weight: 650;
+  font-size: 12px;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 10px;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.18);
+  font-size: 12px;
+  opacity: 0.9;
+}
+
+.pill-soft {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+/* Buttons */
+.ps-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 12px;
+  padding: 10px 12px;
+  font-weight: 650;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(59, 130, 246, 0.22);
+}
+
+.ps-btn-primary:hover {
+  background: rgba(59, 130, 246, 0.28);
+}
+
+.ps-btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 12px;
+  padding: 10px 12px;
+  font-weight: 650;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: transparent;
+}
+
+.ps-btn-ghost:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.ps-btn-lite {
+  border-radius: 12px;
+  padding: 10px 12px;
+  font-weight: 650;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.ps-btn-lite:hover {
+  background: rgba(255, 255, 255, 0.09);
+}
+
+.ps-btn-danger {
+  border-radius: 12px;
+  padding: 10px 12px;
+  font-weight: 650;
+  border: 1px solid rgba(239, 68, 68, 0.22);
+  background: rgba(239, 68, 68, 0.12);
+}
+
+.ps-btn-danger:hover {
+  background: rgba(239, 68, 68, 0.18);
+}
+
+/* Icon buttons */
+.icon-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.04);
+  margin-left: 8px;
+}
+
+.icon-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.icon-btn.danger {
+  border-color: rgba(239, 68, 68, 0.25);
+  background: rgba(239, 68, 68, 0.10);
+}
+
+.icon-btn.danger:hover {
+  background: rgba(239, 68, 68, 0.16);
+}
+
+/* Empty state */
+.ps-empty {
+  padding: 26px 16px;
+  text-align: center;
+  opacity: 0.9;
+}
+
+.empty-ic {
+  font-size: 28px;
+  opacity: 0.7;
+  margin-bottom: 6px;
+}
+
+.empty-title {
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.empty-sub {
+  font-size: 13px;
+  opacity: 0.75;
+  margin-top: 4px;
+}
+
+/* Mobile */
+.ps-mobile {
+  padding: 12px;
+}
+
+.ps-mobile-card {
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 16px;
+  padding: 12px;
+  margin-bottom: 10px;
+}
+
+.m-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.m-name {
+  font-weight: 750;
+  font-size: 15px;
+}
+
+.m-chip {
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  font-weight: 700;
+  font-size: 12px;
+}
+
+.m-row {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 10px;
+  padding: 6px 0;
+  border-top: 1px dashed rgba(255, 255, 255, 0.08);
+}
+
+.m-row:first-of-type {
+  border-top: 0;
+}
+
+.m-label {
+  opacity: 0.7;
+  font-size: 12px;
+}
+
+.m-value {
+  font-size: 13px;
+}
+
+.m-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+/* Modal */
+.ps-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(6px);
+  padding: 18px;
+}
+
+.ps-modal {
+  width: 100%;
+  max-width: 720px;
+  margin: 0 auto;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  background: rgba(18, 18, 22, 0.92);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55);
+  overflow: hidden;
+}
+
+.ps-modal-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 16px 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.ps-modal-head .kicker {
+  font-size: 12px;
+  opacity: 0.7;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.ps-modal-head h4 {
+  margin: 2px 0 2px;
+  font-weight: 800;
+}
+
+.ps-modal-head .sub {
+  margin: 0;
+  opacity: 0.75;
+  font-size: 13px;
+}
+
+.x-btn {
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.05);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.x-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.ps-form {
+  display: block;
+}
+
+.ps-modal-body {
+  padding: 16px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.field.full {
+  grid-column: 1 / -1;
+}
+
+.field label {
+  font-size: 12px;
+  opacity: 0.8;
+  margin-bottom: 6px;
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.req {
+  color: #ef4444;
+  font-weight: 800;
+}
+
+.form-control,
+.form-select {
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  background: rgba(255, 255, 255, 0.04) !important;
+  color: inherit;
+}
+
+textarea.form-control {
+  min-height: 92px;
+  resize: vertical;
+}
+
+.err {
+  margin-top: 6px;
+  font-size: 12px;
+  color: #ef4444;
+}
+
+.ps-modal-foot {
+  padding: 12px 16px 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+@media (max-width: 768px) {
+  .ps-head {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .ps-actions {
+    justify-content: flex-start;
+  }
+
+  .ps-modal-body {
+    grid-template-columns: 1fr;
+  }
 }

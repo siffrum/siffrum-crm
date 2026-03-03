@@ -1,46 +1,32 @@
 <header class="iw-topbar" *ngIf="_commonService.layoutVM.showLeftSideMenu">
   <div class="iw-topbar-inner container-fluid">
-
     <div class="row w-100 align-items-center g-2">
 
       <!-- LEFT: Toggle -->
       <div class="col-auto">
-        <button id="sidebarCollapse" class="iw-icon-btn" (click)="toggleMenu()" aria-label="Toggle sidebar">
-          <i
-            class="bi bi-list iw-ic"
-            (mouseenter)="viewModel.showTooltip = true"
-            (mouseleave)="viewModel.showTooltip = false"
-            [attr.title]="'Toggle'"
-            [attr.data-placement]="'left'"
-            [ngClass]="{ 'tooltip-show': viewModel.showTooltip }"
-          ></i>
+        <button
+          id="sidebarCollapse"
+          class="iw-icon-btn"
+          (click)="toggleMenu()"
+          aria-label="Toggle sidebar"
+        >
+          <i class="bi bi-list iw-ic"></i>
         </button>
       </div>
 
-      <!-- CENTER: Title + Search -->
+      <!-- CENTER: Title -->
       <div class="col">
         <div class="iw-center">
           <div class="iw-title-wrap">
             <div class="iw-kicker">Internal Workspace</div>
-            <div class="iw-title">{{ _commonService.layoutVM.PageTitle }}</div>
-          </div>
-
-          <!-- Search (UI only; no logic dependency) -->
-          <div class="iw-search d-none d-md-flex">
-            <span class="iw-search-ic" aria-hidden="true">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                <path
-                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                ></path>
-              </svg>
-            </span>
-            <input class="iw-search-input" type="text" placeholder="Search apps / CRM data" />
+            <div class="iw-title">
+              {{ _commonService.layoutVM.PageTitle }}
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- RIGHT: Icons -->
+      <!-- RIGHT: Actions -->
       <div class="col-auto">
         <div class="iw-actions">
 
@@ -48,60 +34,36 @@
           <button
             type="button"
             class="iw-icon-btn"
-            id="liveToastBtn"
             *ngIf="_commonService.layoutVM.tokenRole==3 || _commonService.layoutVM.tokenRole==4"
             aria-label="Notifications"
           >
-            <i
-              class="bi bi-bell iw-ic"
-              (mouseenter)="viewModel.showTooltip = true"
-              (mouseleave)="viewModel.showTooltip = false"
-              [attr.title]="'Notifications'"
-              [attr.data-placement]="'right'"
-              [ngClass]="{ 'tooltip-show': viewModel.showTooltip }"
-            ></i>
-
+            <i class="bi bi-bell iw-ic"></i>
             <span class="iw-badge">9</span>
           </button>
 
           <!-- Logout -->
-          <button type="button" class="iw-icon-btn danger" (click)="logOutUser()" aria-label="Log out">
-            <i
-              class="bi bi-box-arrow-left iw-ic"
-              (mouseenter)="viewModel.showTooltip = true"
-              (mouseleave)="viewModel.showTooltip = false"
-              [attr.title]="'Log Out'"
-              [attr.data-placement]="'right'"
-              [ngClass]="{ 'tooltip-show': viewModel.showTooltip }"
-            ></i>
+          <button
+            type="button"
+            class="iw-icon-btn danger"
+            (click)="logOutUser()"
+            aria-label="Log out"
+          >
+            <i class="bi bi-box-arrow-left iw-ic"></i>
           </button>
 
-          <!-- (Optional) Profile chip UI (no new logic; just display name if you want) -->
+          <!-- User chip -->
           <div class="iw-userchip d-none d-lg-flex">
             <div class="iw-avatar">
               {{ (_commonService.layoutVM.loggedUserName || 'U').slice(0,1) }}
             </div>
             <div class="iw-user-meta">
-              <div class="iw-user-name">{{ _commonService.layoutVM.loggedUserName || 'User' }}</div>
+              <div class="iw-user-name">
+                {{ _commonService.layoutVM.loggedUserName || 'User' }}
+              </div>
               <div class="iw-user-sub">Welcome back</div>
             </div>
           </div>
 
-        </div>
-      </div>
-
-      <!-- MOBILE SEARCH -->
-      <div class="col-12 d-md-none">
-        <div class="iw-search iw-search-mobile">
-          <span class="iw-search-ic" aria-hidden="true">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-              <path
-                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-              ></path>
-            </svg>
-          </span>
-          <input class="iw-search-input" type="text" placeholder="Search apps / CRM data" />
         </div>
       </div>
 

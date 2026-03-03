@@ -1,37 +1,28 @@
 /* =========================================================
    WebsiteComponent — FULL SCSS (Light + Dark + Animations)
-   Works with your TS:
-   - .reveal elements get .active from IntersectionObserver
-   - auto stagger via CSS var --d
-   ========================================================= */
+========================================================= */
 
 :host {
   display: block;
-
-  /* Smooth theme blending */
-  background:
-    radial-gradient(1200px 600px at 0% 20%, rgba(37, 99, 235, 0.10), transparent 55%),
+  background: radial-gradient(1200px 600px at 0% 20%, rgba(37, 99, 235, 0.10), transparent 55%),
     radial-gradient(1000px 500px at 100% 0%, rgba(99, 102, 241, 0.08), transparent 60%);
 }
 
 /* Optional: consistent text color */
 .website-page {
-  color: #0f172a; /* slate-900 */
+  color: #0f172a;
   animation: pageIn .55s ease both;
-
-  /* ✅ prevents random horizontal scroll on mobile */
   overflow-x: clip;
 }
-
 :host-context(.dark) .website-page {
   color: rgba(255, 255, 255, 0.92);
 }
 
 /* -----------------------------
-   HERO LAYERING (fix overlap)
+   HERO LAYERING
 ------------------------------ */
 .hero-center { position: relative; z-index: 30; }
-.hero-float  { position: absolute; z-index: 10; }
+.hero-float { position: absolute; z-index: 10; }
 
 /* -----------------------------
    BACKGROUND GLOWS + DRIFT
@@ -46,13 +37,20 @@
   pointer-events: none;
   will-change: transform;
 }
-
-.glow-left  { background: rgb(59 130 246); top: -120px; left: -120px; animation: glowDriftA 12s ease-in-out infinite; }
-.glow-right { background: rgb(99 102 241); bottom: -40px; right: -80px; animation: glowDriftB 14s ease-in-out infinite; }
-
+.glow-left {
+  background: rgb(59 130 246);
+  top: -120px;
+  left: -120px;
+  animation: glowDriftA 12s ease-in-out infinite;
+}
+.glow-right {
+  background: rgb(99 102 241);
+  bottom: -40px;
+  right: -80px;
+  animation: glowDriftB 14s ease-in-out infinite;
+}
 :host-context(.dark) .glow { opacity: 0.25; }
 
-/* ✅ mobile glow sizing so it doesn't create overflow */
 @media (max-width: 640px) {
   .glow { width: 520px; height: 520px; filter: blur(110px); }
   .glow-left { top: -220px; left: -240px; }
@@ -60,42 +58,35 @@
 }
 
 @keyframes glowDriftA {
-  0%,100% { transform: translate(0,0) scale(1); }
-  50%     { transform: translate(40px, 25px) scale(1.06); }
+  0%, 100% { transform: translate(0,0) scale(1); }
+  50% { transform: translate(40px, 25px) scale(1.06); }
 }
 @keyframes glowDriftB {
-  0%,100% { transform: translate(0,0) scale(1); }
-  50%     { transform: translate(-35px, -30px) scale(1.08); }
+  0%, 100% { transform: translate(0,0) scale(1); }
+  50% { transform: translate(-35px, -30px) scale(1.08); }
 }
 
 /* -----------------------------
-   GLASS CARD SYSTEM (light + dark)
+   GLASS CARD SYSTEM
 ------------------------------ */
 .glass-card {
   background: rgba(255, 255, 255, 0.78);
   border: 1px solid rgba(15, 23, 42, 0.08);
-  box-shadow:
-    0 20px 40px -18px rgba(2, 6, 23, 0.12),
+  box-shadow: 0 20px 40px -18px rgba(2, 6, 23, 0.12),
     0 6px 18px -8px rgba(2, 6, 23, 0.08);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 }
-
 :host-context(.dark) .glass-card {
-  background: rgba(2, 6, 23, 0.48); /* slate-950 glass */
+  background: rgba(2, 6, 23, 0.48);
   border: 1px solid rgba(255, 255, 255, 0.10);
-  box-shadow:
-    0 30px 70px -30px rgba(0, 0, 0, 0.75),
+  box-shadow: 0 30px 70px -30px rgba(0, 0, 0, 0.75),
     0 8px 24px -12px rgba(0, 0, 0, 0.55);
 }
-
-/* Make text inside glass readable in dark */
 :host-context(.dark) .glass-card,
 :host-context(.dark) .glass-card * {
   color: rgba(255, 255, 255, 0.92);
 }
-
-/* Keep muted text muted in dark */
 :host-context(.dark) .glass-card .text-slate-500,
 :host-context(.dark) .glass-card .text-slate-400,
 :host-context(.dark) .glass-card .text-slate-600 {
@@ -110,19 +101,16 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
-
 :host-context(.dark) .text-gradient {
   background: linear-gradient(135deg, #ffffff 0%, #93c5fd 55%, #a5b4fc 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
-
 .hero-title {
   letter-spacing: -0.04em;
   line-height: 0.95;
   position: relative;
 }
-
 .hero-title::after {
   content: "";
   position: absolute;
@@ -134,16 +122,13 @@
   mix-blend-mode: overlay;
   animation: titleSweep 6.5s ease-in-out infinite;
 }
-
 :host-context(.dark) .hero-title::after {
   opacity: .22;
   background: linear-gradient(90deg, transparent 0%, rgba(147,197,253,.45) 50%, transparent 100%);
 }
-
 @keyframes titleSweep {
-  0%,72% { transform: translateX(-140%) skewX(-18deg); }
-  92%    { transform: translateX(140%)  skewX(-18deg); }
-  100%   { transform: translateX(140%)  skewX(-18deg); }
+  0%, 72% { transform: translateX(-140%) skewX(-18deg); }
+  92%, 100% { transform: translateX(140%) skewX(-18deg); }
 }
 
 /* -----------------------------
@@ -154,16 +139,15 @@
 
 @keyframes floatSlow {
   0%, 100% { transform: translateY(0); }
-  50%      { transform: translateY(-16px); }
+  50% { transform: translateY(-16px); }
 }
-
 @keyframes floatFast {
   0%, 100% { transform: translateY(0); }
-  50%      { transform: translateY(-22px); }
+  50% { transform: translateY(-22px); }
 }
 
 /* -----------------------------
-   PILL CHIPS (RBAC/Audit/...)
+   PILL CHIPS
 ------------------------------ */
 .pill {
   padding: 6px 12px;
@@ -171,14 +155,11 @@
   background: rgba(241, 245, 249, 1);
   border: 1px solid rgba(226, 232, 240, 1);
   color: rgba(51, 65, 85, 1);
-
-  /* ✅ never overflow */
   display: inline-flex;
   align-items: center;
   white-space: nowrap;
   max-width: 100%;
 }
-
 :host-context(.dark) .pill {
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.12);
@@ -207,28 +188,18 @@
   align-items: center;
   justify-content: center;
   gap: 10px;
-
   height: 56px;
   padding: 0 34px;
   border-radius: 999px;
-
   font-weight: 900;
   font-size: 16px;
   line-height: 1;
-
   text-decoration: none !important;
   user-select: none;
   cursor: pointer;
-
-  transition:
-    transform .18s ease,
-    box-shadow .25s ease,
-    background-color .25s ease,
-    border-color .25s ease,
-    color .25s ease;
+  transition: transform .18s ease, box-shadow .25s ease, background-color .25s ease, border-color .25s ease, color .25s ease;
   will-change: transform;
 }
-
 .btn:hover { transform: translateY(-2px) scale(1.01); }
 .btn:active { transform: translateY(1px) scale(.995); }
 
@@ -239,12 +210,10 @@
   border: 1px solid rgba(37, 99, 235, 0.35);
   box-shadow: 0 18px 40px -18px rgba(37, 99, 235, 0.65);
 }
-
 .btn-primary:hover {
   background: #1d4ed8;
   box-shadow: 0 28px 60px -22px rgba(37, 99, 235, 0.75);
 }
-
 .btn-primary::after {
   content: "";
   position: absolute;
@@ -256,12 +225,7 @@
   transition: .25s ease;
   pointer-events: none;
 }
-
-.btn-primary:hover::after {
-  opacity: 1;
-  transform: scale(1);
-}
-
+.btn-primary:hover::after { opacity: 1; transform: scale(1); }
 :host-context(.dark) .btn-primary::after {
   background: radial-gradient(circle, rgba(147,197,253,.22), transparent 62%);
 }
@@ -272,19 +236,16 @@
   border: 2px solid rgba(226, 232, 240, 1);
   box-shadow: 0 10px 22px -18px rgba(2, 6, 23, 0.20);
 }
-
 .btn-secondary:hover {
   border-color: rgba(37, 99, 235, 0.55);
   color: #2563eb !important;
 }
-
 :host-context(.dark) .btn-secondary {
   background: rgba(255, 255, 255, 0.06);
   color: rgba(255, 255, 255, 0.92) !important;
   border: 1px solid rgba(255, 255, 255, 0.14);
   box-shadow: 0 18px 40px -26px rgba(0, 0, 0, 0.65);
 }
-
 :host-context(.dark) .btn-secondary:hover {
   border-color: rgba(147, 197, 253, 0.55);
   color: rgba(147, 197, 253, 0.95) !important;
@@ -296,7 +257,6 @@
   outline: none;
   box-shadow: 0 0 0 5px rgba(37, 99, 235, 0.18);
 }
-
 :host-context(.dark) .btn:focus,
 :host-context(.dark) .btn:focus-visible {
   box-shadow: 0 0 0 5px rgba(147, 197, 253, 0.22);
@@ -305,18 +265,12 @@
 /* -----------------------------
    HERO SUBCARD DARK FIXES
 ------------------------------ */
-:host-context(.dark) .metric-card .bg-white\/70 {
-  background: rgba(255, 255, 255, 0.06) !important;
-}
-:host-context(.dark) .metric-card .border-slate-200\/60 {
-  border-color: rgba(255, 255, 255, 0.10) !important;
-}
-:host-context(.dark) .metric-card .bg-slate-200 {
-  background: rgba(255, 255, 255, 0.10) !important;
-}
+:host-context(.dark) .metric-card .bg-white\/70 { background: rgba(255, 255, 255, 0.06) !important; }
+:host-context(.dark) .metric-card .border-slate-200\/60 { border-color: rgba(255, 255, 255, 0.10) !important; }
+:host-context(.dark) .metric-card .bg-slate-200 { background: rgba(255, 255, 255, 0.10) !important; }
 
 /* -----------------------------
-   HOVER GLOW (product cards)
+   HOVER GLOW
 ------------------------------ */
 .hover-glow {
   transition: transform .18s ease, box-shadow .25s ease, border-color .25s ease;
@@ -324,14 +278,12 @@
 }
 .hover-glow:hover {
   transform: translateY(-4px);
-  box-shadow:
-    0 30px 70px -35px rgba(37, 99, 235, 0.25),
+  box-shadow: 0 30px 70px -35px rgba(37, 99, 235, 0.25),
     0 18px 45px -30px rgba(2, 6, 23, 0.18);
   border-color: rgba(37, 99, 235, 0.25);
 }
 :host-context(.dark) .hover-glow:hover {
-  box-shadow:
-    0 40px 90px -45px rgba(59, 130, 246, 0.25),
+  box-shadow: 0 40px 90px -45px rgba(59, 130, 246, 0.25),
     0 22px 55px -40px rgba(0, 0, 0, 0.75);
   border-color: rgba(147, 197, 253, 0.22);
 }
@@ -344,7 +296,7 @@
 
 /* =========================================================
    REVEAL ANIMATIONS (matches your TS: .active)
-   ========================================================= */
+========================================================= */
 .reveal {
   opacity: 0;
   transform: translateY(18px);
@@ -352,50 +304,53 @@
   transition-delay: var(--d, 0ms);
   will-change: opacity, transform;
 }
-
-.reveal.reveal-left  { transform: translateX(-18px); }
+.reveal.reveal-left { transform: translateX(-18px); }
 .reveal.reveal-right { transform: translateX(18px); }
-.reveal.reveal-zoom  { transform: scale(.97); }
-.reveal.reveal-up    { transform: translateY(18px); }
+.reveal.reveal-zoom { transform: scale(.97); }
+.reveal.reveal-up { transform: translateY(18px); }
 
-/* activated by TS */
-.reveal.active {
-  opacity: 1;
-  transform: translateY(0);
-}
+.reveal.active { opacity: 1; transform: translateY(0); }
 .reveal.active.reveal-left,
 .reveal.active.reveal-right { transform: translateX(0); }
-.reveal.active.reveal-zoom  { transform: scale(1); }
+.reveal.active.reveal-zoom { transform: scale(1); }
 
 /* =========================================================
    FAQ animations + dark fixes
-   ========================================================= */
+========================================================= */
 #faq details.faq-item > div { transform-origin: top; }
 #faq details.faq-item[open] > div { animation: faqOpen .28s ease both; }
+
 @keyframes faqOpen {
   from { opacity: 0; transform: translateY(-6px); }
-  to   { opacity: 1; transform: translateY(0); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-/* Make FAQ cards NOT white in dark */
 :host-context(.dark) #faq details.faq-item {
   background: rgba(2, 6, 23, 0.55) !important;
   border-color: rgba(255, 255, 255, 0.10) !important;
   box-shadow: 0 30px 70px -35px rgba(0,0,0,.75);
 }
-:host-context(.dark) #faq details.faq-item summary span { color: rgba(255, 255, 255, 0.92) !important; }
-:host-context(.dark) #faq details.faq-item > div { color: rgba(203, 213, 225, 0.85) !important; }
+:host-context(.dark) #faq details.faq-item summary span {
+  color: rgba(255, 255, 255, 0.92) !important;
+}
+:host-context(.dark) #faq details.faq-item > div {
+  color: rgba(203, 213, 225, 0.85) !important;
+}
 :host-context(.dark) #faq details.faq-item summary div {
   background: rgba(255, 255, 255, 0.06) !important;
   border: 1px solid rgba(255, 255, 255, 0.10);
 }
-:host-context(.dark) #faq details.faq-item summary svg { color: rgba(226, 232, 240, 0.85) !important; }
+:host-context(.dark) #faq details.faq-item summary svg {
+  color: rgba(226, 232, 240, 0.85) !important;
+}
 :host-context(.dark) #faq code {
   background: rgba(37, 99, 235, 0.14) !important;
   color: rgba(147, 197, 253, 0.95) !important;
   border: 1px solid rgba(147, 197, 253, 0.18);
 }
-:host-context(.dark) #faq details.faq-item:hover { border-color: rgba(147, 197, 253, 0.22) !important; }
+:host-context(.dark) #faq details.faq-item:hover {
+  border-color: rgba(147, 197, 253, 0.22) !important;
+}
 :host-context(.dark) #faq .relative.bg-white {
   background: rgba(2, 6, 23, 0.55) !important;
   border-color: rgba(255, 255, 255, 0.10) !important;
@@ -409,7 +364,9 @@
   color: rgba(255, 255, 255, 0.92) !important;
 }
 :host-context(.dark) #faq input::placeholder,
-:host-context(.dark) #faq textarea::placeholder { color: rgba(203, 213, 225, 0.55) !important; }
+:host-context(.dark) #faq textarea::placeholder {
+  color: rgba(203, 213, 225, 0.55) !important;
+}
 :host-context(.dark) #faq input:focus,
 :host-context(.dark) #faq textarea:focus {
   outline: none !important;
@@ -432,23 +389,122 @@
 ------------------------------ */
 @keyframes pageIn {
   from { opacity: 0; transform: translateY(10px); }
-  to   { opacity: 1; transform: translateY(0); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 /* -----------------------------
-   REDUCED MOTION SUPPORT
+   REDUCED MOTION
 ------------------------------ */
 @media (prefers-reduced-motion: reduce) {
-  .website-page,
-  .glow-left,
-  .glow-right,
-  .hero-title::after,
-  .metric-card,
-  .metric-card.fast {
+  .website-page, .glow-left, .glow-right, .hero-title::after, .metric-card, .metric-card.fast {
     animation: none !important;
   }
   .btn, .hover-glow, .reveal {
     transition: none !important;
   }
-  .reveal { opacity: 1 !important; transform: none !important; }
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+  }
 }
+
+/* =========================================================
+   ✅ INSIGHTS / CHARTS
+========================================================= */
+.chart-wrap {
+  position: relative;
+  width: 100%;
+  height: 320px;
+  border-radius: 1.75rem;
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  padding: 16px;
+  overflow: hidden;
+}
+:host-context(.dark) .chart-wrap {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+.chart-wrap.dark {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.chart-wrap canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.mini-kpi {
+  border-radius: 1.25rem;
+  padding: 14px 14px;
+  background: rgba(255, 255, 255, 0.65);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+}
+:host-context(.dark) .mini-kpi {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+.mini-kpi.dark {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.mini-kpi .label {
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(100, 116, 139, 1);
+}
+:host-context(.dark) .mini-kpi .label,
+.mini-kpi.dark .label {
+  color: rgba(203, 213, 225, 0.78);
+}
+
+.mini-kpi .value {
+  margin-top: 6px;
+  font-size: 22px;
+  font-weight: 900;
+  color: rgba(15, 23, 42, 1);
+}
+:host-context(.dark) .mini-kpi .value,
+.mini-kpi.dark .value {
+  color: rgba(255, 255, 255, 0.92);
+}
+
+@media (max-width: 640px) {
+  .chart-wrap { height: 260px; }
+}
+
+/* ✅ Chart entrance animation */
+.chart-enter {
+  animation: chartPop 520ms cubic-bezier(.2,.9,.2,1) both;
+}
+@keyframes chartPop {
+  from { opacity: 0; transform: translateY(10px) scale(.985); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ✅ Insight cards hover better */
+.insight-card {
+  transition: transform .18s ease, box-shadow .25s ease, border-color .25s ease;
+}
+.insight-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 30px 70px -35px rgba(37, 99, 235, 0.20),
+              0 18px 45px -30px rgba(2, 6, 23, 0.14);
+  border-color: rgba(37, 99, 235, 0.18);
+}
+:host-context(.dark) .insight-card:hover {
+  box-shadow: 0 40px 90px -45px rgba(59, 130, 246, 0.22),
+              0 22px 55px -40px rgba(0, 0, 0, 0.75);
+  border-color: rgba(147, 197, 253, 0.20);
+}
+
+/* ✅ shimmer used in security */
+@keyframes shimmer {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
+.animate-shimmer { animation: shimmer 2.2s linear infinite; }

@@ -1,4 +1,12 @@
-import { Component, OnInit } from "@angular/core";
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from "@angular/core";
+import { Router } from "@angular/router";
 import Chart from "chart.js/auto";
 
 import { BaseComponent } from "../base.component";
@@ -18,27 +26,85 @@ import { AdminDashboardService } from "src/app/services/admin-dashboard.service"
 })
 export class DashboardComponent
   extends BaseComponent<DashboardViewModel>
-  implements OnInit
+  implements OnInit, AfterViewInit, OnDestroy
 {
+  @ViewChild("barCanvas") barCanvas?: ElementRef<HTMLCanvasElement>;
+  @ViewChild("pieCanvas") pieCanvas?: ElementRef<HTMLCanvasElement>;
+  @ViewChild("lineCanvas") lineCanvas?: ElementRef<HTMLCanvasElement>;
+
   barChart: Chart | null = null;
   pieChart: Chart | null = null;
+  lineChart: Chart | null = null;
+
+  private viewReady = false;
+  private dataReady = false;
+
+  todayLabel = "";
 
   constructor(
     commonService: CommonService,
     logService: LogHandlerService,
     private adminDashBoardService: AdminDashboardService,
     private accountService: AccountService,
-    private authGuard: AuthGuard
+    private authGuard: AuthGuard,
+    private router: Router
   ) {
     super(commonService, logService);
     this.viewModel = new DashboardViewModel();
   }
 
+  // --------- Safe getters (no template crashes) ----------
+  get adminsCount(): number {
+    return this.viewModel.adminDashboardVM?.numberOfAdmins ?? 0;
+  }
+  get employeesCount(): number {
+    return this.viewModel.adminDashboardVM?.numberOfEmployees ?? 0;
+  }
+
+  get leavesApproved(): number {
+    return this.viewModel.adminDashboardVM?.numberOfLeavesApproved ?? 0;
+  }
+  get leavesRejected(): number {
+    return this.viewModel.adminDashboardVM?.numberOfLeavesRejected ?? 0;
+  }
+  get leavesPending(): number {
+    return this.viewModel.adminDashboardVM?.numberOfLeavesPending ?? 0;
+  }
+  get leavesTotal(): number {
+    return this.leavesApproved + this.leavesRejected + this.leavesPending;
+  }
+
+  get presentCount(): number {
+    return this.viewModel.adminDashboardVM?.numberOfEmployeesPresent ?? 0;
+  }
+  get leaveCount(): number {
+    return this.viewModel.adminDashboardVM?.numberOfEmployeeOnLeave ?? 0;
+  }
+  get absentCount(): number {
+    return this.viewModel.adminDashboardVM?.numberOfEmployeesAbsent ?? 0;
+  }
+  get attendanceTotal(): number {
+    return this.presentCount + this.leaveCount + this.absentCount;
+  }
+
+  get hasDepartments(): boolean {
+    const d = this.viewModel.adminDashboardVM?.clientCompanyDepartment;
+    return Array.isArray(d) && d.length > 0;
+  }
+
   async ngOnInit() {
+    this.todayLabel = new Date().toLocaleDateString(undefined, {
+      weekday: "short",
+      month: "short",
+      day: "2-digit",
+    });
+
     this._commonService.layoutVM.showLeftSideMenu = true;
     this._commonService.layoutVM.toggleSideMenu = "default";
     this._commonService.layoutVM.toogleWrapper = "wrapper";
+    this._commonService.layoutVM.PageTitle = this.viewModel.PageTitle || "Dashboard";
 
+    // Theme
     try {
       const roleType: any = RoleTypeSM[this._commonService.layoutVM.tokenRole];
       if (roleType === "ClientAdmin" || roleType === "ClientEmployee") {
@@ -46,18 +112,11 @@ export class DashboardComponent
       } else {
         await this._commonService.loadDefaultTheme();
       }
-    } catch (error) {
-      console.error("Error loading theme:", error);
+    } catch (e) {
+      console.error("Theme error:", e);
     }
 
-    // Loader
-    await this._commonService.presentLoading();
-    setTimeout(async () => {
-      await this._commonService.dismissLoader();
-    }, 800);
-
-    this._commonService.layoutVM.PageTitle = this.viewModel.PageTitle;
-
+    // Auth
     const tokenValid = await this.authGuard.IsTokenValid();
     if (!tokenValid) {
       await this._commonService.ShowToastAtTopEnd("Please Login", "warning");
@@ -66,6 +125,23 @@ export class DashboardComponent
 
     await this.getloggedInUser();
     await this.loadPageData();
+  }
+
+  ngAfterViewInit(): void {
+    this.viewReady = true;
+    this.tryRenderCharts();
+  }
+
+  ngOnDestroy(): void {
+    this.destroyCharts();
+  }
+
+  refresh(): void {
+    this.loadPageData();
+  }
+
+  go(path: string): void {
+    this.router.navigate([path]);
   }
 
   // ==============================
@@ -122,11 +198,8 @@ export class DashboardComponent
 
       this.viewModel.adminDashboardVM = resp.successData;
 
-      // Render charts AFTER DOM paints
-      setTimeout(() => {
-        this.BarChart();
-        this.PieChart();
-      }, 150);
+      this.dataReady = true;
+      this.tryRenderCharts();
     } catch (error) {
       console.error(error);
     } finally {
@@ -134,73 +207,156 @@ export class DashboardComponent
     }
   }
 
-  // ==============================
-  // BAR CHART
-  // ==============================
-  BarChart(): void {
-    const dept = this.viewModel.adminDashboardVM?.clientCompanyDepartment;
-    if (!dept || !dept.length) return;
+  private tryRenderCharts(): void {
+    if (!this.viewReady || !this.dataReady) return;
 
-    const labels = dept.slice(0, 10).map((d: any) => d.departmentName);
-    const values = dept.slice(0, 10).map((d: any) => d.employeeCount);
+    // render after Angular paints
+    setTimeout(() => {
+      this.renderBar();
+      this.renderPie();
+      this.renderLine();
+    }, 60);
+  }
 
-    if (this.barChart) {
-      this.barChart.destroy();
-      this.barChart = null;
+  private destroyCharts(): void {
+    if (this.barChart) { this.barChart.destroy(); this.barChart = null; }
+    if (this.pieChart) { this.pieChart.destroy(); this.pieChart = null; }
+    if (this.lineChart) { this.lineChart.destroy(); this.lineChart = null; }
+  }
+
+  // ==============================
+  // BAR: Employees by department
+  // ==============================
+  private renderBar(): void {
+    if (!this.barCanvas?.nativeElement) return;
+
+    const dept = this.viewModel.adminDashboardVM?.clientCompanyDepartment || [];
+    if (!Array.isArray(dept) || dept.length === 0) {
+      if (this.barChart) { this.barChart.destroy(); this.barChart = null; }
+      return;
     }
 
-    this.barChart = new Chart("barChart", {
+    const top = dept.slice(0, 10);
+    const labels = top.map((d: any) => d.departmentName || "Dept");
+    const values = top.map((d: any) => Number(d.employeeCount ?? 0));
+
+    if (this.barChart) this.barChart.destroy();
+
+    this.barChart = new Chart(this.barCanvas.nativeElement, {
       type: "bar",
       data: {
         labels,
         datasets: [
           {
-            label: "No. Of Employees",
+            label: "Employees",
             data: values,
             borderWidth: 1,
+            borderRadius: 10,
+            maxBarThickness: 44,
           },
         ],
       },
       options: {
         responsive: true,
         maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: { enabled: true },
+        },
         scales: {
-          y: { beginAtZero: true },
+          x: {
+            grid: { display: false },
+            ticks: { maxRotation: 0, autoSkip: true },
+          },
+          y: {
+            beginAtZero: true,
+            ticks: { precision: 0 },
+          },
         },
       },
     });
   }
 
   // ==============================
-  // PIE CHART
+  // PIE: Attendance split
   // ==============================
-  PieChart(): void {
-    const vm = this.viewModel.adminDashboardVM;
-    if (!vm) return;
+  private renderPie(): void {
+    if (!this.pieCanvas?.nativeElement) return;
 
-    const present = vm.numberOfEmployeesPresent ?? 0;
-    const leave = vm.numberOfEmployeeOnLeave ?? 0;
-    const absent = vm.numberOfEmployeesAbsent ?? 0;
+    const present = this.presentCount;
+    const leave = this.leaveCount;
+    const absent = this.absentCount;
 
-    if (this.pieChart) {
-      this.pieChart.destroy();
-      this.pieChart = null;
-    }
+    if (this.pieChart) this.pieChart.destroy();
 
-    this.pieChart = new Chart("pieChart", {
-      type: "pie",
+    this.pieChart = new Chart(this.pieCanvas.nativeElement, {
+      type: "doughnut",
       data: {
         labels: ["Present", "Leave", "Absent"],
         datasets: [
           {
             data: [present, leave, absent],
-            borderWidth: 1,
+            borderWidth: 2,
+            hoverOffset: 6,
           },
         ],
       },
       options: {
         responsive: true,
         maintainAspectRatio: false,
+        cutout: "62%",
+        plugins: {
+          legend: { position: "bottom" },
+        },
+      },
+    });
+  }
+
+  // ==============================
+  // LINE: Leaves trend (demo)
+  // ==============================
+  private renderLine(): void {
+    if (!this.lineCanvas?.nativeElement) return;
+
+    // demo trend - replace with API later
+    const labels = ["Aug", "Sep", "Oct", "Nov", "Dec", "Jan"];
+    const data = [
+      Math.max(0, this.leavesPending - 2),
+      Math.max(0, this.leavesPending - 1),
+      this.leavesPending,
+      this.leavesPending + 1,
+      Math.max(0, this.leavesPending - 1),
+      this.leavesPending + 2,
+    ];
+
+    if (this.lineChart) this.lineChart.destroy();
+
+    this.lineChart = new Chart(this.lineCanvas.nativeElement, {
+      type: "line",
+      data: {
+        labels,
+        datasets: [
+          {
+            label: "Pending leaves",
+            data,
+            tension: 0.35,
+            fill: true,
+            pointRadius: 4,
+            borderWidth: 2,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: { enabled: true },
+        },
+        scales: {
+          x: { grid: { display: false } },
+          y: { beginAtZero: true, ticks: { precision: 0 } },
+        },
       },
     });
   }

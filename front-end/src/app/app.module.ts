@@ -78,6 +78,9 @@ import { adapterFactory } from "angular-calendar/date-adapters/date-fns";
 /** ✅ IMPORTANT: HttpClient */
 import { HttpClientModule } from "@angular/common/http";
 
+/** ✅ Internal Workspace Dashboard */
+import { InternalWorkspaceDashboardComponent } from "./components/internal-workspace-dashboard/internal-workspace-dashboard.component";
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -137,6 +140,9 @@ import { HttpClientModule } from "@angular/common/http";
     LicenseInfoComponent,
     SuccessPaymentComponent,
     FailurePaymentComponent,
+
+    /** ✅ ADD THIS */
+    InternalWorkspaceDashboardComponent,
   ],
 
   imports: [

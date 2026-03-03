@@ -1,4 +1,77 @@
-<div *ngIf="_commonService.loaderInfo.showLoader">
-    <ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="medium" color="#fff" type="ball-elastic-dots" [fullScreen]="true">
-    </ngx-spinner>
+<div class="loader-overlay" *ngIf="_commonService.loaderInfo.showLoader">
+  <div class="loader-card">
+
+    <!-- Animation Stage -->
+    <div class="stage">
+      <!-- Speed streaks in the background -->
+      <div class="wind-lines">
+        <span></span><span></span><span></span><span></span>
+      </div>
+
+      <div class="scene-flex">
+        <!-- The Professional Runner -->
+        <div class="runner-wrapper">
+          <svg class="runner-svg" viewBox="0 0 100 100" aria-label="Running employee loader">
+            <defs>
+              <linearGradient id="suitGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#3b82f6" />
+                <stop offset="100%" stop-color="#1d4ed8" />
+              </linearGradient>
+            </defs>
+
+            <!-- Shadow on ground -->
+            <ellipse class="shadow" cx="50" cy="95" rx="20" ry="4" fill="rgba(0,0,0,0.1)" />
+
+            <!-- Body Parts -->
+            <g class="character">
+              <!-- Back Leg -->
+              <path class="leg back-leg" d="M50 60 L40 80 L55 92" />
+
+              <!-- Torso -->
+              <path class="torso" d="M42 35 Q50 30 58 35 L62 60 L45 62 Z" fill="url(#suitGrad)" />
+
+              <!-- Head -->
+              <circle class="head" cx="55" cy="25" r="7" fill="#334155" />
+
+              <!-- Front Leg -->
+              <path class="leg front-leg" d="M50 60 L65 82 L50 94" />
+
+              <!-- Suitcase & Arm -->
+              <g class="arm-carry">
+                <path class="arm" d="M48 40 L65 55" />
+                <rect class="suitcase" x="62" y="52" width="24" height="18" rx="3" />
+                <path class="suitcase-handle" d="M70 52 V49 Q74 46 78 49 V52" fill="none" stroke="#1e293b"
+                  stroke-width="2" />
+              </g>
+            </g>
+          </svg>
+        </div>
+
+        <!-- The Destination (Corporate Buildings) -->
+        <div class="destination">
+          <div class="arrow-indicator" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <path d="M13 5l7 7-7 7M5 12h14" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </div>
+
+          <div class="buildings" aria-label="Office buildings">
+            <div class="building b1"></div>
+            <div class="building b2"></div>
+            <div class="building b3"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Optional: Status + progress (uncomment if you want) -->
+    <!--
+    <div class="status-text">{{ _commonService.loaderInfo.message || 'Loading...' }}</div>
+    <div class="progress-track">
+      <div class="progress-fill"></div>
+    </div>
+    -->
+
+  </div>
 </div>

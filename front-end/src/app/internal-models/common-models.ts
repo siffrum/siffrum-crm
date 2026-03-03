@@ -46,19 +46,20 @@ export class LayoutViewModel {
   permissions: PermissionSM[] = [];
   permission: PermissionSM = new PermissionSM();
 
-  dashboardItems:{
+  // keep if you still use on dashboard page
+  dashboardItems: {
     itemRoute: string;
     permission: boolean;
     imgSrc: string;
-    altText:string;
+    altText: string;
     itemName: string;
     moduleName: ModuleNameSM;
-  }[]=[
+  }[] = [
     {
       itemRoute: AppConstants.WebRoutes.PROFILE,
       permission: false,
       imgSrc: "assets/images/directory2.webp",
-      altText:"Image Not Found",
+      altText: "Image Not Found",
       itemName: "Profile",
       moduleName: ModuleNameSM.Employee,
     },
@@ -66,7 +67,7 @@ export class LayoutViewModel {
       itemRoute: AppConstants.WebRoutes.SETTINGS,
       permission: false,
       imgSrc: "assets/images/setting.webp",
-      altText:"Image Not Found",
+      altText: "Image Not Found",
       itemName: "Settings",
       moduleName: ModuleNameSM.Setting,
     },
@@ -74,12 +75,16 @@ export class LayoutViewModel {
       itemRoute: AppConstants.WebRoutes.ATTENDANCE,
       permission: false,
       imgSrc: "assets/images/attendance.webp",
-      altText:"Image Not Found",
+      altText: "Image Not Found",
       itemName: "Attendace",
       moduleName: ModuleNameSM.Attendance,
-    }
+    },
+  ];
 
-  ]
+  /**
+   * ✅ SIDEBAR SHOULD SHOW ONLY:
+   * Dashboard, CRM, Reports, Profile, Settings
+   */
   sideMenuItems: {
     itemRoute: string;
     permission: boolean;
@@ -100,91 +105,19 @@ export class LayoutViewModel {
       permission: false,
       iconName: "bi bi-house sideNavIcon d-inline-block",
       itemName: "Dashboard",
-      moduleName: ModuleNameSM.CompanyDetail,
+      moduleName: ModuleNameSM.DashBoard,
     },
 
     {
-      itemRoute: AppConstants.WebRoutes.COMPANYOVERVIEW,
-      permission: false,
-      iconName: "bi bi-building sideNavIcon d-inline-block",
-      itemName: "Overview",
-      moduleName: ModuleNameSM.CompanyDetail,
-    },
-    {
-      itemRoute: AppConstants.WebRoutes.PROFILE,
-      permission: false,
-      iconName: "bi bi-person-check sideNavIcon d-inline-block",
-      itemName: "Profile",
-      moduleName: ModuleNameSM.Employee,
-    },
-    {
-      itemRoute: AppConstants.WebRoutes.ATTENDANCE,
-      permission: false,
-      iconName: "bi bi-person-bounding-box sideNavIcon d-inline-block",
-      itemName: "Attendance",
-      moduleName: ModuleNameSM.Attendance,
-    },
-    {
-      itemRoute: AppConstants.WebRoutes.LICENSE,
-      permission: false,
-      iconName: "bi bi-cash-coin sideNavIcon d-inline-block",
-      itemName: "Pricing",
-      moduleName: ModuleNameSM.CompanyDetail,
-    },
-    {
-      itemRoute: AppConstants.WebRoutes.EMPLOYEELIST,
-      permission: false,
-      iconName: "bi bi-people sideNavIcon d-inline-block",
-      itemName: "Directory",
-      moduleName: ModuleNameSM.EmployeeDirectory,
-    },
-    {
-      itemRoute: AppConstants.WebRoutes.COMPANYLETTERS,
-      permission: false,
-      iconName: "bi bi-card-text sideNavIcon d-inline-block",
-      itemName: "Letters",
-      moduleName: ModuleNameSM.CompanyLetters,
-    },
-    {
-      itemRoute: AppConstants.WebRoutes.LEAVES,
-      permission: false,
-      iconName: "bi bi-file-text sideNavIcon d-inline-block",
-      itemName: "Leaves",
-      moduleName: ModuleNameSM.Leave,
-    },
-
-
-    {
-      itemRoute: AppConstants.WebRoutes.DEPARTMENTS,
-      permission: false,
-      iconName: "bi bi-stack sideNavIcon d-inline-block",
-      itemName: "Departments",
-      moduleName: ModuleNameSM.CompanyDepartment,
-    },
-    {
-      itemRoute: AppConstants.WebRoutes.ATTENDANSHIFT,
-      permission: false,
-      iconName: "bi bi-shift sideNavIcon d-inline-block",
-      itemName: "Attendance Shift",
-      moduleName: ModuleNameSM.AttendanceShift,
-    },
-    {
-      itemRoute: AppConstants.WebRoutes.PAYROLLSTRUCTURE,
-      permission: false,
-      iconName: "bi bi-wallet2 sideNavIcon d-inline-block",
-      itemName: "Payroll Structure",
-      moduleName: ModuleNameSM.EmployeeGenericPayroll,
-    },
-    {
-      itemRoute: AppConstants.WebRoutes.TRANSACTIONS,
-      permission: false,
-      iconName: "bi bi-cash sideNavIcon d-inline-block",
-      itemName: "Transactions",
-      moduleName: ModuleNameSM.PayrollTransacton,
+      itemRoute: AppConstants.WebRoutes.INTERNAL,
+      permission: true,
+      iconName: "bi bi-grid sideNavIcon d-inline-block",
+      itemName: "CRM",
+      moduleName: ModuleNameSM.DashBoard,
     },
 
     {
-      itemRoute: '',
+      itemRoute: "",
       permission: false,
       iconName: "bi bi-file-earmark-person sideNavIcon d-inline-block",
       itemName: "Reports",
@@ -210,18 +143,30 @@ export class LayoutViewModel {
           iconName: "bi bi-caret-right sideNavIcon d-inline-block",
           itemName: "Payroll Report",
           moduleName: ModuleNameSM.Reports,
-        }
+        },
       ],
     },
+
+    {
+      itemRoute: AppConstants.WebRoutes.PROFILE,
+      permission: false,
+      iconName: "bi bi-person-check sideNavIcon d-inline-block",
+      itemName: "Profile",
+      moduleName: ModuleNameSM.Employee,
+    },
+
     {
       itemRoute: AppConstants.WebRoutes.SETTINGS,
       permission: false,
-      iconName: "bi bi-gear  sideNavIcon d-inline-block",
+      iconName: "bi bi-gear sideNavIcon d-inline-block",
       itemName: "Settings",
       moduleName: ModuleNameSM.Setting,
-    }
-
+    },
   ];
+
+  /**
+   * ✅ Super admin menu unchanged
+   */
   superAdminSideMenuItems: {
     itemRoute: string;
     isActive: boolean;

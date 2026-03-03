@@ -7,7 +7,7 @@ export const environment = {
   apiResponseCacheTimeoutInMinutes: 5,
   enableResponseCacheProcessing: true,
   applicationVersion: '0.0.1',
-  apiBaseUrl: 'https://unenviously-ungentlemanlike-sherlyn.ngrok-free.dev/',
+  apiBaseUrl: 'https://immutable-omer-viscerally.ngrok-free.dev/',
   // apiBaseUrl:"http://localhost:4404/",
   apiDefaultTimeout: 10,
   animationTimeoutinMS: 1000,

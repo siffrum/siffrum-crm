@@ -1,10 +1,10 @@
 <div class="dw">
-  <!-- Header strip -->
+  <!-- HEADER STRIP -->
   <div class="dw-head">
     <div class="dw-head-left">
       <div class="kicker">Overview</div>
       <div class="title">Dashboard</div>
-      <div class="sub">Quick snapshot of admins, employees, leaves and expenses.</div>
+      <div class="sub">Quick snapshot of admins, employees, leaves and attendance.</div>
     </div>
 
     <div class="dw-head-right">
@@ -12,27 +12,30 @@
         <i class="bi bi-shield-check"></i>
         <span>Secure</span>
       </div>
+
       <div class="pill soft">
-        <i class="bi bi-clock-history"></i>
-        <span>Live</span>
+        <i class="bi bi-calendar2-week"></i>
+        <span>{{ todayLabel }}</span>
       </div>
+
+      <button type="button" class="pill btn-like" (click)="refresh()">
+        <i class="bi bi-arrow-clockwise"></i>
+        <span>Refresh</span>
+      </button>
     </div>
   </div>
 
-  <!-- Stat cards -->
+  <!-- KPI CARDS -->
   <div class="row g-3">
     <!-- Admins + Employees -->
-    <div class="col-xl-4 col-lg-6 col-md-6">
+    <div class="col-xl-4 col-lg-6 col-md-6 col-12">
       <div class="stat-card tone-blue">
         <div class="stat-top">
-          <div class="stat-ic">
-            <i class="bi bi-people"></i>
-          </div>
+          <div class="stat-ic"><i class="bi bi-people"></i></div>
+
           <div class="stat-meta">
             <div class="stat-label">Admins</div>
-            <div class="stat-value">
-              {{ viewModel.adminDashboardVM.numberOfAdmins || 0 }}
-            </div>
+            <div class="stat-value">{{ adminsCount }}</div>
           </div>
         </div>
 
@@ -41,9 +44,7 @@
         <div class="stat-bottom">
           <div class="mini">
             <div class="mini-label">Employees</div>
-            <div class="mini-value">
-              {{ viewModel.adminDashboardVM.numberOfEmployees || 0 }}
-            </div>
+            <div class="mini-value">{{ employeesCount }}</div>
           </div>
 
           <div class="mini-chip">
@@ -55,21 +56,14 @@
     </div>
 
     <!-- Leaves -->
-    <div class="col-xl-4 col-lg-6 col-md-6">
+    <div class="col-xl-4 col-lg-6 col-md-6 col-12">
       <div class="stat-card tone-green">
         <div class="stat-top">
-          <div class="stat-ic">
-            <i class="bi bi-card-checklist"></i>
-          </div>
+          <div class="stat-ic"><i class="bi bi-card-checklist"></i></div>
+
           <div class="stat-meta">
             <div class="stat-label">Leaves</div>
-            <div class="stat-value">
-              {{
-                (viewModel.adminDashboardVM.numberOfLeavesApproved || 0) +
-                  (viewModel.adminDashboardVM.numberOfLeavesRejected || 0) +
-                  (viewModel.adminDashboardVM.numberOfLeavesPending || 0)
-              }}
-            </div>
+            <div class="stat-value">{{ leavesTotal }}</div>
           </div>
         </div>
 
@@ -77,94 +71,209 @@
           <div class="tri">
             <div class="tri-dot ok"></div>
             <div class="tri-label">Approved</div>
-            <div class="tri-value">
-              {{ viewModel.adminDashboardVM.numberOfLeavesApproved || 0 }}
-            </div>
+            <div class="tri-value">{{ leavesApproved }}</div>
           </div>
+
           <div class="tri">
             <div class="tri-dot no"></div>
             <div class="tri-label">Rejected</div>
-            <div class="tri-value">
-              {{ viewModel.adminDashboardVM.numberOfLeavesRejected || 0 }}
-            </div>
+            <div class="tri-value">{{ leavesRejected }}</div>
           </div>
+
           <div class="tri">
             <div class="tri-dot wait"></div>
             <div class="tri-label">Pending</div>
-            <div class="tri-value">
-              {{ viewModel.adminDashboardVM.numberOfLeavesPending || 0 }}
-            </div>
+            <div class="tri-value">{{ leavesPending }}</div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Expenses -->
-    <div class="col-xl-4 col-lg-12 col-md-12">
+    <!-- Attendance -->
+    <div class="col-xl-4 col-lg-12 col-md-12 col-12">
       <div class="stat-card tone-pink">
         <div class="stat-top">
-          <div class="stat-ic">
-            <i class="bi bi-cash-coin"></i>
-          </div>
+          <div class="stat-ic"><i class="bi bi-clock-history"></i></div>
+
           <div class="stat-meta">
-            <div class="stat-label">Expenses</div>
-            <div class="stat-value">$ 1,000</div>
+            <div class="stat-label">Attendance</div>
+            <div class="stat-value">{{ attendanceTotal }}</div>
           </div>
         </div>
 
         <div class="two">
           <div class="two-box">
-            <div class="two-label">Monthly</div>
-            <div class="two-value">$100</div>
+            <div class="two-label">Present</div>
+            <div class="two-value">{{ presentCount }}</div>
           </div>
+
           <div class="two-box">
-            <div class="two-label">Yearly</div>
-            <div class="two-value">$1000</div>
+            <div class="two-label">Absent</div>
+            <div class="two-value">{{ absentCount }}</div>
           </div>
         </div>
 
         <div class="hint">
           <i class="bi bi-info-circle"></i>
-          <span>Connect API later to show real expense totals.</span>
+          <span>Split shows Present / Leave / Absent in the chart.</span>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Charts -->
+  <!-- CHARTS + RIGHT -->
   <div class="row g-3 mt-1">
-    <div class="col-xl-8 col-lg-12">
+    <!-- LEFT -->
+    <div class="col-xl-8 col-lg-12 col-12">
+      <!-- BAR -->
       <div class="panel">
         <div class="panel-head">
           <div>
             <div class="panel-title">Employees by Department</div>
             <div class="panel-sub">Top departments based on headcount.</div>
           </div>
+
           <div class="panel-chip">
             <i class="bi bi-bar-chart"></i>
             <span>Bar</span>
           </div>
         </div>
+
         <div class="panel-body chart-h">
-          <canvas id="barChart"></canvas>
+          <!-- ✅ No ng-template/else -->
+          <div *ngIf="hasDepartments; elseBlock" style="height: 100%;">
+            <canvas #barCanvas></canvas>
+          </div>
+
+          <ng-container *ngIf="!hasDepartments">
+            <div class="empty">
+              <div class="empty-ic"><i class="bi bi-building"></i></div>
+              <div class="empty-title">No department data</div>
+              <div class="empty-sub">
+                Department headcount will appear once backend sends it.
+              </div>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+
+      <!-- LINE -->
+      <div class="panel mt-3">
+        <div class="panel-head">
+          <div>
+            <div class="panel-title">Leaves trend</div>
+            <div class="panel-sub">Last 6 months (demo until API).</div>
+          </div>
+
+          <div class="panel-chip soft">
+            <i class="bi bi-graph-up"></i>
+            <span>Line</span>
+          </div>
+        </div>
+
+        <div class="panel-body chart-h-sm">
+          <canvas #lineCanvas></canvas>
         </div>
       </div>
     </div>
 
-    <div class="col-xl-4 col-lg-12">
+    <!-- RIGHT -->
+    <div class="col-xl-4 col-lg-12 col-12">
+      <!-- PIE -->
       <div class="panel">
         <div class="panel-head">
           <div>
             <div class="panel-title">Attendance Split</div>
             <div class="panel-sub">Present vs Leave vs Absent.</div>
           </div>
+
           <div class="panel-chip soft">
             <i class="bi bi-pie-chart"></i>
             <span>Pie</span>
           </div>
         </div>
+
         <div class="panel-body chart-h-sm">
-          <canvas id="pieChart"></canvas>
+          <canvas #pieCanvas></canvas>
+        </div>
+      </div>
+
+      <!-- QUICK ACTIONS -->
+      <div class="panel mt-3">
+        <div class="panel-head">
+          <div>
+            <div class="panel-title">Quick actions</div>
+            <div class="panel-sub">Jump to frequently used modules.</div>
+          </div>
+        </div>
+
+        <div class="panel-body">
+          <div class="qa-grid">
+            <button type="button" class="qa" (click)="go('/employees-list')">
+              <i class="bi bi-person-badge"></i>
+              <span>Employees</span>
+            </button>
+
+            <button type="button" class="qa" (click)="go('/leaves')">
+              <i class="bi bi-calendar2-check"></i>
+              <span>Leaves</span>
+            </button>
+
+            <button type="button" class="qa" (click)="go('/payroll-structure')">
+              <i class="bi bi-currency-rupee"></i>
+              <span>Payroll</span>
+            </button>
+
+            <button type="button" class="qa" (click)="go('/reports')">
+              <i class="bi bi-clipboard-data"></i>
+              <span>Reports</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ACTIVITY -->
+      <div class="panel mt-3">
+        <div class="panel-head">
+          <div>
+            <div class="panel-title">Recent activity</div>
+            <div class="panel-sub">Demo list (wire to API later).</div>
+          </div>
+
+          <button type="button" class="panel-link" (click)="go('/notifications')">
+            View all <i class="bi bi-chevron-right"></i>
+          </button>
+        </div>
+
+        <div class="panel-body">
+          <div class="act">
+            <div class="act-row">
+              <div class="act-dot blue"></div>
+              <div class="act-main">
+                <div class="act-title">New employee added</div>
+                <div class="act-sub">Employees • 15 mins ago</div>
+              </div>
+              <div class="act-tag">HR</div>
+            </div>
+
+            <div class="act-row">
+              <div class="act-dot green"></div>
+              <div class="act-main">
+                <div class="act-title">Leave request pending</div>
+                <div class="act-sub">Leaves • 2 hours ago</div>
+              </div>
+              <div class="act-tag warn">Pending</div>
+            </div>
+
+            <div class="act-row">
+              <div class="act-dot pink"></div>
+              <div class="act-main">
+                <div class="act-title">Payslip generated</div>
+                <div class="act-sub">Payroll • Yesterday</div>
+              </div>
+              <div class="act-tag ok">Paid</div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

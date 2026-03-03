@@ -1,1 +1,23 @@
-<!-- <p>oioo</p> -->
+<div class="crm-wrap">
+
+  <div *ngIf="loading" class="crm-loading">
+    Loading CRM...
+  </div>
+
+  <div class="crm-grid" *ngIf="!loading">
+    <button
+      class="crm-card"
+      *ngFor="let app of apps"
+      (click)="go(app)"
+    >
+      <div class="crm-icon">
+        <i [class]="app.icon"></i>
+      </div>
+
+      <div class="crm-title">
+        {{ app.title }}
+      </div>
+    </button>
+  </div>
+
+</div>

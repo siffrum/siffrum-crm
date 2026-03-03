@@ -1,5 +1,6 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
+
 import { AddEmployeeComponent } from "./components/add-employee/add-employee.component";
 import { CompanyLettersComponent } from "./components/company-letters/company-letters.component";
 import { CompanyOverviewComponent } from "./components/company-overview/company-overview.component";
@@ -18,9 +19,10 @@ import { AdminLoginComponent } from "./components/super/admin-login/admin-login.
 import { CompanyListComponent } from "./components/super/company-list/company-list.component";
 import { SuperCompanyOverviewComponent } from "./components/super/super-company-overview/super-company-overview.component";
 import { TransactionsComponent } from "./components/transactions/transactions.component";
+
 import { AuthGuard } from "./guard/auth.guard";
-import { SideMenuComponent } from "./internal-components/side-menu/side-menu.component";
 import { RoleTypeSM } from "./service-models/app/enums/role-type-s-m.enum";
+
 import { CompanyAttendanceShiftComponent } from "./components/company-attendance-shift/company-attendance-shift.component";
 import { PayrollReportsComponent } from "./components/reports/payroll-reports/payroll-reports.component";
 import { ResetpasswordComponent } from "./components/password-configuration/resetpassword/resetpassword.component";
@@ -39,16 +41,44 @@ import { FailurePaymentComponent } from "./components/license-info/failure-payme
 import { SuccessPaymentComponent } from "./components/license-info/success-payment/success-payment.component";
 import { ContactUsComponent } from "./components/super/contact-us/contact-us.component";
 
+/** ✅ Internal Workspace Dashboard */
+import { InternalWorkspaceDashboardComponent } from "./components/internal-workspace-dashboard/internal-workspace-dashboard.component";
+
 const routes: Routes = [
   { path: "", redirectTo: "website", pathMatch: "full" },
-  
-  { path: 'website', loadChildren: () => import('./website-components/website/website.module').then(m => m.WebsiteModule) },
+  {
+    path: "website",
+    loadChildren: () =>
+      import("./website-components/website/website.module").then(
+        (m) => m.WebsiteModule
+      ),
+  },
 
+  /** PUBLIC */
   { path: "login", component: LoginComponent },
+  { path: "register", component: RegisterComponent },
+  { path: "changePassword", component: ChangePasswordComponent },
+  { path: "ResetPassword", component: ResetpasswordComponent },
+  { path: "forgotPassword", component: ForgotpasswordComponent },
 
+  /** LICENSE */
+  { path: "failure/:info", component: FailurePaymentComponent },
+  { path: "success/:info", component: SuccessPaymentComponent },
+  { path: "license", component: LicenseInfoComponent },
 
-  { path: "side-menu", component: SideMenuComponent },
+  /** ✅ INTERNAL WORKSPACE */
+  {
+    path: "internal",
+    component: InternalWorkspaceDashboardComponent,
+    canActivate: [AuthGuard],
+    data: {
+      allowedRole: [RoleTypeSM.ClientAdmin, RoleTypeSM.ClientEmployee],
+      moduleName: ModuleNameSM.DashBoard,
+      permissionType: [PermissionType.view],
+    },
+  },
 
+  /** CLIENT AREA */
   {
     path: "dashboard",
     component: DashboardComponent,
@@ -56,17 +86,10 @@ const routes: Routes = [
     data: {
       allowedRole: [RoleTypeSM.ClientAdmin, RoleTypeSM.ClientEmployee],
       moduleName: ModuleNameSM.DashBoard,
-      permissionType: [PermissionType.view]
-
+      permissionType: [PermissionType.view],
     },
   },
-  {path:'failure/:info',component:FailurePaymentComponent},
-  {path:'success/:info',component:SuccessPaymentComponent},
 
-  {
-    path: "license",
-    component: LicenseInfoComponent,
-  },
   {
     path: "employees-list",
     component: EmployeesListComponent,
@@ -74,7 +97,7 @@ const routes: Routes = [
     data: {
       allowedRole: [RoleTypeSM.ClientAdmin, RoleTypeSM.ClientEmployee],
       moduleName: ModuleNameSM.EmployeeDirectory,
-      permissionType: [PermissionType.view,PermissionType.edit]
+      permissionType: [PermissionType.view, PermissionType.edit],
     },
   },
 
@@ -85,7 +108,7 @@ const routes: Routes = [
     data: {
       allowedRole: [RoleTypeSM.ClientAdmin, RoleTypeSM.ClientEmployee],
       moduleName: ModuleNameSM.CompanyDetail,
-      permissionType: [PermissionType.view]
+      permissionType: [PermissionType.view],
     },
   },
 
@@ -96,8 +119,7 @@ const routes: Routes = [
     data: {
       allowedRole: [RoleTypeSM.ClientAdmin, RoleTypeSM.ClientEmployee],
       moduleName: ModuleNameSM.Leave,
-      permissionType: [PermissionType.view]
-
+      permissionType: [PermissionType.view],
     },
   },
 
@@ -108,9 +130,10 @@ const routes: Routes = [
     data: {
       allowedRole: [RoleTypeSM.ClientAdmin, RoleTypeSM.ClientEmployee],
       moduleName: ModuleNameSM.Leave,
-      permissionType: [PermissionType.view]
+      permissionType: [PermissionType.view],
     },
   },
+
   {
     path: "payroll-report",
     component: PayrollReportsComponent,
@@ -118,10 +141,10 @@ const routes: Routes = [
     data: {
       allowedRole: [RoleTypeSM.ClientAdmin, RoleTypeSM.ClientEmployee],
       moduleName: ModuleNameSM.Reports,
-      permissionType: [PermissionType.view]
-
+      permissionType: [PermissionType.view],
     },
   },
+
   {
     path: "attendance-report",
     component: AttendanceReportComponent,
@@ -129,10 +152,10 @@ const routes: Routes = [
     data: {
       allowedRole: [RoleTypeSM.ClientAdmin, RoleTypeSM.ClientEmployee],
       moduleName: ModuleNameSM.Reports,
-      permissionType: [PermissionType.view]
-
+      permissionType: [PermissionType.view],
     },
   },
+
   {
     path: "sql-report",
     component: DynamicSqlReportsComponent,
@@ -140,19 +163,18 @@ const routes: Routes = [
     data: {
       allowedRole: [RoleTypeSM.ClientAdmin, RoleTypeSM.ClientEmployee],
       moduleName: ModuleNameSM.Reports,
-      permissionType: [PermissionType.view]
-
+      permissionType: [PermissionType.view],
     },
   },
+
   {
     path: "company-letter",
     component: CompanyLettersComponent,
     canActivate: [AuthGuard],
     data: {
-      allowedRole: [RoleTypeSM.ClientAdmin,RoleTypeSM.ClientEmployee],
+      allowedRole: [RoleTypeSM.ClientAdmin, RoleTypeSM.ClientEmployee],
       moduleName: ModuleNameSM.CompanyLetters,
-      permissionType: [PermissionType.view]
-
+      permissionType: [PermissionType.view],
     },
   },
 
@@ -161,10 +183,9 @@ const routes: Routes = [
     component: PayrollStructureComponent,
     canActivate: [AuthGuard],
     data: {
-      allowedRole: [RoleTypeSM.ClientAdmin,RoleTypeSM.ClientEmployee],
+      allowedRole: [RoleTypeSM.ClientAdmin, RoleTypeSM.ClientEmployee],
       moduleName: ModuleNameSM.EmployeeGenericPayroll,
-      permissionType: [PermissionType.view]
-
+      permissionType: [PermissionType.view],
     },
   },
 
@@ -173,10 +194,9 @@ const routes: Routes = [
     component: TransactionsComponent,
     canActivate: [AuthGuard],
     data: {
-      allowedRole: [RoleTypeSM.ClientAdmin,RoleTypeSM.ClientEmployee],
+      allowedRole: [RoleTypeSM.ClientAdmin, RoleTypeSM.ClientEmployee],
       moduleName: ModuleNameSM.CompanyAccountTransaction,
-      permissionType: [PermissionType.view]
-
+      permissionType: [PermissionType.view],
     },
   },
 
@@ -187,8 +207,7 @@ const routes: Routes = [
     data: {
       allowedRole: [RoleTypeSM.ClientAdmin, RoleTypeSM.ClientEmployee],
       moduleName: ModuleNameSM.Employee,
-      permissionType: [PermissionType.view]
-
+      permissionType: [PermissionType.view],
     },
   },
 
@@ -199,7 +218,7 @@ const routes: Routes = [
     data: {
       allowedRole: [RoleTypeSM.ClientAdmin, RoleTypeSM.ClientEmployee],
       moduleName: ModuleNameSM.Employee,
-      permissionType: [PermissionType.view]
+      permissionType: [PermissionType.view],
     },
   },
 
@@ -208,12 +227,12 @@ const routes: Routes = [
     component: AddEmployeeComponent,
     canActivate: [AuthGuard],
     data: {
-      allowedRole: [RoleTypeSM.ClientAdmin,RoleTypeSM.ClientEmployee],
+      allowedRole: [RoleTypeSM.ClientAdmin, RoleTypeSM.ClientEmployee],
       moduleName: ModuleNameSM.Employee,
-      permissionType: [PermissionType.view]
-
+      permissionType: [PermissionType.view],
     },
   },
+
   {
     path: "attendance",
     component: EmployeeAttendanceComponent,
@@ -221,9 +240,10 @@ const routes: Routes = [
     data: {
       allowedRole: [RoleTypeSM.ClientAdmin, RoleTypeSM.ClientEmployee],
       moduleName: ModuleNameSM.Attendance,
-      permissionType: [PermissionType.view]
+      permissionType: [PermissionType.view],
     },
   },
+
   {
     path: "shift",
     component: CompanyAttendanceShiftComponent,
@@ -231,10 +251,11 @@ const routes: Routes = [
     data: {
       allowedRole: [RoleTypeSM.ClientAdmin, RoleTypeSM.ClientEmployee],
       moduleName: ModuleNameSM.Attendance,
-      permissionType: [PermissionType.view]
-
+      permissionType: [PermissionType.view],
     },
   },
+
+  /** ✅ SETTINGS */
   {
     path: "setting",
     component: SettingComponent,
@@ -242,55 +263,37 @@ const routes: Routes = [
     data: {
       allowedRole: [RoleTypeSM.ClientAdmin, RoleTypeSM.ClientEmployee],
       moduleName: ModuleNameSM.Setting,
-      permissionType: [PermissionType.view]
-
-    }
+      permissionType: [PermissionType.view],
+    },
   },
+
   {
     path: "departments",
-    component:CompanyDepartmentsComponent,
+    component: CompanyDepartmentsComponent,
     canActivate: [AuthGuard],
     data: {
       allowedRole: [RoleTypeSM.ClientAdmin, RoleTypeSM.ClientEmployee],
       moduleName: ModuleNameSM.Setting,
-      permissionType: [PermissionType.view]
-
-    }
-  },
-  {path:"register",component:RegisterComponent},
-  {
-    path: "changePassword",
-    component: ChangePasswordComponent,
-  },
-  {
-    path: "ResetPassword",
-    component: ResetpasswordComponent,
-  },
-  {
-    path: "forgotPassword",
-    component: ForgotpasswordComponent,
-  },
-  { path: "admin/login", component: AdminLoginComponent },
-
-  {
-    path: "admin",
-    children: [
-      { path: " ", redirectTo: "dashboard", pathMatch: "full" },
-      { path: "dashboard", component: AdminDashboardComponent },
-      { path: "companylist", component: CompanyListComponent},
-      { path: "overview/:Id", component: SuperCompanyOverviewComponent },
-      { path: "add-company", component: AddCompanyComponent },
-      {path:"sql",component:SqlReportComponent},
-      {path:"contact-us",component:ContactUsComponent}
-    ],
-    canActivate: [AuthGuard],
-    data: {
-      allowedRole: [RoleTypeSM.SuperAdmin, RoleTypeSM.SystemAdmin],
+      permissionType: [PermissionType.view],
     },
   },
 
-
-
+  /** ADMIN */
+  { path: "admin/login", component: AdminLoginComponent },
+  {
+    path: "admin",
+    children: [
+      { path: "", redirectTo: "dashboard", pathMatch: "full" },
+      { path: "dashboard", component: AdminDashboardComponent },
+      { path: "companylist", component: CompanyListComponent },
+      { path: "overview/:Id", component: SuperCompanyOverviewComponent },
+      { path: "add-company", component: AddCompanyComponent },
+      { path: "sql", component: SqlReportComponent },
+      { path: "contact-us", component: ContactUsComponent },
+    ],
+    canActivate: [AuthGuard],
+    data: { allowedRole: [RoleTypeSM.SuperAdmin, RoleTypeSM.SystemAdmin] },
+  },
 
   { path: "**", pathMatch: "full", component: NotFoundComponent },
 ];

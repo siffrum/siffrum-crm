@@ -1,140 +1,304 @@
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-lg-12 col-md-12 col-sm-12 col-12 mb-lg-2">
-      <button class="btn coinButton" (click)="openModal(0)" *ngIf="viewModel.Permission?.add"> Add Component &#43;
+<section class="ps-shell">
+  <!-- Header / Actions -->
+  <div class="ps-head">
+    <div class="ps-title">
+      <div class="kicker">Payroll</div>
+      <h2 class="title">Salary Components</h2>
+      <p class="sub">Create and manage generic payroll components used in salary calculations.</p>
+    </div>
+
+    <div class="ps-actions">
+      <button
+        class="btn ps-btn-primary"
+        (click)="openModal(0)"
+        *ngIf="viewModel.Permission?.add"
+        type="button">
+        <i class="bi bi-plus-lg"></i>
+        <span>Add Component</span>
       </button>
     </div>
-    <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-      <table class="table">
+  </div>
+
+  <!-- Table Card -->
+  <div class="ps-card">
+    <!-- Desktop Table -->
+    <div class="ps-table-wrap d-none d-md-block">
+      <table class="table ps-table">
         <thead>
           <tr>
-            <th class="firstTableHead"> Salary Component </th>
+            <th class="th-first">Salary Component</th>
             <th>Description</th>
-            <th> Percentage </th>
+            <th class="th-small">Percentage</th>
             <th>Calculation Type</th>
             <th>Period Type</th>
-            <th *ngIf="viewModel.Permission?.delete || viewModel.Permission?.edit">Actions</th>
+            <th class="th-actions" *ngIf="viewModel.Permission?.delete || viewModel.Permission?.edit">Actions</th>
           </tr>
         </thead>
+
         <tbody>
           <tr *ngFor="let data of viewModel.genericPayrolls">
-            <td> {{data.name}} </td>
-            <td> {{data.description}}</td>
-            <td> {{data.percentage}}%</td>
-            <td>{{data.componentCalculationType}}</td>
-            <td> {{data.componentPeriodType}}</td>
-            <td *ngIf="viewModel.Permission?.delete || viewModel.Permission?.edit">
-              <i class="bi bi-pencil-square smallIcon ms-0" (click)="openModal(data.id)"
-                *ngIf="viewModel.Permission?.edit" (mouseenter)="viewModel.showTooltip = true"
-                (mouseleave)="viewModel.showTooltip = false" [attr.title]="'Edit'" [attr.data-placement]="'left'"
-                [ngClass]="{ 'tooltip-show': viewModel.showTooltip }"></i>
-              <i class="bi bi-trash smallIcon" (click)="deleteGenericPayrollComponent(data.id)"
-                *ngIf="viewModel.Permission?.delete" (mouseenter)="viewModel.showTooltip = true"
-                (mouseleave)="viewModel.showTooltip = false" [attr.title]="'Delete'" [attr.data-placement]="'left'"
-                [ngClass]="{ 'tooltip-show': viewModel.showTooltip }"></i>
+            <td class="td-strong">
+              <div class="td-main">{{ data.name }}</div>
+            </td>
+
+            <td>
+              <div class="td-muted">
+                {{ data.description || '—' }}
+              </div>
+            </td>
+
+            <td class="td-chip">
+              <span class="chip">
+                {{ data.percentage }}%
+              </span>
+            </td>
+
+            <td>
+              <span class="pill">{{ data.componentCalculationType }}</span>
+            </td>
+
+            <td>
+              <span class="pill pill-soft">{{ data.componentPeriodType }}</span>
+            </td>
+
+            <td class="td-actions" *ngIf="viewModel.Permission?.delete || viewModel.Permission?.edit">
+              <button
+                class="icon-btn"
+                type="button"
+                (click)="openModal(data.id)"
+                *ngIf="viewModel.Permission?.edit"
+                aria-label="Edit"
+                title="Edit">
+                <i class="bi bi-pencil-square"></i>
+              </button>
+
+              <button
+                class="icon-btn danger"
+                type="button"
+                (click)="deleteGenericPayrollComponent(data.id)"
+                *ngIf="viewModel.Permission?.delete"
+                aria-label="Delete"
+                title="Delete">
+                <i class="bi bi-trash"></i>
+              </button>
+            </td>
+          </tr>
+
+          <tr *ngIf="!viewModel.genericPayrolls || viewModel.genericPayrolls.length === 0">
+            <td [attr.colspan]="(viewModel.Permission?.delete || viewModel.Permission?.edit) ? 6 : 5">
+              <div class="ps-empty">
+                <div class="empty-ic"><i class="bi bi-inbox"></i></div>
+                <div class="empty-title">No components yet</div>
+                <div class="empty-sub">Add a salary component to get started.</div>
+
+                <button
+                  class="btn ps-btn-ghost mt-2"
+                  (click)="openModal(0)"
+                  *ngIf="viewModel.Permission?.add"
+                  type="button">
+                  <i class="bi bi-plus-lg"></i>
+                  Add Component
+                </button>
+              </div>
             </td>
           </tr>
         </tbody>
       </table>
     </div>
-  </div>
-</div>
-<!-- Open Modal to Add Generic Payroll Component -->
-<div class="modal expandIn" tabindex="-1" role="dialog" [ngStyle]="{'display':viewModel.displayStyle}">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <div class="col-lg-11 col-md-11 col-sm-11 col-11" *ngIf="viewModel.addMode">
-          <h4>Add Generic Payroll Component</h4>
+
+    <!-- Mobile Cards -->
+    <div class="ps-mobile d-block d-md-none">
+      <div class="ps-mobile-card" *ngFor="let data of viewModel.genericPayrolls">
+        <div class="m-top">
+          <div class="m-name">{{ data.name }}</div>
+          <div class="m-chip">{{ data.percentage }}%</div>
+        </div>
+
+        <div class="m-row">
+          <span class="m-label">Description</span>
+          <span class="m-value">{{ data.description || '—' }}</span>
+        </div>
+
+        <div class="m-row">
+          <span class="m-label">Calculation</span>
+          <span class="m-value">{{ data.componentCalculationType }}</span>
+        </div>
+
+        <div class="m-row">
+          <span class="m-label">Period</span>
+          <span class="m-value">{{ data.componentPeriodType }}</span>
+        </div>
+
+        <div class="m-actions" *ngIf="viewModel.Permission?.delete || viewModel.Permission?.edit">
+          <button
+            class="btn ps-btn-lite"
+            type="button"
+            (click)="openModal(data.id)"
+            *ngIf="viewModel.Permission?.edit">
+            <i class="bi bi-pencil-square"></i>
+            Edit
+          </button>
+
+          <button
+            class="btn ps-btn-danger"
+            type="button"
+            (click)="deleteGenericPayrollComponent(data.id)"
+            *ngIf="viewModel.Permission?.delete">
+            <i class="bi bi-trash"></i>
+            Delete
+          </button>
+        </div>
       </div>
-      <div class="col-lg-11 col-md-11 col-sm-11 col-11" *ngIf="viewModel.editMode">
-        <h4>Edit Generic Payroll Component</h4>
+
+      <div class="ps-empty ps-empty-mobile" *ngIf="!viewModel.genericPayrolls || viewModel.genericPayrolls.length === 0">
+        <div class="empty-ic"><i class="bi bi-inbox"></i></div>
+        <div class="empty-title">No components yet</div>
+        <div class="empty-sub">Add a salary component to get started.</div>
+
+        <button
+          class="btn ps-btn-ghost mt-2"
+          (click)="openModal(0)"
+          *ngIf="viewModel.Permission?.add"
+          type="button">
+          <i class="bi bi-plus-lg"></i>
+          Add Component
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MODAL (keeps your displayStyle logic) -->
+<div class="ps-modal-backdrop" [ngStyle]="{'display': viewModel.displayStyle}">
+  <div class="ps-modal">
+    <div class="ps-modal-head">
+      <div class="modal-title">
+        <div class="kicker" *ngIf="viewModel.addMode">Create</div>
+        <div class="kicker" *ngIf="viewModel.editMode">Update</div>
+
+        <h4 *ngIf="viewModel.addMode">Add Generic Payroll Component</h4>
+        <h4 *ngIf="viewModel.editMode">Edit Generic Payroll Component</h4>
+
+        <p class="sub">Define how this component contributes to payroll calculations.</p>
+      </div>
+
+      <button type="button" class="x-btn" aria-label="Close" (click)="closePopup(payrollForm)">
+        <i class="bi bi-x-lg"></i>
+      </button>
     </div>
 
+    <form #payrollForm="ngForm" class="ps-form">
+      <div class="ps-modal-body">
+        <!-- Name -->
+        <div class="field">
+          <label>Salary Type <span class="req">*</span></label>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Enter Salary Type"
+            [(ngModel)]="viewModel.selectedGenericPayroll.name"
+            minlength="2"
+            maxlength="20"
+            name="name"
+            #name="ngModel"
+            required
+            pattern="^[A-Za-z][A-Za-z0-9\s]*$" />
 
-        <button type="button" class="btn-close" aria-label="Close" (click)="closePopup(payrollForm)"></button>
-      </div>
-      <form #payrollForm="ngForm">
-        <div class="modal-body">
-          <div class="row">
-            <div class="col-lg-5 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
-              <label> Salary Type<span class="text-danger fs-5">*</span> </label>
-            </div>
-            <div class="col-lg-7 col-md-6 col-sm-12 col-12 ">
-              <input type="text" class="form-control my-2" placeholder="Enter Salary Type"
-                [(ngModel)]="viewModel.selectedGenericPayroll.name" minlength="2" maxlength="20" name="name"
-                #name="ngModel" required pattern="^[A-Za-z][A-Za-z0-9\s]*$">
-              <div *ngFor="let validation of viewModel.validations.name">
-                <div *ngIf="(name.touched || viewModel.formSubmitted) && name.hasError(validation.type)"
-                  class="text-danger validationMsg">
-                  {{validation.message}}
-                </div>
-              </div>
-            </div>
-
-            <div class="col-lg-5 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
-              <label> Percentage<span class="text-danger fs-5">*</span> </label>
-            </div>
-            <div class="col-lg-7 col-md-6 col-sm-12 col-12 ">
-              <input type="number" value="" class="form-control my-2" placeholder="Enter Percentage "
-                [(ngModel)]="viewModel.selectedGenericPayroll.percentage" minlength="1" maxlength="3" name="percentage"
-                #percentage="ngModel" pattern="^(100(\.0{1,2})?|\d{0,2}(\.\d{1,2})?)%?$" required>
-              <div *ngFor="let validation of viewModel.validations.percentage">
-                <div *ngIf="(percentage.touched || viewModel.formSubmitted) && percentage.hasError(validation.type)"
-                  class="text-danger validationMsg">
-                  {{validation.message}}
-                </div>
-              </div>
-            </div>
-
-            <div class="col-lg-5 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
-              <label> Description </label>
-            </div>
-            <div class="col-lg-7 col-md-6 col-sm-12 col-12 ">
-              <textarea type="text" value="" class="form-control my-2" placeholder="Enter Salary Description"
-                [(ngModel)]="viewModel.selectedGenericPayroll.description" minlength="3" maxlength="50"
-                name="description" #description="ngModel" pattern="^[A-Za-z][A-Za-z0-9\s]*$"></textarea>
-              <div *ngFor="let validation of viewModel.validations.description">
-                <div *ngIf="(description.touched || viewModel.formSubmitted) && description.hasError(validation.type)"
-                  class="text-danger validationMsg">
-                  {{validation.message}}
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-5 col-md-6 col-sm-12 col-12 p-lg-2 p-md-2 p-sm-2 p-2">
-              <label> Period Type<span class="text-danger fs-5">*</span> </label>
-            </div>
-            <div class="col-lg-7 col-md-6 col-sm-12 col-12 ">
-              <select class="form-select p-2" aria-label="Default select example"
-                [(ngModel)]="viewModel.selectedGenericPayroll.componentPeriodType" name="componentPeriodType"
-                #componentPeriodType="ngModel" required>
-                <option value="undefined" disabled selected>Select Period Type</option>
-                <option selected *ngFor="let item of viewModel.componentPeriodTypeList" value="{{item}}"> {{item}}
-                </option>
-              </select>
-              <div *ngFor="let validation of viewModel.validations.componentPeriodType">
-                <div
-                  *ngIf="(componentPeriodType.touched || viewModel.formSubmitted) && componentPeriodType.hasError(validation.type)"
-                  class="text-danger validationMsg">
-                  {{validation.message}}
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <div *ngIf="viewModel.selectedGenericPayroll.id==0">
-              <button class="btn coinButton " (click)="addGenericPayrollComponent(payrollForm)"
-                *ngIf="viewModel.Permission?.add">
-                Add Component
-              </button>
-            </div>
-            <div *ngIf="viewModel.showButton">
-              <button class="btn coinButton" (click)="updateGenericPayrollComponent(payrollForm)"
-                *ngIf="viewModel.Permission?.edit"> Update Details </button>
+          <div class="err" *ngFor="let validation of viewModel.validations.name">
+            <div *ngIf="(name.touched || viewModel.formSubmitted) && name.hasError(validation.type)">
+              {{ validation.message }}
             </div>
           </div>
         </div>
-      </form>
-    </div>
+
+        <!-- Percentage -->
+        <div class="field">
+          <label>Percentage <span class="req">*</span></label>
+          <input
+            type="number"
+            class="form-control"
+            placeholder="Enter Percentage"
+            [(ngModel)]="viewModel.selectedGenericPayroll.percentage"
+            minlength="1"
+            maxlength="3"
+            name="percentage"
+            #percentage="ngModel"
+            pattern="^(100(\.0{1,2})?|\d{0,2}(\.\d{1,2})?)%?$"
+            required />
+
+          <div class="err" *ngFor="let validation of viewModel.validations.percentage">
+            <div *ngIf="(percentage.touched || viewModel.formSubmitted) && percentage.hasError(validation.type)">
+              {{ validation.message }}
+            </div>
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div class="field full">
+          <label>Description</label>
+          <textarea
+            class="form-control"
+            placeholder="Enter Salary Description"
+            [(ngModel)]="viewModel.selectedGenericPayroll.description"
+            minlength="3"
+            maxlength="50"
+            name="description"
+            #description="ngModel"
+            pattern="^[A-Za-z][A-Za-z0-9\s]*$"></textarea>
+
+          <div class="err" *ngFor="let validation of viewModel.validations.description">
+            <div *ngIf="(description.touched || viewModel.formSubmitted) && description.hasError(validation.type)">
+              {{ validation.message }}
+            </div>
+          </div>
+        </div>
+
+        <!-- Period Type -->
+        <div class="field full">
+          <label>Period Type <span class="req">*</span></label>
+          <select
+            class="form-select"
+            [(ngModel)]="viewModel.selectedGenericPayroll.componentPeriodType"
+            name="componentPeriodType"
+            #componentPeriodType="ngModel"
+            required>
+            <option value="undefined" disabled selected>Select Period Type</option>
+            <option *ngFor="let item of viewModel.componentPeriodTypeList" [value]="item">
+              {{ item }}
+            </option>
+          </select>
+
+          <div class="err" *ngFor="let validation of viewModel.validations.componentPeriodType">
+            <div *ngIf="(componentPeriodType.touched || viewModel.formSubmitted) && componentPeriodType.hasError(validation.type)">
+              {{ validation.message }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ps-modal-foot">
+        <button type="button" class="btn ps-btn-ghost" (click)="closePopup(payrollForm)">
+          Cancel
+        </button>
+
+        <button
+          class="btn ps-btn-primary"
+          type="button"
+          (click)="addGenericPayrollComponent(payrollForm)"
+          *ngIf="viewModel.selectedGenericPayroll.id == 0 && viewModel.Permission?.add">
+          <i class="bi bi-check2"></i>
+          Add Component
+        </button>
+
+        <button
+          class="btn ps-btn-primary"
+          type="button"
+          (click)="updateGenericPayrollComponent(payrollForm)"
+          *ngIf="viewModel.showButton && viewModel.Permission?.edit">
+          <i class="bi bi-save2"></i>
+          Update Details
+        </button>
+      </div>
+    </form>
   </div>
 </div>

@@ -1,95 +1,294 @@
-<div class="container-fluid">
-    <div class="row p-2">
-        <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-            <label class="label"> Select Payroll Month: </label>
-        </div>
-    </div>
-    <div class="row p-2">
-        <div class="col-lg-6 col-md-6 col-sm-6 col-12">
-            <select class="form-select" [(ngModel)]="viewModel.selectedMonth" aria-label="Default select example">
-                <option value="" disabled>SELECT MONTH</option>
-                <option *ngFor="let item of viewModel.months" [value]="item"> {{item}} </option>
-            </select>
-            <!-- <select class="form-control" [(ngModel)]="viewModel.selectedMonth">
-                <option *ngFor="let item of viewModel.months"> {{item}} </option>
-            </select> -->
-        </div>
-        <div class="col-lg-6 col-md-6 col-sm-6 col-12 mt-2 text-end">
-            <button class="btn coinButton" (click)="getTransactionMonthlyBased()"> View Payroll </button>
-        </div>
-    </div>
-    <div class="row mt-2" *ngIf="viewModel.showTable">
-        <div class="col-lg-12 col-md-12 col-sm-12 col-12  text-end"><label>Total Count:
-                <span>{{viewModel.pagination.totalCount}}</span></label> </div>
-        <div class="col-lg-12col-md-12 col-sm-12 col-12 tableFixHead">
-            <table class="table  table-striped">
-                <thead>
-                    <tr>
-                        <th> Employee Name </th>
-                        <th> Designation </th>
-                        <th> Employee Status </th>
-                        <th> Payment For </th>
-                        <th> Payment Type </th>
-                        <th> Payment Amount </th>
-                        <th></th>
-                        <th> </th>
+<div class="iw-page container-fluid">
 
-                    </tr>
-                </thead>
-                <tbody *ngFor="let item of viewModel.payrollTransactionList">
-                    <tr>
-                        <td> {{item.employeeName}} </td>
-                        <td> {{item.designation}} </td>
-                        <td> {{item.employeeStatus}} </td>
-                        <td> {{item.paymentFor}} </td>
-                        <td> {{item.paymentType}} </td>
-                        <td> {{item.paymentAmount}} </td>
-                        <td>
-                            <div class="row">
-                                <div class="col-lg-12"
-                                    *ngIf="item.employeeStatus.toString() == 'Active' && item.paymentPaid == false">
-                                    <button class="btn notPaidBtn"> Not Paid </button>
-                                </div>
-                                <div class="col-lg-12" *ngIf="item.paymentPaid == true">
-                                    <button class="btn paidBtn"> Paid </button>
-                                </div>
-                                <div class="col-lg-12" *ngIf="item.employeeStatus.toString() == 'Resigned'">
-                                    <button class=" resignedBtn"> Resigned </button>
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="row">
-                                <div class="col-lg-12"
-                                    *ngIf="item.employeeStatus.toString() == 'Active' && !item.paymentPaid && item.paymentAmount == 0 &&viewModel.Permission?.add">
-                                    <button class="btn coinButton"
-                                        (click)="generateEmployeePayrollByClientUserId(item)"> Generate </button>
-                                </div>
-                                <div class="col-lg-12"
-                                    *ngIf="item.employeeStatus.toString() == 'Active' && !item.paymentPaid && item.paymentAmount > 0">
-                                    <button class="btn payNowBtn"> Pay Now </button>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr class="showErrorMsg">
-                        <td colspan="8" width="100"
-                            *ngIf="item.employeeStatus.toString() == 'Active' && item.errorInGeneration == true">
-                            <small class="errorMessage"> {{item.errorMessage}} Above </small>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+  <!-- Header / Controls -->
+  <div class="iw-card iw-card--controls">
+    <div class="row g-3 align-items-end">
+
+      <!-- Month -->
+      <div class="col-lg-4 col-md-6 col-12">
+        <label class="iw-label">Select Payroll Month</label>
+        <select
+          class="form-select iw-select"
+          [(ngModel)]="viewModel.selectedMonth"
+          aria-label="Select payroll month"
+        >
+          <option value="" disabled>SELECT MONTH</option>
+          <option *ngFor="let item of viewModel.months" [value]="item">
+            {{ item }}
+          </option>
+        </select>
+      </div>
+
+      <!-- Search -->
+      <div class="col-lg-5 col-md-6 col-12">
+        <label class="iw-label">Search</label>
+        <div class="iw-search">
+          <i class="bi bi-search"></i>
+          <input
+            class="form-control iw-search__input"
+            type="text"
+            placeholder="Search employee / designation / type..."
+            [(ngModel)]="searchText"
+            (input)="onSearch()"
+          />
         </div>
-        <div class="col-lg-12 col-md-12 col-sm-12 col-12 d-flex justify-content-center pt-1"
-            *ngIf="viewModel.pagination && viewModel.pagination.totalCount>0">
-            <pagination (selectedPageNum)="loadPagedataWithPagination($event)" [viewModel]="viewModel.pagination">
-            </pagination>
-        </div>
-        <div class="col-lg-12 text-end">
-            <button class="btn coinButton me-3" (click)="generateAllEmployeePayroll()"
-                *ngIf="viewModel.showGenerateAllBtn"> Generate All </button>
-            <button class="btn payNowBtn" *ngIf="viewModel.showPayAllBtn"> Pay All </button>
-        </div>
+      </div>
+
+      <!-- Buttons -->
+      <div class="col-lg-3 col-12 d-flex gap-2 justify-content-lg-end">
+        <button
+          class="btn iw-btn iw-btn--ghost"
+          type="button"
+          (click)="toggleAmount()"
+          [disabled]="!viewModel.showTable"
+        >
+          <i class="bi" [ngClass]="hideAmount ? 'bi-eye' : 'bi-eye-slash'"></i>
+          <span class="ms-2">{{ hideAmount ? 'Show Amount' : 'Hide Amount' }}</span>
+        </button>
+
+        <button
+          class="btn iw-btn iw-btn--primary"
+          type="button"
+          (click)="openPayrollDrawer()"
+          [disabled]="!viewModel.showTable"
+        >
+          <i class="bi bi-layout-sidebar-inset-reverse me-2"></i>
+          Open Drawer
+        </button>
+      </div>
     </div>
+
+    <!-- View Payroll -->
+    <div class="row mt-3">
+      <div class="col-12 d-flex justify-content-end">
+        <button class="btn iw-btn iw-btn--primary" (click)="getTransactionMonthlyBased()">
+          <i class="bi bi-eye me-2"></i> View Payroll
+        </button>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="iw-stats mt-3" *ngIf="viewModel.showTable">
+      <div class="iw-pill">
+        <div class="iw-pill__k">Total</div>
+        <!-- ✅ FIX: use getter -->
+        <div class="iw-pill__v">{{ totalCountSafe }}</div>
+      </div>
+
+      <div class="iw-pill iw-pill--green">
+        <div class="iw-pill__k">Paid</div>
+        <div class="iw-pill__v">{{ paidCount }}</div>
+      </div>
+
+      <div class="iw-pill iw-pill--red">
+        <div class="iw-pill__k">Not Paid</div>
+        <div class="iw-pill__v">{{ notPaidCount }}</div>
+      </div>
+
+      <div class="iw-pill iw-pill--amber">
+        <div class="iw-pill__k">Resigned</div>
+        <div class="iw-pill__v">{{ resignedCount }}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TABLE -->
+  <div class="iw-card mt-3" *ngIf="viewModel.showTable">
+
+    <div class="iw-card__head">
+      <div class="iw-title">
+        Payroll Transactions
+        <span class="iw-sub">Month: {{ viewModel.selectedMonth || '-' }}</span>
+      </div>
+
+      <div class="iw-actions">
+        <button
+          class="btn iw-btn iw-btn--primary"
+          (click)="generateAllEmployeePayroll()"
+          *ngIf="viewModel.showGenerateAllBtn"
+        >
+          <i class="bi bi-cpu me-2"></i> Generate All
+        </button>
+
+        <button class="btn iw-btn iw-btn--success" *ngIf="viewModel.showPayAllBtn">
+          <i class="bi bi-cash-coin me-2"></i> Pay All
+        </button>
+      </div>
+    </div>
+
+    <div class="iw-tableWrap tableFixHead">
+      <table class="table iw-table mb-0">
+        <thead>
+          <tr>
+            <th>Employee</th>
+            <th>Designation</th>
+            <th>Status</th>
+            <th>Payment For</th>
+            <th>Payment Type</th>
+            <th class="text-end">Amount</th>
+            <th class="text-center">State</th>
+            <th class="text-end">Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <ng-container *ngFor="let item of filteredList">
+            <tr>
+              <td class="iw-emp">
+                <div class="iw-emp__avatar">
+                  {{ (item.employeeName || '?').charAt(0) }}
+                </div>
+                <div class="iw-emp__meta">
+                  <div class="iw-emp__name">{{ item.employeeName }}</div>
+                  <div class="iw-emp__role">{{ item.designation }}</div>
+                </div>
+              </td>
+
+              <td>{{ item.designation }}</td>
+
+              <td>
+                <span
+                  class="iw-chip"
+                  [ngClass]="{
+                    'iw-chip--green': isActiveStatus(item),
+                    'iw-chip--amber': isResignedStatus(item)
+                  }"
+                >
+                  {{ item.employeeStatus }}
+                </span>
+              </td>
+
+              <td>{{ item.paymentFor }}</td>
+              <td>{{ item.paymentType }}</td>
+
+              <td class="text-end">
+                <span *ngIf="hideAmount">••••</span>
+                <span *ngIf="!hideAmount">{{ item.paymentAmount }}</span>
+              </td>
+
+              <td class="text-center">
+                <span class="iw-badge" *ngIf="isActiveStatus(item) && item.paymentPaid === false">
+                  Not Paid
+                </span>
+
+                <span class="iw-badge iw-badge--paid" *ngIf="item.paymentPaid === true">
+                  Paid
+                </span>
+
+                <span class="iw-badge iw-badge--resigned" *ngIf="isResignedStatus(item)">
+                  Resigned
+                </span>
+              </td>
+
+              <td class="text-end">
+                <div class="d-flex gap-2 justify-content-end flex-wrap">
+                  <button
+                    class="btn iw-btn iw-btn--primary"
+                    *ngIf="isActiveStatus(item)
+                      && !item.paymentPaid
+                      && (item.paymentAmount || 0) == 0
+                      && viewModel.Permission?.add"
+                    (click)="generateEmployeePayrollByClientUserId(item)"
+                  >
+                    Generate
+                  </button>
+
+                  <button
+                    class="btn iw-btn iw-btn--success"
+                    *ngIf="isActiveStatus(item)
+                      && !item.paymentPaid
+                      && (item.paymentAmount || 0) > 0"
+                  >
+                    Pay Now
+                  </button>
+
+                  <button
+                    class="btn iw-btn iw-btn--ghost"
+                    *ngIf="item.paymentPaid === true"
+                    (click)="openHistoryFromRow(item)"
+                  >
+                    Payslip
+                  </button>
+                </div>
+              </td>
+            </tr>
+
+            <tr class="iw-rowError" *ngIf="isActiveStatus(item) && item.errorInGeneration === true">
+              <td colspan="8">
+                <i class="bi bi-exclamation-triangle me-2"></i>
+                {{ item.errorMessage }} Above
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pagination -->
+    <div class="col-12 d-flex justify-content-center pt-2" *ngIf="totalCountSafe > 0">
+      <pagination
+        (selectedPageNum)="loadPagedataWithPagination($event)"
+        [viewModel]="viewModel.pagination"
+      ></pagination>
+    </div>
+  </div>
+
+  <!-- RIGHT DRAWER -->
+  <div class="iw-drawer-overlay" [class.show]="drawerOpen" (click)="closePayrollDrawer()"></div>
+
+  <aside class="iw-drawer-right" [class.open]="drawerOpen">
+    <div class="iw-drawer-head">
+      <div>
+        <div class="iw-drawer-title">Payroll</div>
+        <div class="iw-drawer-sub">History & Payslips</div>
+      </div>
+
+      <button type="button" class="iw-drawer-exit" (click)="closePayrollDrawer()" aria-label="Close">
+        <i class="bi bi-x-lg"></i>
+      </button>
+    </div>
+
+    <div class="iw-drawer-tabs">
+      <button type="button" class="iw-tab" [class.active]="drawerTab==='history'" (click)="drawerTab='history'">
+        History
+      </button>
+      <button type="button" class="iw-tab" [class.active]="drawerTab==='payslips'" (click)="drawerTab='payslips'">
+        Payslips
+      </button>
+    </div>
+
+    <div class="iw-drawer-body">
+      <ng-container *ngIf="drawerTab==='history'">
+        <div class="iw-empty" *ngIf="historyList.length === 0">
+          No history yet. Open a payslip from the list or complete a payment.
+        </div>
+
+        <div class="iw-drawer-item" *ngFor="let h of historyList">
+          <div class="iw-dot"></div>
+          <div class="flex-grow-1">
+            <div class="iw-drawer-item-top">
+              <div class="iw-drawer-item-title">{{ h.title }}</div>
+              <div class="iw-drawer-item-time">{{ h.time }}</div>
+            </div>
+            <div class="iw-drawer-item-sub">{{ h.sub }}</div>
+          </div>
+        </div>
+      </ng-container>
+
+      <ng-container *ngIf="drawerTab==='payslips'">
+        <div class="iw-empty" *ngIf="payslipList.length === 0">No payslips found.</div>
+
+        <div class="iw-slip" *ngFor="let p of payslipList">
+          <div>
+            <div class="iw-slip-title">{{ p.month }}</div>
+            <div class="iw-slip-sub">{{ p.file }}</div>
+          </div>
+          <button type="button" class="btn iw-btn iw-btn--ghost iw-btn-sm" (click)="downloadPayslip(p)">
+            Download
+          </button>
+        </div>
+      </ng-container>
+    </div>
+  </aside>
+
 </div>

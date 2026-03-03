@@ -87,11 +87,14 @@
 
           <!-- ROUTE ITEM -->
           <li
-            *ngIf="menuItem.itemRoute.length > 0"
+            *ngIf="$any(menuItem)?.itemRoute && $any(menuItem).itemRoute.length > 0"
             class="iw-item"
-            [routerLink]="menuItem.itemRoute"
+            [routerLink]="getMenuRouterLink(menuItem)"
+            [queryParams]="getMenuQueryParams(menuItem)"
             routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }"
             [ngClass]="{ 'separation-line': menuItem.itemName === 'Pricing' }"
+            (click)="hideSideMenu()"
           >
             <span class="iw-ic">
               <i [class]="menuItem.iconName" [title]="menuItem.itemName"></i>
@@ -109,7 +112,7 @@
 
           <!-- DROPDOWN ITEM -->
           <li
-            *ngIf="menuItem.itemRoute.length <= 0"
+            *ngIf="!$any(menuItem)?.itemRoute || $any(menuItem).itemRoute.length <= 0"
             class="iw-item dropdown-btn"
             (click)="toggleSubItems(menuItem)"
             routerLinkActive="active"
@@ -146,15 +149,17 @@
             <!-- NORMAL SUB ITEMS -->
             <ng-container *ngFor="let subItem of menuItem.subItems">
               <li
-                *ngIf="subItem.itemRoute.length > 0"
+                *ngIf="$any(subItem)?.itemRoute && $any(subItem).itemRoute.length > 0"
                 class="iw-subitem"
-                [routerLink]="subItem.itemRoute"
+                [routerLink]="$any(subItem).itemRoute"
                 routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: true }"
+                (click)="hideSideMenu()"
               >
                 <span class="iw-sub-ic">
-                  <i class="bi bi-graph-up" [title]="subItem.itemName"></i>
+                  <i class="bi bi-graph-up" [title]="$any(subItem).itemName"></i>
                 </span>
-                <span class="iw-sub-label">{{ subItem.itemName }}</span>
+                <span class="iw-sub-label">{{ $any(subItem).itemName }}</span>
               </li>
             </ng-container>
 
@@ -169,7 +174,7 @@
       *ngIf="_commonService.layoutVM.tokenRole == 1 || _commonService.layoutVM.tokenRole == 2"
     >
       <ng-container *ngFor="let menuItem of _commonService.layoutVM.superAdminSideMenuItems">
-        <li class="iw-item" routerLinkActive="active" [routerLink]="menuItem.itemRoute">
+        <li class="iw-item" routerLinkActive="active" [routerLink]="menuItem.itemRoute" (click)="hideSideMenu()">
           <span class="iw-ic">
             <i [class]="menuItem.iconName"></i>
           </span>

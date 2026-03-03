@@ -1,122 +1,346 @@
-#loader {
-    bottom: 0;
-    height: 175px;
-    left: 0;
-    margin: auto;
-    position: absolute;
-    right: 0;
-    top: 0;
-    width: 175px;
+:host {
+  display: block;
+}
+
+/* =========================
+   ROOT OVERLAY
+========================= */
+.loader-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(248, 250, 252, 0.9); /* Light Slate */
+  backdrop-filter: blur(10px);
+}
+
+/* Container Card */
+.loader-card {
+  width: 100%;
+  max-width: 450px;
+  padding: 40px;
+  text-align: center;
+}
+
+/* Stage */
+.stage {
+  position: relative;
+  height: 180px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.scene-flex {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  position: relative;
+  z-index: 2;
+}
+
+/* =========================
+   THE RUNNER
+========================= */
+.runner-wrapper {
+  width: 120px;
+  height: 120px;
+}
+
+.runner-svg {
+  width: 100%;
+  height: 100%;
+  stroke: #1e293b;
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+
+  .character {
+    animation: character-bob 0.6s infinite ease-in-out;
+    transform-origin: center;
   }
-  #loader {
-    bottom: 0;
-    height: 175px;
-    left: 0;
-    margin: auto;
-    position: absolute;
-    right: 0;
-    top: 0;
-    width: 175px;
-  }
-  #loader .dot {
-    bottom: 0;
-    height: 100%;
-    left: 0;
-    margin: auto;
-    position: absolute;
-    right: 0;
-    top: 0;
-    width: 87.5px;
-  }
-  #loader .dot::before {
-    border-radius: 100%;
-    content: "";
-    height: 87.5px;
-    left: 0;
-    position: absolute;
-    right: 0;
-    top: 0;
-    transform: scale(0);
-    width: 87.5px;
-  }
-  #loader .dot:nth-child(7n+1) {
-    transform: rotate(45deg);
-  }
-  #loader .dot:nth-child(7n+1)::before {
-    animation: 0.8s linear 0.1s normal none infinite running load;
-    background: #00ff80 none repeat scroll 0 0;
-  }
-  #loader .dot:nth-child(7n+2) {
-    transform: rotate(90deg);
-  }
-  #loader .dot:nth-child(7n+2)::before {
-    animation: 0.8s linear 0.2s normal none infinite running load;
-    background: #00ffea none repeat scroll 0 0;
-  }
-  #loader .dot:nth-child(7n+3) {
-    transform: rotate(135deg);
-  }
-  #loader .dot:nth-child(7n+3)::before {
-    animation: 0.8s linear 0.3s normal none infinite running load;
-    background: #00aaff none repeat scroll 0 0;
-  }
-  #loader .dot:nth-child(7n+4) {
-    transform: rotate(180deg);
-  }
-  #loader .dot:nth-child(7n+4)::before {
-    animation: 0.8s linear 0.4s normal none infinite running load;
-    background: #0040ff none repeat scroll 0 0;
-  }
-  #loader .dot:nth-child(7n+5) {
-    transform: rotate(225deg);
-  }
-  #loader .dot:nth-child(7n+5)::before {
-    animation: 0.8s linear 0.5s normal none infinite running load;
-    background: #2a00ff none repeat scroll 0 0;
-  }
-  #loader .dot:nth-child(7n+6) {
-    transform: rotate(270deg);
-  }
-  #loader .dot:nth-child(7n+6)::before {
-    animation: 0.8s linear 0.6s normal none infinite running load;
-    background: #9500ff none repeat scroll 0 0;
-  }
-  #loader .dot:nth-child(7n+7) {
-    transform: rotate(315deg);
-  }
-  #loader .dot:nth-child(7n+7)::before {
-    animation: 0.8s linear 0.7s normal none infinite running load;
-    background: magenta none repeat scroll 0 0;
-  }
-  #loader .dot:nth-child(7n+8) {
-    transform: rotate(360deg);
-  }
-  #loader .dot:nth-child(7n+8)::before {
-    animation: 0.8s linear 0.8s normal none infinite running load;
-    background: #ff0095 none repeat scroll 0 0;
-  }
-  #loader .loading {
-    background-position: 50% 50%;
-    background-repeat: no-repeat;
-    bottom: -40px;
-    height: 20px;
-    left: 0;
-    position: absolute;
-    right: 0;
-    width: 180px;
-  }
-  @keyframes load {
-    100% {
-      opacity: 0;
-      transform: scale(1);
+
+  .leg {
+    transform-origin: 50px 60px;
+
+    &.front-leg {
+      animation: leg-run 0.6s infinite linear;
+    }
+
+    &.back-leg {
+      animation: leg-run 0.6s infinite linear -0.3s;
     }
   }
-  @keyframes load {
-    100% {
-      opacity: 0;
-      transform: scale(1);
+
+  .arm-carry {
+    transform-origin: 48px 40px;
+    animation: arm-swing 0.6s infinite ease-in-out;
+  }
+
+  .suitcase {
+    fill: #2563eb;
+    stroke: #1e293b;
+    stroke-width: 2;
+  }
+
+  .shadow {
+    animation: shadow-pulse 0.6s infinite ease-in-out;
+    transform-origin: center;
+  }
+}
+
+/* =========================
+   WIND LINES
+========================= */
+.wind-lines {
+  position: absolute;
+  width: 100%;
+  height: 60%;
+
+  span {
+    position: absolute;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #cbd5e1);
+    border-radius: 2px;
+    animation: wind-move 0.8s infinite linear;
+
+    &:nth-child(1) {
+      top: 20%;
+      width: 40px;
+      left: -50px;
+      animation-delay: 0.1s;
+    }
+
+    &:nth-child(2) {
+      top: 40%;
+      width: 60px;
+      left: -50px;
+      animation-delay: 0.4s;
+    }
+
+    &:nth-child(3) {
+      top: 70%;
+      width: 30px;
+      left: -50px;
+      animation-delay: 0.2s;
+    }
+
+    &:nth-child(4) {
+      top: 85%;
+      width: 50px;
+      left: -50px;
+      animation-delay: 0.6s;
     }
   }
-  .spinner-message {
-    text-align: center;
+}
+
+/* =========================
+   DESTINATION (BUILDINGS)
+========================= */
+.destination {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+
+  .arrow-indicator {
+    color: #94a3b8;
+    width: 30px;
+    animation: arrow-bounce 1s infinite;
   }
+
+  .buildings {
+    display: flex;
+    align-items: flex-end;
+    gap: 6px;
+    height: 60px;
+  }
+
+  .building {
+    width: 22px;
+    background: linear-gradient(180deg, #2563eb, #1e3a8a);
+    border-radius: 4px 4px 2px 2px;
+    position: relative;
+    animation: building-glow 2s infinite ease-in-out;
+
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 6px 4px;
+      background: repeating-linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0.4) 0px,
+        rgba(255, 255, 255, 0.4) 2px,
+        transparent 2px,
+        transparent 6px
+      );
+      border-radius: 2px;
+    }
+  }
+
+  .b1 {
+    height: 40px;
+    animation-delay: 0.2s;
+  }
+
+  .b2 {
+    height: 60px;
+    animation-delay: 0.4s;
+  }
+
+  .b3 {
+    height: 50px;
+    animation-delay: 0.6s;
+  }
+}
+
+/* =========================
+   OPTIONAL FOOTER (if enabled)
+========================= */
+.status-text {
+  font-size: 14px;
+  font-weight: 700;
+  color: #475569;
+  letter-spacing: 0.5px;
+  margin-bottom: 12px;
+}
+
+.progress-track {
+  width: 100%;
+  height: 6px;
+  background: #e2e8f0;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  width: 30%;
+  height: 100%;
+  background: #2563eb;
+  border-radius: 10px;
+  animation: progress-load 2s infinite ease-in-out;
+}
+
+/* =========================
+   ANIMATIONS
+========================= */
+@keyframes leg-run {
+  0% {
+    transform: rotate(-45deg);
+  }
+  50% {
+    transform: rotate(40deg) translateY(-2px);
+  }
+  100% {
+    transform: rotate(-45deg);
+  }
+}
+
+@keyframes arm-swing {
+  0%,
+  100% {
+    transform: rotate(-10deg);
+  }
+  50% {
+    transform: rotate(20deg);
+  }
+}
+
+@keyframes character-bob {
+  0%,
+  100% {
+    transform: translateY(0) rotate(5deg);
+  }
+  50% {
+    transform: translateY(-6px) rotate(8deg);
+  }
+}
+
+@keyframes wind-move {
+  0% {
+    left: 110%;
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    left: -10%;
+    opacity: 0;
+  }
+}
+
+@keyframes arrow-bounce {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(5px);
+  }
+}
+
+@keyframes shadow-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.1;
+  }
+  50% {
+    transform: scale(0.8);
+    opacity: 0.05;
+  }
+}
+
+@keyframes progress-load {
+  0% {
+    transform: translateX(-150%);
+  }
+  100% {
+    transform: translateX(350%);
+  }
+}
+
+@keyframes building-glow {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.9;
+  }
+  50% {
+    transform: translateY(-4px);
+    opacity: 1;
+  }
+}
+
+/* =========================
+   DARK MODE
+========================= */
+html.dark .loader-overlay {
+  background: rgba(15, 23, 42, 0.95);
+
+  .status-text {
+    color: #94a3b8;
+  }
+
+  .progress-track {
+    background: #1e293b;
+  }
+
+  .runner-svg {
+    stroke: #f1f5f9;
+
+    .head {
+      fill: #f1f5f9;
+    }
+  }
+
+  .building {
+    background: linear-gradient(180deg, #3b82f6, #1e40af);
+  }
+}
