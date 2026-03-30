@@ -1,1 +1,81 @@
-<h4 class="m-5 text-center text-dark">WELCOME TO THE DASHBOARD</h4>
+<!-- admin-dashboard.component.html -->
+<div class="admin-dashboard-container">
+
+  <!-- Header -->
+  <header class="dashboard-header">
+    <h1>{{ viewModel.PageTitle }}</h1>
+    <div class="user-info" *ngIf="viewModel.employee">
+      <img
+        [src]="viewModel.employee.profilePicturePath || 'assets/default-avatar.png'"
+        alt="User Avatar"
+        class="avatar"
+      />
+      <span class="username">
+        {{ viewModel.employee.firstName }} {{ viewModel.employee.lastName }}
+      </span>
+    </div>
+  </header>
+
+  <!-- Welcome Section -->
+  <section class="welcome-section">
+    <p *ngIf="viewModel.employee">
+      Welcome back, <strong>{{ viewModel.employee.firstName }}</strong>! Here's your dashboard overview.
+    </p>
+    <p *ngIf="!viewModel.employee">
+      Please login to view your dashboard.
+    </p>
+  </section>
+
+  <!-- Dashboard Cards -->
+  <section class="dashboard-cards">
+    <div class="card">
+      <div class="card-icon">📊</div>
+      <div class="card-content">
+        <h2>0</h2>
+        <p>Total Users</p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-icon">💼</div>
+      <div class="card-content">
+        <h2>0</h2>
+        <p>Projects</p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-icon">📝</div>
+      <div class="card-content">
+        <h2>0</h2>
+        <p>Tasks</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Recent Activities -->
+  <section class="recent-activity" *ngIf="viewModel.recentActivities?.length; else noActivity">
+    <h2>Recent Activity</h2>
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let activity of viewModel.recentActivities">
+            <td>{{ activity.title }}</td>
+            <td>{{ activity.description || '-' }}</td>
+            <td>{{ activity.date | date:'short' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <ng-template #noActivity>
+    <p class="no-activity">No recent activity found.</p>
+  </ng-template>
+
+</div>

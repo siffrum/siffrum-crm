@@ -58,34 +58,6 @@ export class AuthGuard {
         });
       }
     }
-    // let per: PermissionSM | any =
-    //   await this.accountService.getMyModulePermissions(moduleName);
-    // expectedRole.forEach((role: number) => {
-    //   if (role == RoleTypeSM.ClientAdmin || role == RoleTypeSM.ClientEmployee) {
-    //     if (per) {
-    //       if (per.isStandAlone) {
-    //         permissionAllowed = per.isEnabledForClient;
-    //       } else {
-    //         permissionTypes.forEach((type) => {
-    //           switch (type) {
-    //             case PermissionType.view:
-    //               permissionAllowed = per.view;
-    //               break;
-    //             default:
-    //               permissionAllowed = per.isEnabledForClient;
-    //               break;
-    //           }
-    //         });
-    //       }
-    //     }
-    //     // else {
-    //     //   // Handle the case where 'per' is undefined (module permission not available).
-    //     //   permissionAllowed = false;
-    //     // }
-    //   } else {
-    //     permissionAllowed = true;
-    //   }
-    // });
     if (!permissionAllowed) {
       this.router.navigate([AppConstants.WebRoutes.UNAUTHORIZED]);
       return false;
@@ -100,6 +72,7 @@ export class AuthGuard {
   //   return !this.jwtHelper.isTokenExpired(token);
   // }
 
+  
   async IsTokenValid(): Promise<boolean> {
     const token: string = await this.accountService.getTokenFromStorage();
     return token != null && token != "" && !jwtHelper.isTokenExpired(token);

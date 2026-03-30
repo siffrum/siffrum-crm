@@ -42,25 +42,41 @@ export class CompanyAttendanceShift extends BaseApiClient {
   GetCompanyShiftById = async (
     Id: number
   ): Promise<ApiResponse<ClientCompanyAttendanceShiftSM>> => {
-    let resp = await this.GetResponseAsync<
-      number,
-      ClientCompanyAttendanceShiftSM
-    >(`${AppConstants.ApiUrls.COMPANY_ATTENDANCE_SHIFT}/${Id}`, "GET");
-    return resp;
+    if (!Id || Id <= 0) {
+      throw new Error('Valid shift ID is required to retrieve shift details');
+    }
+    try {
+      let resp = await this.GetResponseAsync<
+        number,
+        ClientCompanyAttendanceShiftSM
+      >(`${AppConstants.ApiUrls.COMPANY_ATTENDANCE_SHIFT}/${Id}`, "GET");
+      return resp;
+    } catch (error) {
+      console.error('Error fetching company shift by ID:', error);
+      throw error;
+    }
   };
   /**Update Company Shift Details By Id (PUT method)*/
   UpdateCompanyAttendanceShiftDetails = async (
     updateShiftRequest: ApiRequest<ClientCompanyAttendanceShiftSM>
   ): Promise<ApiResponse<ClientCompanyAttendanceShiftSM>> => {
-    let resp = await this.GetResponseAsync<
-      ClientCompanyAttendanceShiftSM,
-      ClientCompanyAttendanceShiftSM
-    >(
-      `${AppConstants.ApiUrls.COMPANY_ATTENDANCE_SHIFT}/${updateShiftRequest.reqData.id}`,
-      "PUT",
-      updateShiftRequest
-    );
-    return resp;
+    if (!updateShiftRequest || !updateShiftRequest.reqData || !updateShiftRequest.reqData.id) {
+      throw new Error('Valid shift data with ID is required to update shift');
+    }
+    try {
+      let resp = await this.GetResponseAsync<
+        ClientCompanyAttendanceShiftSM,
+        ClientCompanyAttendanceShiftSM
+      >(
+        `${AppConstants.ApiUrls.COMPANY_ATTENDANCE_SHIFT}/${updateShiftRequest.reqData.id}`,
+        "PUT",
+        updateShiftRequest
+      );
+      return resp;
+    } catch (error) {
+      console.error('Error updating company shift:', error);
+      throw error;
+    }
   };
   /** Add New  Company Shift Details
    * (POST method)
@@ -68,11 +84,19 @@ export class CompanyAttendanceShift extends BaseApiClient {
   AddNewCompanyAttendanceShiftDetails = async (
     addShift: ApiRequest<ClientCompanyAttendanceShiftSM>
   ): Promise<ApiResponse<ClientCompanyAttendanceShiftSM>> => {
-    let resp = await this.GetResponseAsync<
-      ClientCompanyAttendanceShiftSM,
-      ClientCompanyAttendanceShiftSM
-    >(`${AppConstants.ApiUrls.COMPANY_ATTENDANCE_SHIFT}`, "POST", addShift);
-    return resp;
+    if (!addShift || !addShift.reqData) {
+      throw new Error('Shift data is required to add new company shift');
+    }
+    try {
+      let resp = await this.GetResponseAsync<
+        ClientCompanyAttendanceShiftSM,
+        ClientCompanyAttendanceShiftSM
+      >(`${AppConstants.ApiUrls.COMPANY_ATTENDANCE_SHIFT}`, "POST", addShift);
+      return resp;
+    } catch (error) {
+      console.error('Error adding new company shift:', error);
+      throw error;
+    }
   };
 
   /**delete company shift by id using Delete
@@ -81,10 +105,18 @@ export class CompanyAttendanceShift extends BaseApiClient {
   DeleteCompanyShiftById = async (
     Id: number
   ): Promise<ApiResponse<DeleteResponseRoot>> => {
-    let resp = await this.GetResponseAsync<number, DeleteResponseRoot>(
-      `${AppConstants.ApiUrls.COMPANY_ATTENDANCE_SHIFT}/${Id}`,
-      "DELETE"
-    );
-    return resp;
+    if (!Id || Id <= 0) {
+      throw new Error('Valid shift ID is required to delete shift');
+    }
+    try {
+      let resp = await this.GetResponseAsync<number, DeleteResponseRoot>(
+        `${AppConstants.ApiUrls.COMPANY_ATTENDANCE_SHIFT}/${Id}`,
+        "DELETE"
+      );
+      return resp;
+    } catch (error) {
+      console.error('Error deleting company shift:', error);
+      throw error;
+    }
   };
 }

@@ -1,0 +1,157 @@
+<div class="notifications-page">
+  <div class="notifications-bg-orb orb-one"></div>
+  <div class="notifications-bg-orb orb-two"></div>
+
+  <!-- HERO -->
+  <section class="notifications-hero glass-card">
+    <div class="hero-left">
+      <div class="hero-kicker">
+        <i class="bi bi-bell"></i>
+        <span>Internal Workspace</span>
+      </div>
+
+      <h2>Notifications Center</h2>
+      <p>
+        Track leave activity, payroll alerts, employee updates, and system events
+        from one clean place.
+      </p>
+    </div>
+
+    <div class="hero-right">
+      <div class="hero-stat-card total">
+        <div class="stat-icon">
+          <i class="bi bi-stack"></i>
+        </div>
+        <div class="stat-meta">
+          <div class="stat-value">{{ notifications.length }}</div>
+          <div class="stat-label">Total notifications</div>
+        </div>
+      </div>
+
+      <div class="hero-stat-card unread">
+        <div class="stat-icon">
+          <i class="bi bi-bell-fill"></i>
+        </div>
+        <div class="stat-meta">
+          <div class="stat-value">{{ unreadCount }}</div>
+          <div class="stat-label">Unread updates</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TOOLBAR -->
+  <section class="notifications-toolbar glass-card">
+    <div class="toolbar-left">
+      <div class="toolbar-title-wrap">
+        <h3>Recent Activity</h3>
+        <span>Filter and manage your updates</span>
+      </div>
+
+      <div class="filter-pills">
+        <button
+          class="filter-pill"
+          [class.active]="activeFilter === 'all'"
+          (click)="setFilter('all')"
+        >
+          <i class="bi bi-grid"></i>
+          <span>All</span>
+        </button>
+
+        <button
+          class="filter-pill"
+          [class.active]="activeFilter === 'unread'"
+          (click)="setFilter('unread')"
+        >
+          <i class="bi bi-dot"></i>
+          <span>Unread</span>
+        </button>
+
+        <button
+          class="filter-pill"
+          [class.active]="activeFilter === 'read'"
+          (click)="setFilter('read')"
+        >
+          <i class="bi bi-check2-circle"></i>
+          <span>Read</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="toolbar-right">
+      <button class="toolbar-btn mark-btn" (click)="markAllAsRead()">
+        <i class="bi bi-check2-all"></i>
+        <span>Mark all as read</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- LIST -->
+  <section class="notifications-list-wrap">
+    <div class="notifications-list" *ngIf="filteredNotifications.length > 0; else emptyState">
+      <article
+        class="notification-card glass-card"
+        *ngFor="let item of filteredNotifications"
+        [class.unread]="!item.isRead"
+      >
+        <div class="card-accent"></div>
+
+        <div class="card-icon-wrap" [ngClass]="item.type">
+          <i [class]="getTypeIcon(item.type)"></i>
+        </div>
+
+        <div class="card-body">
+          <div class="card-top">
+            <div class="title-side">
+              <div class="title-row">
+                <h4>{{ item.title }}</h4>
+                <span class="unread-dot" *ngIf="!item.isRead"></span>
+              </div>
+
+              <div class="meta-row">
+                <span class="type-chip">{{ getTypeLabel(item.type) }}</span>
+                <span class="time-chip">
+                  <i class="bi bi-clock-history"></i>
+                  {{ item.time }}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <p class="card-message">
+            {{ item.message }}
+          </p>
+        </div>
+
+        <div class="card-actions">
+          <button
+            class="action-icon success"
+            *ngIf="!item.isRead"
+            (click)="markAsRead(item)"
+            title="Mark as read"
+          >
+            <i class="bi bi-check-lg"></i>
+          </button>
+
+          <button
+            class="action-icon danger"
+            (click)="deleteNotification(item.id)"
+            title="Delete notification"
+          >
+            <i class="bi bi-trash3"></i>
+          </button>
+        </div>
+      </article>
+    </div>
+
+    <ng-template #emptyState>
+      <div class="empty-state glass-card">
+        <div class="empty-icon">
+          <i class="bi bi-bell-slash"></i>
+        </div>
+        <h3>No notifications found</h3>
+        <p>There are no items in this filter right now.</p>
+      </div>
+    </ng-template>
+  </section>
+</div>

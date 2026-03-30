@@ -15,7 +15,6 @@ import { ThemeService } from "./services/theme.service";
   standalone: false
 })
 export class AppComponent implements OnInit, OnDestroy {
-
   title = "CoinManagement";
   private navSub?: Subscription;
 
@@ -29,34 +28,43 @@ export class AppComponent implements OnInit, OnDestroy {
 
   @HostListener("document:keydown", ["$event"])
   handleKeyboardEvent(event: KeyboardEvent): void {
-    if (event.ctrlKey && (event.key === "F5" || event.key === "f5")) {
+    const isPublicRoute = this.isPublicRoute(this.router.url);
+
+    // Only force dashboard on protected CRM pages
+    if (!isPublicRoute && event.ctrlKey && (event.key === "F5" || event.key === "f5")) {
       this.router.navigateByUrl("/dashboard");
       event.preventDefault();
     }
   }
 
-  async ngOnInit() {
-
-    // ✅ Initialize theme (dark/light)
+  async ngOnInit(): Promise<void> {
+    // Theme init always okay
     this.themeService.initTheme();
 
-    // ✅ Apply layout visibility based on route
+    // Initial shell visibility
     this.applyShellVisibility(this.router.url);
 
     this.navSub = this.router.events
       .pipe(filter((e): e is NavigationEnd => e instanceof NavigationEnd))
       .subscribe((e) => {
-        this.applyShellVisibility(e.urlAfterRedirects || e.url);
+        const currentUrl = e.urlAfterRedirects || e.url;
+        this.applyShellVisibility(currentUrl);
       });
 
-    // ✅ Load logged user
+    const currentUrl = this.router.url;
+
+    // ✅ VERY IMPORTANT:
+    // Skip auth/user loading for public website routes
+    if (this.isPublicRoute(currentUrl)) {
+      this.resetPublicLayoutState();
+      return;
+    }
+
+    // Protected area only
     await this.getLoggedUser();
 
-    // ✅ Apply theme based on role if token valid
     if (await this.authGuard.IsTokenValid()) {
-
-      const roleType: any =
-        RoleTypeSM[this._commonService.layoutVM.tokenRole];
+      const roleType = this._commonService.layoutVM.tokenRole;
 
       if (
         roleType === RoleTypeSM.ClientAdmin ||
@@ -66,7 +74,9 @@ export class AppComponent implements OnInit, OnDestroy {
       } else {
         await this._commonService.loadDefaultTheme();
       }
-
+    } else {
+      // fallback if token invalid
+      await this._commonService.loadDefaultTheme();
     }
   }
 
@@ -74,12 +84,10 @@ export class AppComponent implements OnInit, OnDestroy {
     this.navSub?.unsubscribe();
   }
 
-  /** ✅ SHOW / HIDE SIDEBAR + TOPBAR */
-  private applyShellVisibility(url: string): void {
-
+  private isPublicRoute(url: string): boolean {
     const u = (url || "").toLowerCase();
 
-    const hideShellOn = [
+    const publicRoutes = [
       "/website",
       "/login",
       "/register",
@@ -92,31 +100,44 @@ export class AppComponent implements OnInit, OnDestroy {
       "/admin/login"
     ];
 
-    const shouldHide =
-      hideShellOn.some(p => u === p || u.startsWith(p + "/")) ||
-      u.startsWith("/admin");
+    return (
+      publicRoutes.some((p) => u === p || u.startsWith(p + "/")) ||
+      u.startsWith("/admin/login")
+    );
+  }
 
+  /** Show / hide CRM shell */
+  private applyShellVisibility(url: string): void {
+    const shouldHide = this.isPublicRoute(url) || (url || "").toLowerCase().startsWith("/admin");
     this._commonService.layoutVM.showLeftSideMenu = !shouldHide;
   }
 
-  /** ✅ FIXED FUNCTION (NO TYPE ERROR) */
-  async getLoggedUser(): Promise<boolean> {
-
-    const user = await this.accountService.getUserFromStorage();
-
-    // If no user stored
-    if (!user) return false;
-
-    // Extra safety check
-    if (!user.loginId) return false;
-
-    this._commonService.layoutVM.loggedUserName = user.loginId;
-    this._commonService.layoutVM.tokenRole = user.roleType;
-
-    return true;
+  /** Reset layout values for public website pages */
+  private resetPublicLayoutState(): void {
+    this._commonService.layoutVM.showLeftSideMenu = false;
+    this._commonService.layoutVM.toggleSideMenu = "default";
+    this._commonService.layoutVM.toogleWrapper = "wrapper";
+    this._commonService.layoutVM.loggedUserName = "";
   }
 
-  async logOutUser() {
+  async getLoggedUser(): Promise<boolean> {
+    try {
+      const user = await this.accountService.getUserFromStorage();
+
+      if (!user) return false;
+      if (!user.loginId) return false;
+
+      this._commonService.layoutVM.loggedUserName = user.loginId;
+      this._commonService.layoutVM.tokenRole = user.roleType;
+
+      return true;
+    } catch (error) {
+      console.error("Error while loading logged user:", error);
+      return false;
+    }
+  }
+
+  async logOutUser(): Promise<void> {
     await this.accountService.logoutUser();
     await this._commonService.ShowToastAtTopEnd(
       "Log Out Successful",

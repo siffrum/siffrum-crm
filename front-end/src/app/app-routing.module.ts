@@ -41,11 +41,12 @@ import { FailurePaymentComponent } from "./components/license-info/failure-payme
 import { SuccessPaymentComponent } from "./components/license-info/success-payment/success-payment.component";
 import { ContactUsComponent } from "./components/super/contact-us/contact-us.component";
 
-/** ✅ Internal Workspace Dashboard */
+/** Internal Workspace Dashboard */
 import { InternalWorkspaceDashboardComponent } from "./components/internal-workspace-dashboard/internal-workspace-dashboard.component";
 
 const routes: Routes = [
   { path: "", redirectTo: "website", pathMatch: "full" },
+
   {
     path: "website",
     loadChildren: () =>
@@ -66,7 +67,7 @@ const routes: Routes = [
   { path: "success/:info", component: SuccessPaymentComponent },
   { path: "license", component: LicenseInfoComponent },
 
-  /** ✅ INTERNAL WORKSPACE */
+  /** INTERNAL WORKSPACE */
   {
     path: "internal",
     component: InternalWorkspaceDashboardComponent,
@@ -255,7 +256,22 @@ const routes: Routes = [
     },
   },
 
-  /** ✅ SETTINGS */
+  /** NOTIFICATIONS - STANDALONE */
+  {
+    path: "notifications",
+    loadComponent: () =>
+      import("./components/notifications/notifications.component").then(
+        (m) => m.NotificationsComponent
+      ),
+    canActivate: [AuthGuard],
+    data: {
+      allowedRole: [RoleTypeSM.ClientAdmin, RoleTypeSM.ClientEmployee],
+      moduleName: ModuleNameSM.DashBoard,
+      permissionType: [PermissionType.view],
+    },
+  },
+
+  /** SETTINGS */
   {
     path: "setting",
     component: SettingComponent,
@@ -280,6 +296,7 @@ const routes: Routes = [
 
   /** ADMIN */
   { path: "admin/login", component: AdminLoginComponent },
+
   {
     path: "admin",
     children: [
@@ -292,7 +309,9 @@ const routes: Routes = [
       { path: "contact-us", component: ContactUsComponent },
     ],
     canActivate: [AuthGuard],
-    data: { allowedRole: [RoleTypeSM.SuperAdmin, RoleTypeSM.SystemAdmin] },
+    data: {
+      allowedRole: [RoleTypeSM.SuperAdmin, RoleTypeSM.SystemAdmin],
+    },
   },
 
   { path: "**", pathMatch: "full", component: NotFoundComponent },

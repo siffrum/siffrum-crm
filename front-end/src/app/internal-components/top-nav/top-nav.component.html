@@ -31,15 +31,83 @@
         <div class="iw-actions">
 
           <!-- Notifications -->
-          <button
-            type="button"
-            class="iw-icon-btn"
-            *ngIf="_commonService.layoutVM.tokenRole==3 || _commonService.layoutVM.tokenRole==4"
-            aria-label="Notifications"
+          <div
+            class="iw-notification-wrap"
+            *ngIf="_commonService.layoutVM.tokenRole == 3 || _commonService.layoutVM.tokenRole == 4"
           >
-            <i class="bi bi-bell iw-ic"></i>
-            <span class="iw-badge">9</span>
-          </button>
+            <button
+              type="button"
+              class="iw-icon-btn"
+              aria-label="Notifications"
+              (click)="toggleNotifications($event)"
+            >
+              <i class="bi bi-bell iw-ic"></i>
+              <span class="iw-badge" *ngIf="unreadCount > 0">
+                {{ unreadCount > 99 ? '99+' : unreadCount }}
+              </span>
+            </button>
+
+            <div class="iw-notification-panel" *ngIf="showNotificationsDropdown">
+              <div class="iw-panel-head">
+                <div>
+                  <div class="iw-panel-title">Notifications</div>
+                  <div class="iw-panel-sub">
+                    {{ unreadCount }} unread
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  class="iw-text-btn"
+                  (click)="markAllAsRead()"
+                  *ngIf="unreadCount > 0"
+                >
+                  Mark all read
+                </button>
+              </div>
+
+              <div class="iw-panel-body" *ngIf="notificationsPreview.length > 0; else emptyNotifications">
+                <button
+                  type="button"
+                  class="iw-noti-item"
+                  *ngFor="let item of notificationsPreview"
+                  [class.unread]="!item.isRead"
+                  (click)="openNotification(item)"
+                >
+                  <div class="iw-noti-icon">
+                    <i [class]="getNotificationIcon(item.type)"></i>
+                  </div>
+
+                  <div class="iw-noti-content">
+                    <div class="iw-noti-top">
+                      <div class="iw-noti-title">{{ item.title }}</div>
+                      <span class="iw-noti-dot" *ngIf="!item.isRead"></span>
+                    </div>
+
+                    <div class="iw-noti-message">{{ item.message }}</div>
+                    <div class="iw-noti-time">{{ item.time }}</div>
+                  </div>
+                </button>
+              </div>
+
+              <ng-template #emptyNotifications>
+                <div class="iw-empty-notifications">
+                  <i class="bi bi-bell-slash"></i>
+                  <div>No notifications yet</div>
+                </div>
+              </ng-template>
+
+              <div class="iw-panel-foot">
+                <button
+                  type="button"
+                  class="iw-view-all-btn"
+                  (click)="goToNotifications()"
+                >
+                  View all notifications
+                </button>
+              </div>
+            </div>
+          </div>
 
           <!-- Logout -->
           <button

@@ -75,10 +75,8 @@ import { NgxSpinnerModule } from "ngx-spinner";
 import { CalendarModule, DateAdapter } from "angular-calendar";
 import { adapterFactory } from "angular-calendar/date-adapters/date-fns";
 
-/** ✅ IMPORTANT: HttpClient */
 import { HttpClientModule } from "@angular/common/http";
 
-/** ✅ Internal Workspace Dashboard */
 import { InternalWorkspaceDashboardComponent } from "./components/internal-workspace-dashboard/internal-workspace-dashboard.component";
 
 @NgModule({
@@ -141,7 +139,6 @@ import { InternalWorkspaceDashboardComponent } from "./components/internal-works
     SuccessPaymentComponent,
     FailurePaymentComponent,
 
-    /** ✅ ADD THIS */
     InternalWorkspaceDashboardComponent,
   ],
 
@@ -149,9 +146,7 @@ import { InternalWorkspaceDashboardComponent } from "./components/internal-works
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
-
     HttpClientModule,
-
     AppRoutingModule,
 
     NgxSpinnerModule.forRoot({ type: "ball-elastic-dots" }),

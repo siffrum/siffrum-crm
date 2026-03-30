@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { AuthGuard } from 'src/app/guard/auth.guard';
 import { AccountService } from 'src/app/services/account.service';
 import { CommonService } from 'src/app/services/common.service';
@@ -11,12 +11,15 @@ import { ModuleNameSM } from 'src/app/service-models/app/enums/module-name-s-m.e
 import { PermissionSM } from 'src/app/service-models/app/v1/client/permission-s-m';
 
 @Component({
-    selector: 'app-employee-profile',
-    templateUrl: './employee-profile.component.html',
-    styleUrls: ['./employee-profile.component.scss'],
-    standalone: false
+  selector: 'app-employee-profile',
+  templateUrl: './employee-profile.component.html',
+  styleUrls: ['./employee-profile.component.scss'],
+  standalone: false
 })
 export class EmployeeProfileComponent extends BaseComponent<EmployeeProfileViewModel> implements OnInit {
+
+  // ✅ Fix: use override for base class property
+  override viewModel = new EmployeeProfileViewModel();
 
   constructor(
     commonService: CommonService,
@@ -24,31 +27,25 @@ export class EmployeeProfileComponent extends BaseComponent<EmployeeProfileViewM
     private activatedRoute: ActivatedRoute,
     private employeeService: EmployeeService,
     private accountService: AccountService,
-    private authGuard: AuthGuard,
+    private authGuard: AuthGuard
   ) {
     super(commonService, logService);
-    this.viewModel = new EmployeeProfileViewModel();
   }
- // *@Dev Musaib
+
   async ngOnInit() {
     this._commonService.layoutVM.PageTitle = this.viewModel.PageTitle;
+
     const Id = Number(this.activatedRoute.snapshot.paramMap.get('Id'));
-    if (Id == undefined) {
-      await this._commonService.ShowToastAtTopEnd("Something Went Wrong", "error");
-    } else if (Id > 0) {
-      await this.loadPageDataWithId(Id);
-      await this.setPermissions();
+    if (!Id || Id <= 0) {
+      await this.loadPageData(); // Load mine endpoint if Id missing
     } else {
-      await this.loadPageData();
-      await this.setPermissions();
+      await this.loadPageDataWithId(Id);
     }
-    this._commonService.layoutVM.company.id;
+    await this.setPermissions();
   }
-  /**
-   * Set Module Permissions Handle Show/Hide Tabs
-   */
+
+  /** Set Module Permissions for Tabs */
   async setPermissions() {
-    // Check permissions for each tab and set show properties
     this.viewModel.showEmployeeInfoTab = await this.checkTabPermission(EmployeeProfileTabs.employeeInfo, ModuleNameSM.Employee);
     this.viewModel.showEmployeeAddressTab = await this.checkTabPermission(EmployeeProfileTabs.employeeAddress, ModuleNameSM.EmployeeAddress);
     this.viewModel.showEmployeeBankDetailsTab = await this.checkTabPermission(EmployeeProfileTabs.employeeBankDetails, ModuleNameSM.BankDetail);
@@ -61,121 +58,99 @@ export class EmployeeProfileComponent extends BaseComponent<EmployeeProfileViewM
   async checkTabPermission(tabLocation: EmployeeProfileTabs, moduleName: ModuleNameSM): Promise<boolean> {
     try {
       let resp: PermissionSM | any = await this.accountService.getMyModulePermissions(moduleName);
-      return resp.view; // Return true or false based on the 'view' permission
+      return resp.view;
     } catch (error) {
-      // Handle error if needed
-      return false; // Return false in case of an error
+      return false;
     }
   }
-//check permissions
-async getPermissions(){
-  let ModuleName=ModuleNameSM.Employee
-   let resp:PermissionSM | any =await this.accountService.getMyModulePermissions(ModuleName)
-   this.viewModel.Permission=resp
+
+  /** Toggle Edit Mode */
+  editDetails() {
+    if (this.viewModel.isReadonly) {
+      this.viewModel.isReadonly = false;
+      this.viewModel.showButton = true;
+    } else {
+      this.saveEmployee(); // Save changes when clicking Done
+    }
   }
 
-    // Update Tab Location
-    updateTabLocation(tabLocation: EmployeeProfileTabs) {
-      switch (tabLocation) {
-        case EmployeeProfileTabs.employeeGenerateLetter:
-          break;
-        case EmployeeProfileTabs.employeeLeaves:
-          break;
-        case EmployeeProfileTabs.employeeSalary:
-          break;
-        case EmployeeProfileTabs.employeeDocuments:
-
-          break;
-        case EmployeeProfileTabs.employeeBankDetails:
-          break;
-
-        case EmployeeProfileTabs.employeeAddress:
-          break;
-        case EmployeeProfileTabs.employeeInfo:
-        default:
-          break;
-      }
-      this.viewModel.tabLocation = tabLocation;
-    }
-
-  override async loadPageData() {
+  /** Save Employee Changes */
+  async saveEmployee() {
     try {
       await this._commonService.presentLoading();
-      let resp = await this.employeeService.getEmployeeByMineEndpoint();
+      const resp = await this.employeeService.updateEmployeeInfo(this.viewModel.employee);
+
       if (resp.isError) {
-        await this._exceptionHandler.logObject(resp);
         this._commonService.showSweetAlertToast({
           title: 'Error!',
           text: resp.errorData.displayMessage,
-          position: "top-end",
-          icon: "error"
+          position: 'top-end',
+          icon: 'error'
         });
-      }
-      else {
-        this.viewModel.employee = resp.successData;
-        
-      }
-    } catch (error) {
-      throw error;
-    }
-    finally {
-      await this._commonService.dismissLoader()
-    }
-  }
-
-/**
- * Load Employee
- * @param employeeId
- */
-  async loadPageDataWithId(employeeId: number) {
-    try {
-      await this._commonService.presentLoading();
-      let resp = await this.employeeService.getEmployeeByEmployeeId(employeeId);
-      if (resp.isError) {
-        await this._exceptionHandler.logObject(resp);
-        this._commonService.showSweetAlertToast({
-          title: 'Error!',
-          text: resp.errorData.displayMessage,
-          position: "top-end",
-          icon: "error"
-        });
-      }
-      else {
-        this.viewModel.employee = resp.successData;
-      }
-    } catch (error) {
-      throw error;
-    }
-    finally {
-      await this._commonService.dismissLoader()
-    }
-  }
-  /**
-   * GEt Logged In User
-   * @returns
-   */
-  async getloggedInUser() {
-    try {
-      await this._commonService.presentLoading();
-      let tokenValid = await this.authGuard.IsTokenValid();
-      if (!tokenValid) {
-        return false;
       } else {
-        let user = await this.accountService.getUserFromStorage();
-        if (user == "") {
-          return false;
-        }
-        this.viewModel.Loggedemployee = user;
+        this.viewModel.employee = resp.successData;
+        this.viewModel.isReadonly = true;
+        this._commonService.showSweetAlertToast({
+          title: 'Success!',
+          text: 'Employee details updated successfully',
+          position: 'top-end',
+          icon: 'success'
+        });
       }
     } catch (error) {
-      throw error;
+      console.error(error);
     } finally {
       await this._commonService.dismissLoader();
     }
-    return;
   }
-  editDetails() {
-    this.viewModel.isReadonly = !this.viewModel.isReadonly;
-    this.viewModel.showButton = !this.viewModel.showButton;
+
+  /** Update Tab Location */
+  updateTabLocation(tabLocation: EmployeeProfileTabs) {
+    this.viewModel.tabLocation = tabLocation;
   }
+
+  /** Load Employee by Mine Endpoint */
+  override async loadPageData() {
+    try {
+      await this._commonService.presentLoading();
+      const resp = await this.employeeService.getEmployeeByMineEndpoint();
+      if (resp.isError) {
+        this._commonService.showSweetAlertToast({
+          title: 'Error!',
+          text: resp.errorData.displayMessage,
+          position: 'top-end',
+          icon: 'error'
+        });
+      } else {
+        this.viewModel.employee = resp.successData;
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      await this._commonService.dismissLoader();
+    }
+  }
+
+  /** Load Employee by Id */
+  async loadPageDataWithId(employeeId: number) {
+    try {
+      await this._commonService.presentLoading();
+      const resp = await this.employeeService.getEmployeeByEmployeeId(employeeId);
+      if (resp.isError) {
+        this._commonService.showSweetAlertToast({
+          title: 'Error!',
+          text: resp.errorData.displayMessage,
+          position: 'top-end',
+          icon: 'error'
+        });
+      } else {
+        this.viewModel.employee = resp.successData;
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      await this._commonService.dismissLoader();
+    }
+  }
+
 }

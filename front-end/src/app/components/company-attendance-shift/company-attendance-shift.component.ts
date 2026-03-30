@@ -136,7 +136,7 @@ export class CompanyAttendanceShiftComponent
       this.viewModel.companyAttendanceShiftDetails.clientCompanyDetailId =
         this.viewModel.company.id;
       let resp =
-        await this.companyAttendanceShiftService.addNewCompanyAttendanceShiftDetails(
+        await this.companyAttendanceShiftService.addCompanyShift(
           this.viewModel.companyAttendanceShiftDetails
         );
       if (resp.isError) {
@@ -181,7 +181,7 @@ export class CompanyAttendanceShiftComponent
         return; // Stop execution here if form is not valid
       }
       let resp =
-        await this.companyAttendanceShiftService.updateCompanyAttendanceShiftDetails(
+        await this.companyAttendanceShiftService.updateCompanyShift(
           this.viewModel.companyAttendanceShiftDetails
         );
       if (resp.isError) {
@@ -238,7 +238,7 @@ export class CompanyAttendanceShiftComponent
     );
     if (deleteConfirmation) {
       try {
-        let resp = await this.companyAttendanceShiftService.DeleteCompanyShift(
+        let resp = await this.companyAttendanceShiftService.deleteCompanyShift(
           id
         );
         if (resp.isError) {

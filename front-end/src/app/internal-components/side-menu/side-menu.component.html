@@ -102,6 +102,14 @@
 
             <span class="iw-label">{{ menuItem.itemName }}</span>
 
+            <!-- Notifications badge -->
+            <span
+              class="iw-menu-badge"
+              *ngIf="isNotificationsItem(menuItem) && unreadNotificationsCount > 0"
+            >
+              {{ unreadNotificationsCount > 99 ? '99+' : unreadNotificationsCount }}
+            </span>
+
             <i
               *ngIf="menuItem.subItems && menuItem.subItems.length > 0"
               class="iw-arrow bi"
@@ -122,6 +130,14 @@
             </span>
 
             <span class="iw-label">{{ menuItem.itemName }}</span>
+
+            <!-- Notifications badge -->
+            <span
+              class="iw-menu-badge"
+              *ngIf="isNotificationsItem(menuItem) && unreadNotificationsCount > 0"
+            >
+              {{ unreadNotificationsCount > 99 ? '99+' : unreadNotificationsCount }}
+            </span>
 
             <i
               *ngIf="menuItem.subItems && menuItem.subItems.length > 0"

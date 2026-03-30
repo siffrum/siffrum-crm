@@ -12,59 +12,67 @@ import { AppConstants } from 'src/app-constants';
 })
 export class CompanyAttendanceShiftService extends BaseService {
 
-  constructor(private companyAttendanceShiftClient:CompanyAttendanceShift) {
-
-    super()
-   }
-
+  constructor(private companyAttendanceShiftClient: CompanyAttendanceShift) {
+    super();
+  }
 
   /**
-   * @Dev Musaib
- * Get Company  Shift Details
- * @param companyId
- * @returns
- */
+   * Get all company attendance shift details
+   * @returns ApiResponse<ClientCompanyAttendanceShiftSM[]>
+   */
   async getAllCompanyAttendanceShiftDetails(): Promise<ApiResponse<ClientCompanyAttendanceShiftSM[]>> {
     return await this.companyAttendanceShiftClient.GetAllCompanyAttendanceShiftDetails();
   }
 
   /**
- * Get Company Shift Details For Selected Company
- * @param companyId
- * @returns
- */
-  async getCompanyShiftById(
-    Id: number
-  ): Promise<ApiResponse<ClientCompanyAttendanceShiftSM>> {
-    return await this.companyAttendanceShiftClient.GetCompanyShiftById(Id);
+   * Get shift details by ID
+   * @param id Shift ID
+   * @returns ApiResponse<ClientCompanyAttendanceShiftSM>
+   */
+  async getCompanyShiftById(id: number): Promise<ApiResponse<ClientCompanyAttendanceShiftSM>> {
+    if (!id || id <= 0) {
+      throw new Error('Valid shift ID is required');
+    }
+    return await this.companyAttendanceShiftClient.GetCompanyShiftById(id);
   }
 
-   /**update Company shift Details */
-   async updateCompanyAttendanceShiftDetails(updatecompanyAttendanceShiftDetails:ClientCompanyAttendanceShiftSM): Promise<ApiResponse<ClientCompanyAttendanceShiftSM>> {
-    let apiRequest = new ApiRequest<ClientCompanyAttendanceShiftSM>();
-    apiRequest.reqData = updatecompanyAttendanceShiftDetails;
+  /**
+   * Add new company attendance shift
+   * @param shiftData ClientCompanyAttendanceShiftSM
+   * @returns ApiResponse<ClientCompanyAttendanceShiftSM>
+   */
+  async addCompanyShift(shiftData: ClientCompanyAttendanceShiftSM): Promise<ApiResponse<ClientCompanyAttendanceShiftSM>> {
+    if (!shiftData) {
+      throw new Error('Shift data is required to add new company shift');
+    }
+    const apiRequest = new ApiRequest<ClientCompanyAttendanceShiftSM>();
+    apiRequest.reqData = shiftData;
+    return await this.companyAttendanceShiftClient.AddNewCompanyAttendanceShiftDetails(apiRequest);
+  }
+
+  /**
+   * Update existing company attendance shift
+   * @param shiftData ClientCompanyAttendanceShiftSM
+   * @returns ApiResponse<ClientCompanyAttendanceShiftSM>
+   */
+  async updateCompanyShift(shiftData: ClientCompanyAttendanceShiftSM): Promise<ApiResponse<ClientCompanyAttendanceShiftSM>> {
+    if (!shiftData || !shiftData.id) {
+      throw new Error('Shift data with valid ID is required to update shift');
+    }
+    const apiRequest = new ApiRequest<ClientCompanyAttendanceShiftSM>();
+    apiRequest.reqData = shiftData;
     return await this.companyAttendanceShiftClient.UpdateCompanyAttendanceShiftDetails(apiRequest);
   }
-     /** Add Company Shift Details
-   * @return Success
-    */
-     async addNewCompanyAttendanceShiftDetails(user:ClientCompanyAttendanceShiftSM): Promise<ApiResponse<ClientCompanyAttendanceShiftSM>> {
-      let apiRequest = new ApiRequest<ClientCompanyAttendanceShiftSM>();
-      apiRequest.reqData =user;
-      return await this.companyAttendanceShiftClient.AddNewCompanyAttendanceShiftDetails(apiRequest);
-    }
 
-     /**Delete Company Shift
-   * @DEV : Musaib
-  */
-  async DeleteCompanyShift(
-    id: number
-  ): Promise<ApiResponse<DeleteResponseRoot>> {
+  /**
+   * Delete company shift by ID
+   * @param id Shift ID
+   * @returns ApiResponse<DeleteResponseRoot>
+   */
+  async deleteCompanyShift(id: number): Promise<ApiResponse<DeleteResponseRoot>> {
     if (id <= 0) {
       throw new Error(AppConstants.ErrorPrompts.Delete_Data_Error);
     }
-    return await this.companyAttendanceShiftClient.DeleteCompanyShiftById(
-      id
-    );
+    return await this.companyAttendanceShiftClient.DeleteCompanyShiftById(id);
   }
 }

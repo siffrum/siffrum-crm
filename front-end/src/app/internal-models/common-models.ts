@@ -82,88 +82,95 @@ export class LayoutViewModel {
   ];
 
   /**
-   * ✅ SIDEBAR SHOULD SHOW ONLY:
-   * Dashboard, CRM, Reports, Profile, Settings
-   */
-  sideMenuItems: {
+ * ✅ SIDEBAR SHOULD SHOW ONLY:
+ * Dashboard, CRM, Reports, Notifications, Profile, Settings
+ */
+sideMenuItems: {
+  itemRoute: string;
+  permission: boolean;
+  iconName: string;
+  itemName: string;
+  moduleName: ModuleNameSM;
+  subItems?: {
     itemRoute: string;
     permission: boolean;
     iconName: string;
     itemName: string;
     moduleName: ModuleNameSM;
-    subItems?: {
-      itemRoute: string;
-      permission: boolean;
-      iconName: string;
-      itemName: string;
-      moduleName: ModuleNameSM;
-    }[];
-    showSubItems?: boolean;
-  }[] = [
-    {
-      itemRoute: AppConstants.WebRoutes.DASHBOARD,
-      permission: false,
-      iconName: "bi bi-house sideNavIcon d-inline-block",
-      itemName: "Dashboard",
-      moduleName: ModuleNameSM.DashBoard,
-    },
+  }[];
+  showSubItems?: boolean;
+}[] = [
+  {
+    itemRoute: AppConstants.WebRoutes.DASHBOARD,
+    permission: false,
+    iconName: "bi bi-house sideNavIcon d-inline-block",
+    itemName: "Dashboard",
+    moduleName: ModuleNameSM.DashBoard,
+  },
 
-    {
-      itemRoute: AppConstants.WebRoutes.INTERNAL,
-      permission: true,
-      iconName: "bi bi-grid sideNavIcon d-inline-block",
-      itemName: "CRM",
-      moduleName: ModuleNameSM.DashBoard,
-    },
+  {
+    itemRoute: AppConstants.WebRoutes.INTERNAL,
+    permission: true,
+    iconName: "bi bi-grid sideNavIcon d-inline-block",
+    itemName: "CRM",
+    moduleName: ModuleNameSM.DashBoard,
+  },
 
-    {
-      itemRoute: "",
-      permission: false,
-      iconName: "bi bi-file-earmark-person sideNavIcon d-inline-block",
-      itemName: "Reports",
-      moduleName: ModuleNameSM.Reports,
-      subItems: [
-        {
-          itemRoute: AppConstants.WebRoutes.REPORTS.ATTENDANCE_REPORT,
-          permission: false,
-          iconName: "bi bi-caret-right sideNavIcon d-inline-block",
-          itemName: "Attendance Report",
-          moduleName: ModuleNameSM.Reports,
-        },
-        {
-          itemRoute: AppConstants.WebRoutes.REPORTS.LEAVEREPORTS,
-          permission: false,
-          iconName: "bi bi-caret-right sideNavIcon d-inline-block",
-          itemName: "Leave Report",
-          moduleName: ModuleNameSM.Reports,
-        },
-        {
-          itemRoute: AppConstants.WebRoutes.REPORTS.PAYROLLREPORTS,
-          permission: false,
-          iconName: "bi bi-caret-right sideNavIcon d-inline-block",
-          itemName: "Payroll Report",
-          moduleName: ModuleNameSM.Reports,
-        },
-      ],
-    },
+  {
+    itemRoute: "",
+    permission: false,
+    iconName: "bi bi-file-earmark-person sideNavIcon d-inline-block",
+    itemName: "Reports",
+    moduleName: ModuleNameSM.Reports,
+    subItems: [
+      {
+        itemRoute: AppConstants.WebRoutes.REPORTS.ATTENDANCE_REPORT,
+        permission: false,
+        iconName: "bi bi-caret-right sideNavIcon d-inline-block",
+        itemName: "Attendance Report",
+        moduleName: ModuleNameSM.Reports,
+      },
+      {
+        itemRoute: AppConstants.WebRoutes.REPORTS.LEAVEREPORTS,
+        permission: false,
+        iconName: "bi bi-caret-right sideNavIcon d-inline-block",
+        itemName: "Leave Report",
+        moduleName: ModuleNameSM.Reports,
+      },
+      {
+        itemRoute: AppConstants.WebRoutes.REPORTS.PAYROLLREPORTS,
+        permission: false,
+        iconName: "bi bi-caret-right sideNavIcon d-inline-block",
+        itemName: "Payroll Report",
+        moduleName: ModuleNameSM.Reports,
+      },
+    ],
+  },
 
-    {
-      itemRoute: AppConstants.WebRoutes.PROFILE,
-      permission: false,
-      iconName: "bi bi-person-check sideNavIcon d-inline-block",
-      itemName: "Profile",
-      moduleName: ModuleNameSM.Employee,
-    },
+  {
+    itemRoute: AppConstants.WebRoutes.DASHBOARD,
+    permission: false,
+    iconName: "bi bi-bell sideNavIcon d-inline-block",
+    itemName: "Notifications",
+    moduleName: ModuleNameSM.DashBoard,
+  },
 
-    {
-      itemRoute: AppConstants.WebRoutes.SETTINGS,
-      permission: false,
-      iconName: "bi bi-gear sideNavIcon d-inline-block",
-      itemName: "Settings",
-      moduleName: ModuleNameSM.Setting,
-    },
-  ];
+  {
+    itemRoute: AppConstants.WebRoutes.PROFILE,
+    permission: false,
+    iconName: "bi bi-person-check sideNavIcon d-inline-block",
+    itemName: "Profile",
+    moduleName: ModuleNameSM.Employee,
+  },
 
+  {
+    itemRoute: AppConstants.WebRoutes.SETTINGS,
+    permission: false,
+    iconName: "bi bi-gear sideNavIcon d-inline-block",
+    itemName: "Settings",
+    moduleName: ModuleNameSM.Setting,
+  },
+];
   /**
    * ✅ Super admin menu unchanged
    */

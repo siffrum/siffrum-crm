@@ -4,6 +4,15 @@ import { BaseViewModel } from "./base.viewmodel";
 
 export class AdminDashboardViewModel extends BaseViewModel {
     override PageTitle: string = 'Dashboard';
+
     tokenRole!: RoleTypeSM;
+
     employee: LoginUserSM = new LoginUserSM();
+
+    
+    recentActivities: {
+        title: string;
+        description?: string;
+        date: Date;
+    }[] = [];
 }
