@@ -1,191 +1,266 @@
-<div class="wiz-page grain bg-grid">
-  <div class="blob blob-a" aria-hidden="true"></div>
-  <div class="blob blob-b" aria-hidden="true"></div>
-  <div class="blob blob-c" aria-hidden="true"></div>
+<div class="auth" [ngClass]="{ 'dark': isDark }">
+  <div class="bg">
+    <div class="grad g1"></div>
+    <div class="grad g2"></div>
+    <div class="grid"></div>
+    <div class="noise"></div>
+  </div>
 
-  <div class="wiz-shell">
+  <div class="top-actions">
+    <button type="button" class="chip" (click)="goBack()" aria-label="Go back">
+      <span class="chip-ic"><i class="bi bi-arrow-left"></i></span>
+      <span>Back</span>
+    </button>
 
-    <!-- Left info -->
-    <section class="wiz-hero hide-on-short">
-      <div class="pill">
-        <span class="pill-dot"></span>
-        Workspace Setup <span class="pill-sep">•</span> Company + Admin
-      </div>
+    <button
+      type="button"
+      class="chip"
+      (click)="toggleTheme()"
+      [attr.aria-label]="isDark ? 'Switch to light mode' : 'Switch to dark mode'"
+    >
+      <span class="chip-ic">
+        <i class="bi" [ngClass]="isDark ? 'bi-moon-stars-fill' : 'bi-brightness-high-fill'"></i>
+      </span>
+      <span>{{ isDark ? 'Dark' : 'Light' }}</span>
+    </button>
+  </div>
 
-      <h1 class="hero-title">
-        Create your workspace.<br />
-        <span class="hero-gradient">No scrolling required.</span>
+  <main class="wrap">
+    <section class="side">
+      <a class="brand" routerLink="/register" aria-label="Register">
+        <span class="mark" aria-hidden="true"></span>
+        <span class="name">Internal<span class="dot">.</span></span>
+      </a>
+
+      <h1 class="h1">
+        Set up your workspace.<br />
+        <span class="grad-text">Create company and admin access.</span>
       </h1>
 
-      <p class="hero-sub">
-        Quick setup in steps. We validate only what you can see.
+      <p class="sub">
+        The register flow creates the company first, then creates the first client admin using the details you enter here.
       </p>
 
       <div class="mini">
-        <div class="mini-card"><div class="mini-k">Step 1</div><div class="mini-v">Company</div></div>
-        <div class="mini-card"><div class="mini-k">Step 2</div><div class="mini-v">Admin</div></div>
-        <div class="mini-card"><div class="mini-k">Finish</div><div class="mini-v">Review</div></div>
+        <div class="mini-card">
+          <p class="k">Step 1</p>
+          <p class="v">Company</p>
+        </div>
+        <div class="mini-card">
+          <p class="k">Step 2</p>
+          <p class="v">Admin</p>
+        </div>
+        <div class="mini-card">
+          <p class="k">Access</p>
+          <p class="v">Generated</p>
+        </div>
+      </div>
+
+      <div class="info-list">
+        <div class="info-item">
+          <i class="bi bi-building-check"></i>
+          <div>
+            <strong>Company record is created first</strong>
+            <span>That response is then used to attach the first admin user.</span>
+          </div>
+        </div>
+
+        <div class="info-item">
+          <i class="bi bi-person-badge"></i>
+          <div>
+            <strong>First admin is created second</strong>
+            <span>The current flow auto-generates the first login credentials from the name fields.</span>
+          </div>
+        </div>
       </div>
     </section>
 
-    <!-- Right -->
-    <section class="wiz-cardWrap">
-      <div class="wiz-card">
-        <div class="top-hairline"></div>
-
-        <!-- top actions -->
-        <div class="top-actions">
-          <button type="button" class="iconBtn" (click)="theme.toggle()" aria-label="Toggle theme">
-            <span class="emoji" *ngIf="theme.isDark()">🌙</span>
-            <span class="emoji" *ngIf="!theme.isDark()">☀️</span>
-          </button>
-
-          <a routerLink="/login" class="iconBtn" aria-label="Back to login">✕</a>
-        </div>
-
-        <div class="head">
+    <section class="panel">
+      <div class="card">
+        <div class="card-head">
           <div>
-            <div class="kicker">Registration</div>
             <h2 class="title">
-              {{ step===1 ? 'Add Company Info' : (step===2 ? 'Add Admin Info' : 'Review & Submit') }}
+              {{ step === 1 ? 'Company setup' : (step === 2 ? 'Admin setup' : 'Review details') }}
             </h2>
-            <p class="subtitle">Complete the steps to sign up.</p>
+            <p class="muted">
+              {{ step === 1 ? 'Add the company details your team will use.' : (step === 2 ? 'Add the first admin who will sign in.' : 'Confirm everything before creating the workspace.') }}
+            </p>
+          </div>
+
+          <div class="logo-wrap" aria-hidden="true">
+            <img src="/assets/logo/l2.webp" alt="logo" class="logo" loading="lazy" />
           </div>
         </div>
 
-        <!-- Stepper -->
+        <div class="sep"></div>
+
         <div class="stepper">
-          <button type="button" class="step"
-                  [class.active]="step===1"
-                  [class.done]="step>1"
-                  (click)="goStep(1, companyOverviewForm)">
-            <span class="dot">1</span><span class="txt">Company</span>
+          <button type="button" class="step" [class.active]="step === 1" [class.done]="step > 1" (click)="goStep(1, companyOverviewForm)">
+            <span class="step-dot">1</span>
+            <span>Company</span>
           </button>
 
-          <div class="line" [class.filled]="step>1"></div>
+          <div class="step-line" [class.filled]="step > 1"></div>
 
-          <button type="button" class="step"
-                  [class.active]="step===2"
-                  [class.done]="step>2"
-                  (click)="goStep(2, companyOverviewForm)">
-            <span class="dot">2</span><span class="txt">Admin</span>
+          <button type="button" class="step" [class.active]="step === 2" [class.done]="step > 2" (click)="goStep(2, companyOverviewForm)">
+            <span class="step-dot">2</span>
+            <span>Admin</span>
           </button>
 
-          <div class="line" [class.filled]="step>2"></div>
+          <div class="step-line" [class.filled]="step > 2"></div>
 
-          <button type="button" class="step"
-                  [class.active]="step===3"
-                  (click)="goStep(3, companyOverviewForm)">
-            <span class="dot">3</span><span class="txt">Review</span>
+          <button type="button" class="step" [class.active]="step === 3" (click)="goStep(3, companyOverviewForm)">
+            <span class="step-dot">3</span>
+            <span>Review</span>
           </button>
         </div>
 
-        <form #companyOverviewForm="ngForm" class="formRoot" novalidate>
+        <div class="status-row">
+          <span class="status-badge">Progress {{ progressPercent }}%</span>
+          <div class="progress-bar">
+            <span class="progress-fill" [style.width.%]="progressPercent"></span>
+          </div>
+        </div>
 
-          <!-- STEP 1 -->
-          <section class="stepPage" *ngIf="step===1">
-            <div class="grid">
-              <div class="field-block">
-                <label class="label">Company Code <span class="req">*</span></label>
-                <div class="field" [class.field-invalid]="(companyCode.touched || viewModel.formSubmitted) && companyCode.invalid">
-                  <span class="icon">🏷️</span>
-                  <input type="text" class="input"
-                         [(ngModel)]="viewModel.AddCompanyDetail.companyCode"
-                         placeholder="e.g. ACME"
-                         required #companyCode="ngModel" name="companyCode" minlength="3" maxlength="10">
-                  <span class="fieldGlow"></span>
+        <form #companyOverviewForm="ngForm" novalidate>
+          <section *ngIf="step === 1" class="page">
+            <div class="two">
+              <div class="block">
+                <label class="label">Company Code</label>
+                <div class="control" [ngClass]="{ 'invalid': (companyCode.touched || viewModel.formSubmitted) && companyCode.invalid }">
+                  <i class="bi bi-upc-scan ic" aria-hidden="true"></i>
+                  <input
+                    type="text"
+                    class="input"
+                    [(ngModel)]="viewModel.AddCompanyDetail.companyCode"
+                    placeholder="e.g. ACME"
+                    required
+                    name="companyCode"
+                    #companyCode="ngModel"
+                    minlength="3"
+                    maxlength="10"
+                  />
                 </div>
                 <div *ngFor="let validation of viewModel.companyDetailsValidations.companyCode">
-                  <div class="validationMsg" *ngIf="(companyCode.touched || viewModel.formSubmitted) && companyCode.hasError(validation.type)">
+                  <div *ngIf="(companyCode.touched || viewModel.formSubmitted) && companyCode.hasError(validation.type)" class="err">
                     {{ validation.message }}
                   </div>
                 </div>
               </div>
 
-              <div class="field-block">
-                <label class="label">Company Name <span class="req">*</span></label>
-                <div class="field" [class.field-invalid]="(name.touched || viewModel.formSubmitted) && name.invalid">
-                  <span class="icon">🏢</span>
-                  <input type="text" class="input"
-                         [(ngModel)]="viewModel.AddCompanyDetail.name"
-                         placeholder="Acme Corporation"
-                         required #name="ngModel" name="name"
-                         pattern="^[A-Za-z][A-Za-z0-9\\s]*$" minlength="3" maxlength="40">
-                  <span class="fieldGlow"></span>
+              <div class="block">
+                <label class="label">Company Name</label>
+                <div class="control" [ngClass]="{ 'invalid': (name.touched || viewModel.formSubmitted) && name.invalid }">
+                  <i class="bi bi-buildings ic" aria-hidden="true"></i>
+                  <input
+                    type="text"
+                    class="input"
+                    [(ngModel)]="viewModel.AddCompanyDetail.name"
+                    placeholder="Acme Corporation"
+                    required
+                    name="name"
+                    #name="ngModel"
+                    pattern="^[A-Za-z][A-Za-z0-9\\s]*$"
+                    minlength="3"
+                    maxlength="40"
+                  />
                 </div>
                 <div *ngFor="let validation of viewModel.companyDetailsValidations.name">
-                  <div class="validationMsg" *ngIf="(name.touched || viewModel.formSubmitted) && name.hasError(validation.type)">
+                  <div *ngIf="(name.touched || viewModel.formSubmitted) && name.hasError(validation.type)" class="err">
                     {{ validation.message }}
                   </div>
                 </div>
               </div>
+            </div>
 
-              <div class="field-block">
-                <label class="label">Date Of Establishment <span class="req">*</span></label>
-                <div class="field" [class.field-invalid]="(companyDateOfEstablishment.touched || viewModel.formSubmitted) && companyDateOfEstablishment.invalid">
-                  <span class="icon">📅</span>
-                  <input type="date" class="input"
-                         [(ngModel)]="viewModel.AddCompanyDetail.companyDateOfEstablishment"
-                         required #companyDateOfEstablishment="ngModel" name="companyDateOfEstablishment">
-                  <span class="fieldGlow"></span>
+            <div class="two">
+              <div class="block">
+                <label class="label">Date Of Establishment</label>
+                <div class="control" [ngClass]="{ 'invalid': (companyDateOfEstablishment.touched || viewModel.formSubmitted) && companyDateOfEstablishment.invalid }">
+                  <i class="bi bi-calendar-event ic" aria-hidden="true"></i>
+                  <input
+                    type="date"
+                    class="input"
+                    [(ngModel)]="viewModel.AddCompanyDetail.companyDateOfEstablishment"
+                    required
+                    name="companyDateOfEstablishment"
+                    #companyDateOfEstablishment="ngModel"
+                  />
                 </div>
                 <div *ngFor="let validation of viewModel.companyDetailsValidations.companyDateOfEstablishment">
-                  <div class="validationMsg" *ngIf="(companyDateOfEstablishment.touched || viewModel.formSubmitted) && companyDateOfEstablishment.hasError(validation.type)">
+                  <div *ngIf="(companyDateOfEstablishment.touched || viewModel.formSubmitted) && companyDateOfEstablishment.hasError(validation.type)" class="err">
                     {{ validation.message }}
                   </div>
                 </div>
               </div>
 
-              <div class="field-block">
-                <label class="label">Official Website <span class="req">*</span></label>
-                <div class="field" [class.field-invalid]="(companyWebsite.touched || viewModel.formSubmitted) && companyWebsite.invalid">
-                  <span class="icon">🌐</span>
-                  <input type="text" class="input"
-                         [(ngModel)]="viewModel.AddCompanyDetail.companyWebsite"
-                         placeholder="https://acme.com"
-                         required #companyWebsite="ngModel" name="companyWebsite"
-                         minlength="3" maxlength="80">
-                  <span class="fieldGlow"></span>
+              <div class="block">
+                <label class="label">Official Website</label>
+                <div class="control" [ngClass]="{ 'invalid': (companyWebsite.touched || viewModel.formSubmitted) && companyWebsite.invalid }">
+                  <i class="bi bi-globe2 ic" aria-hidden="true"></i>
+                  <input
+                    type="text"
+                    class="input"
+                    [(ngModel)]="viewModel.AddCompanyDetail.companyWebsite"
+                    placeholder="https://acme.com"
+                    required
+                    name="companyWebsite"
+                    #companyWebsite="ngModel"
+                    minlength="3"
+                    maxlength="80"
+                  />
                 </div>
                 <div *ngFor="let validation of viewModel.companyDetailsValidations.companyWebsite">
-                  <div class="validationMsg" *ngIf="(companyWebsite.touched || viewModel.formSubmitted) && companyWebsite.hasError(validation.type)">
+                  <div *ngIf="(companyWebsite.touched || viewModel.formSubmitted) && companyWebsite.hasError(validation.type)" class="err">
                     {{ validation.message }}
                   </div>
                 </div>
               </div>
+            </div>
 
-              <div class="field-block">
-                <label class="label">Contact Email <span class="req">*</span></label>
-                <div class="field" [class.field-invalid]="(contactEmail.touched || viewModel.formSubmitted) && contactEmail.invalid">
-                  <span class="icon">✉️</span>
-                  <input type="email" class="input"
-                         [(ngModel)]="viewModel.AddCompanyDetail.companyContactEmail"
-                         placeholder="contact@acme.com"
-                         required #contactEmail="ngModel" name="contactEmail"
-                         maxlength="80"
-                         pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$">
-                  <span class="fieldGlow"></span>
+            <div class="two">
+              <div class="block">
+                <label class="label">Contact Email</label>
+                <div class="control" [ngClass]="{ 'invalid': (contactEmail.touched || viewModel.formSubmitted) && contactEmail.invalid }">
+                  <i class="bi bi-envelope-at ic" aria-hidden="true"></i>
+                  <input
+                    type="email"
+                    class="input"
+                    [(ngModel)]="viewModel.AddCompanyDetail.companyContactEmail"
+                    placeholder="contact@acme.com"
+                    required
+                    name="contactEmail"
+                    #contactEmail="ngModel"
+                    maxlength="80"
+                    pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"
+                  />
                 </div>
                 <div *ngFor="let validation of viewModel.companyDetailsValidations.contactEmail">
-                  <div class="validationMsg" *ngIf="(contactEmail.touched || viewModel.formSubmitted) && contactEmail.hasError(validation.type)">
+                  <div *ngIf="(contactEmail.touched || viewModel.formSubmitted) && contactEmail.hasError(validation.type)" class="err">
                     {{ validation.message }}
                   </div>
                 </div>
               </div>
 
-              <div class="field-block">
-                <label class="label">Contact Number <span class="req">*</span></label>
-                <div class="field" [class.field-invalid]="(companyMobileNumber.touched || viewModel.formSubmitted) && companyMobileNumber.invalid">
-                  <span class="icon">📞</span>
-                  <input type="text" class="input"
-                         [(ngModel)]="viewModel.AddCompanyDetail.companyMobileNumber"
-                         placeholder="10 digit number"
-                         required #companyMobileNumber="ngModel" name="companyMobileNumber"
-                         minlength="10" maxlength="10" pattern="^[0-9]{10}$">
-                  <span class="fieldGlow"></span>
+              <div class="block">
+                <label class="label">Contact Number</label>
+                <div class="control" [ngClass]="{ 'invalid': (companyMobileNumber.touched || viewModel.formSubmitted) && companyMobileNumber.invalid }">
+                  <i class="bi bi-telephone ic" aria-hidden="true"></i>
+                  <input
+                    type="text"
+                    class="input"
+                    [(ngModel)]="viewModel.AddCompanyDetail.companyMobileNumber"
+                    placeholder="10 digit number"
+                    required
+                    name="companyMobileNumber"
+                    #companyMobileNumber="ngModel"
+                    minlength="10"
+                    maxlength="10"
+                    pattern="^[0-9]{10}$"
+                  />
                 </div>
                 <div *ngFor="let validation of viewModel.companyDetailsValidations.companyMobileNumber">
-                  <div class="validationMsg" *ngIf="(companyMobileNumber.touched || viewModel.formSubmitted) && companyMobileNumber.hasError(validation.type)">
+                  <div *ngIf="(companyMobileNumber.touched || viewModel.formSubmitted) && companyMobileNumber.hasError(validation.type)" class="err">
                     {{ validation.message }}
                   </div>
                 </div>
@@ -193,159 +268,211 @@
             </div>
           </section>
 
-          <!-- STEP 2 -->
-          <section class="stepPage" *ngIf="step===2">
-            <div class="grid">
-              <div class="field-block">
-                <label class="label">First Name <span class="req">*</span></label>
-                <div class="field" [class.field-invalid]="(firstName.touched || viewModel.formSubmitted) && firstName.invalid">
-                  <span class="icon">👤</span>
-                  <input type="text" class="input"
-                         [(ngModel)]="viewModel.addAdmin.firstName"
-                         placeholder="First name"
-                         required name="firstName" #firstName="ngModel"
-                         minlength="2" maxlength="20" pattern="^[A-Za-z][A-Za-z0-9]*$">
-                  <span class="fieldGlow"></span>
+          <section *ngIf="step === 2" class="page">
+            <div class="two">
+              <div class="block">
+                <label class="label">First Name</label>
+                <div class="control" [ngClass]="{ 'invalid': (firstName.touched || viewModel.formSubmitted) && firstName.invalid }">
+                  <i class="bi bi-person-fill ic" aria-hidden="true"></i>
+                  <input
+                    type="text"
+                    class="input"
+                    [(ngModel)]="viewModel.addAdmin.firstName"
+                    placeholder="First name"
+                    required
+                    name="firstName"
+                    #firstName="ngModel"
+                    minlength="2"
+                    maxlength="20"
+                    pattern="^[A-Za-z][A-Za-z0-9]*$"
+                  />
                 </div>
                 <div *ngFor="let validation of viewModel.companyDetailsValidations.firstName">
-                  <div class="validationMsg" *ngIf="(firstName.touched || viewModel.formSubmitted) && firstName.hasError(validation.type)">
+                  <div *ngIf="(firstName.touched || viewModel.formSubmitted) && firstName.hasError(validation.type)" class="err">
                     {{ validation.message }}
                   </div>
                 </div>
               </div>
 
-              <div class="field-block">
-                <label class="label">Last Name <span class="req">*</span></label>
-                <div class="field" [class.field-invalid]="(lasttName.touched || viewModel.formSubmitted) && lasttName.invalid">
-                  <span class="icon">👤</span>
-                  <input type="text" class="input"
-                         [(ngModel)]="viewModel.addAdmin.lastName"
-                         placeholder="Last name"
-                         required name="lasttName" #lasttName="ngModel"
-                         minlength="2" maxlength="20" pattern="^[A-Za-z][A-Za-z0-9]*$">
-                  <span class="fieldGlow"></span>
+              <div class="block">
+                <label class="label">Last Name</label>
+                <div class="control" [ngClass]="{ 'invalid': (lasttName.touched || viewModel.formSubmitted) && lasttName.invalid }">
+                  <i class="bi bi-person-vcard-fill ic" aria-hidden="true"></i>
+                  <input
+                    type="text"
+                    class="input"
+                    [(ngModel)]="viewModel.addAdmin.lastName"
+                    placeholder="Last name"
+                    required
+                    name="lasttName"
+                    #lasttName="ngModel"
+                    minlength="2"
+                    maxlength="20"
+                    pattern="^[A-Za-z][A-Za-z0-9]*$"
+                  />
                 </div>
                 <div *ngFor="let validation of viewModel.companyDetailsValidations.lastName">
-                  <div class="validationMsg" *ngIf="(lasttName.touched || viewModel.formSubmitted) && lasttName.hasError(validation.type)">
+                  <div *ngIf="(lasttName.touched || viewModel.formSubmitted) && lasttName.hasError(validation.type)" class="err">
                     {{ validation.message }}
                   </div>
                 </div>
               </div>
+            </div>
 
-              <div class="field-block">
-                <label class="label">Personal Email <span class="req">*</span></label>
-                <div class="field" [class.field-invalid]="(email.touched || viewModel.formSubmitted) && email.invalid">
-                  <span class="icon">✉️</span>
-                  <input type="email" class="input"
-                         [(ngModel)]="viewModel.addAdmin.emailId"
-                         placeholder="name@gmail.com"
-                         required name="email" #email="ngModel"
-                         maxlength="80"
-                         pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$">
-                  <span class="fieldGlow"></span>
+            <div class="two">
+              <div class="block">
+                <label class="label">Personal Email</label>
+                <div class="control" [ngClass]="{ 'invalid': (email.touched || viewModel.formSubmitted) && email.invalid }">
+                  <i class="bi bi-envelope-fill ic" aria-hidden="true"></i>
+                  <input
+                    type="email"
+                    class="input"
+                    [(ngModel)]="viewModel.addAdmin.emailId"
+                    placeholder="name@gmail.com"
+                    required
+                    name="email"
+                    #email="ngModel"
+                    maxlength="80"
+                    pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"
+                  />
                 </div>
                 <div *ngFor="let validation of viewModel.companyDetailsValidations.email">
-                  <div class="validationMsg" *ngIf="(email.touched || viewModel.formSubmitted) && email.hasError(validation.type)">
+                  <div *ngIf="(email.touched || viewModel.formSubmitted) && email.hasError(validation.type)" class="err">
                     {{ validation.message }}
                   </div>
                 </div>
               </div>
 
-              <div class="field-block">
-                <label class="label">Mobile Number <span class="req">*</span></label>
-                <div class="field" [class.field-invalid]="(phoneNumber.touched || viewModel.formSubmitted) && phoneNumber.invalid">
-                  <span class="icon">📱</span>
-                  <input type="text" class="input"
-                         [(ngModel)]="viewModel.addAdmin.phoneNumber"
-                         placeholder="10 digit number"
-                         name="MobileNumber" #phoneNumber="ngModel"
-                         required minlength="10" maxlength="10" pattern="^[0-9]{10}$">
-                  <span class="fieldGlow"></span>
+              <div class="block">
+                <label class="label">Mobile Number</label>
+                <div class="control" [ngClass]="{ 'invalid': (phoneNumber.touched || viewModel.formSubmitted) && phoneNumber.invalid }">
+                  <i class="bi bi-phone-fill ic" aria-hidden="true"></i>
+                  <input
+                    type="text"
+                    class="input"
+                    [(ngModel)]="viewModel.addAdmin.phoneNumber"
+                    placeholder="10 digit number"
+                    required
+                    name="MobileNumber"
+                    #phoneNumber="ngModel"
+                    minlength="10"
+                    maxlength="10"
+                    pattern="^[0-9]{10}$"
+                  />
                 </div>
                 <div *ngFor="let validation of viewModel.companyDetailsValidations.phoneNumber">
-                  <div class="validationMsg" *ngIf="(phoneNumber.touched || viewModel.formSubmitted) && phoneNumber.hasError(validation.type)">
+                  <div *ngIf="(phoneNumber.touched || viewModel.formSubmitted) && phoneNumber.hasError(validation.type)" class="err">
                     {{ validation.message }}
                   </div>
                 </div>
               </div>
+            </div>
 
-              <div class="field-block">
-                <label class="label">Date of Birth <span class="req">*</span></label>
-                <div class="field" [class.field-invalid]="(dateOfBirth.touched || viewModel.formSubmitted) && dateOfBirth.invalid">
-                  <span class="icon">🎂</span>
-                  <input type="date" class="input"
-                         [(ngModel)]="viewModel.addAdmin.dateOfBirth"
-                         [max]="maxDob" [min]="minDob"
-                         required name="dateOfBirth" #dateOfBirth="ngModel">
-                  <span class="fieldGlow"></span>
+            <div class="two">
+              <div class="block">
+                <label class="label">Date Of Birth</label>
+                <div class="control" [ngClass]="{ 'invalid': (dateOfBirth.touched || viewModel.formSubmitted) && dateOfBirth.invalid }">
+                  <i class="bi bi-calendar-heart ic" aria-hidden="true"></i>
+                  <input
+                    type="date"
+                    class="input"
+                    [(ngModel)]="viewModel.addAdmin.dateOfBirth"
+                    [max]="maxDob"
+                    [min]="minDob"
+                    required
+                    name="dateOfBirth"
+                    #dateOfBirth="ngModel"
+                  />
                 </div>
                 <div *ngFor="let validation of viewModel.companyDetailsValidations.dateOfBirth">
-                  <div class="validationMsg" *ngIf="(dateOfBirth.touched || viewModel.formSubmitted) && dateOfBirth.hasError(validation.type)">
+                  <div *ngIf="(dateOfBirth.touched || viewModel.formSubmitted) && dateOfBirth.hasError(validation.type)" class="err">
                     {{ validation.message }}
                   </div>
                 </div>
               </div>
 
-              <div class="field-block">
-                <label class="label">Date of Joining <span class="req">*</span></label>
-                <div class="field" [class.field-invalid]="(dateOfJoining.touched || viewModel.formSubmitted) && dateOfJoining.invalid">
-                  <span class="icon">🗓️</span>
-                  <input type="date" class="input"
-                         [(ngModel)]="viewModel.addAdmin.dateOfJoining"
-                         [max]="maxDoj" [min]="minDoj"
-                         required name="dateOfJoining" #dateOfJoining="ngModel">
-                  <span class="fieldGlow"></span>
+              <div class="block">
+                <label class="label">Date Of Joining</label>
+                <div class="control" [ngClass]="{ 'invalid': (dateOfJoining.touched || viewModel.formSubmitted) && dateOfJoining.invalid }">
+                  <i class="bi bi-calendar2-check-fill ic" aria-hidden="true"></i>
+                  <input
+                    type="date"
+                    class="input"
+                    [(ngModel)]="viewModel.addAdmin.dateOfJoining"
+                    [max]="maxDoj"
+                    [min]="minDoj"
+                    required
+                    name="dateOfJoining"
+                    #dateOfJoining="ngModel"
+                  />
                 </div>
                 <div *ngFor="let validation of viewModel.companyDetailsValidations.dateOfJoining">
-                  <div class="validationMsg" *ngIf="(dateOfJoining.touched || viewModel.formSubmitted) && dateOfJoining.hasError(validation.type)">
+                  <div *ngIf="(dateOfJoining.touched || viewModel.formSubmitted) && dateOfJoining.hasError(validation.type)" class="err">
                     {{ validation.message }}
                   </div>
                 </div>
               </div>
             </div>
-          </section>
 
-          <!-- STEP 3 -->
-          <section class="stepPage" *ngIf="step===3">
-            <div class="review">
-              <div class="reviewBox">
-                <div class="rTitle">Company</div>
-                <div class="rRow"><span>Code</span><b>{{ viewModel.AddCompanyDetail.companyCode || '—' }}</b></div>
-                <div class="rRow"><span>Name</span><b>{{ viewModel.AddCompanyDetail.name || '—' }}</b></div>
-                <div class="rRow"><span>Website</span><b>{{ viewModel.AddCompanyDetail.companyWebsite || '—' }}</b></div>
-                <div class="rRow"><span>Email</span><b>{{ viewModel.AddCompanyDetail.companyContactEmail || '—' }}</b></div>
-                <div class="rRow"><span>Phone</span><b>{{ viewModel.AddCompanyDetail.companyMobileNumber || '—' }}</b></div>
+            <div class="preview">
+              <div class="preview-card">
+                <span class="preview-label">Generated username</span>
+                <strong>{{ generatedLoginId || 'firstnamelastname' }}</strong>
               </div>
 
-              <div class="reviewBox">
-                <div class="rTitle">Admin</div>
-                <div class="rRow"><span>First</span><b>{{ viewModel.addAdmin.firstName || '—' }}</b></div>
-                <div class="rRow"><span>Last</span><b>{{ viewModel.addAdmin.lastName || '—' }}</b></div>
-                <div class="rRow"><span>Email</span><b>{{ viewModel.addAdmin.emailId || '—' }}</b></div>
-                <div class="rRow"><span>Phone</span><b>{{ viewModel.addAdmin.phoneNumber || '—' }}</b></div>
-                <div class="rRow"><span>DOB</span><b>{{ viewModel.addAdmin.dateOfBirth || '—' }}</b></div>
-                <div class="rRow"><span>DOJ</span><b>{{ viewModel.addAdmin.dateOfJoining || '—' }}</b></div>
+              <div class="preview-card">
+                <span class="preview-label">Generated password</span>
+                <strong>{{ generatedPassword || 'lastnamefirstname' }}</strong>
+              </div>
+            </div>
+          </section>
+
+          <section *ngIf="step === 3" class="page">
+            <div class="review-grid">
+              <div class="review-card">
+                <h3>Company</h3>
+                <div class="review-row"><span>Code</span><strong>{{ viewModel.AddCompanyDetail.companyCode || '-' }}</strong></div>
+                <div class="review-row"><span>Name</span><strong>{{ viewModel.AddCompanyDetail.name || '-' }}</strong></div>
+                <div class="review-row"><span>Website</span><strong>{{ viewModel.AddCompanyDetail.companyWebsite || '-' }}</strong></div>
+                <div class="review-row"><span>Email</span><strong>{{ viewModel.AddCompanyDetail.companyContactEmail || '-' }}</strong></div>
+                <div class="review-row"><span>Phone</span><strong>{{ viewModel.AddCompanyDetail.companyMobileNumber || '-' }}</strong></div>
+              </div>
+
+              <div class="review-card">
+                <h3>Admin</h3>
+                <div class="review-row"><span>First</span><strong>{{ viewModel.addAdmin.firstName || '-' }}</strong></div>
+                <div class="review-row"><span>Last</span><strong>{{ viewModel.addAdmin.lastName || '-' }}</strong></div>
+                <div class="review-row"><span>Email</span><strong>{{ viewModel.addAdmin.emailId || '-' }}</strong></div>
+                <div class="review-row"><span>Phone</span><strong>{{ viewModel.addAdmin.phoneNumber || '-' }}</strong></div>
+                <div class="review-row"><span>DOB</span><strong>{{ viewModel.addAdmin.dateOfBirth || '-' }}</strong></div>
+                <div class="review-row"><span>DOJ</span><strong>{{ viewModel.addAdmin.dateOfJoining || '-' }}</strong></div>
               </div>
             </div>
 
-            <div class="reviewNote">Please verify details before submitting.</div>
+            <div class="review-note">
+              <span class="status-badge">Account access</span>
+              <p>The current backend flow will create the admin with the generated username and password shown in the previous step.</p>
+            </div>
           </section>
 
-          <!-- footer -->
           <div class="footer">
-            <button type="button" class="btn ghost" (click)="prev()" [disabled]="step===1">Back</button>
+            <button type="button" class="btn ghost-btn" (click)="prev()" [disabled]="step === 1">Back</button>
 
-            <button type="button" class="btn primary" *ngIf="step<3" (click)="next(companyOverviewForm)">
-              Next
+            <div class="footer-copy">
+              <span>Step {{ step }} of 3</span>
+              <small>{{ step < 3 ? 'Complete this section to continue' : 'Review and create the workspace' }}</small>
+            </div>
+
+            <button type="button" class="btn primary-btn" *ngIf="step < 3" (click)="next(companyOverviewForm)">
+              Continue
             </button>
 
-            <button type="button" class="btn primary" *ngIf="step===3" (click)="registerNewCompanyAndAdminDetails(companyOverviewForm)">
-              Sign Up
+            <button type="button" class="btn primary-btn" *ngIf="step === 3" (click)="registerNewCompanyAndAdminDetails(companyOverviewForm)">
+              Create Workspace
             </button>
           </div>
-
         </form>
       </div>
     </section>
-  </div>
+  </main>
 </div>

@@ -17,9 +17,9 @@
           </div>
 
           <div class="shift-time">
-            {{ viewModel.currentShift.shiftFrom | date: 'hh:mm a' }}
+            {{ formatShiftTime(viewModel.currentShift.shiftFrom) }}
             <span class="sep">→</span>
-            {{ viewModel.currentShift.shiftTo | date: 'hh:mm a' }}
+            {{ formatShiftTime(viewModel.currentShift.shiftTo) }}
           </div>
         </div>
       </ng-container>

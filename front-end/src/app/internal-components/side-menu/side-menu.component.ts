@@ -3,6 +3,7 @@ import { Router } from "@angular/router";
 import { Subscription } from "rxjs";
 
 import { BaseComponent } from "src/app/components/base.component";
+import { RoleTypeSM } from "src/app/service-models/app/enums/role-type-s-m.enum";
 import { ModuleNameSM } from "src/app/service-models/app/enums/module-name-s-m.enum";
 import { AccountService } from "src/app/services/account.service";
 import { CommonService } from "src/app/services/common.service";
@@ -210,5 +211,24 @@ export class SideMenuComponent
     }
 
     return null;
+  }
+
+  isSuperAdmin(): boolean {
+    return (
+      this._commonService.layoutVM.tokenRole === RoleTypeSM.SuperAdmin ||
+      this._commonService.layoutVM.tokenRole === RoleTypeSM.SystemAdmin
+    );
+  }
+
+  getBrandLabel(): string {
+    return this.isSuperAdmin() ? "Super Admin" : "Internal.";
+  }
+
+  getBrandSubLabel(): string {
+    return this.isSuperAdmin() ? "Control Center" : "Workspace";
+  }
+
+  getDisplayUserName(): string {
+    return this._commonService.layoutVM.loggedUserName || (this.isSuperAdmin() ? "Administrator" : "User");
   }
 }

@@ -1,49 +1,95 @@
-.tableFixHead {
-    overflow-y: auto; /* make the table scrollable if height is more than 200 px  */
-    height: 325px; /* gives an initial height of 200px to the table */
-  }
-@media only screen and (max-width: 760px),
-(min-device-width: 768px) and (max-device-width: 1024px) {
-    table,
-    thead,
-    tbody,
-    th,
-    td,
-    tr {
-        display: block;
-        width: 100%;
-    }
-    thead tr {
-        position: relative;
-        display: none;
-    }
-    tr {
-        margin-top: 1rem;
-    }
-    td {
-        // border: 1px solid rgb(151, 143, 143);
-        position: relative;
-        padding-left: 50%;
-    }
-    td:before {
-        position: absolute;
-        left: 5px;
-        font-size: var(--table-header-font-size);
-        font-weight: var(--table-header-font-weight)
-    }
-    td:nth-of-type(1):before {
-        content: "Name";
-    }
-    td:nth-of-type(2):before {
-        content: "Email";
-    }
-    td:nth-of-type(3):before {
-        content: "Subject";
-    }
-    td:nth-of-type(4):before {
-        content: "Message";
-    }
-    td:nth-of-type(5):before {
-        content: "Actions";
-    }
+:host { display:block; }
+
+.sa-table-page { padding: 18px; }
+.sa-table-shell {
+  padding: 22px;
+  border-radius: 28px;
+  border: 1px solid rgba(15,23,42,.08);
+  background: rgba(255,255,255,.9);
+  box-shadow: 0 18px 40px rgba(15,23,42,.06);
+}
+
+:host-context(.dark) .sa-table-shell {
+  border-color: rgba(255,255,255,.08);
+  background: rgba(15,23,42,.78);
+}
+
+.sa-table-head {
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.sa-table-head h2 { margin:0; font-size:24px; font-weight:950; }
+.sa-table-head p {
+  margin:6px 0 0;
+  color: rgba(15,23,42,.62);
+  font-size:13px;
+  font-weight:700;
+}
+
+:host-context(.dark) .sa-table-head p { color: rgba(226,232,240,.66); }
+
+.sa-stat-chip {
+  padding: 10px 14px;
+  border-radius: 18px;
+  border: 1px solid rgba(15,23,42,.08);
+  background: rgba(248,250,252,.92);
+}
+
+:host-context(.dark) .sa-stat-chip {
+  border-color: rgba(255,255,255,.08);
+  background: rgba(2,6,23,.36);
+}
+
+.sa-stat-chip span {
+  display:block;
+  font-size:11px;
+  font-weight:900;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color: rgba(15,23,42,.54);
+}
+
+.sa-stat-chip strong { display:block; margin-top:4px; font-size:20px; font-weight:950; }
+
+.sa-table-wrap { overflow:auto; }
+.sa-table thead th {
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: rgba(15,23,42,.54);
+}
+
+:host-context(.dark) .sa-table thead th,
+:host-context(.dark) .sa-table tbody td { color: inherit; border-color: rgba(255,255,255,.08); }
+
+.sa-table-name { font-weight: 800; }
+.sa-message { min-width: 260px; color: rgba(15,23,42,.72); }
+
+.sa-icon-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 14px;
+  border: 1px solid rgba(15,23,42,.08);
+  background: rgba(248,250,252,.92);
+}
+
+.sa-danger {
+  color: #dc2626;
+  border-color: rgba(220,38,38,.16);
+}
+
+:host-context(.dark) .sa-icon-btn {
+  background: rgba(2,6,23,.36);
+  border-color: rgba(255,255,255,.08);
+}
+
+@media (max-width: 720px) {
+  .sa-table-page { padding: 12px; }
+  .sa-table-shell { padding: 16px; }
+  .sa-table-head { flex-direction: column; }
 }

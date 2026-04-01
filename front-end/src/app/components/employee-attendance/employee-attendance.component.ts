@@ -88,27 +88,7 @@ export class EmployeeAttendanceComponent extends BaseComponent<EmployeeAttendanc
         });
       } else {
         this.viewModel.companyAttendanceShiftDetailsList = resp.successData;
-
-        const currentTime = new Date();
-        let currentShift = null;
-        let closestTimeDiff = Infinity;
-
-        this.viewModel.companyAttendanceShiftDetailsList.forEach(shift => {
-          const shiftFrom = new Date(shift.shiftFrom);
-          const shiftTo = new Date(shift.shiftTo);
-
-          if (
-            currentTime >= shiftFrom && currentTime <= shiftTo
-          ) {
-            const diff = Math.abs(currentTime.getTime() - shiftFrom.getTime());
-            if (diff < closestTimeDiff) {
-              closestTimeDiff = diff;
-              currentShift = shift;
-            }
-          }
-        });
-
-        this.viewModel.currentShift = currentShift;
+        this.viewModel.currentShift = this.findCurrentShift(resp.successData);
       }
     } catch (error) {
       throw error;
@@ -150,7 +130,9 @@ export class EmployeeAttendanceComponent extends BaseComponent<EmployeeAttendanc
         this.viewModel.isCheckInButton = false;
       } else if ([0, 6].includes(this.viewModel.currentDate.getDay())) {
         await this._commonService.ShowToastAtTopEnd("!Oops Its a Weekend", "error");
-      } else if (this.viewModel.currentDate.getHours() >= 18) {
+      } else if (!this.viewModel.currentShift) {
+        await this._commonService.ShowToastAtTopEnd("No active shift right now", "error");
+      } else if (!this.isCurrentTimeWithinShiftWindow(this.viewModel.currentShift, 120)) {
         await this._commonService.ShowToastAtTopEnd("Time Out", "error");
       } else {
         this.viewModel.attendance.checkIn = format(date, "hh:mm:ss a");
@@ -186,7 +168,9 @@ export class EmployeeAttendanceComponent extends BaseComponent<EmployeeAttendanc
         this.viewModel.isCheckOutButton = false;
       } else if ([0, 6].includes(this.viewModel.currentDate.getDay())) {
         await this._commonService.ShowToastAtTopEnd("!Oops Its a Weekend", "error");
-      } else if (this.viewModel.currentDate.getHours() >= 18) {
+      } else if (!this.viewModel.currentShift) {
+        await this._commonService.ShowToastAtTopEnd("No active shift right now", "error");
+      } else if (!this.isCurrentTimeWithinShiftWindow(this.viewModel.currentShift, 240)) {
         await this._commonService.ShowToastAtTopEnd("Time Out", "error");
       } else {
         this.viewModel.attendance.checkOut = format(date, "hh:mm:ss a");
@@ -256,5 +240,100 @@ export class EmployeeAttendanceComponent extends BaseComponent<EmployeeAttendanc
     } finally {
       await this._commonService.dismissLoader();
     }
+  }
+
+  formatShiftTime(time: string | Date): string {
+    const minutes = this.extractMinutes(time);
+    if (minutes == null) return "";
+
+    const hours24 = Math.floor(minutes / 60);
+    const mins = minutes % 60;
+    const meridiem = hours24 >= 12 ? "PM" : "AM";
+    const hours12 = hours24 % 12 || 12;
+    return `${hours12}:${mins.toString().padStart(2, "0")} ${meridiem}`;
+  }
+
+  private findCurrentShift(shifts: any[]): any {
+    const now = new Date();
+    const currentMinutes = now.getHours() * 60 + now.getMinutes();
+    let matchedShift: any = null;
+    let closestTimeDiff = Number.POSITIVE_INFINITY;
+
+    shifts.forEach((shift) => {
+      const shiftFrom = this.extractMinutes(shift.shiftFrom);
+      const shiftTo = this.extractMinutes(shift.shiftTo);
+
+      if (shiftFrom == null || shiftTo == null) {
+        return;
+      }
+
+      const isOvernight = shiftTo < shiftFrom;
+      const isWithinShift = isOvernight
+        ? currentMinutes >= shiftFrom || currentMinutes <= shiftTo
+        : currentMinutes >= shiftFrom && currentMinutes <= shiftTo;
+
+      if (!isWithinShift) {
+        return;
+      }
+
+      const timeDiff = currentMinutes >= shiftFrom
+        ? currentMinutes - shiftFrom
+        : 24 * 60 - shiftFrom + currentMinutes;
+
+      if (timeDiff < closestTimeDiff) {
+        closestTimeDiff = timeDiff;
+        matchedShift = shift;
+      }
+    });
+
+    return matchedShift;
+  }
+
+  private isCurrentTimeWithinShiftWindow(shift: any, graceMinutes: number): boolean {
+    const shiftFrom = this.extractMinutes(shift?.shiftFrom);
+    const shiftTo = this.extractMinutes(shift?.shiftTo);
+
+    if (shiftFrom == null || shiftTo == null) {
+      return false;
+    }
+
+    const now = new Date();
+    const currentMinutes = now.getHours() * 60 + now.getMinutes();
+    const overnight = shiftTo < shiftFrom;
+
+    if (!overnight) {
+      return currentMinutes >= shiftFrom && currentMinutes <= shiftTo + graceMinutes;
+    }
+
+    const overnightEnd = shiftTo + graceMinutes;
+    return currentMinutes >= shiftFrom || currentMinutes <= overnightEnd;
+  }
+
+  private extractMinutes(value: string | Date | null | undefined): number | null {
+    if (!value) return null;
+
+    if (value instanceof Date && !Number.isNaN(value.getTime())) {
+      return value.getHours() * 60 + value.getMinutes();
+    }
+
+    const rawValue = String(value).trim();
+    if (!rawValue) return null;
+
+    const hhmmMatch = rawValue.match(/(\d{1,2}):(\d{2})/);
+    if (!hhmmMatch) return null;
+
+    let hours = Number(hhmmMatch[1]);
+    const minutes = Number(hhmmMatch[2]);
+    const upperValue = rawValue.toUpperCase();
+
+    if (upperValue.includes("PM") && hours < 12) {
+      hours += 12;
+    }
+    if (upperValue.includes("AM") && hours === 12) {
+      hours = 0;
+    }
+
+    if (hours > 23 || minutes > 59) return null;
+    return hours * 60 + minutes;
   }
 }

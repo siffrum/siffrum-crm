@@ -1,81 +1,96 @@
-<!-- admin-dashboard.component.html -->
-<div class="admin-dashboard-container">
+<div class="sa-page">
+  <section class="sa-hero">
+    <div class="sa-hero-copy">
+      <span class="sa-kicker">Super Admin Workspace</span>
+      <h1 class="sa-title">Run the platform from one control center</h1>
+      <p class="sa-text">
+        Manage company onboarding, review client workspaces, monitor contact requests, and access admin reporting tools from a cleaner dashboard.
+      </p>
 
-  <!-- Header -->
-  <header class="dashboard-header">
-    <h1>{{ viewModel.PageTitle }}</h1>
-    <div class="user-info" *ngIf="viewModel.employee">
-      <img
-        [src]="viewModel.employee.profilePicturePath || 'assets/default-avatar.png'"
-        alt="User Avatar"
-        class="avatar"
-      />
-      <span class="username">
-        {{ viewModel.employee.firstName }} {{ viewModel.employee.lastName }}
-      </span>
-    </div>
-  </header>
+      <div class="sa-hero-actions">
+        <button type="button" class="sa-btn sa-btn-primary" (click)="openAdminRoute('/admin/add-company')">
+          <i class="bi bi-building-add"></i>
+          <span>Add Company</span>
+        </button>
 
-  <!-- Welcome Section -->
-  <section class="welcome-section">
-    <p *ngIf="viewModel.employee">
-      Welcome back, <strong>{{ viewModel.employee.firstName }}</strong>! Here's your dashboard overview.
-    </p>
-    <p *ngIf="!viewModel.employee">
-      Please login to view your dashboard.
-    </p>
-  </section>
-
-  <!-- Dashboard Cards -->
-  <section class="dashboard-cards">
-    <div class="card">
-      <div class="card-icon">📊</div>
-      <div class="card-content">
-        <h2>0</h2>
-        <p>Total Users</p>
+        <button type="button" class="sa-btn sa-btn-ghost" (click)="openAdminRoute('/admin/companylist')">
+          <i class="bi bi-buildings"></i>
+          <span>Open Company Dashboard</span>
+        </button>
       </div>
     </div>
-    <div class="card">
-      <div class="card-icon">💼</div>
-      <div class="card-content">
-        <h2>0</h2>
-        <p>Projects</p>
+
+    <div class="sa-user-card" *ngIf="viewModel.employee">
+      <div class="sa-user-avatar">
+        {{ (viewModel.employee.firstName || viewModel.employee.loginId || 'A').slice(0,1) }}
       </div>
-    </div>
-    <div class="card">
-      <div class="card-icon">📝</div>
-      <div class="card-content">
-        <h2>0</h2>
-        <p>Tasks</p>
+      <div>
+        <div class="sa-user-label">Signed in as</div>
+        <div class="sa-user-name">
+          {{ viewModel.employee.firstName }} {{ viewModel.employee.lastName }}
+        </div>
+        <div class="sa-user-sub">{{ viewModel.employee.loginId }}</div>
       </div>
     </div>
   </section>
 
-  <!-- Recent Activities -->
-  <section class="recent-activity" *ngIf="viewModel.recentActivities?.length; else noActivity">
-    <h2>Recent Activity</h2>
-    <div class="table-container">
-      <table>
-        <thead>
-          <tr>
-            <th>Title</th>
-            <th>Description</th>
-            <th>Date</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let activity of viewModel.recentActivities">
-            <td>{{ activity.title }}</td>
-            <td>{{ activity.description || '-' }}</td>
-            <td>{{ activity.date | date:'short' }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+  <section class="sa-stats">
+    <article class="sa-stat" *ngFor="let stat of stats" [attr.data-tone]="stat.tone">
+      <div class="sa-stat-icon">
+        <i [class]="stat.icon"></i>
+      </div>
+      <div class="sa-stat-copy">
+        <span>{{ stat.label }}</span>
+        <strong>{{ stat.value }}</strong>
+      </div>
+    </article>
   </section>
 
-  <ng-template #noActivity>
-    <p class="no-activity">No recent activity found.</p>
-  </ng-template>
+  <section class="sa-grid">
+    <div class="sa-panel">
+      <div class="sa-panel-head">
+        <div>
+          <h2>Management Modules</h2>
+          <p>Direct access to the core Super Admin sections.</p>
+        </div>
+      </div>
 
+      <div class="sa-links">
+        <button type="button" class="sa-link-card" *ngFor="let link of quickLinks" (click)="openAdminRoute(link.route)">
+          <div class="sa-link-icon">
+            <i [class]="link.icon"></i>
+          </div>
+          <div class="sa-link-copy">
+            <strong>{{ link.title }}</strong>
+            <span>{{ link.description }}</span>
+          </div>
+          <i class="bi bi-arrow-right sa-link-arrow"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="sa-panel">
+      <div class="sa-panel-head">
+        <div>
+          <h2>Operations Snapshot</h2>
+          <p>Quick overview of what needs attention.</p>
+        </div>
+      </div>
+
+      <div class="sa-activity-list" *ngIf="viewModel.recentActivities?.length; else emptyState">
+        <div class="sa-activity-item" *ngFor="let activity of viewModel.recentActivities">
+          <div class="sa-activity-dot"></div>
+          <div>
+            <strong>{{ activity.title }}</strong>
+            <p>{{ activity.description || '-' }}</p>
+            <span>{{ activity.date | date:'medium' }}</span>
+          </div>
+        </div>
+      </div>
+
+      <ng-template #emptyState>
+        <div class="sa-empty">No admin activity is available yet.</div>
+      </ng-template>
+    </div>
+  </section>
 </div>

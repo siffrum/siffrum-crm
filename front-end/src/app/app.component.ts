@@ -28,7 +28,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   @HostListener("document:keydown", ["$event"])
   handleKeyboardEvent(event: KeyboardEvent): void {
-    const isPublicRoute = this.isPublicRoute(this.router.url);
+    const isPublicRoute = !this._commonService.layoutVM.showLeftSideMenu;
 
     // Only force dashboard on protected CRM pages
     if (!isPublicRoute && event.ctrlKey && (event.key === "F5" || event.key === "f5")) {
@@ -42,20 +42,20 @@ export class AppComponent implements OnInit, OnDestroy {
     this.themeService.initTheme();
 
     // Initial shell visibility
-    this.applyShellVisibility(this.router.url);
+    await this.applyShellVisibility(this.router.url);
 
     this.navSub = this.router.events
       .pipe(filter((e): e is NavigationEnd => e instanceof NavigationEnd))
-      .subscribe((e) => {
+      .subscribe(async (e) => {
         const currentUrl = e.urlAfterRedirects || e.url;
-        this.applyShellVisibility(currentUrl);
+        await this.applyShellVisibility(currentUrl);
       });
 
     const currentUrl = this.router.url;
 
     // ✅ VERY IMPORTANT:
     // Skip auth/user loading for public website routes
-    if (this.isPublicRoute(currentUrl)) {
+    if (await this.isPublicRoute(currentUrl)) {
       this.resetPublicLayoutState();
       return;
     }
@@ -84,7 +84,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.navSub?.unsubscribe();
   }
 
-  private isPublicRoute(url: string): boolean {
+  private async isPublicRoute(url: string): Promise<boolean> {
     const u = (url || "").toLowerCase();
 
     const publicRoutes = [
@@ -94,7 +94,6 @@ export class AppComponent implements OnInit, OnDestroy {
       "/forgotpassword",
       "/resetpassword",
       "/changepassword",
-      "/license",
       "/success",
       "/failure",
       "/admin/login"
@@ -107,8 +106,10 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   /** Show / hide CRM shell */
-  private applyShellVisibility(url: string): void {
-    const shouldHide = this.isPublicRoute(url) || (url || "").toLowerCase().startsWith("/admin");
+  private async applyShellVisibility(url: string): Promise<void> {
+    const shouldHide =
+      (await this.isPublicRoute(url)) ||
+      (url || "").toLowerCase().startsWith("/admin");
     this._commonService.layoutVM.showLeftSideMenu = !shouldHide;
   }
 

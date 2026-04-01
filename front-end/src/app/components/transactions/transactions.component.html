@@ -1,11 +1,36 @@
 <div class="iw-page container-fluid">
+  <section class="iw-hero">
+    <div class="iw-hero__copy">
+      <span class="iw-hero__eyebrow">Payroll workspace</span>
+      <h1 class="iw-hero__title">Transactions and payout control</h1>
+      <p class="iw-hero__text">
+        Review monthly payroll, generate pending records, and keep a clean view of paid, unpaid, and resigned employees.
+      </p>
+    </div>
 
-  <!-- Header / Controls -->
+    <div class="iw-hero__summary" *ngIf="viewModel.showTable">
+      <div class="iw-summary-card">
+        <span>Selected month</span>
+        <strong>{{ viewModel.selectedMonth || '-' }}</strong>
+      </div>
+      <div class="iw-summary-card">
+        <span>Records loaded</span>
+        <strong>{{ filteredList.length }}</strong>
+      </div>
+    </div>
+  </section>
+
   <div class="iw-card iw-card--controls">
-    <div class="row g-3 align-items-end">
+    <div class="iw-controls-head">
+      <div>
+        <div class="iw-title">Payroll Filters</div>
+        <div class="iw-subline">Choose a month, search employees, and open quick actions.</div>
+      </div>
+      <div class="iw-control-badge">Premium view</div>
+    </div>
 
-      <!-- Month -->
-      <div class="col-lg-4 col-md-6 col-12">
+    <div class="row g-3 align-items-end">
+      <div class="col-xl-4 col-lg-5 col-md-6 col-12">
         <label class="iw-label">Select Payroll Month</label>
         <select
           class="form-select iw-select"
@@ -19,8 +44,7 @@
         </select>
       </div>
 
-      <!-- Search -->
-      <div class="col-lg-5 col-md-6 col-12">
+      <div class="col-xl-5 col-lg-7 col-md-6 col-12">
         <label class="iw-label">Search</label>
         <div class="iw-search">
           <i class="bi bi-search"></i>
@@ -34,71 +58,83 @@
         </div>
       </div>
 
-      <!-- Buttons -->
-      <div class="col-lg-3 col-12 d-flex gap-2 justify-content-lg-end">
-        <button
-          class="btn iw-btn iw-btn--ghost"
-          type="button"
-          (click)="toggleAmount()"
-          [disabled]="!viewModel.showTable"
-        >
-          <i class="bi" [ngClass]="hideAmount ? 'bi-eye' : 'bi-eye-slash'"></i>
-          <span class="ms-2">{{ hideAmount ? 'Show Amount' : 'Hide Amount' }}</span>
-        </button>
+      <div class="col-12">
+        <div class="iw-inline-actions">
+          <button
+            class="btn iw-btn iw-btn--ghost"
+            type="button"
+            (click)="toggleAmount()"
+            [disabled]="!viewModel.showTable"
+          >
+            <i class="bi" [ngClass]="hideAmount ? 'bi-eye' : 'bi-eye-slash'"></i>
+            <span>{{ hideAmount ? 'Show Amount' : 'Hide Amount' }}</span>
+          </button>
 
-        <button
-          class="btn iw-btn iw-btn--primary"
-          type="button"
-          (click)="openPayrollDrawer()"
-          [disabled]="!viewModel.showTable"
-        >
-          <i class="bi bi-layout-sidebar-inset-reverse me-2"></i>
-          Open Drawer
-        </button>
+          <button
+            class="btn iw-btn iw-btn--ghost"
+            type="button"
+            (click)="openPayrollDrawer()"
+            [disabled]="!viewModel.showTable"
+          >
+            <i class="bi bi-layout-sidebar-inset-reverse"></i>
+            <span>Open Drawer</span>
+          </button>
+        </div>
       </div>
     </div>
 
-    <!-- View Payroll -->
-    <div class="row mt-3">
-      <div class="col-12 d-flex justify-content-end">
-        <button class="btn iw-btn iw-btn--primary" (click)="getTransactionMonthlyBased()">
-          <i class="bi bi-eye me-2"></i> View Payroll
-        </button>
+    <div class="iw-toolbar">
+      <div class="iw-toolbar__meta">
+        <span class="iw-toolbar__chip">Live payroll actions</span>
+        <span class="iw-toolbar__hint">Load transactions for the selected month before generating or paying.</span>
       </div>
+
+      <button class="btn iw-btn iw-btn--primary" (click)="getTransactionMonthlyBased()">
+        <i class="bi bi-eye"></i>
+        <span>View Payroll</span>
+      </button>
     </div>
 
-    <!-- Stats -->
     <div class="iw-stats mt-3" *ngIf="viewModel.showTable">
       <div class="iw-pill">
-        <div class="iw-pill__k">Total</div>
-        <!-- ✅ FIX: use getter -->
-        <div class="iw-pill__v">{{ totalCountSafe }}</div>
+        <div class="iw-pill__icon"><i class="bi bi-collection"></i></div>
+        <div>
+          <div class="iw-pill__k">Total</div>
+          <div class="iw-pill__v">{{ totalCountSafe }}</div>
+        </div>
       </div>
 
       <div class="iw-pill iw-pill--green">
-        <div class="iw-pill__k">Paid</div>
-        <div class="iw-pill__v">{{ paidCount }}</div>
+        <div class="iw-pill__icon"><i class="bi bi-check2-circle"></i></div>
+        <div>
+          <div class="iw-pill__k">Paid</div>
+          <div class="iw-pill__v">{{ paidCount }}</div>
+        </div>
       </div>
 
       <div class="iw-pill iw-pill--red">
-        <div class="iw-pill__k">Not Paid</div>
-        <div class="iw-pill__v">{{ notPaidCount }}</div>
+        <div class="iw-pill__icon"><i class="bi bi-hourglass-split"></i></div>
+        <div>
+          <div class="iw-pill__k">Not Paid</div>
+          <div class="iw-pill__v">{{ notPaidCount }}</div>
+        </div>
       </div>
 
       <div class="iw-pill iw-pill--amber">
-        <div class="iw-pill__k">Resigned</div>
-        <div class="iw-pill__v">{{ resignedCount }}</div>
+        <div class="iw-pill__icon"><i class="bi bi-person-dash"></i></div>
+        <div>
+          <div class="iw-pill__k">Resigned</div>
+          <div class="iw-pill__v">{{ resignedCount }}</div>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- TABLE -->
   <div class="iw-card mt-3" *ngIf="viewModel.showTable">
-
     <div class="iw-card__head">
-      <div class="iw-title">
-        Payroll Transactions
-        <span class="iw-sub">Month: {{ viewModel.selectedMonth || '-' }}</span>
+      <div>
+        <div class="iw-title">Payroll Transactions</div>
+        <div class="iw-subline">Month: {{ viewModel.selectedMonth || '-' }}</div>
       </div>
 
       <div class="iw-actions">
@@ -107,11 +143,13 @@
           (click)="generateAllEmployeePayroll()"
           *ngIf="viewModel.showGenerateAllBtn"
         >
-          <i class="bi bi-cpu me-2"></i> Generate All
+          <i class="bi bi-cpu"></i>
+          <span>Generate All</span>
         </button>
 
         <button class="btn iw-btn iw-btn--success" *ngIf="viewModel.showPayAllBtn">
-          <i class="bi bi-cash-coin me-2"></i> Pay All
+          <i class="bi bi-cash-coin"></i>
+          <span>Pay All</span>
         </button>
       </div>
     </div>
@@ -161,7 +199,7 @@
               <td>{{ item.paymentFor }}</td>
               <td>{{ item.paymentType }}</td>
 
-              <td class="text-end">
+              <td class="text-end iw-amount">
                 <span *ngIf="hideAmount">••••</span>
                 <span *ngIf="!hideAmount">{{ item.paymentAmount }}</span>
               </td>
@@ -183,7 +221,7 @@
               <td class="text-end">
                 <div class="d-flex gap-2 justify-content-end flex-wrap">
                   <button
-                    class="btn iw-btn iw-btn--primary"
+                    class="btn iw-btn iw-btn--primary iw-btn-sm"
                     *ngIf="isActiveStatus(item)
                       && !item.paymentPaid
                       && (item.paymentAmount || 0) == 0
@@ -194,7 +232,7 @@
                   </button>
 
                   <button
-                    class="btn iw-btn iw-btn--success"
+                    class="btn iw-btn iw-btn--success iw-btn-sm"
                     *ngIf="isActiveStatus(item)
                       && !item.paymentPaid
                       && (item.paymentAmount || 0) > 0"
@@ -203,7 +241,7 @@
                   </button>
 
                   <button
-                    class="btn iw-btn iw-btn--ghost"
+                    class="btn iw-btn iw-btn--ghost iw-btn-sm"
                     *ngIf="item.paymentPaid === true"
                     (click)="openHistoryFromRow(item)"
                   >
@@ -224,7 +262,6 @@
       </table>
     </div>
 
-    <!-- Pagination -->
     <div class="col-12 d-flex justify-content-center pt-2" *ngIf="totalCountSafe > 0">
       <pagination
         (selectedPageNum)="loadPagedataWithPagination($event)"
@@ -233,14 +270,13 @@
     </div>
   </div>
 
-  <!-- RIGHT DRAWER -->
   <div class="iw-drawer-overlay" [class.show]="drawerOpen" (click)="closePayrollDrawer()"></div>
 
   <aside class="iw-drawer-right" [class.open]="drawerOpen">
     <div class="iw-drawer-head">
       <div>
         <div class="iw-drawer-title">Payroll</div>
-        <div class="iw-drawer-sub">History & Payslips</div>
+        <div class="iw-drawer-sub">History and Payslips</div>
       </div>
 
       <button type="button" class="iw-drawer-exit" (click)="closePayrollDrawer()" aria-label="Close">
@@ -280,8 +316,9 @@
 
         <div class="iw-slip" *ngFor="let p of payslipList">
           <div>
-            <div class="iw-slip-title">{{ p.month }}</div>
-            <div class="iw-slip-sub">{{ p.file }}</div>
+            <div class="iw-slip-title">{{ p.employeeName }}</div>
+            <div class="iw-slip-sub">{{ p.paymentFor }} • {{ p.paymentType }}</div>
+            <div class="iw-slip-meta">{{ p.file }}</div>
           </div>
           <button type="button" class="btn iw-btn iw-btn--ghost iw-btn-sm" (click)="downloadPayslip(p)">
             Download
@@ -290,5 +327,4 @@
       </ng-container>
     </div>
   </aside>
-
 </div>

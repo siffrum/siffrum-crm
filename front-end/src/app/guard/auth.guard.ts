@@ -21,20 +21,23 @@ export class AuthGuard {
   ) { }
 
   async canActivate(route: ActivatedRouteSnapshot): Promise<boolean> {
+    const expectedRole: RoleTypeSM[] = route.data["allowedRole"] ?? [];
+    const isAdminArea = expectedRole.includes(RoleTypeSM.SuperAdmin) ||
+      expectedRole.includes(RoleTypeSM.SystemAdmin);
+
     if (!(await this.IsTokenValid())) {
       await this.accountService.logoutUser();
-      await this.router.navigate([AppConstants.WebRoutes.LOGIN]);
+      await this.router.navigate([isAdminArea ? AppConstants.WebRoutes.ADMIN.LOGIN : AppConstants.WebRoutes.LOGIN]);
       return false;
     }
     let permissionAllowed = false;
-    const expectedRole: RoleTypeSM[] = route.data["allowedRole"];
     const permissionTypes: PermissionType[] = route.data["permissionType"];
     const moduleName = route.data["moduleName"];
     let tokenRole: RoleTypeSM = await this.GetRoleFromToken();
 
     if (!expectedRole.includes(tokenRole)) {
       this.commonService.layoutVM.showLeftSideMenu = false;
-      this.router.navigate([AppConstants.WebRoutes.UNAUTHORIZED]);
+      this.router.navigate([isAdminArea ? AppConstants.WebRoutes.ADMIN.LOGIN : AppConstants.WebRoutes.UNAUTHORIZED]);
       return false;
     }
     if (tokenRole == RoleTypeSM.SuperAdmin || tokenRole == RoleTypeSM.SystemAdmin)
@@ -89,10 +92,28 @@ export class AuthGuard {
   }
 
   async GetRoleFromToken(): Promise<RoleTypeSM> {
-    let resp: any = RoleTypeSM.Unknown;
+    let resp: RoleTypeSM = RoleTypeSM.Unknown;
     const token: string = await this.accountService.getTokenFromStorage();
+    if (!token) {
+      this.commonService.layoutVM.tokenRole = resp;
+      return resp;
+    }
+
     const tokenPayload: any = await decode(token);
-    resp = RoleTypeSM[tokenPayload[AppConstants.Token_Info_Keys.Role]];
+    const rawRole = tokenPayload[AppConstants.Token_Info_Keys.Role];
+
+    if (typeof rawRole === "number") {
+      resp = rawRole as RoleTypeSM;
+    } else if (typeof rawRole === "string") {
+      const parsedRole = Number(rawRole);
+
+      if (!Number.isNaN(parsedRole) && RoleTypeSM[parsedRole] !== undefined) {
+        resp = parsedRole as RoleTypeSM;
+      } else if ((RoleTypeSM as any)[rawRole] !== undefined) {
+        resp = (RoleTypeSM as any)[rawRole] as RoleTypeSM;
+      }
+    }
+
     this.commonService.layoutVM.tokenRole = resp;
     return resp;
   }

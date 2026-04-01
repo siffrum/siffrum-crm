@@ -1,47 +1,88 @@
-<div class="container-fluid">
-    <div class="row">
-        <div class=" col-lg-5 col-md-12 col-sm-12 m-auto">
-            <div class="card mt-5">
-                <div class="col-12 text-center">
-                    <div class="profile_img_wrapper">
-                        <img src="/assets/logo/l2.webp" alt="profile" loading="lazy"
-                        class="profile_img">
-                    </div>
-                    <!-- <p class=" h3  ">Sign In</p> -->
-                </div>
-                <div class="login__field">
-                    <i class="login__icon bi bi-person-fill" (mouseenter)="viewModel.showTooltip = true"
-                        (mouseleave)="viewModel.showTooltip = false" [attr.title]="'User Name'"
-                        [attr.data-placement]="'left'" [ngClass]="{ 'tooltip-show': viewModel.showTooltip }"></i>
-                    <input type="text" placeholder="Enter your username" required="required"
-                        [(ngModel)]="viewModel.tokenRequest.loginId" class="login__input">
-                </div>
-                <div class="login__field">
-                    <div>
-                        <i class="login__icon bi bi-lock-fill" (mouseenter)="viewModel.showTooltip = true"
-                            (mouseleave)="viewModel.showTooltip = false" [attr.title]="'Password'"
-                            [attr.data-placement]="'left'" [ngClass]="{ 'tooltip-show': viewModel.showTooltip }"></i>
-                        <input type="password" class="login__input" placeholder="Enter your Password"
-                            required="required" [(ngModel)]="viewModel.tokenRequest.password"
-                            [type]="viewModel.hide ? 'password' : 'text'">
-                        <i (click)="togglePassword()" class="bi bi-eye-fill eye" size="small"
-                            [ngClass]="[viewModel.eyeDefault]" (mouseenter)="viewModel.showTooltip = true"
-                            (mouseleave)="viewModel.showTooltip = false" [attr.title]="'Show'"
-                            [attr.data-placement]="'left'" [ngClass]="{ 'tooltip-show': viewModel.showTooltip }">
-                        </i>
-                    </div>
-                </div>
-                <div class="my-2">
-                    <input type="checkbox" [(ngModel)]="viewModel.rememberMe">
-                    <small> Remember Me </small>
-                </div>
-                <button type="submit" class="btn coinLoginButton" (click)='login()'>
-                    Log In
-                </button>
-                <span class="login_text mt-2">
-                    <a href="./forgot-password"><u>Forgot Password?</u></a>
-                </span>
-            </div>
+<div class="sa-login">
+  <div class="sa-login-bg">
+    <div class="sa-grad sa-grad-a"></div>
+    <div class="sa-grad sa-grad-b"></div>
+  </div>
+
+  <div class="sa-login-wrap">
+    <section class="sa-login-copy">
+      <span class="sa-pill">Super Admin Access</span>
+      <h1>Control the platform from one secure workspace.</h1>
+      <p>
+        Sign in to manage company onboarding, contact requests, SQL reporting, and overall client administration.
+      </p>
+
+      <div class="sa-login-features">
+        <div class="sa-feature">
+          <i class="bi bi-buildings"></i>
+          <span>Company management</span>
         </div>
-    </div>
+        <div class="sa-feature">
+          <i class="bi bi-shield-check"></i>
+          <span>Protected admin access</span>
+        </div>
+        <div class="sa-feature">
+          <i class="bi bi-bar-chart-line"></i>
+          <span>Reporting control</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="sa-login-panel">
+      <div class="sa-login-card">
+        <div class="sa-login-brand">
+          <div class="sa-login-logo">
+            <img src="/assets/logo/l2.webp" alt="logo" loading="lazy" class="profile_img">
+          </div>
+          <div>
+            <h2>Admin Sign In</h2>
+            <p>Use your Super Admin credentials to continue.</p>
+          </div>
+        </div>
+
+        <div class="sa-field">
+          <label>Username</label>
+          <div class="sa-control">
+            <i class="bi bi-person-fill"></i>
+            <input
+              type="text"
+              placeholder="Enter your username"
+              required="required"
+              [(ngModel)]="viewModel.tokenRequest.loginId"
+              class="sa-input"
+            >
+          </div>
+        </div>
+
+        <div class="sa-field">
+          <label>Password</label>
+          <div class="sa-control">
+            <i class="bi bi-lock-fill"></i>
+            <input
+              class="sa-input sa-input-pr"
+              placeholder="Enter your password"
+              required="required"
+              [(ngModel)]="viewModel.tokenRequest.password"
+              [type]="viewModel.hide ? 'password' : 'text'"
+            >
+            <button type="button" class="sa-eye" (click)="togglePassword()" aria-label="Toggle password">
+              <i class="bi bi-eye-fill"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="sa-login-row">
+          <label class="sa-check">
+            <input type="checkbox" [(ngModel)]="viewModel.rememberMe">
+            <span>Remember me</span>
+          </label>
+        </div>
+
+        <button type="submit" class="sa-submit" (click)="login()">
+          <i class="bi bi-box-arrow-in-right"></i>
+          <span>Log In</span>
+        </button>
+      </div>
+    </section>
+  </div>
 </div>

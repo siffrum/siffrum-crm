@@ -148,14 +148,13 @@ html.dark .glass-card {
    TOP NAV — FULL WIDTH + STICKY (FINAL FIX)
 ========================================================= */
 
-/* Force full width */
 app-top-nav .iw-topbar {
   width: 100% !important;
   max-width: 100% !important;
 
   position: sticky !important;
   top: 0 !important;
-  z-index: 9999 !important;
+  z-index: 200 !important;
 
   background: var(--nav-bg) !important;
   border-bottom: 1px solid var(--nav-border) !important;
@@ -179,6 +178,12 @@ app-top-nav .iw-topbar-inner .row {
 /* Keep your spacing clean */
 app-top-nav .iw-topbar-inner {
   padding: 10px 14px !important;
+}
+
+app-top-nav {
+  position: relative;
+  z-index: 200;
+  display: block;
 }
 
 /* Make sure no max-width boxes nav */

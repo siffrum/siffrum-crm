@@ -8,7 +8,10 @@
   <!-- BRAND -->
   <div class="iw-brand">
     <div class="iw-logo">I</div>
-    <div class="iw-brand-text">Internal.</div>
+    <div class="iw-brand-copy">
+      <div class="iw-brand-text">{{ getBrandLabel() }}</div>
+      <div class="iw-brand-sub">{{ getBrandSubLabel() }}</div>
+    </div>
   </div>
 
   <!-- PROFILE -->
@@ -75,7 +78,12 @@
     </div>
 
     <div class="iw-user-name">
-      {{ _commonService.layoutVM.loggedUserName }}
+      {{ getDisplayUserName() }}
+    </div>
+
+    <div class="iw-admin-pill" *ngIf="isSuperAdmin()">
+      <i class="bi bi-shield-check"></i>
+      <span>Platform access</span>
     </div>
   </div>
 
@@ -189,6 +197,7 @@
       class="iw-menu iw-menu--secondary"
       *ngIf="_commonService.layoutVM.tokenRole == 1 || _commonService.layoutVM.tokenRole == 2"
     >
+      <li class="iw-menu-title">Super Admin</li>
       <ng-container *ngFor="let menuItem of _commonService.layoutVM.superAdminSideMenuItems">
         <li class="iw-item" routerLinkActive="active" [routerLink]="menuItem.itemRoute" (click)="hideSideMenu()">
           <span class="iw-ic">

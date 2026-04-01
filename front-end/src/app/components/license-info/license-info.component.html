@@ -1,61 +1,123 @@
 <section class="pricing-shell">
-
   <div class="pricing-hero" data-aos="zoom-out" data-aos-duration="1200">
     <div class="pricing-hero-inner">
-      <div class="kicker">Plans</div>
-      <h1>Checkout our Pricing Plans</h1>
-      <p class="sub">Choose the right plan for your team. Upgrade or renew anytime.</p>
+      <div class="hero-copy">
+        <div class="kicker">Plans</div>
+        <h1>Pricing that scales with your team</h1>
+        <p class="sub">
+          Compare plans, see what is already active, and upgrade or renew without leaving the workspace.
+        </p>
+
+        <div class="hero-pills">
+          <span class="hero-pill">
+            <i class="bi bi-shield-check"></i>
+            Secure checkout
+          </span>
+          <span class="hero-pill soft">
+            <i class="bi bi-arrow-repeat"></i>
+            Upgrade anytime
+          </span>
+        </div>
+      </div>
+
+      <div class="hero-status">
+        <div class="status-card" *ngIf="viewModel.checkValidUser && viewModel.activeLicense?.licenseTypeId; else guestState">
+          <div class="status-eyebrow">Current Subscription</div>
+          <div class="status-title">{{ viewModel.activeLicense.status || 'Active plan' }}</div>
+          <div class="status-sub">
+            License ID: {{ viewModel.activeLicense.licenseTypeId }}
+          </div>
+
+          <div class="status-meta">
+            <div class="status-metric">
+              <span class="metric-label">Subscription</span>
+              <strong class="metric-value">{{ viewModel.activeLicense.isCancelled ? 'Cancelling' : 'Running' }}</strong>
+            </div>
+
+            <div class="status-metric">
+              <span class="metric-label">Payment Action</span>
+              <strong class="metric-value">{{ viewModel.buyBtn }}</strong>
+            </div>
+          </div>
+        </div>
+
+        <ng-template #guestState>
+          <div class="status-card status-card--guest">
+            <div class="status-eyebrow">Plan Selection</div>
+            <div class="status-title">Pick a plan and start quickly</div>
+            <div class="status-sub">
+              Browse features below and choose the best fit for your company role and billing cycle.
+            </div>
+          </div>
+        </ng-template>
+      </div>
     </div>
   </div>
 
   <div class="container-fluid pricing-body">
+    <div class="pricing-toolbar">
+      <div class="toolbar-copy">
+        <div class="toolbar-title">Available plans</div>
+        <div class="toolbar-sub">Swipe horizontally or use the arrows to compare every package.</div>
+      </div>
+
+      <div class="toolbar-actions d-lg-flex d-none">
+        <button
+          class="btn scrollBtn"
+          type="button"
+          (click)="scrollLeft()"
+          aria-label="Scroll left"
+        >
+          <i class="bi bi-chevron-left"></i>
+        </button>
+
+        <button
+          class="btn scrollBtn"
+          type="button"
+          (click)="scrollRight()"
+          aria-label="Scroll right"
+        >
+          <i class="bi bi-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+
     <div class="pricing-row-wrap">
-
-      <!-- Scroll Buttons (Desktop only) -->
-      <button
-        class="btn scrollBtn scrollBtn-left d-lg-inline-flex d-none"
-        type="button"
-        (click)="scrollLeft()"
-        aria-label="Scroll left"
-      >
-        <i class="bi bi-chevron-left"></i>
-      </button>
-
-      <button
-        class="btn scrollBtn scrollBtn-right d-lg-inline-flex d-none"
-        type="button"
-        (click)="scrollRight()"
-        aria-label="Scroll right"
-      >
-        <i class="bi bi-chevron-right"></i>
-      </button>
-
-      <!-- IMPORTANT: NO (wheel) HERE (we attach non-passive listener in TS) -->
       <div class="row cardsRow g-0" #pricingCards>
-
         <div
-          class="col-lg-4 col-md-6 col-sm-10 col-12 cardColumn"
+          class="col-xl-4 col-lg-5 col-md-6 col-sm-10 col-12 cardColumn"
           *ngFor="let item of viewModel.LicenseTypeList; let i = index"
           data-aos="fade-up"
           data-aos-duration="900"
           [attr.data-aos-delay]="i * 80"
         >
-          <div class="plan-card">
-
+          <article
+            class="plan-card"
+            [class.plan-card--featured]="i === 1"
+            [class.plan-card--current]="viewModel.activeLicense.licenseTypeId === item.id"
+            [class.plan-card--disabled]="!IsValidForRole(item.validFor)"
+          >
             <div class="plan-top">
-              <div class="plan-icon">
-                <i class="bi bi-send"></i>
-              </div>
+              <div class="plan-topbar">
+                <div class="plan-icon">
+                  <i class="bi" [ngClass]="i === 0 ? 'bi-rocket-takeoff' : i === 1 ? 'bi-stars' : 'bi-buildings'"></i>
+                </div>
 
-              <div class="plan-badge" *ngIf="i === 1">Most Popular</div>
+                <div class="plan-badge" *ngIf="i === 1">Most Popular</div>
+                <div class="plan-badge current" *ngIf="viewModel.activeLicense?.licenseTypeId === item.id">Current Plan</div>
+              </div>
 
               <h5 class="plan-title">{{ item.title }}</h5>
 
               <div class="plan-price">
                 <span class="currency">$</span>
                 <span class="amount">{{ item.amount }}</span>
-                <span class="cycle">/ {{ item.validityInDays }} Days</span>
+                <span class="cycle">every {{ item.validityInDays }} days</span>
               </div>
+
+              <p class="plan-copy">
+                Best for teams who want {{ item.title | lowercase }} level access with the modules listed below.
+              </p>
 
               <div class="plan-actions">
                 <button
@@ -65,7 +127,7 @@
                   [class.btn-disabled]="!IsValidForRole(item.validFor)"
                   [disabled]="!IsValidForRole(item.validFor)"
                 >
-                  {{ viewModel.buyBtn }}
+                  {{ viewModel.activeLicense.licenseTypeId === item.id ? 'Current Plan' : viewModel.buyBtn }}
                 </button>
 
                 <button
@@ -80,7 +142,7 @@
                 </button>
 
                 <div class="role-hint" *ngIf="!IsValidForRole(item.validFor)">
-                  Invalid for your role. Please choose another plan.
+                  This plan is not available for your current role.
                 </div>
               </div>
             </div>
@@ -96,9 +158,8 @@
             </div>
 
             <div class="plan-glow"></div>
-          </div>
+          </article>
         </div>
-
       </div>
     </div>
   </div>

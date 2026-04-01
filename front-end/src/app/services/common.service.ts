@@ -103,12 +103,46 @@ export class CommonService extends BaseService {
 
   /** Get Date ISO String from Month & Year String */
   getISODateFromMonthYear(selectedDate: string): any {
-    return new Date(`29-${selectedDate}`).toISOString();
+    if (!selectedDate) {
+      return new Date().toISOString();
+    }
+
+    const parts = selectedDate.trim().split(/\s+/);
+    if (parts.length < 2) {
+      return new Date().toISOString();
+    }
+
+    const [monthName, yearText] = parts;
+    const monthIndex = [
+      "january",
+      "february",
+      "march",
+      "april",
+      "may",
+      "june",
+      "july",
+      "august",
+      "september",
+      "october",
+      "november",
+      "december",
+    ].indexOf(monthName.toLowerCase());
+    const year = Number(yearText);
+
+    if (monthIndex < 0 || Number.isNaN(year)) {
+      return new Date().toISOString();
+    }
+
+    return new Date(Date.UTC(year, monthIndex, 1, 0, 0, 0, 0)).toISOString();
   }
 
   /** Get Date ISO String from Year String */
   getISODateFromYear(selectedDate: number): any {
-    return new Date(`04-10-${selectedDate}`).toISOString();
+    if (!selectedDate || Number.isNaN(Number(selectedDate))) {
+      return new Date().toISOString();
+    }
+
+    return new Date(Date.UTC(Number(selectedDate), 0, 1, 0, 0, 0, 0)).toISOString();
   }
 
   async presentLoading(message: string = "") {

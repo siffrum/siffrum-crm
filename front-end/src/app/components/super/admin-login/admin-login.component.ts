@@ -10,8 +10,6 @@ import { LogHandlerService } from "src/app/services/log-handler.service";
 import { StorageService } from "src/app/services/storage.service";
 import { AdminLoginViewModel } from "src/app/view-models/admin-login.viemodel";
 import { BaseComponent } from "../../base.component";
-import { ClientThemeSM } from "src/app/service-models/app/v1/client/client-theme-s-m";
-import { SettingService } from "src/app/services/setting.service";
 
 @Component({
     selector: "app-admin-login",
@@ -37,16 +35,16 @@ export class AdminLoginComponent
 
   async ngOnInit() {
     this._commonService.layoutVM.showLeftSideMenu = false;
-    this._commonService.layoutVM.toogleWrapper = "loginWrapper";
+      this._commonService.layoutVM.toogleWrapper = "loginWrapper";
     await this._commonService.loadDefaultTheme();
     // this.viewModel.listRoles = this._commonService.EnumToStringArray(RoleTypeSM);
     // this._exceptionHandler.logObject(this.viewModel);
     let userValid = await this.authGuard.IsTokenValid();
     if (userValid) {
       let user: LoginUserSM | "" = await this.storageService.getFromStorage(
-        AppConstants.DbKeys.LOGIN_ADMIN
+        AppConstants.DbKeys.LOGIN_USER
       );
-      this.router.navigate(['admin/dashboard']);
+      await this.router.navigateByUrl(AppConstants.WebRoutes.ADMIN.DASHBOARD);
       if (user !== "") {
         this.viewModel.tokenRequest.loginId = user.loginId;
         this.viewModel.tokenRequest.password =
@@ -81,7 +79,7 @@ export class AdminLoginComponent
         this._commonService.layoutVM.showLeftSideMenu = true;
         this._commonService.layoutVM.toogleWrapper = "wrapper";
         this._commonService.layoutVM.loginUser = resp.successData.loginUserDetails.loginId
-        this.router.navigate([AppConstants.WebRoutes.ADMIN.DASHBOARD]);
+        await this.router.navigateByUrl(AppConstants.WebRoutes.ADMIN.DASHBOARD);
         await this._commonService.ShowToastAtTopEnd(
           "Login Successful",
           "success"

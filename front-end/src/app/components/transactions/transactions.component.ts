@@ -13,7 +13,16 @@ import { PermissionSM } from "src/app/service-models/app/v1/client/permission-s-
 import { AccountService } from "src/app/services/account.service";
 
 type HistoryItem = { title: string; sub: string; time: string };
-type PayslipItem = { month: string; file: string };
+type PayslipItem = {
+  month: string;
+  file: string;
+  employeeName: string;
+  designation: string;
+  amount: number;
+  paymentType: string;
+  paymentFor: string;
+  status: string;
+};
 
 @Component({
   selector: "app-transactions",
@@ -44,10 +53,7 @@ export class TransactionsComponent
 
   // Drawer data
   historyList: HistoryItem[] = [];
-  payslipList: PayslipItem[] = [
-    { month: "January 2026", file: "Payslip_Jan_2026.pdf" },
-    { month: "December 2025", file: "Payslip_Dec_2025.pdf" },
-  ];
+  payslipList: PayslipItem[] = [];
 
   // ✅ FIX: Template-safe total count getter (prevents totalCount/totalcount warnings)
   get totalCountSafe(): number {
@@ -70,7 +76,7 @@ export class TransactionsComponent
   async ngOnInit() {
     this._commonService.layoutVM.PageTitle = this.viewModel.PageTitle;
     await this.getMonths();
-    this.viewModel.selectedMonth = "";
+    this.viewModel.selectedMonth = this.viewModel.months[0] || "";
     await this.getPermissions();
   }
 
@@ -95,7 +101,7 @@ export class TransactionsComponent
 
   openHistoryFromRow(item: any) {
     this.drawerOpen = true;
-    this.drawerTab = "history";
+    this.drawerTab = item?.paymentPaid === true ? "payslips" : "history";
     this.historyList.unshift({
       title: `Payslip opened • ${item?.employeeName || "Employee"}`,
       sub: `Payment For: ${item?.paymentFor || "-"} • Type: ${item?.paymentType || "-"}`,
@@ -104,9 +110,20 @@ export class TransactionsComponent
   }
 
   downloadPayslip(p: PayslipItem) {
+    const html = this.buildPayslipHtml(p);
+    const blob = new Blob([html], { type: "text/html;charset=utf-8" });
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = p.file.replace(/\.pdf$/i, ".html");
+    document.body.appendChild(link);
+    link.click();
+    window.URL.revokeObjectURL(url);
+    link.remove();
+
     this.historyList.unshift({
       title: `Payslip download requested`,
-      sub: `${p.month} • ${p.file}`,
+      sub: `${p.employeeName} • ${p.file}`,
       time: new Date().toLocaleString(),
     });
     this.drawerOpen = true;
@@ -153,6 +170,70 @@ export class TransactionsComponent
     this.paidCount = list.filter((x: any) => x?.paymentPaid === true).length;
     this.notPaidCount = list.filter((x: any) => this.isActiveStatus(x) && x?.paymentPaid === false).length;
     this.resignedCount = list.filter((x: any) => this.isResignedStatus(x)).length;
+  }
+
+  private refreshPayslips() {
+    const list = this.viewModel.payrollTransactionList || [];
+    this.payslipList = list
+      .filter((x: any) => Number(x?.paymentAmount || 0) > 0)
+      .map((x: any) => ({
+        month: x?.paymentFor || this.viewModel.selectedMonth || "-",
+        file: `Payslip_${String(x?.employeeName || "Employee").replace(/\s+/g, "_")}_${String(x?.paymentFor || this.viewModel.selectedMonth || "Payroll").replace(/\s+/g, "_")}.html`,
+        employeeName: x?.employeeName || "Employee",
+        designation: x?.designation || "-",
+        amount: Number(x?.paymentAmount || 0),
+        paymentType: x?.paymentType || "-",
+        paymentFor: x?.paymentFor || "-",
+        status: x?.paymentPaid === true ? "Paid" : "Generated",
+      }));
+  }
+
+  private buildPayslipHtml(p: PayslipItem): string {
+    const amount = new Intl.NumberFormat("en-IN", {
+      style: "currency",
+      currency: "INR",
+      maximumFractionDigits: 2,
+    }).format(Number(p.amount || 0));
+
+    return `<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>${p.file}</title>
+  <style>
+    body { font-family: Arial, sans-serif; background:#f8fafc; color:#0f172a; margin:0; padding:32px; }
+    .sheet { max-width:760px; margin:0 auto; background:#fff; border:1px solid #e2e8f0; border-radius:20px; padding:28px; }
+    .eyebrow { display:inline-block; padding:6px 10px; border-radius:999px; background:#dbeafe; color:#1d4ed8; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.08em; }
+    h1 { margin:14px 0 8px; font-size:28px; }
+    p { color:#475569; line-height:1.6; }
+    .grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:22px; }
+    .card { border:1px solid #e2e8f0; border-radius:16px; padding:16px; background:#f8fafc; }
+    .label { font-size:12px; text-transform:uppercase; letter-spacing:.08em; color:#64748b; font-weight:700; margin-bottom:6px; }
+    .value { font-size:16px; font-weight:700; color:#0f172a; }
+    .amount { margin-top:20px; padding:20px; border-radius:18px; background:linear-gradient(135deg,#2563eb,#1d4ed8); color:#fff; }
+    .amount .label { color:rgba(255,255,255,.75); }
+    .amount .value { color:#fff; font-size:30px; }
+  </style>
+</head>
+<body>
+  <div class="sheet">
+    <span class="eyebrow">Payroll Payslip</span>
+    <h1>${p.employeeName}</h1>
+    <p>Generated from the payroll transactions page using the current paid transaction data.</p>
+    <div class="grid">
+      <div class="card"><div class="label">Designation</div><div class="value">${p.designation}</div></div>
+      <div class="card"><div class="label">Status</div><div class="value">${p.status}</div></div>
+      <div class="card"><div class="label">Payment For</div><div class="value">${p.paymentFor}</div></div>
+      <div class="card"><div class="label">Payment Type</div><div class="value">${p.paymentType}</div></div>
+    </div>
+    <div class="amount">
+      <div class="label">Paid Amount</div>
+      <div class="value">${amount}</div>
+    </div>
+  </div>
+</body>
+</html>`;
   }
 
   // ===== APIs =====
@@ -217,6 +298,7 @@ export class TransactionsComponent
 
       this.computeStats();
       this.applyFilter();
+      this.refreshPayslips();
     } catch (error) {
       await this._exceptionHandler.logObject(error);
       throw error;
@@ -233,7 +315,7 @@ export class TransactionsComponent
   }
 
   async getPermissions() {
-    const moduleName = ModuleNameSM.PayrollTransacton;
+    const moduleName = ModuleNameSM.CompanyAccountTransaction;
     const resp: PermissionSM | any = await this.accountService.getMyModulePermissions(moduleName);
     this.viewModel.Permission = resp;
   }
@@ -291,6 +373,7 @@ export class TransactionsComponent
 
       this.computeStats();
       this.applyFilter();
+      this.refreshPayslips();
     } catch (error) {
       await this._exceptionHandler.logObject(error);
       throw error;

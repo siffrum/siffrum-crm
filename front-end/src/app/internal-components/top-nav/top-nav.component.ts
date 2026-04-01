@@ -72,7 +72,6 @@ export class TopNavComponent
       "/forgotpassword",
       "/resetpassword",
       "/changepassword",
-      "/license",
       "/success",
       "/failure",
       "/admin/login",

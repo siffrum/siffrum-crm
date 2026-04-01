@@ -1,9 +1,15 @@
 <header class="iw-topbar" *ngIf="_commonService.layoutVM.showLeftSideMenu">
   <div class="iw-topbar-inner container-fluid">
-    <div class="row w-100 align-items-center g-2">
+    <div class="iw-topbar-shell">
+      <div class="iw-topbar-left">
+        <div class="iw-brandMini">
+          <div class="iw-brandMini-logo">I</div>
+          <div class="iw-brandMini-text">
+            <div class="iw-brandMini-name">Internal Workspace</div>
+            <div class="iw-brandMini-sub">CRM Control Center</div>
+          </div>
+        </div>
 
-      <!-- LEFT: Toggle -->
-      <div class="col-auto">
         <button
           id="sidebarCollapse"
           class="iw-icon-btn"
@@ -12,10 +18,7 @@
         >
           <i class="bi bi-list iw-ic"></i>
         </button>
-      </div>
 
-      <!-- CENTER: Title -->
-      <div class="col">
         <div class="iw-center">
           <div class="iw-title-wrap">
             <div class="iw-kicker">Internal Workspace</div>
@@ -26,8 +29,7 @@
         </div>
       </div>
 
-      <!-- RIGHT: Actions -->
-      <div class="col-auto">
+      <div class="iw-topbar-right">
         <div class="iw-actions">
 
           <!-- Notifications -->
@@ -134,7 +136,6 @@
 
         </div>
       </div>
-
     </div>
   </div>
 </header>

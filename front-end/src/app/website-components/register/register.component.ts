@@ -6,7 +6,6 @@ import { BaseComponent } from '../../components/base.component';
 import { CommonService } from 'src/app/services/common.service';
 import { LogHandlerService } from 'src/app/services/log-handler.service';
 import { SuperCompanyService } from 'src/app/services/super-company.service';
-import { ThemeService } from 'src/app/services/theme.service';
 
 import { RegisterViewModel } from 'src/app/view-models/register.viewmodel';
 import { EmployeeStatusSM } from 'src/app/service-models/app/enums/employee-status-s-m.enum';
@@ -22,6 +21,7 @@ import { LoginStatusSM } from 'src/app/service-models/app/enums/login-status-s-m
 export class RegisterComponent extends BaseComponent<RegisterViewModel> implements OnInit {
 
   step = 1;
+  isDark = false;
 
   // Date constraints
   maxDob!: string; // today - 14 years
@@ -29,12 +29,27 @@ export class RegisterComponent extends BaseComponent<RegisterViewModel> implemen
   maxDoj!: string; // today
   minDoj!: string; // today - 5 years (edit if you want)
 
+  get progressPercent(): number {
+    return this.step === 1 ? 34 : this.step === 2 ? 68 : 100;
+  }
+
+  get generatedLoginId(): string {
+    const firstName = this.viewModel.addAdmin.firstName || '';
+    const lastName = this.viewModel.addAdmin.lastName || '';
+    return `${firstName}${lastName}`.replace(/\s/g, '');
+  }
+
+  get generatedPassword(): string {
+    const firstName = this.viewModel.addAdmin.firstName || '';
+    const lastName = this.viewModel.addAdmin.lastName || '';
+    return `${lastName}${firstName}`.replace(/\s/g, '');
+  }
+
   constructor(
     commonService: CommonService,
     logService: LogHandlerService,
     private superCompanyService: SuperCompanyService,
-    private router: Router,
-    public theme: ThemeService
+    private router: Router
   ) {
     super(commonService, logService);
     this.viewModel = new RegisterViewModel();
@@ -45,11 +60,27 @@ export class RegisterComponent extends BaseComponent<RegisterViewModel> implemen
     this._commonService.layoutVM.showLeftSideMenu = false;
 
     this.initDateLimits();
+    await this._commonService.loadDefaultTheme();
+
+    this.isDark =
+      document.documentElement.classList.contains("dark") ||
+      document.body.classList.contains("dark");
 
     await this._commonService.presentLoading();
     setTimeout(async () => {
       await this._commonService.dismissLoader();
     }, 350);
+  }
+
+  toggleTheme(): void {
+    this.isDark = !this.isDark;
+    localStorage.setItem("internal_theme", this.isDark ? "dark" : "light");
+    document.documentElement.classList.toggle("dark", this.isDark);
+    document.body.classList.toggle("dark", this.isDark);
+  }
+
+  goBack(): void {
+    window.history.back();
   }
 
   private initDateLimits() {
@@ -180,8 +211,8 @@ export class RegisterComponent extends BaseComponent<RegisterViewModel> implemen
 
       // ⚠️ your current logic makes username/password predictable.
       // Leaving it because you use it, but you should replace with real password creation later.
-      this.viewModel.addAdmin.loginId = (this.viewModel.addAdmin.firstName + this.viewModel.addAdmin.lastName).replace(/\s/g, '');
-      this.viewModel.addAdmin.passwordHash = (this.viewModel.addAdmin.lastName + this.viewModel.addAdmin.firstName).replace(/\s/g, '');
+      this.viewModel.addAdmin.loginId = this.generatedLoginId;
+      this.viewModel.addAdmin.passwordHash = this.generatedPassword;
       this.viewModel.addAdmin.loginStatus = LoginStatusSM.Enabled;
 
       const resp = await this.superCompanyService.registerNewCompanyAdmin(this.viewModel.addAdmin);

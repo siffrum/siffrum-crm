@@ -6,7 +6,6 @@ import { LogHandlerService } from "src/app/services/log-handler.service";
 import { CompanyAttendanceShiftService } from "src/app/services/company-attendance-shift.service";
 import { AppConstants } from "src/app-constants";
 import { ClientCompanyAttendanceShiftSM } from "src/app/service-models/app/v1/client/client-company-attendance-shift-s-m";
-import { format, parse } from "date-fns";
 import { ModuleNameSM } from "src/app/service-models/app/enums/module-name-s-m.enum";
 import { PermissionSM } from "src/app/service-models/app/v1/client/permission-s-m";
 import { AccountService } from "src/app/services/account.service";
@@ -60,7 +59,9 @@ export class CompanyAttendanceShiftComponent
           icon: "error"
         });
       } else {
-        this.viewModel.companyAttendanceShiftDetailsList = resp.successData;
+        this.viewModel.companyAttendanceShiftDetailsList = resp.successData.map(
+          (shift) => this.normalizeShiftForDisplay(shift)
+        );
         this.getPermissions();
       }
     } catch (error) {
@@ -87,7 +88,8 @@ export class CompanyAttendanceShiftComponent
           icon: "error"
         });
       } else {
-        this.viewModel.companyAttendanceShiftDetails = resp.successData;
+        this.viewModel.companyAttendanceShiftDetails =
+          this.normalizeShiftForForm(resp.successData);
       }
     } catch (error) {
       throw error;
@@ -133,11 +135,12 @@ export class CompanyAttendanceShiftComponent
         return; // Stop execution here if form is not valid
       }
       await this._commonService.presentLoading();
-      this.viewModel.companyAttendanceShiftDetails.clientCompanyDetailId =
+      const shiftPayload = this.getShiftPayload();
+      shiftPayload.clientCompanyDetailId =
         this.viewModel.company.id;
       let resp =
         await this.companyAttendanceShiftService.addCompanyShift(
-          this.viewModel.companyAttendanceShiftDetails
+          shiftPayload
         );
       if (resp.isError) {
         await this._exceptionHandler.logObject(resp.errorData);
@@ -182,7 +185,7 @@ export class CompanyAttendanceShiftComponent
       }
       let resp =
         await this.companyAttendanceShiftService.updateCompanyShift(
-          this.viewModel.companyAttendanceShiftDetails
+          this.getShiftPayload()
         );
       if (resp.isError) {
         await this._exceptionHandler.logObject(resp.errorData);
@@ -208,20 +211,15 @@ export class CompanyAttendanceShiftComponent
     }
   }
 
-  formatShiftTime(time: string): string {
-    const date = new Date(time);
-    const formattedTime = format(date, "HH:mm");
-    return formattedTime;
-  }
+  formatShiftTime(time: string | Date): string {
+    const minutes = this.extractMinutes(time);
+    if (minutes == null) return "";
 
-  parseTime(time: string): string {
-    // Convert the time to a date object using any desired format or parsing logic
-    // For example, you can use the date-fns parse function:
-    const parsedTime = parse(time, "HH:mm", new Date());
-    // Do any necessary additional processing
-    // For example, you can extract the time from the parsed date object
-    const selectedTime = format(parsedTime, "HH:mm");
-    return selectedTime;
+    const hours24 = Math.floor(minutes / 60);
+    const mins = minutes % 60;
+    const meridiem = hours24 >= 12 ? "PM" : "AM";
+    const hours12 = hours24 % 12 || 12;
+    return `${hours12}:${mins.toString().padStart(2, "0")} ${meridiem}`;
   }
   /**
    * Delete Selected Shift
@@ -263,5 +261,81 @@ export class CompanyAttendanceShiftComponent
         await this._commonService.dismissLoader();
       }
     }
+  }
+
+  private getShiftPayload(): ClientCompanyAttendanceShiftSM {
+    return {
+      ...this.viewModel.companyAttendanceShiftDetails,
+      shiftFrom: this.normalizeTimeForApi(
+        this.viewModel.companyAttendanceShiftDetails.shiftFrom
+      ) as any,
+      shiftTo: this.normalizeTimeForApi(
+        this.viewModel.companyAttendanceShiftDetails.shiftTo
+      ) as any,
+    };
+  }
+
+  private normalizeShiftForDisplay(
+    shift: ClientCompanyAttendanceShiftSM
+  ): ClientCompanyAttendanceShiftSM {
+    return {
+      ...shift,
+      shiftFrom: this.normalizeTimeForApi(shift.shiftFrom) as any,
+      shiftTo: this.normalizeTimeForApi(shift.shiftTo) as any,
+    };
+  }
+
+  private normalizeShiftForForm(
+    shift: ClientCompanyAttendanceShiftSM
+  ): ClientCompanyAttendanceShiftSM {
+    return {
+      ...shift,
+      shiftFrom: this.normalizeTimeForInput(shift.shiftFrom) as any,
+      shiftTo: this.normalizeTimeForInput(shift.shiftTo) as any,
+    };
+  }
+
+  private normalizeTimeForInput(value: string | Date): string {
+    const minutes = this.extractMinutes(value);
+    if (minutes == null) return "";
+
+    const hours = Math.floor(minutes / 60)
+      .toString()
+      .padStart(2, "0");
+    const mins = (minutes % 60).toString().padStart(2, "0");
+    return `${hours}:${mins}`;
+  }
+
+  private normalizeTimeForApi(value: string | Date): string {
+    const time = this.normalizeTimeForInput(value);
+    return time ? `1970-01-01T${time}:00` : "";
+  }
+
+  private extractMinutes(value: string | Date | null | undefined): number | null {
+    if (!value) return null;
+
+    if (value instanceof Date && !Number.isNaN(value.getTime())) {
+      return value.getHours() * 60 + value.getMinutes();
+    }
+
+    const rawValue = String(value).trim();
+    if (!rawValue) return null;
+
+    const hhmmMatch = rawValue.match(/(\d{1,2}):(\d{2})/);
+    if (!hhmmMatch) return null;
+
+    let hours = Number(hhmmMatch[1]);
+    const minutes = Number(hhmmMatch[2]);
+    const upperValue = rawValue.toUpperCase();
+
+    if (upperValue.includes("PM") && hours < 12) {
+      hours += 12;
+    }
+    if (upperValue.includes("AM") && hours === 12) {
+      hours = 0;
+    }
+
+    if (hours > 23 || minutes > 59) return null;
+    return hours * 60 + minutes;
   }
 }

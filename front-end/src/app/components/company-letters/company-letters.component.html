@@ -1,36 +1,66 @@
 <div class="cl-page">
-  <!-- Top Bar -->
-  <div class="cl-topbar">
-    <div class="cl-title">
-      <div class="kicker">Documents</div>
+  <section class="cl-hero shadow-soft">
+    <div class="cl-hero__content">
+      <div class="cl-badge">Letter Studio</div>
       <h2>Company Letters</h2>
-      <p class="sub">Upload proformat letters and download them anytime.</p>
+      <p class="cl-sub">
+        Manage offer letters, HR templates, and reusable document files in one place.
+      </p>
+
+      <div class="cl-stats">
+        <div class="cl-stat">
+          <span class="cl-stat__label">Library Size</span>
+          <strong class="cl-stat__value">{{ viewModel.companyLetterList.length }}</strong>
+        </div>
+
+        <div class="cl-stat">
+          <span class="cl-stat__label">Visible Results</span>
+          <strong class="cl-stat__value">{{ filteredCompanyLetterList.length }}</strong>
+        </div>
+
+        <div class="cl-stat">
+          <span class="cl-stat__label">Supported Files</span>
+          <strong class="cl-stat__value">DOC / PDF</strong>
+        </div>
+      </div>
     </div>
 
-    <div class="cl-actions">
-      <!-- Search -->
+    <div class="cl-hero__panel">
       <div class="cl-search">
         <i class="bi bi-search"></i>
         <input
           type="text"
           class="form-control"
-          placeholder="Search by name / description / extension..."
+          placeholder="Search document name, description, or type"
           [(ngModel)]="searchText"
           (ngModelChange)="applySearch()"
         />
+
         <button
-          class="btn btn-light clearBtn"
+          class="btn cl-clearBtn"
           type="button"
           *ngIf="searchText.trim().length"
           (click)="clearSearch()"
+          aria-label="Clear search"
         >
           <i class="bi bi-x-lg"></i>
         </button>
       </div>
 
-      <!-- Add Button -->
+      <div class="cl-meta">
+        <div class="cl-meta__item">
+          <span class="cl-meta__eyebrow">Template Tokens</span>
+          <span class="cl-meta__value">{{ placeholderList.length }} fields</span>
+        </div>
+
+        <div class="cl-meta__item">
+          <span class="cl-meta__eyebrow">Upload Note</span>
+          <span class="cl-meta__value">Use placeholders for dynamic employee data</span>
+        </div>
+      </div>
+
       <button
-        class="btn coinButton addBtn"
+        class="btn coinButton cl-addBtn"
         (click)="openLetterModalPopUp()"
         *ngIf="viewModel.Permission?.add"
       >
@@ -38,159 +68,253 @@
         Add New Letter
       </button>
     </div>
-  </div>
+  </section>
 
-  <div class="row g-3">
-    <!-- LEFT: Table -->
-    <div class="col-lg-8 col-md-8 col-12">
-      <div class="card cl-card shadow-soft">
-        <div class="card-header cl-card-head">
-          <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
-            <div class="d-flex align-items-center gap-2">
-              <span class="pill">
-                <i class="bi bi-file-earmark-text me-2"></i>Letters
-              </span>
+  <div class="row g-4">
+    <div class="col-xl-8 col-lg-7 col-12">
+      <section class="cl-card shadow-soft">
+        <div class="cl-card__head">
+          <div>
+            <div class="cl-eyebrow">Document Shelf</div>
+            <h3>Stored Letters</h3>
+          </div>
 
-              <!-- ✅ FIXED (no ?. no ?? no ||) -->
-              <span class="muted">
-                {{ filteredCompanyLetterList.length }} items
-              </span>
-            </div>
-
-            <div class="muted small">
-              Allowed: <b>.doc</b>, <b>.pdf</b>
-            </div>
+          <div class="cl-chipRow">
+            <span class="cl-chip">
+              <i class="bi bi-collection me-2"></i>{{ filteredCompanyLetterList.length }} items
+            </span>
+            <span class="cl-chip cl-chip--soft">Reusable Templates</span>
           </div>
         </div>
 
-        <div class="card-body p-0">
-          <div class="table-responsive cl-table-wrap">
-            <table class="table cl-table align-middle mb-0">
-              <thead>
-                <tr>
-                  <th width="30%">Document Name</th>
-                  <th width="45%">Description</th>
-                  <th>Extension</th>
-                  <th
-                    class="text-end"
-                    *ngIf="viewModel.Permission?.delete || viewModel.Permission?.edit"
-                    style="width: 140px;"
-                  >
-                    Actions
-                  </th>
-                </tr>
-              </thead>
+        <div class="cl-tableWrap" *ngIf="filteredCompanyLetterList.length; else emptyState">
+          <table class="table cl-table align-middle mb-0">
+            <thead>
+              <tr>
+                <th>Document</th>
+                <th>Description</th>
+                <th>Type</th>
+                <th
+                  class="text-end"
+                  *ngIf="viewModel.Permission?.delete || viewModel.Permission?.edit"
+                >
+                  Actions
+                </th>
+              </tr>
+            </thead>
 
-              <tbody>
-                <!-- Empty State -->
-                <tr *ngIf="filteredCompanyLetterList.length === 0">
-                  <td colspan="4" class="p-4">
-                    <div class="emptyState">
-                      <div class="emptyIcon">
-                        <i class="bi bi-inbox"></i>
-                      </div>
-                      <div>
-                        <h6 class="mb-1">No letters found</h6>
-                        <p class="mb-0 muted">
-                          Try a different search, or add a new letter.
-                        </p>
-                      </div>
+            <tbody>
+              <tr *ngFor="let item of filteredCompanyLetterList">
+                <td>
+                  <div class="cl-docCell">
+                    <div class="cl-docCell__icon">
+                      <i class="bi" [ngClass]="item.extension === 'pdf' ? 'bi-file-earmark-pdf' : 'bi-file-earmark-word'"></i>
                     </div>
-                  </td>
-                </tr>
 
-                <!-- Data Rows -->
-                <tr *ngFor="let item of filteredCompanyLetterList; let i = index">
-                  <td>
-                    <div class="docName">
-                      <div class="docIc">
-                        <i class="bi bi-file-earmark"></i>
-                      </div>
-                      <div>
-                        <div class="name text-truncate">{{ item.name }}</div>
-                        <div class="muted small text-truncate">
-                          ID: {{ item.id }}
-                        </div>
-                      </div>
+                    <div class="cl-docCell__meta">
+                      <div class="cl-docCell__name">{{ item.name }}</div>
+                      <div class="cl-docCell__sub">Letter ID: {{ item.id }}</div>
                     </div>
-                  </td>
+                  </div>
+                </td>
 
-                  <td>
-                    <div class="text-truncate">
-                      {{ item.description || '-' }}
-                    </div>
-                  </td>
+                <td>
+                  <div class="cl-desc">
+                    {{ item.description || "No description added yet." }}
+                  </div>
+                </td>
 
-                  <td>
-                    <span class="extBadge">{{ item.extension || '-' }}</span>
-                  </td>
+                <td>
+                  <span class="cl-type">{{ item.extension || "-" }}</span>
+                </td>
 
-                  <td
-                    class="text-end"
-                    *ngIf="viewModel.Permission?.edit || viewModel.Permission?.delete"
-                  >
-                    <div class="actionBtns justify-content-end">
-                      <!-- Download -->
-                      <button
-                        class="iconBtn"
-                        type="button"
-                        (click)="getCompanyLetterByLetterId(item.id)"
-                        [disabled]="isBusyId === item.id"
-                        *ngIf="viewModel.Permission?.edit"
-                      >
-                        <i class="bi bi-cloud-download"></i>
-                      </button>
+                <td
+                  class="text-end"
+                  *ngIf="viewModel.Permission?.edit || viewModel.Permission?.delete"
+                >
+                  <div class="cl-actions">
+                    <button
+                      class="btn cl-iconBtn"
+                      type="button"
+                      (click)="getCompanyLetterByLetterId(item.id)"
+                      [disabled]="isBusyId === item.id"
+                      *ngIf="viewModel.Permission?.edit"
+                      title="Download"
+                    >
+                      <i class="bi bi-cloud-download"></i>
+                    </button>
 
-                      <!-- Delete -->
-                      <button
-                        class="iconBtn danger"
-                        type="button"
-                        (click)="deleteCompanyLetterByLetterId(item.id)"
-                        [disabled]="isBusyId === item.id"
-                        *ngIf="viewModel.Permission?.delete"
-                      >
-                        <i class="bi bi-trash"></i>
-                      </button>
-                    </div>
-                  </td>
-                </tr>
+                    <button
+                      class="btn cl-iconBtn cl-iconBtn--danger"
+                      type="button"
+                      (click)="deleteCompanyLetterByLetterId(item.id)"
+                      [disabled]="isBusyId === item.id"
+                      *ngIf="viewModel.Permission?.delete"
+                      title="Delete"
+                    >
+                      <i class="bi bi-trash"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
 
-              </tbody>
-            </table>
+        <ng-template #emptyState>
+          <div class="cl-empty">
+            <div class="cl-empty__icon">
+              <i class="bi bi-file-earmark-break"></i>
+            </div>
+
+            <div class="cl-empty__content">
+              <h4>No letters found</h4>
+              <p>
+                Build a reusable company letter library here, or adjust your search to find an existing file.
+              </p>
+            </div>
+
+            <button
+              class="btn coinButton"
+              type="button"
+              (click)="openLetterModalPopUp()"
+              *ngIf="viewModel.Permission?.add"
+            >
+              <i class="bi bi-plus-lg me-2"></i>
+              Upload First Letter
+            </button>
+          </div>
+        </ng-template>
+      </section>
+    </div>
+
+    <div class="col-xl-4 col-lg-5 col-12">
+      <section class="cl-card cl-side shadow-soft">
+        <div class="cl-card__head cl-card__head--side">
+          <div>
+            <div class="cl-eyebrow">Dynamic Fields</div>
+            <h3>Template Placeholders</h3>
+          </div>
+
+          <span class="cl-chip cl-chip--soft">
+            <i class="bi bi-braces me-2"></i> Auto Fill
+          </span>
+        </div>
+
+        <div class="cl-side__intro">
+          Add these values inside your document content so employee and company details can be injected automatically.
+        </div>
+
+        <div class="cl-tokenGrid">
+          <div class="cl-token" *ngFor="let p of placeholderList">
+            <div class="cl-token__label">{{ p.label }}</div>
+            <div class="cl-token__value">{{ p.value }}</div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+
+<div
+  class="cl-modal-backdrop"
+  *ngIf="viewModel.displayStyle === 'block'"
+  [class.show]="viewModel.displayStyle === 'block'"
+  (click)="closePopup()"
+></div>
+
+<div
+  class="cl-modal"
+  [ngStyle]="{ display: viewModel.displayStyle }"
+  [class.show]="viewModel.displayStyle === 'block'"
+>
+  <div class="cl-modal-dialog" (click)="$event.stopPropagation()">
+    <div class="cl-modal-content">
+      <div class="cl-modal-header">
+        <div>
+          <div class="cl-eyebrow">Upload Workspace</div>
+          <h4>Add New Company Letter</h4>
+          <p>Keep the name clean and upload a ready-to-use `.doc` or `.pdf` file.</p>
+        </div>
+
+        <button
+          type="button"
+          class="btn-close"
+          aria-label="Close"
+          (click)="closePopup()"
+        ></button>
+      </div>
+
+      <div class="cl-modal-body">
+        <div class="cl-field">
+          <label>Letter Name</label>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Example: Offer Letter"
+            [(ngModel)]="viewModel.companyLetter.name"
+          />
+        </div>
+
+        <div class="cl-field">
+          <label>Description</label>
+          <textarea
+            class="form-control"
+            rows="4"
+            placeholder="Short context for this letter template"
+            [(ngModel)]="viewModel.companyLetter.description"
+          ></textarea>
+        </div>
+
+        <label class="cl-field__label">Upload File</label>
+        <label class="uploadBox" for="letterUpload">
+          <div class="upIc">
+            <i class="bi bi-cloud-arrow-up"></i>
+          </div>
+
+          <div class="flex-grow-1">
+            <div class="upTitle">Drop in your document or click to browse</div>
+            <div class="upSub">Accepted formats: .doc, .pdf up to {{ maxFileSizeMB }}MB</div>
+            <div class="fileName" *ngIf="selectedFileName">{{ selectedFileName }}</div>
+          </div>
+
+          <div class="cl-uploadState" *ngIf="viewModel.companyLetter.letterData">
+            Ready
+          </div>
+        </label>
+
+        <input
+          id="letterUpload"
+          type="file"
+          hidden
+          accept=".doc,.pdf"
+          (change)="uploadDocument($event)"
+        />
+
+        <div class="cl-uploadError" *ngIf="uploadError">{{ uploadError }}</div>
+
+        <div class="cl-hintBox">
+          <div class="cl-hintBox__title">Quick Tip</div>
+          <div class="cl-hintBox__text">
+            Use placeholder values from the right-side panel in your document content so the final letter can be personalized automatically.
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- RIGHT SIDE -->
-    <div class="col-lg-4 col-md-4 col-12">
-      <div class="card cl-card shadow-soft cl-side">
-        <div class="card-header cl-card-head">
-          <div class="d-flex align-items-center justify-content-between">
-            <div>
-              <div class="kicker">Dynamic Fields</div>
-              <div class="sideTitle">Placeholders</div>
-            </div>
-            <span class="pill pill-lite">
-              <i class="bi bi-braces me-2"></i>Template
-            </span>
-          </div>
-        </div>
+      <div class="cl-modal-footer">
+        <button class="btn cl-secondaryBtn" type="button" (click)="closePopup()">
+          Cancel
+        </button>
 
-        <div class="card-body cl-side-body">
-          <div class="kv" *ngFor="let p of placeholderList">
-            <div class="k">{{ p.label }}</div>
-            <div class="v">{{ p.value }}</div>
-          </div>
-        </div>
-
-        <div class="card-footer cl-side-foot">
-          <b>Note:</b>
-          <small>
-            The uploaded document can contain placeholders.
-            These will be replaced dynamically.
-          </small>
-        </div>
+        <button
+          class="btn coinButton"
+          type="button"
+          [disabled]="!canSave()"
+          (click)="addCompanyLetter()"
+        >
+          <i class="bi bi-check2-circle me-2"></i>
+          Save Letter
+        </button>
       </div>
     </div>
   </div>

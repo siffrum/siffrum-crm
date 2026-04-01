@@ -1,3 +1,4 @@
+<div class="sa-admin-panel" *ngIf="viewModel.addAdminForm">
 <div class="card" *ngIf="viewModel.addAdminForm">
     <div class="card-header">
         <div class="row">
@@ -197,7 +198,9 @@
         </div>
     </form>
 </div>
+</div>
 
+<div class="sa-admin-panel" *ngIf="viewModel.permissionTableModal">
 <div class="row" *ngIf="viewModel.permissionTableModal">
     <div class="col-lg-6 col-md-12 col-sm-12 col-12 mb-2">
         <button class="btn coinButton" (click)="switchToForm()">
@@ -525,4 +528,5 @@
         </div>
     </div>
     <!-- End Of ADD /Update company Admin Modal -->
+</div>
 </div>

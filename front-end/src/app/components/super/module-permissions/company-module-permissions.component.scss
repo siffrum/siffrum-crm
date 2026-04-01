@@ -1,84 +1,81 @@
-.table{
-    // box-shadow:  3px 3px 0px 3px #282F51;
-    box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
-    margin-top: 2%;
+:host { display:block; }
+
+.sa-permissions {
+  padding: 18px;
+  border-radius: 24px;
+  border: 1px solid rgba(15,23,42,.08);
+  background: rgba(248,250,252,.86);
 }
+
+:host-context(.dark) .sa-permissions {
+  border-color: rgba(255,255,255,.08);
+  background: rgba(2,6,23,.34);
+}
+
+.sa-permissions-head h3 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 900;
+}
+
+.sa-permissions-head p {
+  margin: 6px 0 18px;
+  font-size: 13px;
+  font-weight: 700;
+  color: rgba(15,23,42,.62);
+}
+
+:host-context(.dark) .sa-permissions-head p { color: rgba(226,232,240,.66); }
+
+.table {
+  margin-top: 14px;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 14px 28px rgba(15,23,42,.06);
+}
+
+.tableFixHead {
+  overflow-y: auto;
+  height: 320px;
+}
+
+.tableFixHead thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: rgba(248,250,252,.96);
+}
+
+:host-context(.dark) .tableFixHead thead th {
+  background: rgba(15,23,42,.94);
+}
+
+select { width: 220px; border-radius: 14px; }
+.form-check-input { cursor: pointer; }
 
 @media only screen and (max-width: 760px),
 (min-device-width: 768px) and (max-device-width: 1024px) {
-    table,
-    thead,
-    tbody,
-    th,
-    td,
-    tr {
-        display: block;
-        width: 100%;
-    }
-    thead tr {
-        position: relative;
-        display: none;
-    }
-    tr {
-        margin-top: 1rem;
-    }
-    td {
-        // border: 1px solid rgb(151, 143, 143);
-        position: relative;
-        padding-left: 50%;
-        font-size: 10px;
-    }
-    td:before {
-        position: absolute;
-        left: 5px;
-        font-size: var(--table-header-font-size);
-        font-weight: var(--table-header-font-weight)
-    }
-    td:nth-of-type(1):before {
-        content: "Label";
-
-    }
-    td:nth-of-type(2):before {
-        content: "Enaled";
-    }
-    td:nth-of-type(3):before {
-        content: "View";
-    }
-    td:nth-of-type(4):before {
-        content: "ADD";
-    }
-    td:nth-of-type(5):before {
-        content: "Edit";
-    }
-    td:nth-of-type(6):before {
-        content: "Delete";
-    }
-}
-
-
-
-  select{
-    width: 200px;
+  table, thead, tbody, th, td, tr {
+    display: block;
+    width: 100%;
   }
-
-  .tableFixHead {
-    overflow-y: auto; /* make the table scrollable if height is more than 200 px  */
-    height: 310px; /* gives an initial height of 200px to the table */
-
+  thead tr { display: none; }
+  tr { margin-top: 1rem; }
+  td {
+    position: relative;
+    padding-left: 50%;
+    font-size: 10px;
   }
-  .tableFixHead thead th {
-    position: sticky; /* make the table heads sticky */
-    top: 0px; /* table head will be placed from the top of the table and sticks to it */
-    z-index: 9999;
+  td:before {
+    position: absolute;
+    left: 5px;
+    font-size: var(--table-header-font-size);
+    font-weight: var(--table-header-font-weight);
   }
-  .tableFixHead::-webkit-scrollbar {
-    display: none;
-}
-
-.tableFixHead::-webkit-scrollbar-thumb {
-    display: none;
-}
-
-.tableFixHead::-webkit-scrollbar-thumb:hover {
-    display: none;
+  td:nth-of-type(1):before { content: "Label"; }
+  td:nth-of-type(2):before { content: "Enabled"; }
+  td:nth-of-type(3):before { content: "View"; }
+  td:nth-of-type(4):before { content: "Add"; }
+  td:nth-of-type(5):before { content: "Edit"; }
+  td:nth-of-type(6):before { content: "Delete"; }
 }

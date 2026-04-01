@@ -152,10 +152,12 @@ export const AppConstants = {
         },
 
         ADMIN: {
-            DASHBOARD: 'admin/dashboard',
-            COMPANIES: 'admin/companylist',
-            SQL: 'admin/sql',
-            CONTACT_US: 'admin/contact-us'
+            LOGIN: '/admin/login',
+            DASHBOARD: '/admin/dashboard',
+            ADD_COMPANY: '/admin/add-company',
+            COMPANIES: '/admin/companylist',
+            SQL: '/admin/sql',
+            CONTACT_US: '/admin/contact-us'
         },
 
         HOME: '/website',

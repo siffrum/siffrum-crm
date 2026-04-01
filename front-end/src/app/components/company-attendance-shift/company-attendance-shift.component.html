@@ -52,14 +52,14 @@
             <td class="td-time">
               <span class="pill">
                 <i class="bi bi-clock me-1"></i>
-                {{ data.shiftFrom | date:'h:mm a' }}
+                {{ formatShiftTime(data.shiftFrom) }}
               </span>
             </td>
 
             <td class="td-time">
               <span class="pill">
                 <i class="bi bi-clock me-1"></i>
-                {{ data.shiftTo | date:'h:mm a' }}
+                {{ formatShiftTime(data.shiftTo) }}
               </span>
             </td>
 
