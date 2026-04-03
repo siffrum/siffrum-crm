@@ -433,18 +433,65 @@ export class CommonService extends BaseService {
     return result;
   }
 
+  private getMimeTypeFromExtension(fileExtension: string): string {
+    const normalizedExtension = (fileExtension || "")
+      .toLowerCase()
+      .replace(/^\./, "");
+
+    const mimeTypes: Record<string, string> = {
+      pdf: "application/pdf",
+      doc: "application/msword",
+      docx: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      xls: "application/vnd.ms-excel",
+      xlsx: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      csv: "text/csv",
+      txt: "text/plain",
+      json: "application/json",
+      png: "image/png",
+      jpg: "image/jpeg",
+      jpeg: "image/jpeg",
+      gif: "image/gif",
+      zip: "application/zip",
+    };
+
+    return mimeTypes[normalizedExtension] || "application/octet-stream";
+  }
+
+  private buildDownloadFileName(
+    letterName: string,
+    fileExtension: string,
+    employeeUserName?: string
+  ): string {
+    const normalizedExtension = (fileExtension || "")
+      .replace(/^\./, "")
+      .trim();
+
+    const rawName = `${letterName || "download"}${employeeUserName || ""}`;
+    const safeName = rawName.replace(/[<>:"/\\|?*\x00-\x1f]/g, "_").trim();
+
+    return normalizedExtension
+      ? `${safeName}.${normalizedExtension}`
+      : safeName;
+  }
+
   downloadDocument(
     base64data: string,
     letterName: string,
     fileExtension: string,
     employeeUserName?: string
   ) {
-    var blob = this.convertFromBase64ToPDF(base64data, "application/docx");
+    const mimeType = this.getMimeTypeFromExtension(fileExtension);
+    const fileName = this.buildDownloadFileName(
+      letterName,
+      fileExtension,
+      employeeUserName
+    );
+    var blob = this.convertFromBase64ToPDF(base64data, mimeType);
     let a = document.createElement("a");
     document.body.appendChild(a);
     var url = window.URL.createObjectURL(blob);
     a.href = url;
-    a.download = String(letterName + employeeUserName + "." + fileExtension);
+    a.download = fileName;
     a.click();
     window.URL.revokeObjectURL(url);
     a.remove();
