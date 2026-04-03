@@ -244,10 +244,20 @@
 
 </div>
 
-<!-- MODAL (Same bindings, just styled) -->
-<div class="modal expandIn leaves-modal" tabindex="-1" role="dialog"
-  [ngStyle]="{'display': viewModel.displayStyle, 'z-index': 1050}">
-  <div class="modal-dialog" role="document">
+<!-- MODAL -->
+<div
+  class="leaves-modal-backdrop"
+  *ngIf="viewModel.displayStyle === 'block'"
+  (click)="closePopup(leaveForm)">
+</div>
+
+<div
+  class="leaves-modal-shell"
+  tabindex="-1"
+  role="dialog"
+  [class.show]="viewModel.displayStyle === 'block'"
+  [ngStyle]="{ display: viewModel.displayStyle === 'block' ? 'grid' : 'none' }">
+  <div class="leaves-modal-dialog" role="document" (click)="$event.stopPropagation()">
     <div class="modal-content modal-modern">
 
       <div class="modal-header">
@@ -266,7 +276,7 @@
           <div class="form-grid">
 
             <!-- Leave Type -->
-            <div class="fg">
+            <div class="fg full fg-leave-type">
               <label>Leave Type <span class="req">*</span></label>
               <select
                 class="form-select form-control-modern"
@@ -333,14 +343,14 @@
             <!-- Employee Comment -->
             <div class="fg full">
               <label>Employee Comment</label>
-              <input
-                type="text"
+              <textarea
                 class="form-control form-control-modern"
                 [(ngModel)]="viewModel.employeeLeaveExtended.employeeComment"
                 [disabled]="isAdminMode || viewModel.employeeLeaveExtended.isApproved == true || viewModel.employeeLeaveExtended.isApproved == false"
                 name="employeeComment"
                 #employeeComment="ngModel"
-              />
+                rows="3"
+              ></textarea>
               <div *ngFor="let validation of viewModel.validations.employeeComment"
                 pattern="^[A-Za-z][A-Za-z0-9\s]*$" minlength="5" maxlength="50">
                 <div *ngIf="(employeeComment.touched || viewModel.formSubmitted) && employeeComment.hasError(validation.type)"
@@ -353,13 +363,13 @@
             <!-- Approver Comment -->
             <div class="fg full" *ngIf="isAdminMode">
               <label>Approver Comment</label>
-              <input
-                type="text"
+              <textarea
                 class="form-control form-control-modern"
                 name="approvalComment"
                 [(ngModel)]="viewModel.employeeLeaveExtended.approvalComment"
                 [disabled]="isAdminMode || viewModel.employeeLeaveExtended.isApproved == true || viewModel.employeeLeaveExtended.isApproved == false"
-              />
+                rows="3"
+              ></textarea>
             </div>
 
           </div>

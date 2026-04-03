@@ -280,20 +280,50 @@
 }
 
 /* Modal */
-.leaves-modal .modal-dialog {
-  max-width: 720px;
+.leaves-modal-backdrop {
+  position: fixed;
+  inset: 86px 0 0 0;
+  z-index: 10040;
+  background: rgba(2, 6, 23, 0.55);
+  backdrop-filter: blur(2px);
+}
+
+.leaves-modal-shell {
+  position: fixed;
+  inset: 86px 0 0 0;
+  z-index: 10050;
+  padding: 20px 12px;
+  overflow-y: auto;
+  place-items: center;
+}
+
+.leaves-modal-dialog {
+  width: min(760px, calc(100vw - 32px));
+  margin: 0 auto;
+  min-height: calc(100vh - 126px);
+  display: flex;
+  align-items: center;
 }
 
 .modal-modern {
   border-radius: 18px;
   overflow: hidden;
-  border: 1px solid rgba(15, 23, 42, 0.10);
-  box-shadow: 0 30px 90px rgba(15, 23, 42, 0.20);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.35);
+  width: 100%;
+  max-height: min(720px, calc(100vh - 126px));
+  display: flex;
+  flex-direction: column;
+  background: #fff;
 }
 
 .modal-header {
-  background: rgba(248, 250, 252, 0.95);
-  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+  background: linear-gradient(135deg, rgba(13, 110, 253, 0.12), rgba(255, 255, 255, 0.75));
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
 
   .kicker {
     font-size: 0.78rem;
@@ -312,7 +342,12 @@
 .form-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 14px;
+  gap: 18px;
+  align-items: start;
+}
+
+.fg {
+  min-width: 0;
 }
 
 .fg label {
@@ -336,6 +371,7 @@
   border: 1px solid rgba(15, 23, 42, 0.12);
   padding: 10px 12px;
   background: rgba(255, 255, 255, 0.85);
+  min-height: 48px;
 }
 
 .form-control-modern:focus {
@@ -343,13 +379,49 @@
   border-color: rgba(59, 130, 246, 0.35);
 }
 
+textarea.form-control-modern {
+  min-height: 104px;
+  resize: vertical;
+}
+
+select.form-control-modern,
+input.form-control-modern {
+  width: 100%;
+}
+
+.modal-body {
+  padding: 1.5rem;
+  overflow-y: auto;
+}
+
 .modal-footer-modern {
   background: rgba(248, 250, 252, 0.95);
   border-top: 1px solid rgba(15, 23, 42, 0.08);
+  padding: 1rem 1.5rem;
+  flex-shrink: 0;
 }
 
 /* Responsive */
 @media (max-width: 768px) {
+  .leaves-modal-backdrop,
+  .leaves-modal-shell {
+    inset: 0;
+  }
+
+  .leaves-modal-shell {
+    padding: 0;
+  }
+
+  .leaves-modal-dialog {
+    width: 100%;
+    min-height: 100vh;
+  }
+
+  .modal-modern {
+    max-height: 100vh;
+    border-radius: 0;
+  }
+
   .leaves-topbar {
     flex-direction: column;
     align-items: stretch;
